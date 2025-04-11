@@ -1,0 +1,175 @@
+/* 전체 레이아웃 */
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f8f9fa;
+}
+
+/* 사이드바 스타일링 */
+.sidebar {
+  background-color: #1e2124 !important;
+  width: 250px;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  transition: all 0.3s;
+}
+
+.sidebar .nav-link {
+  padding: 10px 15px;
+  border-radius: 4px;
+  margin: 2px 0;
+  transition: all 0.2s;
+}
+
+.sidebar .nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar .nav-link.active {
+  background-color: #3e6553;
+}
+
+/* 드롭다운 메뉴 스타일링 */
+.sidebar-dropdown-menu {
+  list-style: none;
+  padding-left: 20px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.sidebar-dropdown-menu.show {
+  max-height: 500px;
+}
+
+.sidebar-dropdown-menu .nav-link {
+  font-size: 0.85rem;
+  padding: 5px 15px;
+}
+
+.nav-item .dropdown-indicator::after {
+  content: '\f105';
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  float: right;
+  transition: transform 0.3s;
+}
+
+.nav-item.expanded .dropdown-indicator::after {
+  transform: rotate(90deg);
+}
+
+/* 메인 콘텐츠 영역 */
+.main-content {
+  margin-left: 250px;
+  padding: 20px;
+  transition: all 0.3s;
+}
+
+/* 상단 네비게이션 바 */
+.navbar {
+  margin-left: 250px;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  background-color: white !important;
+}
+
+/* 카드 스타일링 */
+.card {
+  border: none;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+/* 유저 정보 섹션 */
+.user-info {
+  padding: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* 차트 컨테이너 */
+#chart-container {
+  margin-top: 20px;
+}
+
+/* 아이콘 스타일링 */
+.nav-icon {
+  margin-right: 10px;
+  color: #4CAF50;
+  width: 20px;
+  text-align: center;
+}
+
+/* 대시보드 메뉴 아이콘 */
+.menu-icon {
+  display: inline-block;
+  width: 24px;
+  margin-right: 8px;
+  text-align: center;
+}
+/* 드롭다운 메뉴 스타일 */
+.sidebar-dropdown-menu {
+  list-style: none;
+  padding-left: 20px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.sidebar-dropdown-menu.show {
+  max-height: 500px; /* 드롭다운이 열릴 때 최대 높이 */
+}
+
+.nav-item .dropdown-indicator::after {
+  content: '\f105'; /* Font Awesome 아이콘 */
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  float: right;
+  transition: transform 0.3s;
+}
+
+.nav-item.expanded .dropdown-indicator::after {
+  transform: rotate(90deg);
+}
+/* 사용자 드롭다운 스타일 */
+.nav-link.dropdown-toggle {
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.nav-link.dropdown-toggle:hover {
+  color: #4CAF50;
+}
+
+.dropdown-menu {
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-item {
+  font-size: 14px;
+}
+
+.dropdown-item:hover {
+  background-color: #f8f9fa;
+}
+
+/* 사이드바 드롭다운 스타일 */
+.collapse {
+  transition: max-height 0.3s ease-in-out;
+}
+
+.list-unstyled {
+  padding-left: 20px;
+}
