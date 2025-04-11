@@ -1,0 +1,252 @@
+/* 기본 스타일 */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Poppins', sans-serif; /* 세련된 폰트 */
+}
+
+/* 소개 섹션 스타일 */
+.intro-section {
+    position: relative;
+    height: 100vh;
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/images/user.JPG'); /* 그라디언트와 이미지 결합 */
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 어두운 톤 효과 */
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 어두운 톤 배경 */
+    z-index: 1;
+}
+
+/* 콘텐츠 스타일 */
+.content {
+    position: relative;
+    z-index: 2; /* 어두운 배경 위에 표시 */
+    text-align: center;
+    color: white; /* 텍스트 색상 */
+}
+
+.content h1 {
+    font-size: 3rem; /* 제목 크기 */
+    font-weight: 600; /* 굵은 텍스트 */
+}
+
+.content p {
+    font-size: 1.2rem; /* 부제 크기 */
+}
+
+/* 버튼 스타일 */
+.btn-group a {
+    padding: 15px 30px; /* 버튼 크기 확대 */
+    font-size: 1.2rem; /* 버튼 텍스트 크기 */
+    border-radius: 5px; /* 둥근 모서리 */
+    background-color: black; /* 기본 배경색: 검은색 */
+    color: white; /* 기본 텍스트 색상: 흰색 */
+    border: 2px solid black; /* 테두리 색상 */
+    transition: all 0.3s ease-in-out; /* 부드러운 전환 효과 */
+}
+
+.btn-group a:hover {
+    background-color: white; /* 호버 시 배경색: 흰색 */
+    color: black; /* 호버 시 텍스트 색상: 검은색 */
+    transform: scale(1.1); /* 살짝 확대 효과 */
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .content h1 {
+        font-size: 2rem; /* 제목 크기 축소 */
+        margin-bottom: 10px;
+    }
+
+    .content p {
+        font-size: 1rem; /* 부제 크기 축소 */
+        margin-bottom: 20px;
+    }
+
+    .btn-group a {
+        width: 100%; /* 버튼 너비를 화면에 맞게 조정 */
+        margin-bottom: 10px; /* 버튼 간격 추가 */
+        text-align: center;
+        padding-left: 0;
+        padding-right: 0;
+        padding-top :12px;padding-bottom :12px;}
+}
+/* 프로젝트 섹션 스타일 */
+.project-section {
+    padding: 50px 20px;
+    background-color: #f8f9fa; /* 밝은 배경색 */
+}
+
+.project-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: #333; /* 제목 색상 */
+}
+
+.project-section p.lead {
+    font-size: 1.2rem;
+    color: #555; /* 부제 색상 */
+}
+
+.card {
+    border: none;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 카드 그림자 */
+    border-radius: 10px; /* 둥근 모서리 */
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #007bff; /* 제목 색상 */
+}
+
+.card-text {
+    font-size: 1rem;
+    color: #555; /* 텍스트 색상 */
+}
+
+/* 프로젝트 소개 카드 호버 효과 */
+.card:hover {
+    transform: scale(1.05); /* 살짝 확대 */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* 부드러운 전환 */
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2); /* 그림자 강조 */
+}
+
+/* 팀원 소개 섹션 스타일 */
+.team-section {
+    padding: 50px 20px;
+    background-color: #5c5c5c;
+}
+
+.team-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: white; /* 제목 색상 */
+}
+
+.team-section p.lead {
+    font-size: 1.2rem;
+    color: white; /* 부제 색상 */
+}
+
+/* 팀원 카드 스타일 */
+/* 팀원 카드 스타일 */
+.team-card {
+    display: flex;
+    align-items: center; /* 세로 가운데 정렬 */
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #ffffff; /* 카드 배경색 */
+    border-radius: 10px; /* 둥근 모서리 */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 */
+}
+
+/* 팀원 이미지 스타일 */
+.team-img {
+    width: 100px; /* 이미지 너비 */
+    height: 100px; /* 이미지 높이 */
+    border-radius: 50%; /* 둥근 프로필 사진 */
+    object-fit: cover; /* 이미지 비율 유지하며 크기 조정 */
+    margin-right: 20px; /* 오른쪽 여백 */
+}
+
+/* 팀원 정보 스타일 */
+.team-info {
+    text-align: left; /* 왼쪽 정렬 */
+}
+
+.team-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #007bff; /* 이름 색상 */
+}
+
+.team-role {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #555; /* 역할 색상 */
+}
+
+.team-email {
+    font-size: 1rem;
+    color: #777; /* 이메일 텍스트 색상 */
+}
+
+.team-link {
+    display: block;
+    font-size: 1rem;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.team-link:hover {
+    text-decoration: underline; /* 링크 호버 효과 */
+}
+
+.team-message {
+    font-size: 1rem;
+    color: #555; /* 메시지 색상 */
+}
+
+.team-card h5 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #007bff; /* 이름 색상 */
+}
+
+.team-card p {
+    font-size: 1rem;
+    color: #555; /* 텍스트 색상 */
+}
+
+.team-card a {
+    display: block;
+    font-size: 1rem;
+    color: #007bff;
+    text-decoration: none;
+}
+
+
+/* 팀원 소개 카드 호버 효과 */
+.team-card:hover {
+    transform: scale(1.05); /* 살짝 확대 */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* 부드러운 전환 */
+}
+
+/* Wiki 섹션 스타일 */
+.wiki-section {
+    padding: 50px 20px;
+    background-color: #f9f9f9; /* 밝은 배경색 */
+}
+
+.wiki-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: #333; /* 제목 색상 */
+}
+
+.wiki-section p.lead {
+    font-size: 1.2rem;
+    color: #555; /* 부제 색상 */
+}
+
+/* iframe 스타일 */
+iframe {
+    border-radius: 10px; /* 둥근 모서리 */
+}
