@@ -105,7 +105,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // 소셜 로그인 버튼 테스트
     document.querySelector(".google").addEventListener("click", () => {
         window.location.href="/oauth2/authorization/google"
-
     });
     document.querySelector(".kakao").addEventListener("click", () => {
         alert("카카오 로그인은 아직 구현되지 않았습니다.");
