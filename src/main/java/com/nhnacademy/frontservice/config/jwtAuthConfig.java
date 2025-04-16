@@ -2,10 +2,11 @@ package com.nhnacademy.frontservice.config;
 
 import com.nhnacademy.frontservice.adaptor.GatewayAdaptor;
 import com.nhnacademy.frontservice.handler.exceptionhandling.CustomAccessDeniedHandler;
-import com.nhnacademy.frontservice.handler.successhandling.JwtLoginSuccessHanlder;
+import com.nhnacademy.frontservice.handler.successhandling.JwtLoginSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,6 +15,7 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
 
+@EnableWebSecurity
 @Configuration
 public class jwtAuthConfig {
     @Bean
@@ -44,11 +46,11 @@ public class jwtAuthConfig {
                 .formLogin(flc -> flc
                         .loginPage("/login") // 웹 페이지 반환하는 컨트롤러 매핑 설정
                         .loginProcessingUrl("/generalLogin") // 로그인 처리 URL (form의 action과 같아야 함) / 얘는 컨트롤러 없어도 됨.
-                        .successHandler(new JwtLoginSuccessHanlder(gatewayAdaptor))) // Jwt 발급 핸들러
+                        .successHandler(new JwtLoginSuccessHandler(gatewayAdaptor))) // Jwt 발급 핸들러
 //                        .defaultSuccessUrl("/index")) successful Handler와 같이 사용금지.
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/login")
-                        .successHandler(new JwtLoginSuccessHanlder(gatewayAdaptor))); // Jwt 발급 핸들러
+                        .successHandler(new JwtLoginSuccessHandler(gatewayAdaptor))); // Jwt 발급 핸들러
 //                        .defaultSuccessUrl("/index"));
 //        http.httpBasic(withDefaults());
 
@@ -72,10 +74,5 @@ public class jwtAuthConfig {
         return CommonOAuth2Provider.GITHUB.getBuilder("github").clientId("Ov23liTsu4lbLfaWP5Bv")
                 .clientSecret("afe8b11901df76e328613cdc1ad7ab9cb8e33b14").build();
     }
-
-//    @Bean
-//    public CompromisedPasswordChecker compromisedPasswordChecker() {
-//        return new HaveIBeenPwnedRestApiPasswordChecker();
-//    }
 }
 
