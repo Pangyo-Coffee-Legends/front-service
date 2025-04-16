@@ -10,13 +10,15 @@
   <!-- 로그인 박스 -->
   <div class="login-box" id="loginBox">
     <h1>로그인</h1>
-    <form id="loginForm" action="/generalLogin" method="post">
-      <input type="email" id="username" name="username" placeholder="이메일 입력" required />
+    <form id="loginForm" method="post">
+      <input type="email" id="username" name="email" placeholder="이메일 입력" required />
       <input type="password" id="password" name="password" placeholder="비밀번호 입력" required />
       <div class="error-message" id="loginError"></div>
       <button type="submit">로그인</button>
     </form>
-    <button class="signup-btn" id="showSignup">회원가입</button>
+    <a href="/signup">
+      <button class="signup-btn" id="showSignup">회원가입</button>
+    </a>
     <div class="divider">소셜 로그인 / 회원가입</div>
     <div class="social-buttons">
       <button class="social-btn google">
@@ -41,20 +43,6 @@
     </div>
   </div>
 
-  <!-- 회원가입 박스 -->
-  <div class="signup-box" id="signupBox" style="display: none;">
-    <h1>회원가입</h1>
-    <form id="signupForm" method="post">
-      <input type="email" id="signupEmail" placeholder="이메일 입력" required />
-      <input type="text" id="signupName" placeholder="이름 입력" required />
-      <input type="password" id="signupPassword" placeholder="비밀번호 입력" required />
-      <input type="tel" id="signupPhone" placeholder="전화번호 입력" required />
-      <div class="error-message" id="signupError"></div>
-      <button type="submit">회원가입 완료</button>
-    </form>
-    <button id="cancelSignup" class="cancel-btn">취소</button>
-  </div>
-
   <!-- 로그아웃 섹션 -->
   <div id="logoutSection" style="display: none; text-align: center;">
     <h2>환영합니다!</h2>
@@ -63,6 +51,6 @@
   </div>
 </div>
 
-<!--<script src="/js/login.js" defer></script>-->
+<script src="/js/login.js"></script>
 </body>
 </html>

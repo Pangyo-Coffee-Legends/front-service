@@ -15,6 +15,11 @@ public class FrontController {
         return "index/login";
     }
 
+    @GetMapping("/signup")
+    public String showSignupPage() {
+        return "index/signup";
+    }
+
     @GetMapping("/")
     public String randing(){return "index/landing";}
 
