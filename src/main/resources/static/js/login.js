@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 로그인
     loginForm.addEventListener("submit", async (e) => {
         e.preventDefault();
-        const email = document.getElementById("email").value.trim();
+        const email = document.getElementById("username").value.trim();
         const password = document.getElementById("password").value;
         const users = JSON.parse(localStorage.getItem("users")) || {};
 

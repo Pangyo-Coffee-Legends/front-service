@@ -1,4 +1,4 @@
-package com.nhnacademy.frontservice;
+package com.nhnacademy.frontservice.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,5 +21,4 @@ public class FrontController {
 
     @GetMapping(value = {"/charts"})
     public String charts() { return "index/charts";}
-
 }
