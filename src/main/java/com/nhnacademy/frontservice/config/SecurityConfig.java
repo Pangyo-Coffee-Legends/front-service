@@ -51,11 +51,14 @@ public class SecurityConfig {
                                 .successHandler(oauthSuccessHandler)
                 )
                 .logout(logout ->
-                        logout.invalidateHttpSession(true)
-                        .clearAuthentication(true)
-                        .deleteCookies("JSESSIONID")
+                        logout
+                                .logoutUrl("/logout")
+                                .invalidateHttpSession(true)
+                                .clearAuthentication(true)
+                                .deleteCookies("JSESSIONID")
+                                .logoutSuccessUrl("/")
                 )
-              ;
+        ;
 
         http.exceptionHandling(ehc -> ehc.accessDeniedHandler(new CustomAccessDeniedHandler()));
 

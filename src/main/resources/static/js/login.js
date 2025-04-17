@@ -53,13 +53,6 @@ document.addEventListener("DOMContentLoaded", () => {
         window.location.href="/oauth2/authorization/github";
     });
 
-    document.querySelector(".kakao").addEventListener("click", () => {
-        alert("카카오 로그인은 아직 구현되지 않았습니다.");
-    });
-    document.querySelector(".naver").addEventListener("click", () => {
-        alert("네이버 로그인은 아직 구현되지 않았습니다.");
-    });
-
     // // 구현 성공하면 => 이거 쓰자 (Oauth 구현 O)
     // 소셜 로그인 버튼 테스트
     // document.querySelector(".google").addEventListener("click", () => {
