@@ -17,21 +17,27 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public MemberResponse getMbEmail(String mbEmail) {
-        ResponseEntity<MemberResponse> member = gatewayAdaptor.getMemberByMbEmail(mbEmail);
-        if (!member.getStatusCode().is2xxSuccessful()) {
-//            throw new UsernameNotFoundException("Member not found.");
+
+        try {
+            ResponseEntity<MemberResponse> member = gatewayAdaptor.getMemberByMbEmail(mbEmail);
+            return member.getBody();
+        } catch (Exception e) {
             return null;
         }
+//        if (!member.getStatusCode().is2xxSuccessful()) {
+////            throw new UsernameNotFoundException("Member not found.");
+//            return null;
+//        }
 
-        return member.getBody();
     }
 
     @Override
     public MemberResponse register(MemberRegisterRequest registerRequest) {
-        ResponseEntity<MemberResponse> member = gatewayAdaptor.registerMember(registerRequest);
-        if(!member.getStatusCode().is2xxSuccessful()){
-            throw new NotFoundException("member not found");
+        try {
+            ResponseEntity<MemberResponse> member = gatewayAdaptor.registerMember(registerRequest);
+            return member.getBody();
+        } catch (Exception e){
+            throw new RuntimeException();
         }
-        return member.getBody();
     }
 }

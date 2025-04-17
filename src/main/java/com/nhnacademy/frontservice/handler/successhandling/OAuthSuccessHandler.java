@@ -36,11 +36,10 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
         String email = oidcUser.getEmail();
         String name = oidcUser.getFullName();
 
-//        OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
-
         MemberRegisterRequest registerRequest = new MemberRegisterRequest(name, email, "password", "010-0000-0000", "password");
 
         MemberResponse memberResponse = memberService.getMbEmail(email);
+
         if(memberResponse == null){
             memberService.register(registerRequest);
         }
@@ -48,9 +47,6 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
 
         // Feign으로 Auth 서버에 JWT 발급 요청
         ResponseEntity<JwtResponse> tokenResponse = gatewayAdaptor.getJwtToken(jwtIssueRequest);
-        if(!tokenResponse.getStatusCode().is2xxSuccessful()){
-            throw new RuntimeException();
-        }
 
         JwtResponse tokens = tokenResponse.getBody();
 

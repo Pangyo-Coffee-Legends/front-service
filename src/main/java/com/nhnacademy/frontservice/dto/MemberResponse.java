@@ -16,6 +16,8 @@ import lombok.ToString;
 @EqualsAndHashCode
 public class MemberResponse {
 
+    private Long mbNo;
+
     private String role;
 
     private String mbName;
@@ -27,12 +29,17 @@ public class MemberResponse {
 
     private String phoneNumber;
 
-    public MemberResponse(String role, String mbName, String mbEmail, String mbPassword, String phoneNumber) {
+    public MemberResponse(Long mbNo, String role, String mbName, String mbEmail, String mbPassword, String phoneNumber) {
+        this.mbNo = mbNo;
         this.role = role;
         this.mbName = mbName;
         this.mbEmail = mbEmail;
         this.mbPassword = mbPassword;
         this.phoneNumber = phoneNumber;
+    }
+
+    public Long getMbNo() {
+        return mbNo;
     }
 
     public String getRole() {

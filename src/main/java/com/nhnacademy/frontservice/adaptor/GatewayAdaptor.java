@@ -11,15 +11,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "gateway-service", url = "http://localhost:10251")
+@FeignClient(name = "gateway-service", url = "http://localhost:10251", path = "/api/v1")
 public interface GatewayAdaptor {
 
-    @PostMapping("/api/v1/members")
+    @PostMapping("/members")
     ResponseEntity<MemberResponse> registerMember(@RequestBody MemberRegisterRequest registerRequest);
 
-    @GetMapping("/api/v1/members/{mbEmail}")
+    @GetMapping("/members/email/{mbEmail}")
     ResponseEntity<MemberResponse> getMemberByMbEmail(@PathVariable("mbEmail") String email);
 
-    @PostMapping("/api/v1/auth")
+    @PostMapping("/auth")
     ResponseEntity<JwtResponse> getJwtToken(@RequestBody JwtIssueRequest jwtIssueRequest);
 }

@@ -1,10 +1,9 @@
 package com.nhnacademy.frontservice.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@ToString
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class JwtIssueRequest {
