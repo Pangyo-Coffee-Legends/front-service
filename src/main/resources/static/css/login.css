@@ -132,6 +132,12 @@ form button:hover,
     height: 24px;
 }
 
+.social-btn.github {
+    background-color: black;
+    color: white;
+    border: none;
+}
+
 /* 카카오 */
 .social-btn.kakao {
     background-color: #fee500;
