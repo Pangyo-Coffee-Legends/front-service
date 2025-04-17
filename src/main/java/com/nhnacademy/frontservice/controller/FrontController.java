@@ -1,4 +1,4 @@
-package com.nhnacademy.frontservice;
+package com.nhnacademy.frontservice.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,11 +15,15 @@ public class FrontController {
         return "index/login";
     }
 
+    @GetMapping("/signup")
+    public String showSignupPage() {
+        return "index/signup";
+    }
+
     @GetMapping("/")
     public String randing(){return "index/landing";}
 
 
     @GetMapping(value = {"/charts"})
     public String charts() { return "index/charts";}
-
 }

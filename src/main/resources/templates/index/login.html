@@ -10,13 +10,15 @@
   <!-- 로그인 박스 -->
   <div class="login-box" id="loginBox">
     <h1>로그인</h1>
-    <form id="loginForm">
-      <input type="email" id="email" placeholder="이메일 입력" required />
-      <input type="password" id="password" placeholder="비밀번호 입력" required />
+    <form id="loginForm" method="post">
+      <input type="email" id="username" name="email" placeholder="이메일 입력" required />
+      <input type="password" id="password" name="password" placeholder="비밀번호 입력" required />
       <div class="error-message" id="loginError"></div>
       <button type="submit">로그인</button>
     </form>
-    <button class="signup-btn" id="showSignup">회원가입</button>
+    <a href="/signup">
+      <button class="signup-btn" id="showSignup">회원가입</button>
+    </a>
     <div class="divider">소셜 로그인 / 회원가입</div>
     <div class="social-buttons">
       <button class="social-btn google">
@@ -31,21 +33,14 @@
         <img src="https://pbs.twimg.com/profile_images/1513858761076604929/O7RUa3BX_400x400.jpg" alt="Naver Logo" height="24" />
         Naver로 계속하기
       </button>
+      <!-- OAuth2 로그인 버튼 -->
+      <div class="oauth-buttons">
+        <h3>소셜 로그인</h3>
+        <a href="/oauth2/authorization/github">GitHub로 로그인</a>
+        <!-- 다른 OAuth 제공자를 추가하려면 여기에 버튼을 추가 -->
+        <!-- 예: <a href="/oauth2/authorization/google">Google로 로그인</a> -->
+      </div>
     </div>
-  </div>
-
-  <!-- 회원가입 박스 -->
-  <div class="signup-box" id="signupBox" style="display: none;">
-    <h1>회원가입</h1>
-    <form id="signupForm">
-      <input type="email" id="signupEmail" placeholder="이메일 입력" required />
-      <input type="text" id="signupName" placeholder="이름 입력" required />
-      <input type="password" id="signupPassword" placeholder="비밀번호 입력" required />
-      <input type="tel" id="signupPhone" placeholder="전화번호 입력" required />
-      <div class="error-message" id="signupError"></div>
-      <button type="submit">회원가입 완료</button>
-    </form>
-    <button id="cancelSignup" class="cancel-btn">취소</button>
   </div>
 
   <!-- 로그아웃 섹션 -->
@@ -56,6 +51,6 @@
   </div>
 </div>
 
-<script src="/js/login.js" defer></script>
+<script src="/js/login.js"></script>
 </body>
 </html>
