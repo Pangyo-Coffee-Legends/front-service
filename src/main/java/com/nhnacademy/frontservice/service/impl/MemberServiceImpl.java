@@ -3,11 +3,9 @@ package com.nhnacademy.frontservice.service.impl;
 import com.nhnacademy.frontservice.adaptor.GatewayAdaptor;
 import com.nhnacademy.frontservice.dto.MemberRegisterRequest;
 import com.nhnacademy.frontservice.dto.MemberResponse;
-import com.nhnacademy.frontservice.exception.NotFoundException;
 import com.nhnacademy.frontservice.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,11 +22,6 @@ public class MemberServiceImpl implements MemberService {
         } catch (Exception e) {
             return null;
         }
-//        if (!member.getStatusCode().is2xxSuccessful()) {
-////            throw new UsernameNotFoundException("Member not found.");
-//            return null;
-//        }
-
     }
 
     @Override

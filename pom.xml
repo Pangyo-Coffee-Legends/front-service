@@ -43,6 +43,14 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <!-- thymeleaf -layout support, thymeleaf 기반의 layout을 사용하기 위해서 해당 의존성을 추가
+            - https://github.com/ultraq/thymeleaf-layout-dialect
+        -->
+        <dependency>
+            <groupId>nz.net.ultraq.thymeleaf</groupId>
+            <artifactId>thymeleaf-layout-dialect</artifactId>
+            <version>3.3.0</version>
+        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
