@@ -1,15 +1,9 @@
 package com.nhnacademy.frontservice.adaptor;
 
-import com.nhnacademy.frontservice.dto.JwtIssueRequest;
-import com.nhnacademy.frontservice.dto.JwtResponse;
-import com.nhnacademy.frontservice.dto.MemberRegisterRequest;
-import com.nhnacademy.frontservice.dto.MemberResponse;
+import com.nhnacademy.frontservice.dto.*;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 @FeignClient(name = "gateway-service", url = "http://localhost:10251", path = "/api/v1")
 public interface GatewayAdaptor {
@@ -20,6 +14,12 @@ public interface GatewayAdaptor {
     @GetMapping("/members/email/{mbEmail}")
     ResponseEntity<MemberResponse> getMemberByMbEmail(@PathVariable("mbEmail") String email);
 
-    @PostMapping("/auth")
-    ResponseEntity<JwtResponse> getJwtToken(@RequestBody JwtIssueRequest jwtIssueRequest);
+    @PostMapping("/token")
+    ResponseEntity<JwtResponse> issueToken(@RequestBody JwtIssueRequest jwtIssueRequest);
+
+    @PostMapping("/token/refresh")
+    ResponseEntity<JwtResponse> reissueToken(@RequestBody TokenRequest request);
+
+    @PostMapping("token/logout")
+    ResponseEntity<Void> logout(@RequestHeader("authorization") String accessToken);
 }

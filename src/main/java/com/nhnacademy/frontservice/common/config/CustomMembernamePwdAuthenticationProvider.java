@@ -1,4 +1,4 @@
-package com.nhnacademy.frontservice.config;
+package com.nhnacademy.frontservice.common.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
