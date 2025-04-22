@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <title>회원가입</title>
     <link href="/css/login.css" rel="stylesheet" />
+    <script src="/js/signup.js" defer></script>
 </head>
 <body>
 <div class="container">
@@ -14,9 +15,8 @@
             <input type="email" id="signupEmail" name="email" placeholder="이메일 입력" required />
             <input type="text" id="signupName" name="name" placeholder="이름 입력" required />
             <input type="password" id="signupPassword" name="password" placeholder="비밀번호 입력" required />
-            <input type="password" id="signupPasswordConfirm" name="passwordConfirm" placeholder="비밀번호 확인" required />
+            <input type="password" id="signupPasswordConfirm" name="confirmPassword" placeholder="비밀번호 확인" required />
             <input type="tel" id="signupPhone" name="phone" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" placeholder="전화번호(010-xxxx-xxxx)" required />
-            <div class="error-message" id="signupError"></div>
             <button type="submit">회원가입 완료</button>
         </form>
         <a href="/login">
@@ -24,6 +24,5 @@
         </a>
     </div>
 </div>
-<script src="/js/signup.js"></script>
 </body>
 </html>
