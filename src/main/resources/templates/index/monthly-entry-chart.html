@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{/layout/index/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title>월간 출입 통계</title>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <!-- 그래프 섹션 -->
+    <div id="chart-container" style="">
+        <div class="container mt-5">
+            <h2 class="mb-4"></h2>
+        </div>
+    </div>
+
+    <!-- 로그 출력 섹션 -->
+    <div class="container mt-5">
+        <h3 class="mb-3">📄 실시간 로그</h3>
+        <div id="log-viewer"
+             style="white-space: pre-wrap; font-family: monospace; background: #111; color: #0f0; padding: 1em; height: 500px; overflow-y: scroll;"></div>
+    </div>
+
+</div>
+
+</body>
+</html>
