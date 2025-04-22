@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="@{/layout/index/layout.html}">
+
+<head>
+    <meta charset="UTF-8">
+    <link href="/css/book.css" rel="stylesheet">
+
+    <script src="/js/book.js" defer></script>
+    <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.17/index.global.min.js' defer></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js' defer></script>
+<!--    <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.17/index.global.min.js' defer></script>-->
+<!--    <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@6.1.17/index.global.min.js' defer></script>-->
+
+    <!--    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js' defer></script>-->
+    <title>회의실 예약</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="container">
+            <div class="rooms">
+                <button class="room-button" onclick="selectRoom('A')">
+                    회의실 A
+                </button>
+                <button class="room-button" onclick="selectRoom('B')">
+                    회의실 B
+                </button>
+                <button class="room-button" onclick="selectRoom('C')">
+                    회의실 C
+                </button>
+            </div>
+
+            <div class="info-container">
+                <div class="calendar">
+                    <h2 id="selectedRoom">회의실 예약</h2>
+                    <div id="calendarContent">
+                        <!-- 여기에 캘린더 내용이 들어갈 예정 -->
+                        <div id='calendar'></div>
+                    </div>
+                </div>
+
+                <div class="time-container">
+                    <div class="section-title">오전</div>
+                    <div class="time-grid">
+                        <div class="time-slot">09:00</div>
+                        <div class="time-slot">09:30</div>
+                        <div class="time-slot">10:00</div>
+                        <div class="time-slot">10:30</div>
+                        <div class="time-slot">11:00</div>
+                        <div class="time-slot">11:30</div>
+                    </div>
+
+                    <div class="section-title">오후</div>
+                    <div class="time-grid">
+                        <div class="time-slot">12:00</div>
+                        <div class="time-slot">12:30</div>
+                        <div class="time-slot">1:00</div>
+                        <div class="time-slot">1:30</div>
+                        <div class="time-slot">2:00</div>
+                        <div class="time-slot">2:30</div>
+                        <div class="time-slot">3:00</div>
+                        <div class="time-slot">3:30</div>
+                        <div class="time-slot">4:00</div>
+                        <div class="time-slot">4:30</div>
+                        <div class="time-slot disabled">5:00</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

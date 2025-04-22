@@ -1,0 +1,130 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+.info-container{
+    width: 100%;
+}
+
+.time-container {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+/* 회의실 */
+.rooms {
+    width: 30%;
+    background-color: #f4f4f4;
+    padding: 20px;
+    border-right: 1px solid #ccc;
+}
+
+.room-button {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: left;
+    height: 120px;
+
+}
+
+.room-button:hover {
+    background-color: #0056b3;
+}
+
+/* 캘린더 */
+.calendar {
+    flex: 1;
+    padding: 20px;
+}
+
+.calendar h2 {
+    margin-top: 0;
+}
+
+#calendarContent {
+    margin-top: 20px;
+}
+
+.fc-col-header-cell-cushion, .fc-daygrid-day-number {
+    text-decoration: none;
+}
+
+.fc-scrollgrid-sync-inner > .fc-col-header-cell-cushion,
+.fc-day-mon .fc-daygrid-day-number,
+.fc-day-tue .fc-daygrid-day-number,
+.fc-day-wed .fc-daygrid-day-number,
+.fc-day-thu .fc-daygrid-day-number,
+.fc-day-fri .fc-daygrid-day-number {
+    color: black;
+}
+
+.fc-day-sun .fc-col-header-cell-cushion,
+.fc-day-sun a{
+    color : red;
+}
+
+.fc-day-sat .fc-col-header-cell-cushion,
+.fc-day-sat a {
+    color : blue;
+}
+
+
+ /*시간버튼 */
+.section-title {
+    font-weight: bold;
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+.time-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.time-slot {
+    padding: 10px 0;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: white;
+    color: #333;
+    font-size: 16px;
+    transition: background-color 0.2s;
+}
+
+.time-slot:hover {
+    background-color: #e6f0ff;
+}
+
+.time-slot.disabled {
+    color: #ccc;
+    border-color: #eee;
+    cursor: not-allowed;
+    background-color: #f8f8f8;
+}
+
+.time-slot.selected {
+    background-color: #e6f0ff;
+    color: black;
+    font-weight: bold;
+}

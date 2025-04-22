@@ -23,6 +23,10 @@ public class FrontController {
     @GetMapping("/")
     public String randing(){return "index/landing";}
 
+    @GetMapping("/book")
+    public String book(){
+        return "book/index";
+    }
 
     @GetMapping(value = {"/charts"})
     public String charts() { return "index/charts";}
