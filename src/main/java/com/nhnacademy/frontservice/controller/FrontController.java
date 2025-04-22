@@ -23,7 +23,11 @@ public class FrontController {
     @GetMapping("/")
     public String randing(){return "index/landing";}
 
-
     @GetMapping(value = {"/charts"})
     public String charts() { return "index/charts";}
+
+    @GetMapping(value = {"/monthly-entry-charts"}) //월간 출입 차트 조회
+    public String monthlyEntryCharts(){
+        return "index/monthly-entry-chart";
+    }
 }
