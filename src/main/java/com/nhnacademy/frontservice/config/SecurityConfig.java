@@ -26,22 +26,25 @@ public class SecurityConfig {
 
     private final GatewayAdaptor gatewayAdaptor;
     private final OAuthSuccessHandler oauthSuccessHandler;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests(auth -> {
-//                    auth.requestMatchers(
-//                                    "/",
-//                                    "/login",
-//                                    "/css/**",
-//                                    "/js/**",
-//                                    "/images/**"
-//                        ).permitAll()
-                        auth.anyRequest().permitAll();
-                })
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .formLogin(flc -> flc
+                .authorizeHttpRequests(request -> {
+                    request
+                            .requestMatchers(
+                                    "/",
+                                    "/login",
+                                    "/signup",
+                                    "/css/**",
+                                    "/js/**",
+                                    "/images/**"
+                            ).permitAll()
+                            .anyRequest().authenticated();
+                })
+                .formLogin(form -> form
                         .loginPage("/login") // 웹 페이지 반환하는 컨트롤러 매핑 설정
                         .loginProcessingUrl("/generalLogin") // 로그인 처리 URL (form의 action과 같아야 함) / 얘는 컨트롤러 없어도 됨.
                         .successHandler(new JwtLoginSuccessHandler(gatewayAdaptor)))
