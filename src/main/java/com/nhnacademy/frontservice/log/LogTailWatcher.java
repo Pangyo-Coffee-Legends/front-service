@@ -23,10 +23,20 @@ public class LogTailWatcher {
      */
     @PostConstruct
     public void startTail() {
+        startWatchingFile("logs/frontservice-entry-info.log");
+        startWatchingFile("logs/frontservice-attendance-info.log"); // 근무시간 로그도 감시 추가
+    }
+
+    /**
+     * 주어진 파일 경로에 대해 로그 변경을 감시하는 스레드를 시작합니다.
+     *
+     * @param filePath 감시할 로그 파일 경로
+     */
+    private void startWatchingFile(String filePath) {
         Thread thread = new Thread(() -> {
             try {
-                Path logPath = Paths.get("logs/frontservice-entry-info.log");
-                log.info("[LogTailWatcher] 로그 파일 위치: {}", logPath.toAbsolutePath());
+                Path logPath = Paths.get(filePath);
+                log.info("[LogTailWatcher] 로그 파일 감시 시작: {}", logPath.toAbsolutePath());
                 RandomAccessFile file = new RandomAccessFile(logPath.toFile(), "r");
                 long filePointer = file.length();
 
@@ -44,7 +54,7 @@ public class LogTailWatcher {
                                 log.error("[LogTailWatcher] WebSocket 핸들러가 null입니다. broadcast 수행 불가.");
                             } else {
                                 handler.broadcast(logLine);
-                                log.debug("[LogTailWatcher] 로그 전송: {}", logLine);
+                                log.debug("[LogTailWatcher] 로그 전송 ({}): {}", filePath, logLine);
                             }
                         }
                         filePointer = file.getFilePointer();
@@ -52,11 +62,12 @@ public class LogTailWatcher {
                     Thread.sleep(1000);
                 }
             } catch (InterruptedException | IOException e) {
-                log.error("[LogTailWatcher] 예외 발생", e);
+                log.error("[LogTailWatcher] 로그 감시 중 예외 발생 ({}):", filePath, e);
             }
         });
         thread.setDaemon(true);
         thread.start();
-        log.info("[LogTailWatcher] 로그 감시 스레드 시작됨");
+        log.info("[LogTailWatcher] 감시 스레드 시작됨 - {}", filePath);
     }
 }
+
