@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{/layout/index/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title>근무시간통계</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container mt-4">
+        <h4 class="mb-3">👤 회원 목록</h4>
+        <div id="member-table-container"></div>
+    </div>
+    <!-- 근무시간 통계 차트 영역 -->
+    <div class="container mt-5">
+        <h2 class="mb-4">📊 최근 7일간 근무시간 통계</h2>
+        <div id="attendance-chart-container"></div>
+    </div>
+
+</div>
+
+</body>
+</html>
