@@ -28,6 +28,16 @@ public class FrontController {
         return "book/index";
     }
 
+    @GetMapping("/book/success")
+    public String success(){
+        return "book/success";
+    }
+
+    @GetMapping("/book/failed")
+    public String failed(){
+        return "book/failed";
+    }
+
     @GetMapping(value = {"/charts"})
     public String charts() { return "index/charts";}
 }

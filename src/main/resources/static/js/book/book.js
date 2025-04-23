@@ -1,3 +1,6 @@
+'use strict';
+
+// const api = apiStore();
 let selectedDate = null;
 let selectedTime = null;
 
@@ -5,17 +8,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 캘린더
     getCalendar();
-    // 기본 값
-    timeButton();
-
-    console.log(selectedDate + selectedTime);
+    infoAlert();
 })
 
 
 const getCalendar = function (){
     const calendarEl = document.getElementById('calendar');
 
-    calendar = new FullCalendar.Calendar(calendarEl, {
+    let calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
         locale: 'ko',
         headerToolbar: {
@@ -44,6 +44,7 @@ const getCalendar = function (){
     }
 }
 
+// 시간 버튼
 const timeButton = function (dateStr){
     const timeSlots = document.querySelectorAll('.time-slot');
     const now = new Date();
@@ -102,6 +103,8 @@ const timeButton = function (dateStr){
     const clickableSlots = document.querySelectorAll('.time-slot:not(.disabled)');
     clickableSlots.forEach(slot => {
         slot.addEventListener('click', () => {
+            if (slot.classList.contains('disabled')) return;
+
             clickableSlots.forEach(s => s.classList.remove('selected'));
             slot.classList.add('selected');
             console.log('선택된 시간:', slot.textContent);
@@ -109,4 +112,48 @@ const timeButton = function (dateStr){
 
         });
     });
+}
+
+
+// 알림창
+function infoAlert(){
+    const reserveBtn = document.getElementById("reserveBtn");
+
+    reserveBtn.addEventListener('click', () => {
+        let attendees = document.getElementById("attendees").value;
+
+        console.log('날짜', selectedDate);
+        console.log('시간', selectedTime);
+        console.log('예약인원', attendees);
+
+        if(selectedDate && selectedTime && attendees){
+            Swal.fire({
+                title: "예약 사용 설명",
+                icon: "info",
+                html: `
+                    <p> 
+                        예약 연장: 최초 1회 가능 <br/>
+                        1회 연장 가능 시간: 30분<br/>
+                        퇴실 시 <b>‘회의 종료'</b> 클릭 후 퇴실<br/>
+                        예약 시작 10분 이내 미입장시 자동 취소<br/>
+                        <br/><br/>
+                        회의실 사용 설명을 숙지하였고,<br/>
+                        위 내용에 동의합니다. <br/>
+                    </p>`,
+                showCancelButton: true,
+                confirmButtonText: '예약 확정하기',
+                confirmButtonColor: '#4a90e2',
+                cancelButtonText: '돌아가기',
+            }).then(result => {
+                if(result.isConfirmed){
+                    /*
+                        api 호출 되나?
+                        => 되면
+                        todo: save api 호출
+                     */
+                    window.location.href='/book/success';
+                }
+            });
+        }
+    })
 }
