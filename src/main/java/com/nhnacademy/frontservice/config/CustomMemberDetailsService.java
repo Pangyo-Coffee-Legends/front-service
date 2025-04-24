@@ -26,8 +26,8 @@ public class CustomMemberDetailsService implements UserDetailsService {
         if (member == null) {
             throw new UsernameNotFoundException("Member not found.");
         }
-        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(member.getRole()));
+        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(member.getRoleName()));
 
-        return new User(member.getMbEmail(), member.getMbPassword(), authorities);
+        return new User(member.getEmail(), member.getPassword(), authorities);
     }
 }

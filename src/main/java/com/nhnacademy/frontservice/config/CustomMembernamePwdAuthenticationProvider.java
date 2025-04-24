@@ -28,6 +28,7 @@ public class CustomMembernamePwdAuthenticationProvider implements Authentication
         } else {
             throw new BadCredentialsException("Invalid password");
         }
+
     }
 
     @Override

@@ -34,15 +34,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(request -> {
                     request
-                            .requestMatchers(
-                                    "/",
-                                    "/login",
-                                    "/signup",
-                                    "/css/**",
-                                    "/js/**",
-                                    "/images/**"
-                            ).permitAll()
-                            .anyRequest().authenticated();
+                            .anyRequest().permitAll(); // 모든 페이지에 대한 접근을 허용하되, gateway에서 JWT 유효성 검증이 된 후 오는 데이터를 들고 있지 않는 경우 Exception 발생 시켜 login 페이지로 redirect.
                 })
                 .formLogin(form -> form
                         .loginPage("/login") // 웹 페이지 반환하는 컨트롤러 매핑 설정
