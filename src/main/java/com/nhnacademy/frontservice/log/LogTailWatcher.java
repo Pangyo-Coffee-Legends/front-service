@@ -24,7 +24,8 @@ public class LogTailWatcher {
     @PostConstruct
     public void startTail() {
         startWatchingFile("logs/frontservice-entry-info.log");
-        startWatchingFile("logs/frontservice-attendance-info.log"); // 근무시간 로그도 감시 추가
+        startWatchingFile("logs/frontservice-attendance-info.log");
+        startWatchingFile("logs/frontservice-realtime-info.log");
     }
 
     /**
