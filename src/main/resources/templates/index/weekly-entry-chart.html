@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{/layout/index/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title>월간 출입 통계</title>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <!-- 그래프 + 요약 테이블 섹션 -->
+    <div id="chart-container">
+        <div class="container mt-5">
+            <div class="row">
+                <!-- 차트 영역 -->
+                <div id="chart-col" class="col-md-8 mb-4">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">📊 주간
+                                출입 통계</h5>
+                            <canvas id="entryChart" style="width: 100%; height: 400px;"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 요약 테이블 -->
+                <div class="col-md-4">
+                    <h5 class="mb-3">📌 일별 출입 요약</h5>
+                    <table class="table table-bordered table-sm" id="summary-table">
+                        <thead class="table-light">
+                        <tr>
+                            <th scope="col">날짜</th>
+                            <th scope="col">출입 횟수</th>
+                        </tr>
+                        </thead>
+                        <tbody id="summaryTableBody">
+                        <!-- JavaScript로 채워짐 -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 로그 출력 섹션 -->
+    <div class="container mt-5">
+        <h3 class="mb-3">📄 실시간 로그</h3>
+        <div id="log-viewer"
+             style="white-space: pre-wrap; font-family: monospace; background: #111; color: #ffffff; padding: 1em; height: 500px; overflow-y: scroll;">
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
