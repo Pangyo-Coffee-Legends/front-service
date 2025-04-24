@@ -1,5 +1,5 @@
 CREATE TABLE attendance_status (
-                                   code TINYINT PRIMARY KEY,
+                                   code INT PRIMARY KEY,
                                    description VARCHAR(20) NOT NULL
 );
 
@@ -11,7 +11,9 @@ INSERT INTO attendance_status (code, description) VALUES
                                                       (4, '외출'),
                                                       (5, '휴가'),
                                                       (6, '질병/입원'),
-                                                      (7, '조퇴');
+                                                      (7, '조퇴'),
+                                                      (8, '기타');
+
 
 CREATE TABLE attendance (
                             id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -20,11 +22,11 @@ CREATE TABLE attendance (
                             in_time DATETIME,
                             out_time DATETIME,
                             work_minutes INT,
-                            status TINYINT NOT NULL,
+                            status INT NOT NULL,
                             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
                             updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
                             UNIQUE (mb_no, work_date),
-                            FOREIGN KEY (mb_no) REFERENCES member(mb_no),
-                            FOREIGN KEY (status) REFERENCES attendance_status(status_id)
+                            FOREIGN KEY (mb_no) REFERENCES members(mb_no),
+                            FOREIGN KEY (status) REFERENCES attendance_status(code)
 );
