@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class InfluxConfig {
-    private static final String TOKEN = "VNFU9_2LZAkeF299VqVqTI6UL7kKqYfvyy4qeesEXnqlEIIl2W6fNMznsBZI15BKopp2wMB5kfk7xexzJhHgJw==";
+    private static final String TOKEN = "RmaabELI9VpYPRu4nt_xBZX5l3Gv5lx8XnR4mVZnqep4Ya3eYrfpLUk4Y4dYE4J0mlcFHFPLUCKh8a4jq_lMNw==";
     private static final String BUCKET = "coffee-mqtt";
     private static final String ORG = "aiot2-team2-coffee";
     private static final String URL = "https://influx.aiot2.live/";

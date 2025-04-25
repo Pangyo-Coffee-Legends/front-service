@@ -45,7 +45,7 @@ public class EntryRealtimeServiceImpl implements EntryRealtimeService {
                 "  |> filter(fn: (r) => r[\"_field\"] == \"value\")\n" +
                 "  |> filter(fn: (r) => r[\"location\"] == \"입구\")\n" +
                 "  |> filter(fn: (r) => r[\"type\"] == \"activity\")\n" +
-                "  |> aggregateWindow(every: 1m, fn: count, createEmpty: false)\n" +
+                "  |> aggregateWindow(every: 1m, fn: count, createEmpty: true)\n" +
                 "  |> sort(columns:[\"_time\"], desc:true)\n" +
                 "  |> limit(n:1)";
 

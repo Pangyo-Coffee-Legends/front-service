@@ -15,47 +15,45 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 public class MemberResponse {
+    private Long no;
 
-    private Long mbNo;
+    private String roleName;
 
-    private String role;
+    private String name;
 
-    private String mbName;
+    private String email;
 
-    private String mbEmail;
-
-    @ToString.Exclude
-    private String mbPassword;
+    private String password;
 
     private String phoneNumber;
 
-    public MemberResponse(Long mbNo, String role, String mbName, String mbEmail, String mbPassword, String phoneNumber) {
-        this.mbNo = mbNo;
-        this.role = role;
-        this.mbName = mbName;
-        this.mbEmail = mbEmail;
-        this.mbPassword = mbPassword;
+    public MemberResponse(Long no, String roleName, String name, String email, String password, String phoneNumber) {
+        this.no = no;
+        this.roleName = roleName;
+        this.name = name;
+        this.email = email;
+        this.password = password;
         this.phoneNumber = phoneNumber;
     }
 
-    public Long getMbNo() {
-        return mbNo;
+    public Long getNo() {
+        return no;
     }
 
-    public String getRole() {
-        return role;
+    public String getRoleName() {
+        return roleName;
     }
 
-    public String getMbName() {
-        return mbName;
+    public String getName() {
+        return name;
     }
 
-    public String getMbEmail() {
-        return mbEmail;
+    public String getEmail() {
+        return email;
     }
 
-    public String getMbPassword() {
-        return mbPassword;
+    public String getPassword() {
+        return password;
     }
 
     public String getPhoneNumber() {
