@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
@@ -19,6 +20,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.time.Duration;
 
 @RequiredArgsConstructor
 @Component
@@ -35,14 +37,14 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
         String email = oidcUser.getEmail();
         String name = oidcUser.getFullName();
 
-        MemberRegisterRequest registerRequest = new MemberRegisterRequest(name, email, "tEst123!", "tEst123!", "010-0000-0000");
+        MemberRegisterRequest registerRequest = new MemberRegisterRequest("ROLE_USER", name, email, "tEst123!", "tEst123!", "010-0000-0000");
 
         MemberResponse memberResponse = memberService.getMbEmail(email);
 
         if(memberResponse == null){
             memberService.register(registerRequest);
         }
-        JwtIssueRequest jwtIssueRequest = new JwtIssueRequest(email, "ROLE_MEMBER");
+        JwtIssueRequest jwtIssueRequest = new JwtIssueRequest(email, "ROLE_USER");
 
         // Feign으로 Auth 서버에 JWT 발급 요청
         ResponseEntity<JwtResponse> tokenResponse = gatewayAdaptor.issueToken(jwtIssueRequest);
@@ -52,10 +54,16 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
         String accessToken = tokens.getAccessToken();
         String refreshToken = tokens.getRefreshToken();
 
-//        addCookie("accessToken", accessToken, response);
-        request.setAttribute(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
-        addCookie("token", refreshToken, response);
+        addCookie("accessToken", accessToken, response);
+        ResponseCookie cookie = ResponseCookie.from("refresh_token", refreshToken)
+                                                .httpOnly(true)
+                                                .secure(true)
+                                                .path("/")
+                                                .sameSite("Strict")
+                                                .maxAge(Duration.ofDays(7))
+                                                .build();
 
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
         response.sendRedirect("/index");
     }
 

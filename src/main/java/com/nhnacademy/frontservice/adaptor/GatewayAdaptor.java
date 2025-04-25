@@ -17,7 +17,7 @@ public interface GatewayAdaptor {
     @PostMapping("/token")
     ResponseEntity<JwtResponse> issueToken(@RequestBody JwtIssueRequest jwtIssueRequest);
 
-    @PostMapping("/token/refresh")
+    @PostMapping("/token/reissue")
     ResponseEntity<JwtResponse> reissueToken(@RequestBody TokenRequest request);
 
     @PostMapping("token/logout")

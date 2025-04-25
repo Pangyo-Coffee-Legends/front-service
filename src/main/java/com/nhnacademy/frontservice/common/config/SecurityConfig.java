@@ -39,8 +39,6 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .formLogin(flc -> flc
                         .loginPage("/login") // 웹 페이지 반환하는 컨트롤러 매핑 설정
-                        .usernameParameter("email")
-                        .passwordParameter("password")
                         .loginProcessingUrl("/generalLogin") // 로그인 처리 URL (form의 action과 같아야 함) / 얘는 컨트롤러 없어도 됨.
                         .successHandler(new JwtLoginSuccessHandler(gatewayAdaptor)))
                 .oauth2Login(oauth ->
@@ -54,6 +52,8 @@ public class SecurityConfig {
                                 .invalidateHttpSession(true)
                                 .clearAuthentication(true)
                                 .deleteCookies("JSESSIONID")
+                                .deleteCookies("accessToken")
+                                .deleteCookies("refreshToken")
                                 .logoutSuccessUrl("/")
                 )
         ;

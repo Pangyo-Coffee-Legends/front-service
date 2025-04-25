@@ -17,11 +17,15 @@ import lombok.ToString;
  * 또한, 비밀번호 재확인 기능을 통해 클라이언트 측에서 일치 여부를 사전에 검증할 수 있도록 지원합니다.
  * </p>
  */
-
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode
 public class MemberRegisterRequest {
+
+    @NotBlank
+    @Size(max = 50)
+    private String roleName;
+
     @NotBlank
     @Size(max = 50)
     private String name;
@@ -54,12 +58,14 @@ public class MemberRegisterRequest {
     private String phoneNumber;
 
     public MemberRegisterRequest(
+            String roleName,
             String name,
             String email,
             String password,
             String confirmPassword,
             String phoneNumber
     ) {
+        this.roleName = roleName;
         this.name = name;
         this.email = email;
         this.password = password;
@@ -74,6 +80,10 @@ public class MemberRegisterRequest {
      */
     public boolean isPasswordValid() {
         return password.equals(confirmPassword);
+    }
+
+    public String getRoleName() {
+        return roleName;
     }
 
     public String getName() {
@@ -95,4 +105,5 @@ public class MemberRegisterRequest {
     public String getPhoneNumber() {
         return phoneNumber;
     }
+
 }
