@@ -144,14 +144,31 @@ function infoAlert(){
                 confirmButtonText: '예약 확정하기',
                 confirmButtonColor: '#4a90e2',
                 cancelButtonText: '돌아가기',
-            }).then(result => {
-                if(result.isConfirmed){
-                    /*
-                        api 호출 되나?
-                        => 되면
-                        todo: save api 호출
-                     */
-                    window.location.href='/book/success';
+                preConfirm: () => {
+
+                    const data = {
+                        roomNo: 1,
+                        date: selectedDate,
+                        time: selectedTime,
+                        attendeeCount: Number(attendees)
+                    }
+
+                    const options = {
+                        method: 'POST',
+                        credentials: 'include',
+                        headers: {
+                            accepts: 'application/json',
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(data)
+                    }
+                    return fetch('http://localhost:10251/api/v1/bookings', options)
+                        .then(result => result.json())
+                        .then(() => window.location.href='/book/success')
+                        .catch(e => {
+                            console.log(e);
+                            // window.location.href='/book/failed';
+                        });
                 }
             });
         }
