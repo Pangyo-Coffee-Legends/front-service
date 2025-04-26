@@ -2,6 +2,7 @@ package com.nhnacademy.frontservice.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -16,52 +17,60 @@ import lombok.ToString;
  * 또한, 비밀번호 재확인 기능을 통해 클라이언트 측에서 일치 여부를 사전에 검증할 수 있도록 지원합니다.
  * </p>
  */
-
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode
 public class MemberRegisterRequest {
 
-    private final String ROLE_NAME = "ROLE_USER";
-
-    private String role;
+    @NotBlank
+    @Size(max = 50)
+    private String roleName;
 
     @NotBlank
     @Size(max = 50)
     private String name;
 
-    @NotBlank
-    @Email
+    @Email(message = "올바른 이메일 형식이 아닙니다.")
+    @NotBlank(message = "이메일은 필수 입력값입니다.")
     @Size(max = 100)
     private String email;
 
     @ToString.Exclude
     @NotBlank
-    @Size(min = 8, max = 200)
+    @Pattern(
+            regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?]).{8,20}$",
+            message = "비밀번호는 8~20자이며, 소문자, 대문자, 숫자, 특수문자를 각각 하나 이상 포함해야 합니다."
+    )
+    @Size(min = 8, max = 20)
     private String password;
-
-    @NotBlank
-    @Size(max = 15)
-    private String phoneNumber;
 
     @ToString.Exclude
     @NotBlank
-    @Size(min = 8, max = 200)
+    @Size(min = 8, max = 20)
     private String confirmPassword;
 
+    @NotBlank
+    @Pattern(
+            regexp = "^010-\\d{4}-\\d{4}$",
+            message = "전화번호는 010-xxxx-xxxx 형식이어야 합니다."
+    )
+    @Size(max = 15)
+    private String phoneNumber;
+
     public MemberRegisterRequest(
+            String roleName,
             String name,
             String email,
             String password,
-            String phoneNumber,
-            String confirmPassword
+            String confirmPassword,
+            String phoneNumber
     ) {
-        this.role = ROLE_NAME;
+        this.roleName = roleName;
         this.name = name;
         this.email = email;
         this.password = password;
-        this.phoneNumber = phoneNumber;
         this.confirmPassword = confirmPassword;
+        this.phoneNumber = phoneNumber;
     }
 
     /**
@@ -71,6 +80,10 @@ public class MemberRegisterRequest {
      */
     public boolean isPasswordValid() {
         return password.equals(confirmPassword);
+    }
+
+    public String getRoleName() {
+        return roleName;
     }
 
     public String getName() {

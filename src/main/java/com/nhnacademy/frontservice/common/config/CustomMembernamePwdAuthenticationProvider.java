@@ -1,4 +1,4 @@
-package com.nhnacademy.frontservice.config;
+package com.nhnacademy.frontservice.common.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -28,7 +28,6 @@ public class CustomMembernamePwdAuthenticationProvider implements Authentication
         } else {
             throw new BadCredentialsException("Invalid password");
         }
-
     }
 
     @Override

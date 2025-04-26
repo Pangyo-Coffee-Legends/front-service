@@ -1,4 +1,4 @@
-package com.nhnacademy.frontservice.handler.successhandling;
+package com.nhnacademy.frontservice.common.handler.successhandling;
 
 import com.nhnacademy.frontservice.adaptor.GatewayAdaptor;
 import com.nhnacademy.frontservice.dto.JwtIssueRequest;
@@ -8,12 +8,14 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import java.io.IOException;
-import java.util.Map;
+import java.time.Duration;
 
 @Slf4j
 public class JwtLoginSuccessHandler implements AuthenticationSuccessHandler {
@@ -32,7 +34,7 @@ public class JwtLoginSuccessHandler implements AuthenticationSuccessHandler {
         JwtIssueRequest jwtIssueRequest = new JwtIssueRequest(authentication.getName(), authentication.getAuthorities().toString());
 
         // Feign으로 Auth 서버에 JWT 발급 요청
-        ResponseEntity<JwtResponse> tokenResponse = gatewayAdaptor.getJwtToken(jwtIssueRequest);
+        ResponseEntity<JwtResponse> tokenResponse = gatewayAdaptor.issueToken(jwtIssueRequest);
         if(!tokenResponse.getStatusCode().is2xxSuccessful()){
             throw new RuntimeException();
         }
@@ -44,11 +46,15 @@ public class JwtLoginSuccessHandler implements AuthenticationSuccessHandler {
         String refreshToken = tokens.getRefreshToken();
 
         addCookie("accessToken", accessToken, response);
-        addCookie("refreshToken", refreshToken, response);
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .sameSite("Strict")
+                .maxAge(Duration.ofDays(7))
+                .build();
 
-        System.out.println("accessToken: " + accessToken);
-        System.out.println("refreshToken: " + refreshToken);
-
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
         response.sendRedirect("/index");
     }
 

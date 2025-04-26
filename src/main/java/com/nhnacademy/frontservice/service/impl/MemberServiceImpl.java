@@ -19,7 +19,7 @@ public class MemberServiceImpl implements MemberService {
         try {
             ResponseEntity<MemberResponse> member = gatewayAdaptor.getMemberByMbEmail(mbEmail);
             return member.getBody();
-        } catch (Exception e) {
+        } catch (Exception e) { // todo: Exception 수정
             return null;
         }
     }
@@ -33,4 +33,14 @@ public class MemberServiceImpl implements MemberService {
             throw new RuntimeException();
         }
     }
+
+//    @Override
+//    public void logout(String accessToken) {
+//        try {
+//            gatewayAdaptor.logout(accessToken);
+//        } catch (Exception e){
+//            throw new RuntimeException("로그아웃 실패했습니다.");
+//        }
+//
+//    }
 }

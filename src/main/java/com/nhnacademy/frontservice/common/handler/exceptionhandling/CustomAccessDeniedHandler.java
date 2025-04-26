@@ -1,4 +1,4 @@
-package com.nhnacademy.frontservice.handler.exceptionhandling;
+package com.nhnacademy.frontservice.common.handler.exceptionhandling;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

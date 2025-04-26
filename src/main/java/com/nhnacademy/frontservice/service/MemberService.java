@@ -7,4 +7,6 @@ public interface MemberService {
     MemberResponse getMbEmail(String mbEmail);
 
     MemberResponse register(MemberRegisterRequest registerRequest);
+
+//    void logout(String accessToken);
 }
