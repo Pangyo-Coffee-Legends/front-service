@@ -134,6 +134,7 @@ function infoAlert(){
                     <p> 
                         예약 연장: 최초 1회 가능 <br/>
                         1회 연장 가능 시간: 30분<br/>
+                        <b>‘예약 코드'</b>를 입력해야 입실 가능합니다.<br/>
                         퇴실 시 <b>‘회의 종료'</b> 클릭 후 퇴실<br/>
                         예약 시작 10분 이내 미입장시 자동 취소<br/>
                         <br/><br/>
@@ -144,7 +145,7 @@ function infoAlert(){
                 confirmButtonText: '예약 확정하기',
                 confirmButtonColor: '#4a90e2',
                 cancelButtonText: '돌아가기',
-                preConfirm: () => {
+                preConfirm: async () => {
 
                     const data = {
                         roomNo: 1,
@@ -162,9 +163,12 @@ function infoAlert(){
                         },
                         body: JSON.stringify(data)
                     }
-                    return fetch('http://localhost:10251/api/v1/bookings', options)
+                    return await fetch('http://localhost:10251/api/v1/bookings', options)
                         .then(result => result.json())
-                        .then(() => window.location.href='/book/success')
+                        .then((data) => {
+                            const id = data.code
+                            window.location.href = `/book/success?id=${id}`
+                        })
                         .catch(e => {
                             console.log(e);
                             // window.location.href='/book/failed';

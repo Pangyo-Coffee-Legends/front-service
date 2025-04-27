@@ -46,6 +46,11 @@ public class FrontController {
         return "book/failed";
     }
 
+    @GetMapping("/book/history")
+    public String bookings(){
+        return "book/history";
+    }
+
     @GetMapping(value = {"/charts"})
     public String charts() { return "index/charts";}
 }
