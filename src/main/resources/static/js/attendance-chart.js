@@ -1,16 +1,14 @@
 document.addEventListener('DOMContentLoaded', function () {
     const memberTableContainer = document.getElementById('member-table-container');
     const attendanceChartContainer = document.getElementById('attendance-chart-container');
+    const realtimeEntryContainer = document.getElementById('realtime-entry-container'); // ★ 추가: 실시간 근무정보 영역
     let attendanceChartInstance = null;
 
     /**
      * 차트 생성 또는 업데이트
-     * @param {string} title - 차트 제목
-     * @param {Object} chartData - 차트 데이터
-     * @param {Object} chartOptions - 차트 옵션
      */
     function updateAttendanceChart(title, chartData, chartOptions) {
-        attendanceChartContainer.innerHTML = ''; // 기존 차트 제거
+        attendanceChartContainer.innerHTML = '';
 
         const titleElem = document.createElement('h5');
         titleElem.textContent = title;
@@ -32,8 +30,66 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     /**
+     * 실시간 근무정보 테이블 생성
+     */
+    function updateRealtimeEntry(entries) {
+        realtimeEntryContainer.innerHTML = '';
+
+        if (entries.length === 0) {
+            realtimeEntryContainer.innerHTML = '<div class="alert alert-info">현재 근무 중인 직원이 없습니다.</div>';
+            return;
+        }
+
+        const table = document.createElement('table');
+        table.className = 'table table-bordered table-hover';
+
+        const thead = document.createElement('thead');
+        thead.innerHTML = `
+            <tr>
+                <th>이름</th>
+                <th>입실 시간</th>
+                <th>퇴실 시간</th>
+            </tr>
+        `;
+        table.appendChild(thead);
+
+        const tbody = document.createElement('tbody');
+        entries.forEach(entry => {
+            const row = document.createElement('tr');
+            const inTime = new Date(entry.inTime).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+            const outTime = entry.outTime ? new Date(entry.outTime).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' }) : '-';
+            row.innerHTML = `
+                <td>${entry.name}</td>
+                <td>${inTime}</td>
+                <td>${outTime}</td>
+            `;
+            tbody.appendChild(row);
+        });
+
+        table.appendChild(tbody);
+        realtimeEntryContainer.appendChild(table);
+    }
+
+    /**
+     * 실시간 근무정보 로딩
+     */
+    function loadRealtimeAttendance() {
+        fetch('/api/v1/attendances/realtime')
+            .then(res => {
+                if (!res.ok) throw new Error('실시간 출입 데이터 요청 실패');
+                return res.json();
+            })
+            .then(data => {
+                updateRealtimeEntry(data);
+            })
+            .catch(error => {
+                realtimeEntryContainer.innerHTML = `<div class="alert alert-danger">실시간 출입 정보를 불러오는 데 실패했습니다.</div>`;
+                console.error(error);
+            });
+    }
+
+    /**
      * 전체 회원 목록 테이블 생성
-     * @param {Array} members
      */
     function createMemberTable(members) {
         memberTableContainer.innerHTML = '';
@@ -48,7 +104,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 <th>이름</th>
                 <th>이메일</th>
                 <th>전화번호</th>
-                <th>가입일자</th>
             </tr>
         `;
         table.appendChild(thead);
@@ -57,15 +112,14 @@ document.addEventListener('DOMContentLoaded', function () {
         members.forEach(member => {
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td>${member.mbNo}</td>
-                <td>${member.mbName}</td>
-                <td>${member.mbEmail}</td>
+                <td>${member.no}</td>
+                <td>${member.name}</td>
+                <td>${member.email}</td>
                 <td>${member.phoneNumber}</td>
-                <td>${new Date(member.createdAt).toLocaleDateString()}</td>
             `;
             row.style.cursor = 'pointer';
             row.addEventListener('click', () => {
-                loadMemberAttendance(member.mbNo, member.mbName);
+                loadMemberAttendance(member.no, member.name);
             });
             tbody.appendChild(row);
         });
@@ -84,7 +138,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 return res.json();
             })
             .then(data => {
-                const labels = data.map(item => item.mbName);
+                const labels = data.map(item => item.name);
                 const workHours = data.map(item => {
                     const inTime = new Date(item.inTime);
                     const outTime = new Date(item.outTime);
@@ -127,17 +181,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     /**
      * 특정 회원의 근무 통계 로딩
-     * @param {number} mbNo - 회원 번호
-     * @param {string} mbName - 회원 이름
      */
-    function loadMemberAttendance(mbNo, mbName) {
-        fetch(`/api/v1/attendances/summary/recent/${mbNo}`)
+    function loadMemberAttendance(no, name) {
+        fetch(`/api/v1/attendances/summary/recent/${no}`)
             .then(res => {
                 if (!res.ok) throw new Error('회원 근무 통계 요청 실패');
                 return res.json();
             })
             .then(data => {
-                const labels = data.map(item => item.date); // 서버에서 날짜 포함되어야 함
+                const labels = data.map(item => item.date);
                 const workHours = data.map(item => {
                     const inTime = new Date(item.inTime);
                     const outTime = new Date(item.outTime);
@@ -146,7 +198,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
 
                 updateAttendanceChart(
-                    `👤 ${mbName}의 최근 근무시간`,
+                    `👤 ${name}의 최근 근무시간`,
                     {
                         labels: labels,
                         datasets: [{
@@ -199,10 +251,12 @@ document.addEventListener('DOMContentLoaded', function () {
     // 초기 데이터 로딩
     loadMemberList();
     loadTotalAttendanceChart();
+    loadRealtimeAttendance(); // ★ 추가: 실시간 출입 데이터 호출
 
     // 30분 마다 자동 새로고침
-    setInterval(()=>{
+    setInterval(() => {
         loadMemberList();
         loadTotalAttendanceChart();
-    },30 * 60 * 1000);
+        loadRealtimeAttendance();
+    }, 30 * 60 * 1000);
 });
