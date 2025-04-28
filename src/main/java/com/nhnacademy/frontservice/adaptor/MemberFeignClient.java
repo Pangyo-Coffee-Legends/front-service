@@ -1,6 +1,5 @@
 package com.nhnacademy.frontservice.adaptor;
 
-import com.nhnacademy.frontservice.config.FeignClientConfig;
 import com.nhnacademy.frontservice.dto.*;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +10,7 @@ import java.util.List;
 /**
  * member-service와 통신하는 FeignClient입니다.
  */
-@FeignClient(name = "member-service", configuration = FeignClientConfig.class)
+@FeignClient(name = "member-service")
 public interface MemberFeignClient {
 
     @PostMapping("/api/v1/members")
