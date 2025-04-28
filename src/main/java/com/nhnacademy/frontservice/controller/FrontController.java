@@ -31,24 +31,24 @@ public class FrontController {
     @GetMapping("/")
     public String randing(){return "index/landing";}
 
-    @GetMapping("/book")
+    @GetMapping("/booking")
     public String book(){
-        return "book/index";
+        return "booking/index";
     }
 
-    @GetMapping("/book/success")
+    @GetMapping("/booking/success")
     public String success(){
-        return "book/success";
+        return "booking/success";
     }
 
-    @GetMapping("/book/failed")
+    @GetMapping("/booking/failed")
     public String failed(){
-        return "book/failed";
+        return "booking/failed";
     }
 
-    @GetMapping("/book/history")
+    @GetMapping("/booking/history")
     public String bookings(){
-        return "book/history";
+        return "booking/history";
     }
 
     @GetMapping(value = {"/charts"})
