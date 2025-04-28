@@ -234,7 +234,7 @@ document.addEventListener('DOMContentLoaded', function () {
      * 전체 회원 목록 불러오기
      */
     function loadMemberList() {
-        fetch('/api/v1/members')
+        fetch('/api/v1/members/info-list')
             .then(res => {
                 if (!res.ok) throw new Error('회원 목록 요청 실패');
                 return res.json();
