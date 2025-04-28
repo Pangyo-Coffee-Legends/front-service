@@ -39,8 +39,17 @@ public interface GatewayAdaptor {
      * @param jwtIssueRequest JWT 발급 요청 데이터
      * @return 발급된 JWT 토큰 정보
      */
-    @PostMapping("/auth")
-    ResponseEntity<JwtResponse> getJwtToken(@RequestBody JwtIssueRequest jwtIssueRequest);
+    @PostMapping("/token")
+    ResponseEntity<JwtResponse> issueToken(@RequestBody JwtIssueRequest jwtIssueRequest);
+
+    /**
+     * JWT 토큰 재발급 요청을 보냅니다.
+     *
+     * @param request JWT 요청 데이터
+     * @return 재발급된 JWT 토큰 정보
+     */
+    @PostMapping("/token/reissue")
+    ResponseEntity<JwtResponse> reissueToken(@RequestBody TokenRequest request);
 
     /**
      * 회원 번호(mbNo)를 기준으로 회원 정보를 조회합니다.

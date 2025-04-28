@@ -1,4 +1,4 @@
-package com.nhnacademy.frontservice.handler.successhandling;
+package com.nhnacademy.frontservice.common.handler.successhandling;
 
 import com.nhnacademy.frontservice.adaptor.GatewayAdaptor;
 import com.nhnacademy.frontservice.dto.JwtIssueRequest;
@@ -11,15 +11,16 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.time.Duration;
 
 @RequiredArgsConstructor
 @Component
@@ -36,7 +37,7 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
         String email = oidcUser.getEmail();
         String name = oidcUser.getFullName();
 
-        MemberRegisterRequest registerRequest = new MemberRegisterRequest(name, email, "password", "010-0000-0000", "password");
+        MemberRegisterRequest registerRequest = new MemberRegisterRequest("ROLE_USER", name, email, "tEst123!", "tEst123!", "010-0000-0000");
 
         MemberResponse memberResponse = memberService.getMbEmail(email);
 
@@ -46,7 +47,7 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
         JwtIssueRequest jwtIssueRequest = new JwtIssueRequest(email, "ROLE_USER");
 
         // Feign으로 Auth 서버에 JWT 발급 요청
-        ResponseEntity<JwtResponse> tokenResponse = gatewayAdaptor.getJwtToken(jwtIssueRequest);
+        ResponseEntity<JwtResponse> tokenResponse = gatewayAdaptor.issueToken(jwtIssueRequest);
 
         JwtResponse tokens = tokenResponse.getBody();
 
@@ -54,8 +55,15 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
         String refreshToken = tokens.getRefreshToken();
 
         addCookie("accessToken", accessToken, response);
-        addCookie("refreshToken", refreshToken, response);
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
+                                                .httpOnly(true)
+                                                .secure(true)
+                                                .path("/")
+                                                .sameSite("Strict")
+                                                .maxAge(Duration.ofDays(7))
+                                                .build();
 
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
         response.sendRedirect("/index");
     }
 

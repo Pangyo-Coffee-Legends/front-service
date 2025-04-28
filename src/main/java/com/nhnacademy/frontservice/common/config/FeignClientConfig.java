@@ -1,4 +1,4 @@
-package com.nhnacademy.frontservice.config;
+package com.nhnacademy.frontservice.common.config;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
