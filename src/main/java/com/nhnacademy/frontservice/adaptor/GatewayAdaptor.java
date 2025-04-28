@@ -65,8 +65,8 @@ public interface GatewayAdaptor {
      *
      * @return 전체 회원 정보 목록
      */
-    @GetMapping("/members")
-    ResponseEntity<List<MemberInfoResponse>> getAllMembers();
+    @GetMapping("/members/info-list")
+    ResponseEntity<List<MemberInfoResponse>> getMemberInfoList();
 
     /**
      * 회원 정보를 수정합니다.
