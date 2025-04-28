@@ -1,9 +1,8 @@
 package com.nhnacademy.frontservice.service;
 
-import com.nhnacademy.frontservice.dto.MemberRegisterRequest;
-import com.nhnacademy.frontservice.dto.MemberResponse;
-import com.nhnacademy.frontservice.dto.MemberUpdatePasswordRequest;
-import com.nhnacademy.frontservice.dto.MemberUpdateRequest;
+import com.nhnacademy.frontservice.dto.*;
+
+import java.util.List;
 
 public interface MemberService {
     MemberResponse getMbEmail(String mbEmail);
@@ -15,4 +14,6 @@ public interface MemberService {
     MemberResponse deleteMember(Long mbNo);
 
     MemberResponse updatePassword(Long mbNo, MemberUpdatePasswordRequest registerRequest);
+
+    List<MemberInfoResponse> getMemberInfoList();
 }
