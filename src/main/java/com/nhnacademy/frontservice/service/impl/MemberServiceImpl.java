@@ -1,20 +1,21 @@
 package com.nhnacademy.frontservice.service.impl;
 
 import com.nhnacademy.frontservice.adaptor.GatewayAdaptor;
-import com.nhnacademy.frontservice.dto.MemberRegisterRequest;
-import com.nhnacademy.frontservice.dto.MemberResponse;
-import com.nhnacademy.frontservice.dto.MemberUpdatePasswordRequest;
-import com.nhnacademy.frontservice.dto.MemberUpdateRequest;
+import com.nhnacademy.frontservice.dto.*;
 import com.nhnacademy.frontservice.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * MemberService 인터페이스 구현체입니다.
  * 회원 등록, 조회, 수정, 삭제, 비밀번호 변경 기능을 제공합니다.
  */
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
 
@@ -104,6 +105,18 @@ public class MemberServiceImpl implements MemberService {
             throw new RuntimeException("비밀번호 변경 실패", e);
         }
     }
+
+    @Override
+    public List<MemberInfoResponse> getMemberInfoList() {
+        try {
+            ResponseEntity<List<MemberInfoResponse>> response = gatewayAdaptor.getMemberInfoList();
+            return response.getBody();
+        }catch (Exception e){
+            log.error("회원 리스트 조회 실패 : {}", e.getMessage());
+        }
+        return List.of();
+    }
+
 
 //    @Override
 //    public void logout(String accessToken) {
