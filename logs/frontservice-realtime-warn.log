@@ -26,3 +26,4 @@
 2025-04-29 11:17:10.973 [http-nio-10253-exec-10] ERROR c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [ALERT] 심야 시간 출입 감지! | 시간: 2024-04-29 01:30 | 감지된 출입 수: 1
 2025-04-29 11:18:10.973 [http-nio-10253-exec-5] ERROR c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [ALERT] 심야 시간 출입 감지! | 시간: 2024-04-29 01:30 | 감지된 출입 수: 1
 2025-04-29 11:19:10.968 [http-nio-10253-exec-4] ERROR c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [ALERT] 심야 시간 출입 감지! | 시간: 2024-04-29 01:30 | 감지된 출입 수: 1
+2025-04-29 21:01:14.949 [main] ERROR c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [ALERT] 실시간 출입 데이터 | 시간: 2025-04-29 00:01 | 출입자 수: 3 | 데이터: {"time":"2025-04-29 00:01","count":3}

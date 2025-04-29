@@ -126,3 +126,54 @@
 2025-04-29 11:17:10.972 [http-nio-10253-exec-10] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - tables size: 1
 2025-04-29 11:18:10.973 [http-nio-10253-exec-5] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - tables size: 1
 2025-04-29 11:19:10.967 [http-nio-10253-exec-4] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - tables size: 1
+2025-04-29 13:29:22.410 [http-nio-10253-exec-6] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - tables size: 1
+2025-04-29 13:29:46.246 [http-nio-10253-exec-2] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - tables size: 1
+2025-04-29 13:30:22.114 [http-nio-10253-exec-1] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - tables size: 1
+2025-04-29 13:30:46.270 [http-nio-10253-exec-7] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - tables size: 1
+2025-04-29 13:31:21.748 [http-nio-10253-exec-10] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - tables size: 1
+2025-04-29 13:31:46.257 [http-nio-10253-exec-5] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - tables size: 1
+2025-04-29 14:22:39.772 [http-nio-10253-exec-7] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - table 진입
+2025-04-29 14:22:39.772 [http-nio-10253-exec-7] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - record 진입
+2025-04-29 14:28:31.524 [http-nio-10253-exec-7] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-29 05:28 | 출입자 수: 1 | 데이터: {"time":"2025-04-29 05:28","count":1}
+2025-04-29 14:29:31.306 [http-nio-10253-exec-9] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-29 05:29 | 출입자 수: 1 | 데이터: {"time":"2025-04-29 05:29","count":1}
+2025-04-29 14:30:31.581 [http-nio-10253-exec-1] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-29 05:30 | 출입자 수: 1 | 데이터: {"time":"2025-04-29 05:30","count":1}
+2025-04-29 14:30:33.380 [http-nio-10253-exec-7] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-29 05:30 | 출입자 수: 1 | 데이터: {"time":"2025-04-29 05:30","count":1}
+2025-04-29 14:31:34.259 [http-nio-10253-exec-10] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-29 05:31 | 출입자 수: 1 | 데이터: {"time":"2025-04-29 05:31","count":1}
+2025-04-29 14:32:34.282 [http-nio-10253-exec-4] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-29 05:32 | 출입자 수: 1 | 데이터: {"time":"2025-04-29 05:32","count":1}
+2025-04-29 14:33:34.291 [http-nio-10253-exec-5] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-29 05:33 | 출입자 수: 1 | 데이터: {"time":"2025-04-29 05:33","count":1}
+2025-04-29 14:34:34.275 [http-nio-10253-exec-3] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-29 05:34 | 출입자 수: 1 | 데이터: {"time":"2025-04-29 05:34","count":1}
+2025-04-29 14:35:46.271 [http-nio-10253-exec-7] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-29 05:35 | 출입자 수: 1 | 데이터: {"time":"2025-04-29 05:35","count":1}
+2025-04-29 14:36:46.260 [http-nio-10253-exec-8] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-29 05:36 | 출입자 수: 1 | 데이터: {"time":"2025-04-29 05:36","count":1}
+2025-04-29 14:37:46.327 [http-nio-10253-exec-9] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-29 05:37 | 출입자 수: 1 | 데이터: {"time":"2025-04-29 05:37","count":1}
+2025-04-29 14:38:46.254 [http-nio-10253-exec-6] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-29 05:38 | 출입자 수: 1 | 데이터: {"time":"2025-04-29 05:38","count":1}
+2025-04-29 14:39:46.262 [http-nio-10253-exec-10] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-29 05:39 | 출입자 수: 1 | 데이터: {"time":"2025-04-29 05:39","count":1}
+2025-04-29 14:40:46.570 [http-nio-10253-exec-4] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-29 05:40 | 출입자 수: 1 | 데이터: {"time":"2025-04-29 05:40","count":1}
+2025-04-29 14:41:46.245 [http-nio-10253-exec-5] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-29 05:41 | 출입자 수: 1 | 데이터: {"time":"2025-04-29 05:41","count":1}
+2025-04-29 14:49:07.125 [http-nio-10253-exec-5] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-29 05:49 | 출입자 수: 0 | 데이터: {"time":"2025-04-29 05:49","count":0}
+2025-04-29 14:50:06.672 [http-nio-10253-exec-6] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-29 05:50 | 출입자 수: 0 | 데이터: {"time":"2025-04-29 05:50","count":0}
+2025-04-29 14:51:06.303 [http-nio-10253-exec-8] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-29 05:51 | 출입자 수: 0 | 데이터: {"time":"2025-04-29 05:51","count":0}
+2025-04-29 14:52:07.297 [http-nio-10253-exec-3] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-29 05:52 | 출입자 수: 0 | 데이터: {"time":"2025-04-29 05:52","count":0}
+2025-04-29 14:53:07.280 [http-nio-10253-exec-4] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-29 05:53 | 출입자 수: 0 | 데이터: {"time":"2025-04-29 05:53","count":0}
+2025-04-29 14:54:46.659 [http-nio-10253-exec-5] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-29 05:54 | 출입자 수: 1 | 데이터: {"time":"2025-04-29 05:54","count":1}
+2025-04-29 14:55:35.695 [http-nio-10253-exec-6] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-29 05:55 | 출입자 수: 1 | 데이터: {"time":"2025-04-29 05:55","count":1}
+2025-04-29 14:56:06.302 [http-nio-10253-exec-7] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-29 05:56 | 출입자 수: 0 | 데이터: {"time":"2025-04-29 05:56","count":0}
+2025-04-29 14:57:06.308 [http-nio-10253-exec-10] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-29 05:57 | 출입자 수: 0 | 데이터: {"time":"2025-04-29 05:57","count":0}
+2025-04-29 14:58:06.298 [http-nio-10253-exec-9] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-29 05:58 | 출입자 수: 0 | 데이터: {"time":"2025-04-29 05:58","count":0}
+2025-04-29 14:59:06.305 [http-nio-10253-exec-8] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-29 05:59 | 출입자 수: 0 | 데이터: {"time":"2025-04-29 05:59","count":0}
+2025-04-29 15:00:07.600 [http-nio-10253-exec-3] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-29 06:00 | 출입자 수: 0 | 데이터: {"time":"2025-04-29 06:00","count":0}
+2025-04-29 15:01:06.298 [http-nio-10253-exec-4] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-29 06:01 | 출입자 수: 0 | 데이터: {"time":"2025-04-29 06:01","count":0}
+2025-04-29 15:02:06.286 [http-nio-10253-exec-2] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-29 06:02 | 출입자 수: 0 | 데이터: {"time":"2025-04-29 06:02","count":0}
+2025-04-29 15:03:06.291 [http-nio-10253-exec-5] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-29 06:03 | 출입자 수: 0 | 데이터: {"time":"2025-04-29 06:03","count":0}
+2025-04-29 15:04:06.299 [http-nio-10253-exec-6] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-29 06:04 | 출입자 수: 0 | 데이터: {"time":"2025-04-29 06:04","count":0}
+2025-04-29 15:05:07.261 [http-nio-10253-exec-10] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-29 06:05 | 출입자 수: 0 | 데이터: {"time":"2025-04-29 06:05","count":0}
+2025-04-29 15:06:46.680 [http-nio-10253-exec-8] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-29 06:06 | 출입자 수: 1 | 데이터: {"time":"2025-04-29 06:06","count":1}
+2025-04-29 15:07:46.294 [http-nio-10253-exec-3] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-29 06:07 | 출입자 수: 1 | 데이터: {"time":"2025-04-29 06:07","count":1}
+2025-04-29 15:08:46.304 [http-nio-10253-exec-4] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-29 06:08 | 출입자 수: 1 | 데이터: {"time":"2025-04-29 06:08","count":1}
+2025-04-29 15:09:46.292 [http-nio-10253-exec-2] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-29 06:09 | 출입자 수: 1 | 데이터: {"time":"2025-04-29 06:09","count":1}
+2025-04-29 15:10:46.648 [http-nio-10253-exec-5] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-29 06:10 | 출입자 수: 1 | 데이터: {"time":"2025-04-29 06:10","count":1}
+2025-04-29 15:11:46.288 [http-nio-10253-exec-6] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-29 06:11 | 출입자 수: 1 | 데이터: {"time":"2025-04-29 06:11","count":1}
+2025-04-29 15:12:46.296 [http-nio-10253-exec-7] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-29 06:12 | 출입자 수: 1 | 데이터: {"time":"2025-04-29 06:12","count":1}
+2025-04-29 21:01:12.154 [main] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImplTest - Starting EntryRealtimeServiceImplTest using Java 21.0.7 with PID 36430 (started by nhnacademy in /home/nhnacademy/Desktop/bootcamp/final/front-service)
+2025-04-29 21:01:12.155 [main] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImplTest - The following 1 profile is active: "oauth"
+2025-04-29 21:01:14.051 [main] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImplTest - Started EntryRealtimeServiceImplTest in 2.178 seconds (process running for 3.16)
+2025-04-29 21:01:14.908 [main] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 | 시간: 2025-04-29 14:00 | 출입자 수: 5 | 데이터: {"time":"2025-04-29 14:00","count":5}
