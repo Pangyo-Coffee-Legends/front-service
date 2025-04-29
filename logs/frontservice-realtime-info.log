@@ -98,3 +98,31 @@
 2025-04-24 15:35:55.755 [http-nio-10253-exec-5] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-24 06:35 | 출입자 수: 1
 2025-04-24 15:43:56.536 [http-nio-10253-exec-1] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-24 06:43 | 출입자 수: 1
 2025-04-24 15:46:14.808 [http-nio-10253-exec-3] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-24 06:46 | 출입자 수: 0
+2025-04-29 10:53:10.400 [http-nio-10253-exec-1] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - tables size: 1
+2025-04-29 10:53:10.965 [http-nio-10253-exec-7] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - tables size: 1
+2025-04-29 10:54:10.963 [http-nio-10253-exec-6] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - tables size: 1
+2025-04-29 10:55:10.958 [http-nio-10253-exec-8] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - tables size: 1
+2025-04-29 10:56:10.954 [http-nio-10253-exec-9] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - tables size: 1
+2025-04-29 10:57:10.958 [http-nio-10253-exec-10] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - tables size: 1
+2025-04-29 10:58:10.961 [http-nio-10253-exec-5] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - tables size: 1
+2025-04-29 10:59:11.059 [http-nio-10253-exec-4] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - tables size: 1
+2025-04-29 11:00:11.362 [http-nio-10253-exec-3] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - tables size: 1
+2025-04-29 11:01:10.966 [http-nio-10253-exec-2] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - tables size: 1
+2025-04-29 11:02:10.954 [http-nio-10253-exec-7] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - tables size: 1
+2025-04-29 11:03:10.958 [http-nio-10253-exec-6] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - tables size: 1
+2025-04-29 11:04:10.956 [http-nio-10253-exec-1] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - tables size: 1
+2025-04-29 11:05:10.953 [http-nio-10253-exec-8] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - tables size: 1
+2025-04-29 11:06:10.955 [http-nio-10253-exec-9] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - tables size: 1
+2025-04-29 11:07:10.959 [http-nio-10253-exec-10] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - tables size: 1
+2025-04-29 11:08:10.964 [http-nio-10253-exec-5] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - tables size: 1
+2025-04-29 11:09:10.966 [http-nio-10253-exec-4] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - tables size: 1
+2025-04-29 11:10:11.340 [http-nio-10253-exec-3] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - tables size: 1
+2025-04-29 11:11:10.976 [http-nio-10253-exec-2] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - tables size: 1
+2025-04-29 11:12:10.965 [http-nio-10253-exec-7] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - tables size: 1
+2025-04-29 11:13:10.973 [http-nio-10253-exec-6] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - tables size: 1
+2025-04-29 11:14:10.968 [http-nio-10253-exec-1] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - tables size: 1
+2025-04-29 11:15:10.969 [http-nio-10253-exec-8] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - tables size: 1
+2025-04-29 11:16:10.976 [http-nio-10253-exec-9] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - tables size: 1
+2025-04-29 11:17:10.972 [http-nio-10253-exec-10] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - tables size: 1
+2025-04-29 11:18:10.973 [http-nio-10253-exec-5] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - tables size: 1
+2025-04-29 11:19:10.967 [http-nio-10253-exec-4] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - tables size: 1
