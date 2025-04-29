@@ -58,20 +58,11 @@ public class EntryRealtimeServiceImpl implements EntryRealtimeService {
         log.info("tables size: {}", tables.size());
         for (FluxTable table : tables) {
             for (FluxRecord record : table.getRecords()) {
-                //테스트 다 하고 나면 이걸로 되돌리기
-//                OffsetDateTime offsetDateTime = OffsetDateTime.from(record.getTime());
-//                LocalDateTime entryTime = offsetDateTime.toLocalDateTime();
-                LocalDateTime entryTime = LocalDateTime.of(2024, 4, 29, 1, 30);
+                OffsetDateTime offsetDateTime = OffsetDateTime.from(record.getTime());
+                LocalDateTime entryTime = offsetDateTime.toLocalDateTime();
 
-                String time = entryTime.toString().replace("T", " ").substring(0, 16);
-                //테스트 다하면 65번 -> 67번으로 돌리기
-//                String time = Objects.requireNonNull(record.getTime()).toString().replace("T", " ").substring(0, 16);
+                String time = Objects.requireNonNull(record.getTime()).toString().replace("T", " ").substring(0, 16);
                 int count = ((Number) Objects.requireNonNull(record.getValue())).intValue();
-
-                // 사람이 없으면 강제로 count를 1로 만들어 테스트
-                if (count == 0) {
-                    count = 1;
-                }
 
                 EntryRealtimeDto dto = new EntryRealtimeDto(time, count);
 
