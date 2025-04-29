@@ -18,13 +18,8 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * InfluxDB에서 최근 24시간 이내 출입 데이터를 조회하고,
- * 1분 간격으로 집계된 최신 출입 통계를 반환하는 서비스 클래스입니다.
- * <p>
- * 심야 시간대(23시 ~ 익일 5시) 출입이 감지될 경우,
- * 관리자에게 경고 메시지를 WebSocket을 통해 전송하고 에러 로그를 기록합니다.
- * 일반 시간대에는 출입 정보를 정보 로그로 기록하고 WebSocket을 통해 전송합니다.
- * </p>
+ * InfluxDB에서 최근 하루 데이터를 조회하여
+ * 실시간 출입 통계를 반환하는 서비스 클래스입니다.
  */
 @Slf4j
 @Service
@@ -40,18 +35,13 @@ public class EntryRealtimeServiceImpl implements EntryRealtimeService {
     }
 
     /**
-     * 최근 24시간 이내의 출입 데이터를 1분 간격으로 집계하여 가장 최근 데이터를 조회합니다.
-     * <p>
-     * 심야 시간대(23시 ~ 5시) 출입이 발생하면 에러 로그를 남기고,
-     * WebSocket을 통해 관리자에게 실시간 알림을 전송합니다.
-     * 일반 시간대 출입은 정보 로그로 기록하고 알림을 전송합니다.
-     * 출입 데이터가 없는 경우 경고 로그를 기록하고 기본 데이터를 반환합니다.
-     * </p>
+     * 최근 24시간 이내의 출입 데이터를 1분 간격으로 집계합니다.
      *
-     * @return 최근 출입 정보를 담은 {@link EntryRealtimeDto} 객체. 데이터가 없으면 시간은 "N/A", 출입자 수는 0으로 반환됩니다.
+     * @return EntryRealtimeDto 객체 (가장 최근 시간의 데이터)
      */
     @Override
     public EntryRealtimeDto getLatestEntry() {
+        System.out.println("메서드 진입!");
         String flux = "from(bucket: \"coffee-mqtt\")\n" +
                 "  |> range(start: -1d)\n" +
                 "  |> filter(fn: (r) => r[\"_measurement\"] == \"sensor\")\n" +
@@ -65,14 +55,23 @@ public class EntryRealtimeServiceImpl implements EntryRealtimeService {
         QueryApi queryApi = influxDBClient.getQueryApi();
         List<FluxTable> tables = queryApi.query(flux);
 
+        log.info("tables size: {}", tables.size());
         for (FluxTable table : tables) {
             for (FluxRecord record : table.getRecords()) {
-                OffsetDateTime offsetDateTime = OffsetDateTime.from(record.getTime());
-                LocalDateTime entryTime = offsetDateTime.toLocalDateTime();
+                //테스트 다 하고 나면 이걸로 되돌리기
+//                OffsetDateTime offsetDateTime = OffsetDateTime.from(record.getTime());
+//                LocalDateTime entryTime = offsetDateTime.toLocalDateTime();
+                LocalDateTime entryTime = LocalDateTime.of(2024, 4, 29, 1, 30);
 
-                String time = Objects.requireNonNull(record.getTime()).toString().replace("T", " ").substring(0, 16);
-
+                String time = entryTime.toString().replace("T", " ").substring(0, 16);
+                //테스트 다하면 65번 -> 67번으로 돌리기
+//                String time = Objects.requireNonNull(record.getTime()).toString().replace("T", " ").substring(0, 16);
                 int count = ((Number) Objects.requireNonNull(record.getValue())).intValue();
+
+                // 사람이 없으면 강제로 count를 1로 만들어 테스트
+                if (count == 0) {
+                    count = 1;
+                }
 
                 EntryRealtimeDto dto = new EntryRealtimeDto(time, count);
 
@@ -84,7 +83,6 @@ public class EntryRealtimeServiceImpl implements EntryRealtimeService {
                         String alertMessage = String.format("[ALERT] 심야 시간 출입 감지! | 시간: %s | 감지된 출입 수: %d", time, count);
 
                         log.error(alertMessage);
-
                         logWebSocketHandler.broadcast(alertMessage);
                     } else {
                         String message = String.format("[INFO] 실시간 출입 데이터 수신 | 시간: %s | 출입자 수: %d", time, count);
@@ -114,13 +112,10 @@ public class EntryRealtimeServiceImpl implements EntryRealtimeService {
     }
 
     /**
-     * 주어진 시간이 심야 시간대(23시 ~ 5시)에 해당하는지 판단합니다.
-     *
-     * @param time 판단할 시간 (LocalDateTime)
-     * @return 심야 시간대이면 {@code true}, 그렇지 않으면 {@code false}
+     * 특정 시간이 심야(23시~5시)인지 여부를 판단합니다.
      */
     private boolean isInTargetTime(LocalDateTime time) {
         int hour = time.getHour();
-        return (hour == 23 || hour < 5);
+        return (hour >= 23 || hour < 5);
     }
 }
