@@ -1,0 +1,120 @@
+2025-04-28 09:27:50.699 [http-nio-10253-exec-10] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-22","count":0}
+2025-04-28 09:27:50.700 [http-nio-10253-exec-10] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-23","count":0}
+2025-04-28 09:27:50.700 [http-nio-10253-exec-10] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-24","count":0}
+2025-04-28 09:27:50.701 [http-nio-10253-exec-10] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-25","count":1273}
+2025-04-28 09:27:50.701 [http-nio-10253-exec-10] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-26","count":1544}
+2025-04-28 09:27:50.701 [http-nio-10253-exec-10] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-27","count":1546}
+2025-04-28 09:27:50.701 [http-nio-10253-exec-10] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-28","count":1549}
+2025-04-28 09:27:50.701 [http-nio-10253-exec-10] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-28","count":28}
+2025-04-28 09:27:50.701 [http-nio-10253-exec-10] INFO  c.n.f.i.c.EntryApiController - [월간 출입 통계] 조회됨: [com.nhnacademy.frontservice.influxdb.EntryCountDto@4f9e7342, com.nhnacademy.frontservice.influxdb.EntryCountDto@33c806b1, com.nhnacademy.frontservice.influxdb.EntryCountDto@257cc90d, com.nhnacademy.frontservice.influxdb.EntryCountDto@5b9e8080, com.nhnacademy.frontservice.influxdb.EntryCountDto@67a6fcd2, com.nhnacademy.frontservice.influxdb.EntryCountDto@14a89319, com.nhnacademy.frontservice.influxdb.EntryCountDto@57df0420, com.nhnacademy.frontservice.influxdb.EntryCountDto@786a14db]
+2025-04-28 09:27:57.239 [http-nio-10253-exec-4] INFO  c.n.f.i.c.EntryApiController - [실시간 출입 통계] 조회됨: com.nhnacademy.frontservice.influxdb.realtime.dto.EntryRealtimeDto@6ba75ed8
+2025-04-28 10:40:32.623 [http-nio-10253-exec-6] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-22","count":0}
+2025-04-28 10:40:32.623 [http-nio-10253-exec-6] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-23","count":0}
+2025-04-28 10:40:32.623 [http-nio-10253-exec-6] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-24","count":0}
+2025-04-28 10:40:32.623 [http-nio-10253-exec-6] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-25","count":1273}
+2025-04-28 10:40:32.624 [http-nio-10253-exec-6] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-26","count":1544}
+2025-04-28 10:40:32.624 [http-nio-10253-exec-6] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-27","count":1546}
+2025-04-28 10:40:32.624 [http-nio-10253-exec-6] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-28","count":1549}
+2025-04-28 10:40:32.624 [http-nio-10253-exec-6] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-28","count":105}
+2025-04-28 10:40:32.624 [http-nio-10253-exec-6] INFO  c.n.f.i.c.EntryApiController - [월간 출입 통계] 조회됨: [com.nhnacademy.frontservice.influxdb.EntryCountDto@203902d1, com.nhnacademy.frontservice.influxdb.EntryCountDto@4c88c26a, com.nhnacademy.frontservice.influxdb.EntryCountDto@508ad2d1, com.nhnacademy.frontservice.influxdb.EntryCountDto@6fec9a15, com.nhnacademy.frontservice.influxdb.EntryCountDto@72b22b3, com.nhnacademy.frontservice.influxdb.EntryCountDto@d3a2bae, com.nhnacademy.frontservice.influxdb.EntryCountDto@b207c82, com.nhnacademy.frontservice.influxdb.EntryCountDto@9763c1]
+2025-04-28 10:41:45.165 [http-nio-10253-exec-4] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-22","count":0}
+2025-04-28 10:41:45.165 [http-nio-10253-exec-4] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-23","count":0}
+2025-04-28 10:41:45.165 [http-nio-10253-exec-4] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-24","count":0}
+2025-04-28 10:41:45.165 [http-nio-10253-exec-4] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-25","count":1273}
+2025-04-28 10:41:45.165 [http-nio-10253-exec-4] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-26","count":1544}
+2025-04-28 10:41:45.165 [http-nio-10253-exec-4] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-27","count":1546}
+2025-04-28 10:41:45.165 [http-nio-10253-exec-4] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-28","count":1549}
+2025-04-28 10:41:45.165 [http-nio-10253-exec-4] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-28","count":106}
+2025-04-28 10:41:45.165 [http-nio-10253-exec-4] INFO  c.n.f.i.c.EntryApiController - [월간 출입 통계] 조회됨: [com.nhnacademy.frontservice.influxdb.EntryCountDto@34190ff4, com.nhnacademy.frontservice.influxdb.EntryCountDto@4efc76e3, com.nhnacademy.frontservice.influxdb.EntryCountDto@65fda5db, com.nhnacademy.frontservice.influxdb.EntryCountDto@575ab444, com.nhnacademy.frontservice.influxdb.EntryCountDto@2b4077f4, com.nhnacademy.frontservice.influxdb.EntryCountDto@6265711, com.nhnacademy.frontservice.influxdb.EntryCountDto@efdf973, com.nhnacademy.frontservice.influxdb.EntryCountDto@c87947c]
+2025-04-28 10:41:49.085 [http-nio-10253-exec-10] INFO  c.n.f.i.c.EntryApiController - [실시간 출입 통계] 조회됨: com.nhnacademy.frontservice.influxdb.realtime.dto.EntryRealtimeDto@2275e280
+2025-04-28 13:39:16.098 [http-nio-10253-exec-6] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-22","count":0}
+2025-04-28 13:39:16.098 [http-nio-10253-exec-6] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-23","count":0}
+2025-04-28 13:39:16.098 [http-nio-10253-exec-6] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-24","count":0}
+2025-04-28 13:39:16.098 [http-nio-10253-exec-6] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-25","count":1273}
+2025-04-28 13:39:16.098 [http-nio-10253-exec-6] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-26","count":1544}
+2025-04-28 13:39:16.098 [http-nio-10253-exec-6] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-27","count":1546}
+2025-04-28 13:39:16.099 [http-nio-10253-exec-6] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-28","count":1549}
+2025-04-28 13:39:16.099 [http-nio-10253-exec-6] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-28","count":286}
+2025-04-28 13:39:16.099 [http-nio-10253-exec-6] INFO  c.n.f.i.c.EntryApiController - [월간 출입 통계] 조회됨: [com.nhnacademy.frontservice.influxdb.EntryCountDto@44e7d436, com.nhnacademy.frontservice.influxdb.EntryCountDto@76572bc5, com.nhnacademy.frontservice.influxdb.EntryCountDto@3e7c6e38, com.nhnacademy.frontservice.influxdb.EntryCountDto@22b1bdd3, com.nhnacademy.frontservice.influxdb.EntryCountDto@588d8bd7, com.nhnacademy.frontservice.influxdb.EntryCountDto@17cb9a00, com.nhnacademy.frontservice.influxdb.EntryCountDto@4a1b2b6f, com.nhnacademy.frontservice.influxdb.EntryCountDto@656b58da]
+2025-04-28 15:17:34.294 [http-nio-10253-exec-2] INFO  c.n.f.i.c.EntryApiController - [실시간 출입 통계] 조회됨: com.nhnacademy.frontservice.influxdb.realtime.dto.EntryRealtimeDto@3fce2382
+2025-04-28 15:18:33.502 [http-nio-10253-exec-8] INFO  c.n.f.i.c.EntryApiController - [실시간 출입 통계] 조회됨: com.nhnacademy.frontservice.influxdb.realtime.dto.EntryRealtimeDto@a0d687a
+2025-04-28 16:47:22.845 [http-nio-10253-exec-6] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-22","count":0}
+2025-04-28 16:47:22.845 [http-nio-10253-exec-6] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-23","count":0}
+2025-04-28 16:47:22.845 [http-nio-10253-exec-6] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-24","count":0}
+2025-04-28 16:47:22.845 [http-nio-10253-exec-6] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-25","count":1273}
+2025-04-28 16:47:22.845 [http-nio-10253-exec-6] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-26","count":1544}
+2025-04-28 16:47:22.845 [http-nio-10253-exec-6] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-27","count":1546}
+2025-04-28 16:47:22.845 [http-nio-10253-exec-6] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-28","count":1549}
+2025-04-28 16:47:22.845 [http-nio-10253-exec-6] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-28","count":478}
+2025-04-28 16:47:22.845 [http-nio-10253-exec-6] INFO  c.n.f.i.c.EntryApiController - [월간 출입 통계] 조회됨: [com.nhnacademy.frontservice.influxdb.EntryCountDto@2aca0fe2, com.nhnacademy.frontservice.influxdb.EntryCountDto@6eea9d45, com.nhnacademy.frontservice.influxdb.EntryCountDto@56d94019, com.nhnacademy.frontservice.influxdb.EntryCountDto@1ab1708b, com.nhnacademy.frontservice.influxdb.EntryCountDto@60fed920, com.nhnacademy.frontservice.influxdb.EntryCountDto@5a4470cf, com.nhnacademy.frontservice.influxdb.EntryCountDto@46812a16, com.nhnacademy.frontservice.influxdb.EntryCountDto@57253f65]
+2025-04-28 16:47:28.265 [http-nio-10253-exec-7] INFO  c.n.f.i.c.EntryApiController - [실시간 출입 통계] 조회됨: com.nhnacademy.frontservice.influxdb.realtime.dto.EntryRealtimeDto@674ef918
+2025-04-28 16:47:44.300 [http-nio-10253-exec-10] INFO  c.n.f.i.c.EntryApiController - [실시간 출입 통계] 조회됨: com.nhnacademy.frontservice.influxdb.realtime.dto.EntryRealtimeDto@2cf8ba7d
+2025-04-28 16:47:55.892 [http-nio-10253-exec-4] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-22","count":0}
+2025-04-28 16:47:55.892 [http-nio-10253-exec-4] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-23","count":0}
+2025-04-28 16:47:55.892 [http-nio-10253-exec-4] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-24","count":0}
+2025-04-28 16:47:55.892 [http-nio-10253-exec-4] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-25","count":1273}
+2025-04-28 16:47:55.892 [http-nio-10253-exec-4] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-26","count":1544}
+2025-04-28 16:47:55.892 [http-nio-10253-exec-4] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-27","count":1546}
+2025-04-28 16:47:55.892 [http-nio-10253-exec-4] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-28","count":1549}
+2025-04-28 16:47:55.892 [http-nio-10253-exec-4] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-28","count":478}
+2025-04-28 16:47:55.892 [http-nio-10253-exec-4] INFO  c.n.f.i.c.EntryApiController - [월간 출입 통계] 조회됨: [com.nhnacademy.frontservice.influxdb.EntryCountDto@3e4aeab8, com.nhnacademy.frontservice.influxdb.EntryCountDto@4b555304, com.nhnacademy.frontservice.influxdb.EntryCountDto@1c7e2062, com.nhnacademy.frontservice.influxdb.EntryCountDto@38e0bfa8, com.nhnacademy.frontservice.influxdb.EntryCountDto@51969d26, com.nhnacademy.frontservice.influxdb.EntryCountDto@30ba3963, com.nhnacademy.frontservice.influxdb.EntryCountDto@5d2a7226, com.nhnacademy.frontservice.influxdb.EntryCountDto@608a8bd4]
+2025-04-28 16:48:44.620 [http-nio-10253-exec-1] INFO  c.n.f.i.c.EntryApiController - [실시간 출입 통계] 조회됨: com.nhnacademy.frontservice.influxdb.realtime.dto.EntryRealtimeDto@14b37261
+2025-04-28 16:49:45.040 [http-nio-10253-exec-7] INFO  c.n.f.i.c.EntryApiController - [실시간 출입 통계] 조회됨: com.nhnacademy.frontservice.influxdb.realtime.dto.EntryRealtimeDto@67f4f037
+2025-04-28 16:50:45.346 [http-nio-10253-exec-10] INFO  c.n.f.i.c.EntryApiController - [실시간 출입 통계] 조회됨: com.nhnacademy.frontservice.influxdb.realtime.dto.EntryRealtimeDto@3e5baa6b
+2025-04-28 16:51:45.021 [http-nio-10253-exec-3] INFO  c.n.f.i.c.EntryApiController - [실시간 출입 통계] 조회됨: com.nhnacademy.frontservice.influxdb.realtime.dto.EntryRealtimeDto@2be7333e
+2025-04-28 16:52:45.031 [http-nio-10253-exec-8] INFO  c.n.f.i.c.EntryApiController - [실시간 출입 통계] 조회됨: com.nhnacademy.frontservice.influxdb.realtime.dto.EntryRealtimeDto@3782a89b
+2025-04-28 16:54:06.347 [http-nio-10253-exec-2] INFO  c.n.f.i.c.EntryApiController - [실시간 출입 통계] 조회됨: com.nhnacademy.frontservice.influxdb.realtime.dto.EntryRealtimeDto@e62dc65
+2025-04-28 16:54:44.622 [http-nio-10253-exec-5] INFO  c.n.f.i.c.EntryApiController - [실시간 출입 통계] 조회됨: com.nhnacademy.frontservice.influxdb.realtime.dto.EntryRealtimeDto@281be85b
+2025-04-28 16:55:44.633 [http-nio-10253-exec-1] INFO  c.n.f.i.c.EntryApiController - [실시간 출입 통계] 조회됨: com.nhnacademy.frontservice.influxdb.realtime.dto.EntryRealtimeDto@6bf4fa4d
+2025-04-28 16:56:44.615 [http-nio-10253-exec-4] INFO  c.n.f.i.c.EntryApiController - [실시간 출입 통계] 조회됨: com.nhnacademy.frontservice.influxdb.realtime.dto.EntryRealtimeDto@42855d48
+2025-04-28 16:57:02.474 [http-nio-10253-exec-5] INFO  c.n.f.i.c.EntryApiController - [실시간 출입 통계] 조회됨: com.nhnacademy.frontservice.influxdb.realtime.dto.EntryRealtimeDto@769e7125
+2025-04-28 17:15:07.250 [http-nio-10253-exec-1] INFO  c.n.f.i.c.EntryApiController - [실시간 출입 통계] 조회됨: com.nhnacademy.frontservice.influxdb.realtime.dto.EntryRealtimeDto@56434f83
+2025-04-28 17:16:40.930 [http-nio-10253-exec-9] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-22","count":0}
+2025-04-28 17:16:40.931 [http-nio-10253-exec-9] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-23","count":0}
+2025-04-28 17:16:40.931 [http-nio-10253-exec-9] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-24","count":0}
+2025-04-28 17:16:40.931 [http-nio-10253-exec-9] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-25","count":1273}
+2025-04-28 17:16:40.931 [http-nio-10253-exec-9] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-26","count":1544}
+2025-04-28 17:16:40.931 [http-nio-10253-exec-9] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-27","count":1546}
+2025-04-28 17:16:40.931 [http-nio-10253-exec-9] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-28","count":1549}
+2025-04-28 17:16:40.931 [http-nio-10253-exec-9] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-28","count":500}
+2025-04-28 17:16:40.931 [http-nio-10253-exec-9] INFO  c.n.f.i.c.EntryApiController - [월간 출입 통계] 조회됨: [com.nhnacademy.frontservice.influxdb.EntryCountDto@7e775b6d, com.nhnacademy.frontservice.influxdb.EntryCountDto@36604012, com.nhnacademy.frontservice.influxdb.EntryCountDto@2bf101e3, com.nhnacademy.frontservice.influxdb.EntryCountDto@cfaf1d2, com.nhnacademy.frontservice.influxdb.EntryCountDto@48126f13, com.nhnacademy.frontservice.influxdb.EntryCountDto@7c46d6d3, com.nhnacademy.frontservice.influxdb.EntryCountDto@5f1b3ea1, com.nhnacademy.frontservice.influxdb.EntryCountDto@4b430f1]
+2025-04-28 17:16:49.112 [http-nio-10253-exec-3] INFO  c.n.f.i.c.EntryApiController - [실시간 출입 통계] 조회됨: com.nhnacademy.frontservice.influxdb.realtime.dto.EntryRealtimeDto@13365e14
+2025-04-28 17:17:25.276 [http-nio-10253-exec-8] INFO  c.n.f.i.c.EntryApiController - [실시간 출입 통계] 조회됨: com.nhnacademy.frontservice.influxdb.realtime.dto.EntryRealtimeDto@203902d1
+2025-04-28 17:18:24.469 [http-nio-10253-exec-6] INFO  c.n.f.i.c.EntryApiController - [실시간 출입 통계] 조회됨: com.nhnacademy.frontservice.influxdb.realtime.dto.EntryRealtimeDto@1e14324a
+2025-04-28 17:19:24.488 [http-nio-10253-exec-3] INFO  c.n.f.i.c.EntryApiController - [실시간 출입 통계] 조회됨: com.nhnacademy.frontservice.influxdb.realtime.dto.EntryRealtimeDto@279b483d
+2025-04-28 17:20:24.887 [http-nio-10253-exec-1] INFO  c.n.f.i.c.EntryApiController - [실시간 출입 통계] 조회됨: com.nhnacademy.frontservice.influxdb.realtime.dto.EntryRealtimeDto@10177b94
+2025-04-28 17:21:24.464 [http-nio-10253-exec-2] INFO  c.n.f.i.c.EntryApiController - [실시간 출입 통계] 조회됨: com.nhnacademy.frontservice.influxdb.realtime.dto.EntryRealtimeDto@14a5be59
+2025-04-28 17:22:24.464 [http-nio-10253-exec-5] INFO  c.n.f.i.c.EntryApiController - [실시간 출입 통계] 조회됨: com.nhnacademy.frontservice.influxdb.realtime.dto.EntryRealtimeDto@416954ea
+2025-04-28 17:23:24.468 [http-nio-10253-exec-4] INFO  c.n.f.i.c.EntryApiController - [실시간 출입 통계] 조회됨: com.nhnacademy.frontservice.influxdb.realtime.dto.EntryRealtimeDto@40bd1f66
+2025-04-28 20:34:27.078 [http-nio-10253-exec-3] INFO  c.n.f.i.c.EntryApiController - [실시간 출입 통계] 조회됨: com.nhnacademy.frontservice.influxdb.realtime.dto.EntryRealtimeDto@51d87404
+2025-04-28 20:35:25.948 [http-nio-10253-exec-6] INFO  c.n.f.i.c.EntryApiController - [실시간 출입 통계] 조회됨: com.nhnacademy.frontservice.influxdb.realtime.dto.EntryRealtimeDto@20ba399e
+2025-04-28 20:36:26.359 [http-nio-10253-exec-1] INFO  c.n.f.i.c.EntryApiController - [실시간 출입 통계] 조회됨: com.nhnacademy.frontservice.influxdb.realtime.dto.EntryRealtimeDto@3f90aa5e
+2025-04-28 20:37:25.965 [http-nio-10253-exec-2] INFO  c.n.f.i.c.EntryApiController - [실시간 출입 통계] 조회됨: com.nhnacademy.frontservice.influxdb.realtime.dto.EntryRealtimeDto@47792611
+2025-04-28 20:38:26.891 [http-nio-10253-exec-5] INFO  c.n.f.i.c.EntryApiController - [실시간 출입 통계] 조회됨: com.nhnacademy.frontservice.influxdb.realtime.dto.EntryRealtimeDto@23d317d2
+2025-04-28 20:40:17.289 [http-nio-10253-exec-8] INFO  c.n.f.i.c.EntryApiController - [실시간 출입 통계] 조회됨: com.nhnacademy.frontservice.influxdb.realtime.dto.EntryRealtimeDto@20d7e671
+2025-04-28 20:41:16.862 [http-nio-10253-exec-7] INFO  c.n.f.i.c.EntryApiController - [실시간 출입 통계] 조회됨: com.nhnacademy.frontservice.influxdb.realtime.dto.EntryRealtimeDto@176dd075
+2025-04-28 20:42:16.831 [http-nio-10253-exec-3] INFO  c.n.f.i.c.EntryApiController - [실시간 출입 통계] 조회됨: com.nhnacademy.frontservice.influxdb.realtime.dto.EntryRealtimeDto@2a15256
+2025-04-28 20:43:16.868 [http-nio-10253-exec-6] INFO  c.n.f.i.c.EntryApiController - [실시간 출입 통계] 조회됨: com.nhnacademy.frontservice.influxdb.realtime.dto.EntryRealtimeDto@4b5364b1
+2025-04-28 20:44:02.353 [http-nio-10253-exec-5] INFO  c.n.f.i.c.EntryApiController - [실시간 출입 통계] 조회됨: com.nhnacademy.frontservice.influxdb.realtime.dto.EntryRealtimeDto@72b5f0f
+2025-04-28 20:47:06.491 [http-nio-10253-exec-6] INFO  c.n.f.i.c.EntryApiController - [실시간 출입 통계] 조회됨: com.nhnacademy.frontservice.influxdb.realtime.dto.EntryRealtimeDto@68a46f13
+2025-04-28 21:29:15.826 [http-nio-10253-exec-3] INFO  c.n.f.i.c.EntryApiController - [실시간 출입 통계] 조회됨: com.nhnacademy.frontservice.influxdb.realtime.dto.EntryRealtimeDto@9fdb81
+2025-04-28 21:29:20.004 [http-nio-10253-exec-6] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-22","count":0}
+2025-04-28 21:29:20.005 [http-nio-10253-exec-6] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-23","count":0}
+2025-04-28 21:29:20.006 [http-nio-10253-exec-6] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-24","count":0}
+2025-04-28 21:29:20.006 [http-nio-10253-exec-6] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-25","count":1273}
+2025-04-28 21:29:20.006 [http-nio-10253-exec-6] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-26","count":1544}
+2025-04-28 21:29:20.006 [http-nio-10253-exec-6] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-27","count":1546}
+2025-04-28 21:29:20.006 [http-nio-10253-exec-6] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-28","count":1549}
+2025-04-28 21:29:20.007 [http-nio-10253-exec-6] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-28","count":764}
+2025-04-28 21:29:20.007 [http-nio-10253-exec-6] INFO  c.n.f.i.c.EntryApiController - [월간 출입 통계] 조회됨: [com.nhnacademy.frontservice.influxdb.EntryCountDto@7a9234f3, com.nhnacademy.frontservice.influxdb.EntryCountDto@100ff1f7, com.nhnacademy.frontservice.influxdb.EntryCountDto@399237f5, com.nhnacademy.frontservice.influxdb.EntryCountDto@64815d31, com.nhnacademy.frontservice.influxdb.EntryCountDto@fdfd8fe, com.nhnacademy.frontservice.influxdb.EntryCountDto@603000bb, com.nhnacademy.frontservice.influxdb.EntryCountDto@48b5aed7, com.nhnacademy.frontservice.influxdb.EntryCountDto@26331a25]
+2025-04-28 21:39:32.059 [http-nio-10253-exec-10] INFO  c.n.f.i.c.EntryApiController - [실시간 출입 통계] 조회됨: com.nhnacademy.frontservice.influxdb.realtime.dto.EntryRealtimeDto@38ffe667
+2025-04-28 21:39:36.954 [http-nio-10253-exec-3] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-22","count":0}
+2025-04-28 21:39:36.955 [http-nio-10253-exec-3] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-23","count":0}
+2025-04-28 21:39:36.955 [http-nio-10253-exec-3] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-24","count":0}
+2025-04-28 21:39:36.955 [http-nio-10253-exec-3] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-25","count":1273}
+2025-04-28 21:39:36.955 [http-nio-10253-exec-3] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-26","count":1544}
+2025-04-28 21:39:36.955 [http-nio-10253-exec-3] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-27","count":1546}
+2025-04-28 21:39:36.955 [http-nio-10253-exec-3] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-28","count":1549}
+2025-04-28 21:39:36.955 [http-nio-10253-exec-3] INFO  c.n.f.i.s.impl.EntryServiceImpl - [Influx Entry] {"date":"2025-04-28","count":774}
+2025-04-28 21:39:36.955 [http-nio-10253-exec-3] INFO  c.n.f.i.c.EntryApiController - [월간 출입 통계] 조회됨: [com.nhnacademy.frontservice.influxdb.EntryCountDto@53b0bd1, com.nhnacademy.frontservice.influxdb.EntryCountDto@a296f55, com.nhnacademy.frontservice.influxdb.EntryCountDto@707ffcfa, com.nhnacademy.frontservice.influxdb.EntryCountDto@791b6e88, com.nhnacademy.frontservice.influxdb.EntryCountDto@24a397f9, com.nhnacademy.frontservice.influxdb.EntryCountDto@65b107ff, com.nhnacademy.frontservice.influxdb.EntryCountDto@6aa6bf9f, com.nhnacademy.frontservice.influxdb.EntryCountDto@48ebe36d]
+2025-04-28 21:43:16.502 [http-nio-10253-exec-1] INFO  c.n.f.i.c.EntryApiController - [실시간 출입 통계] 조회됨: com.nhnacademy.frontservice.influxdb.realtime.dto.EntryRealtimeDto@73517a1d

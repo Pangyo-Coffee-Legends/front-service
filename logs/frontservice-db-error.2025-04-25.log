@@ -1,0 +1,129 @@
+2025-04-24 00:04:56.611 [http-nio-10253-exec-10] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 00:34:56.612 [http-nio-10253-exec-1] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 01:04:56.604 [http-nio-10253-exec-3] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 01:34:56.609 [http-nio-10253-exec-6] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 02:04:56.605 [http-nio-10253-exec-9] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 02:34:56.615 [http-nio-10253-exec-2] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 03:04:56.610 [http-nio-10253-exec-7] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 03:34:56.620 [http-nio-10253-exec-5] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 04:04:56.608 [http-nio-10253-exec-4] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 04:34:56.609 [http-nio-10253-exec-8] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 05:04:56.611 [http-nio-10253-exec-10] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 05:34:56.605 [http-nio-10253-exec-1] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 06:04:56.604 [http-nio-10253-exec-8] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 06:34:56.604 [http-nio-10253-exec-10] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 07:04:56.605 [http-nio-10253-exec-1] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 07:34:56.610 [http-nio-10253-exec-3] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 08:04:56.636 [http-nio-10253-exec-6] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 08:34:56.602 [http-nio-10253-exec-9] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 09:04:56.611 [http-nio-10253-exec-2] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 09:11:41.316 [http-nio-10253-exec-2] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 09:56:46.106 [http-nio-10253-exec-3] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 09:56:47.676 [http-nio-10253-exec-8] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 09:57:01.553 [http-nio-10253-exec-7] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 09:57:07.008 [http-nio-10253-exec-10] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 09:57:08.815 [http-nio-10253-exec-3] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 09:58:05.378 [http-nio-10253-exec-6] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 09:58:18.955 [http-nio-10253-exec-3] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 09:58:24.719 [http-nio-10253-exec-1] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 10:00:34.421 [http-nio-10253-exec-10] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 10:01:20.308 [http-nio-10253-exec-9] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 10:01:21.873 [http-nio-10253-exec-1] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 10:01:58.625 [http-nio-10253-exec-4] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 10:02:01.071 [http-nio-10253-exec-8] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 10:02:04.616 [http-nio-10253-exec-10] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 10:03:14.090 [http-nio-10253-exec-7] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 10:04:39.526 [http-nio-10253-exec-4] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 10:04:42.837 [http-nio-10253-exec-9] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 10:05:23.023 [http-nio-10253-exec-3] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 10:05:24.599 [http-nio-10253-exec-6] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 10:05:26.086 [http-nio-10253-exec-10] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 10:05:26.946 [http-nio-10253-exec-1] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 10:05:27.690 [http-nio-10253-exec-2] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 10:05:28.349 [http-nio-10253-exec-8] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 10:05:29.975 [http-nio-10253-exec-6] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 10:05:32.974 [http-nio-10253-exec-2] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 10:05:35.104 [http-nio-10253-exec-1] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 10:06:06.652 [http-nio-10253-exec-5] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 10:06:08.539 [http-nio-10253-exec-4] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 10:06:10.568 [http-nio-10253-exec-3] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 10:06:13.823 [http-nio-10253-exec-1] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 10:08:41.963 [http-nio-10253-exec-1] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 10:08:42.781 [http-nio-10253-exec-5] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 10:08:49.002 [http-nio-10253-exec-4] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 10:38:49.463 [http-nio-10253-exec-4] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 10:47:39.244 [http-nio-10253-exec-8] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 10:47:45.443 [http-nio-10253-exec-6] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 10:47:48.006 [http-nio-10253-exec-10] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 10:47:50.966 [http-nio-10253-exec-5] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 10:47:54.229 [http-nio-10253-exec-3] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 10:50:20.565 [http-nio-10253-exec-10] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 10:50:22.550 [http-nio-10253-exec-3] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 13:18:16.067 [http-nio-10253-exec-2] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 13:18:17.028 [http-nio-10253-exec-1] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 13:18:17.872 [http-nio-10253-exec-5] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 13:18:19.128 [http-nio-10253-exec-10] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 13:18:26.481 [http-nio-10253-exec-9] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 13:23:49.976 [http-nio-10253-exec-2] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 13:27:17.998 [main] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-04-24 13:27:17.999 [main] ERROR o.s.o.j.LocalContainerEntityManagerFactoryBean - Failed to initialize JPA EntityManagerFactory: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
+2025-04-24 13:31:51.219 [main] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-04-24 13:31:51.219 [main] ERROR o.s.o.j.LocalContainerEntityManagerFactoryBean - Failed to initialize JPA EntityManagerFactory: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
+2025-04-24 13:32:20.726 [main] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-04-24 13:32:20.726 [main] ERROR o.s.o.j.LocalContainerEntityManagerFactoryBean - Failed to initialize JPA EntityManagerFactory: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
+2025-04-24 13:33:21.449 [http-nio-10253-exec-3] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 13:33:26.481 [http-nio-10253-exec-8] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 13:33:31.970 [http-nio-10253-exec-10] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 13:33:35.825 [http-nio-10253-exec-3] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 13:38:12.685 [http-nio-10253-exec-2] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 13:38:23.603 [http-nio-10253-exec-7] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 13:38:30.559 [http-nio-10253-exec-8] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 13:40:40.063 [http-nio-10253-exec-2] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 13:41:20.175 [http-nio-10253-exec-3] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 13:44:02.856 [http-nio-10253-exec-2] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 13:54:34.608 [http-nio-10253-exec-2] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 13:54:40.094 [http-nio-10253-exec-8] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 13:54:44.736 [http-nio-10253-exec-2] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 14:02:04.351 [http-nio-10253-exec-2] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 14:02:19.488 [http-nio-10253-exec-7] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 14:02:21.516 [http-nio-10253-exec-9] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 14:02:32.972 [http-nio-10253-exec-6] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 14:13:10.655 [http-nio-10253-exec-1] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 14:43:56.835 [http-nio-10253-exec-9] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 14:53:21.164 [http-nio-10253-exec-1] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 14:53:22.028 [http-nio-10253-exec-7] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 14:53:51.152 [http-nio-10253-exec-10] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 15:23:51.869 [http-nio-10253-exec-10] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 15:36:30.405 [main] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-04-24 15:36:30.406 [main] ERROR o.s.o.j.LocalContainerEntityManagerFactoryBean - Failed to initialize JPA EntityManagerFactory: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
+2025-04-24 15:37:57.868 [main] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-04-24 15:37:57.869 [main] ERROR o.s.o.j.LocalContainerEntityManagerFactoryBean - Failed to initialize JPA EntityManagerFactory: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
+2025-04-24 15:44:03.717 [http-nio-10253-exec-2] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 15:46:04.711 [http-nio-10253-exec-1] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 15:46:06.462 [http-nio-10253-exec-6] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 15:46:08.417 [http-nio-10253-exec-10] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 15:46:14.564 [http-nio-10253-exec-4] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 15:46:20.773 [http-nio-10253-exec-1] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 15:49:16.277 [http-nio-10253-exec-1] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
+2025-04-24 15:51:03.546 [main] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-04-24 15:51:03.555 [main] ERROR o.s.o.j.LocalContainerEntityManagerFactoryBean - Failed to initialize JPA EntityManagerFactory: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
+2025-04-24 15:56:53.403 [main] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-04-24 15:56:53.404 [main] ERROR o.s.o.j.LocalContainerEntityManagerFactoryBean - Failed to initialize JPA EntityManagerFactory: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
+2025-04-24 15:56:59.874 [main] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-04-24 15:56:59.876 [main] ERROR o.s.o.j.LocalContainerEntityManagerFactoryBean - Failed to initialize JPA EntityManagerFactory: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
