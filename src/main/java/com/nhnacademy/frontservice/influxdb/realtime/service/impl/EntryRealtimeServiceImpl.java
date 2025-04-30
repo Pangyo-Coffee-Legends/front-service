@@ -28,11 +28,12 @@ public class EntryRealtimeServiceImpl implements EntryRealtimeService {
 
     private final InfluxDBClient influxDBClient;
     private final LogWebSocketHandler logWebSocketHandler;
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper;
 
-    public EntryRealtimeServiceImpl(InfluxDBClient influxDBClient, LogWebSocketHandler logWebSocketHandler) {
+    public EntryRealtimeServiceImpl(InfluxDBClient influxDBClient, LogWebSocketHandler logWebSocketHandler, ObjectMapper objectMapper) {
         this.influxDBClient = influxDBClient;
         this.logWebSocketHandler = logWebSocketHandler;
+        this.objectMapper = objectMapper;
     }
 
     /**

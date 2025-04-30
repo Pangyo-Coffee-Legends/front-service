@@ -3,23 +3,27 @@ package com.nhnacademy.frontservice.influxdb.realtime.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.influxdb.client.InfluxDBClient;
+import com.influxdb.client.QueryApi;
+import com.influxdb.query.FluxRecord;
+import com.influxdb.query.FluxTable;
 import com.nhnacademy.frontservice.influxdb.realtime.dto.EntryRealtimeDto;
 import com.nhnacademy.frontservice.log.LogWebSocketHandler;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.contains;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class EntryRealtimeServiceImplTest {
 
     @Mock
@@ -35,6 +39,29 @@ class EntryRealtimeServiceImplTest {
     ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
+    void testGetLatestEntry_withValidData_broadcastsInfo() {
+        QueryApi mockQueryApi = mock(QueryApi.class);
+        FluxRecord mockRecord = mock(FluxRecord.class);
+        FluxTable mockTable = mock(FluxTable.class);
+
+        when(influxDBClient.getQueryApi()).thenReturn(mockQueryApi);
+
+        when(mockQueryApi.query(anyString())).thenReturn(List.of(mockTable));
+        when(mockTable.getRecords()).thenReturn(List.of(mockRecord));
+
+        OffsetDateTime fakeTime = OffsetDateTime.now().withHour(14);
+        when(mockRecord.getTime()).thenReturn(fakeTime.toInstant());
+        when(mockRecord.getValue()).thenReturn(3);
+
+        // 5. 실행
+        EntryRealtimeDto result = service.getLatestEntry();
+
+        // 6. 검증
+        verify(logWebSocketHandler).broadcast(contains("INFO"));
+        assertEquals(3, result.getCount());
+    }
+
+    @Test
     void getLatestEntry() {
 
         EntryRealtimeDto dto = new EntryRealtimeDto("2025-04-29 00:01", 3);
@@ -43,7 +70,6 @@ class EntryRealtimeServiceImplTest {
         service.logAndBroadcast(dto, midnight);
 
         verify(logWebSocketHandler).broadcast(contains("ALERT"));
-
 
     }
 
@@ -59,26 +85,15 @@ class EntryRealtimeServiceImplTest {
 
     @Test
     void testLogAndBroadcast_jsonSerializationFails_logsError() throws JsonProcessingException {
-        // given
-        EntryRealtimeDto dto = mock(EntryRealtimeDto.class);
+        EntryRealtimeDto dto = new EntryRealtimeDto("2025-04-29 01:00", 1);
         LocalDateTime time = LocalDateTime.of(2025, 4, 29, 1, 0);
 
-        EntryRealtimeServiceImpl faultyService = new EntryRealtimeServiceImpl(influxDBClient, logWebSocketHandler) {
-            @Override
-            void logAndBroadcast(EntryRealtimeDto dto, LocalDateTime entryTime) {
-                try {
-                    throw new JsonProcessingException("Mock Failure") {};
-                } catch (JsonProcessingException e) {
-                    String errorMessage = "[ERROR] JSON 직렬화 실패: 실시간 출입 데이터 로그 전송 중 예외 발생";
-                    logWebSocketHandler.broadcast(errorMessage + " - " + e.getMessage());
-                }
-            }
-        };
+        // ObjectMapper의 writeValueAsString을 강제로 실패시키기
+        doThrow(new JsonProcessingException("Mock Failure") {})
+                .when(objectMapper).writeValueAsString(dto);
 
-        // when
-        faultyService.logAndBroadcast(dto, time);
+        service.logAndBroadcast(dto, time);
 
-        // then
         verify(logWebSocketHandler).broadcast(contains("직렬화 실패"));
     }
 
