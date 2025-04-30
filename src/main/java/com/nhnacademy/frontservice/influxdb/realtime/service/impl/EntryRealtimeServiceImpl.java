@@ -10,10 +10,10 @@ import com.nhnacademy.frontservice.influxdb.realtime.dto.EntryRealtimeDto;
 import com.nhnacademy.frontservice.influxdb.realtime.service.EntryRealtimeService;
 import com.nhnacademy.frontservice.log.LogWebSocketHandler;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.Objects;
@@ -41,6 +41,7 @@ public class EntryRealtimeServiceImpl implements EntryRealtimeService {
      *
      * @return EntryRealtimeDto 객체 (가장 최근 시간의 데이터)
      */
+    @Scheduled(fixedRate = 30000) // 30초마다 실행
     @Override
     public EntryRealtimeDto getLatestEntry() {
         String flux = """
@@ -104,14 +105,19 @@ public class EntryRealtimeServiceImpl implements EntryRealtimeService {
         try {
             String json = objectMapper.writeValueAsString(dto);
 
-            String logLevel = isInTargetTime(entryTime) ? "ALERT" : "INFO";
-            String message = String.format("[%s] 실시간 출입 데이터 | 시간: %s | 출입자 수: %d",
-                    logLevel, dto.getTime(), dto.getCount());
+            boolean isNight = isInTargetTime(entryTime);
+
+            // 메시지 라벨 및 내용 분리
+            String logLevel = isNight ? "ALERT" : "INFO";
+            String messagePrefix = isNight ? "이상 출입자 발생" : "실시간 출입 데이터";
+
+            String message = String.format("[%s] %s | 시간: %s | 출입자 수: %d",
+                    logLevel, messagePrefix, dto.getTime(), dto.getCount());
 
             String fullMessage = message + " | 데이터: " + json;
 
             // 로그 출력
-            if ("ALERT".equals(logLevel)) {
+            if (isNight) {
                 log.error(fullMessage);
             } else {
                 log.info(fullMessage);
@@ -120,7 +126,7 @@ public class EntryRealtimeServiceImpl implements EntryRealtimeService {
             // WebSocket 방송
             logWebSocketHandler.broadcast(fullMessage);
 
-        } catch (JsonProcessingException e) {
+        }  catch (JsonProcessingException e) {
             String errorMessage = "[ERROR] JSON 직렬화 실패: 실시간 출입 데이터 로그 전송 중 예외 발생";
             log.error(errorMessage, e);
             logWebSocketHandler.broadcast(errorMessage + " - " + e.getMessage());
