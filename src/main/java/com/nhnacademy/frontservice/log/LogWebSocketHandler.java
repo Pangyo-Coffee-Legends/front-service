@@ -7,7 +7,9 @@ import org.springframework.web.socket.*;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * WebSocket을 통해 클라이언트에게 로그 메시지를 실시간으로 전달하는 핸들러입니다.
@@ -17,6 +19,8 @@ import java.util.Set;
 public class LogWebSocketHandler implements WebSocketHandler {
 
     private final Set<WebSocketSession> sessions = Collections.synchronizedSet(new HashSet<>());
+    private final Map<WebSocketSession, Object> sessionLocks = new ConcurrentHashMap<>();
+
 
     /**
      * 클라이언트와 연결이 수립되었을 때 호출됩니다.
@@ -76,6 +80,15 @@ public class LogWebSocketHandler implements WebSocketHandler {
 
     /**
      * 모든 연결된 클라이언트에게 로그 메시지를 전송합니다.
+     * <p>
+     * 각 {@link WebSocketSession}에 대해 동기화된 블록 내에서 메시지를 전송함으로써,
+     * {@code sendMessage} 호출 시 발생할 수 있는 {@link java.lang.IllegalStateException}
+     * (예: "TEXT_PARTIAL_WRITING") 예외를 방지합니다.
+     * </p>
+     * <p>
+     * 세션 객체는 스레드 안전하지 않으므로, 세션마다 고유의 락 객체를 생성하고,
+     * 이를 통해 전송 동작을 직렬화(serialization)합니다.
+     * </p>
      *
      * @param logMsg 전송할 로그 문자열
      */
@@ -85,11 +98,18 @@ public class LogWebSocketHandler implements WebSocketHandler {
         }
 
         for (WebSocketSession session : sessions) {
-            try {
-                session.sendMessage(new TextMessage(logMsg));
-                log.debug("[LogWebSocketHandler] 로그 전송 완료: {}", logMsg);
-            } catch (IOException e) {
-                log.error("[LogWebSocketHandler] 메시지 전송 실패", e);
+            if(session.isOpen()){
+                sessionLocks.putIfAbsent(session, new Object()); // 세션별 락 등록
+                Object lock = sessionLocks.get(session);
+
+                try {
+                    synchronized (lock){ // 세션마다 락을 잡고 전송
+                        session.sendMessage(new TextMessage(logMsg));
+                    }
+                    log.debug("[LogWebSocketHandler] 로그 전송 완료: {}", logMsg);
+                } catch (IOException e) {
+                    log.error("[LogWebSocketHandler] 메시지 전송 실패", e);
+                }
             }
         }
     }
