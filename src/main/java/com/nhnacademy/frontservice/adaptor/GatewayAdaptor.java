@@ -1,6 +1,11 @@
 package com.nhnacademy.frontservice.adaptor;
 
-import com.nhnacademy.frontservice.dto.*;
+import com.nhnacademy.frontservice.dto.attendance.AttendanceDto;
+import com.nhnacademy.frontservice.dto.attendance.AttendanceSummaryDto;
+import com.nhnacademy.frontservice.dto.member.*;
+import com.nhnacademy.frontservice.dto.token.JwtIssueRequest;
+import com.nhnacademy.frontservice.dto.token.JwtResponse;
+import com.nhnacademy.frontservice.dto.token.TokenRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -119,4 +124,13 @@ public interface GatewayAdaptor {
      */
     @GetMapping("/attendances/summary/recent")
     ResponseEntity<List<AttendanceDto>> getRecentAttendanceSummary();
+
+    /**
+     * 지정된 회원 번호에 해당하는 최근 30일간의 근무 요약 정보를 조회합니다.
+     *
+     * @param no 회원 번호 (mb_no)
+     * @return 해당 회원의 근무일자별 출근·퇴근·근무시간·상태 정보를 담은 리스트
+     */
+    @GetMapping("/attendances/summary/recent/{no}")
+    ResponseEntity<List<AttendanceSummaryDto>>getRecentWorkingHoursByMember(@PathVariable Long no);
 }
