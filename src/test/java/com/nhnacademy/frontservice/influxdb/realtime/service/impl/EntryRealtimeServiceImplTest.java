@@ -36,6 +36,9 @@ class EntryRealtimeServiceImplTest {
     @Mock
     LogWebSocketHandler logWebSocketHandler;
 
+    @Mock
+    EmailServiceImpl emailService;
+
     @InjectMocks
     EntryRealtimeServiceImpl service;
 

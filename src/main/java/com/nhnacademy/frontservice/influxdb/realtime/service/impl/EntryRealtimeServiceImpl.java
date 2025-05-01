@@ -29,11 +29,13 @@ public class EntryRealtimeServiceImpl implements EntryRealtimeService {
     private final InfluxDBClient influxDBClient;
     private final LogWebSocketHandler logWebSocketHandler;
     private final ObjectMapper objectMapper;
+    private final EmailServiceImpl emailService;
 
-    public EntryRealtimeServiceImpl(InfluxDBClient influxDBClient, LogWebSocketHandler logWebSocketHandler, ObjectMapper objectMapper) {
+    public EntryRealtimeServiceImpl(InfluxDBClient influxDBClient, LogWebSocketHandler logWebSocketHandler, ObjectMapper objectMapper, EmailServiceImpl emailService) {
         this.influxDBClient = influxDBClient;
         this.logWebSocketHandler = logWebSocketHandler;
         this.objectMapper = objectMapper;
+        this.emailService = emailService;
     }
 
     /**
@@ -61,7 +63,7 @@ public class EntryRealtimeServiceImpl implements EntryRealtimeService {
 
         for (FluxTable table : tables) {
             for (FluxRecord record : table.getRecords()) {
-                LocalDateTime entryTime = record.getTime().atZone(ZoneId.of("Asia/Seoul")).toLocalDateTime();
+                LocalDateTime entryTime = Objects.requireNonNull(record.getTime()).atZone(ZoneId.of("Asia/Seoul")).toLocalDateTime();
 
                 String time = Objects.requireNonNull(record.getTime()).toString().replace("T", " ").substring(0, 16);
 
@@ -87,7 +89,7 @@ public class EntryRealtimeServiceImpl implements EntryRealtimeService {
      */
     boolean isInTargetTime(LocalDateTime time) {
         int hour = time.getHour();
-        return hour >= 23 || hour < 5;
+        return hour == 23 || hour < 5;
     }
 
     /**
@@ -118,6 +120,11 @@ public class EntryRealtimeServiceImpl implements EntryRealtimeService {
 
             // 로그 출력
             if (isNight) {
+                emailService.sendIntrusionAlertToAdmin(
+                        "kim5472678@gmail.com",
+                        "⚠️ 이상 출입 감지 알림",
+                        dto.getTime()+"\n이상 출입자 발생.\n관리자 확인 바랍니다."
+                );
                 log.error(fullMessage);
             } else {
                 log.info(fullMessage);

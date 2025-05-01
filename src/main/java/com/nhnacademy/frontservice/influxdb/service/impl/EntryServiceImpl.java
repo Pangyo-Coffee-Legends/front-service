@@ -26,10 +26,11 @@ import java.util.Objects;
 @Service
 public class EntryServiceImpl implements EntryService {
     private final InfluxDBClient influxDBClient;
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper;
 
-    public EntryServiceImpl(InfluxDBClient influxDBClient) {
+    public EntryServiceImpl(InfluxDBClient influxDBClient, ObjectMapper objectMapper) {
         this.influxDBClient = influxDBClient;
+        this.objectMapper = objectMapper;
     }
 
     /**
