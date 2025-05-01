@@ -1,6 +1,7 @@
 package com.nhnacademy.frontservice.service;
 
-import com.nhnacademy.frontservice.dto.AttendanceDto;
+import com.nhnacademy.frontservice.dto.attendance.AttendanceDto;
+import com.nhnacademy.frontservice.dto.attendance.AttendanceSummaryDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,9 +22,18 @@ public interface AttendanceService {
     List<AttendanceDto> getAttendanceByNoAndDateRange(Long mbNo, LocalDateTime start, LocalDateTime end);
 
     /**
-     * 최근 7일간의 출결 요약 조회
+     * 최근 30일간의 출결 요약 조회
      *
      * @return 출결 요약 목록
      */
     List<AttendanceDto> getRecentAttendanceSummary();
+
+
+    /**
+     * 최근 30일간의 출결 요약 조회
+     *
+     * @return 출결 요약 목록
+     */
+    List<AttendanceSummaryDto> getRecentWorkingHoursByMember(Long no);
+
 }
