@@ -1,4 +1,4 @@
-package com.nhnacademy.frontservice.dto;
+package com.nhnacademy.frontservice.dto.attendance;
 
 import lombok.Value;
 
