@@ -1,7 +1,8 @@
 package com.nhnacademy.frontservice.service.impl;
 
 import com.nhnacademy.frontservice.adaptor.GatewayAdaptor;
-import com.nhnacademy.frontservice.dto.AttendanceDto;
+import com.nhnacademy.frontservice.dto.attendance.AttendanceDto;
+import com.nhnacademy.frontservice.dto.attendance.AttendanceSummaryDto;
 import com.nhnacademy.frontservice.service.AttendanceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -50,6 +51,16 @@ public class AttendanceServiceImpl implements AttendanceService {
             return response.getBody();
         } catch (Exception e) {
             throw new RuntimeException("최근 출결 요약 조회 실패", e);
+        }
+    }
+
+    @Override
+    public List<AttendanceSummaryDto> getRecentWorkingHoursByMember(Long no) {
+        try{
+            ResponseEntity<List<AttendanceSummaryDto>> response = gatewayAdaptor.getRecentWorkingHoursByMember(no);
+            return response.getBody();
+        } catch (Exception e) {
+            throw new RuntimeException("최근 근무 시간 조회 실패",e);
         }
     }
 }
