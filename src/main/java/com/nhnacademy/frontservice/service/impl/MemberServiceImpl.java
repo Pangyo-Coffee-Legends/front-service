@@ -1,7 +1,7 @@
 package com.nhnacademy.frontservice.service.impl;
 
 import com.nhnacademy.frontservice.adaptor.GatewayAdaptor;
-import com.nhnacademy.frontservice.dto.*;
+import com.nhnacademy.frontservice.dto.member.*;
 import com.nhnacademy.frontservice.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -106,25 +106,25 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
+    /**
+     * 전체 회원 요약 정보를 조회합니다.
+     * <p>
+     * GatewayAdaptor를 통해 member-service에 요청을 전달하고,
+     * 회원 목록을 받아오는 역할을 합니다.
+     * 예외 발생 시 로그를 출력하고 빈 리스트를 반환합니다.
+     * </p>
+     *
+     * @return 회원 요약 정보 리스트 (요청 실패 시 빈 리스트 반환)
+     */
     @Override
     public List<MemberInfoResponse> getMemberInfoList() {
+
         try {
             ResponseEntity<List<MemberInfoResponse>> response = gatewayAdaptor.getMemberInfoList();
             return response.getBody();
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error("회원 리스트 조회 실패 : {}", e.getMessage());
         }
         return List.of();
     }
-
-
-//    @Override
-//    public void logout(String accessToken) {
-//        try {
-//            gatewayAdaptor.logout(accessToken);
-//        } catch (Exception e){
-//            throw new RuntimeException("로그아웃 실패했습니다.");
-//        }
-//
-//    }
 }
