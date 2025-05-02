@@ -10,6 +10,7 @@ import com.nhnacademy.frontservice.influxdb.realtime.dto.EntryRealtimeDto;
 import com.nhnacademy.frontservice.influxdb.realtime.service.EntryRealtimeService;
 import com.nhnacademy.frontservice.log.LogWebSocketHandler;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,9 @@ public class EntryRealtimeServiceImpl implements EntryRealtimeService {
     private final LogWebSocketHandler logWebSocketHandler;
     private final ObjectMapper objectMapper;
     private final EmailServiceImpl emailService;
+
+    @Value("${admin.email}")
+    private String adminEmail;
 
     public EntryRealtimeServiceImpl(InfluxDBClient influxDBClient, LogWebSocketHandler logWebSocketHandler, ObjectMapper objectMapper, EmailServiceImpl emailService) {
         this.influxDBClient = influxDBClient;
@@ -121,7 +125,7 @@ public class EntryRealtimeServiceImpl implements EntryRealtimeService {
             // 로그 출력
             if (isNight) {
                 emailService.sendIntrusionAlertToAdmin(
-                        "kim5472678@gmail.com",
+                        adminEmail,
                         "⚠️ 이상 출입 감지 알림",
                         dto.getTime()+"\n이상 출입자 발생.\n관리자 확인 바랍니다."
                 );

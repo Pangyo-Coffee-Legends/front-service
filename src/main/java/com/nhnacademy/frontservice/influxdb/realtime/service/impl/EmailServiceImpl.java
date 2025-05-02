@@ -30,7 +30,6 @@ public class EmailServiceImpl implements EmailService {
         message.setTo(to);
         message.setSubject(subject);
         message.setText(text);
-        message.setFrom("kim5472678@gmail"); // 실제 있는 이메일 삽입(rudduddl 이메일)
         javaMailSender.send(message);
 
     }

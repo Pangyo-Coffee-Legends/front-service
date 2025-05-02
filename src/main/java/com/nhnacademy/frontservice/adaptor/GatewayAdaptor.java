@@ -57,7 +57,7 @@ public interface GatewayAdaptor {
      * @param no 회원 번호
      * @return 조회된 회원 정보
      */
-    @GetMapping("/{no}")
+    @GetMapping("/members/{no}")
     ResponseEntity<MemberInfoResponse> getMemberByNo(@PathVariable("no") Long no);
 
     /**
@@ -65,7 +65,7 @@ public interface GatewayAdaptor {
      *
      * @return 전체 회원 정보 목록
      */
-    @GetMapping("/members/info-list")
+    @GetMapping("/members")
     ResponseEntity<List<MemberInfoResponse>> getMemberInfoList();
 
     /**
