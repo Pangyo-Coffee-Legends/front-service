@@ -39,7 +39,7 @@ body {
     width: 100%;
     padding: 15px;
     margin-bottom: 10px;
-    background-color: #007bff;
+    background-color: #b6d2f9;
     color: white;
     border: none;
     border-radius: 6px;
@@ -50,9 +50,9 @@ body {
 
 }
 
-.room-button:hover {
-    background-color: #0056b3;
-}
+/*.room-button:hover {*/
+/*    background-color: #0056b3;*/
+/*}*/
 
 /* 캘린더 */
 .calendar {
@@ -121,18 +121,18 @@ body {
     background-color: #e6f0ff;
 }
 
-.time-slot.disabled {
+.time-slot:disabled {
     color: #ccc;
     border-color: #eee;
     cursor: not-allowed;
     background-color: #f8f8f8;
 }
 
-.time-slot.selected {
-    background-color: #e6f0ff;
-    color: black;
-    font-weight: bold;
-}
+/*.time-slot:active {*/
+/*    background-color: #e6f0ff;*/
+/*    color: black;*/
+/*    font-weight: bold;*/
+/*}*/
 
 /*.reservation-form {*/
 /*    margin-top: 1rem;*/
@@ -164,7 +164,7 @@ body {
     color: #555;
 }
 
-#reserveBtn {
+#reserveBtn{
     width: 80%;            /* 더 넓게 */
     max-width: 250px;       /* 너무 넓어지지 않게 제한 */
     padding: 0.75rem 1rem;
@@ -177,6 +177,6 @@ body {
     transition: background-color 0.2s ease;
 }
 
-#reserveBtn:hover {
+#reserveBtn:hover, .room-button:hover {
     background-color: #357ac8;
 }

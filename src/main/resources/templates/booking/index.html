@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <link href="/css/booking/book.css" rel="stylesheet">
+    <script src="/js/booking/api.js"></script>
+    <script src="/js/booking/format.js"></script>
     <script src="/js/booking/book.js" defer></script>
     <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.17/index.global.min.js' defer></script>
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js' defer></script>
@@ -13,15 +15,6 @@
     <div layout:fragment="content">
         <div class="container">
             <div class="rooms">
-                <button class="room-button" onclick="selectRoom('회의실 번호 또는 이름')">
-                    회의실 A
-                </button>
-                <button class="room-button" onclick="selectRoom('회의실 번호 또는 이름')">
-                    회의실 B
-                </button>
-                <button class="room-button" onclick="selectRoom('회의실 번호 또는 이름')">
-                    회의실 C
-                </button>
             </div>
 
             <div class="info-container">
@@ -35,27 +28,27 @@
                 <div class="time-container">
                     <div class="section-title">오전</div>
                     <div class="time-grid">
-                        <div class="time-slot">09:00</div>
-                        <div class="time-slot">09:30</div>
-                        <div class="time-slot">10:00</div>
-                        <div class="time-slot">10:30</div>
-                        <div class="time-slot">11:00</div>
-                        <div class="time-slot">11:30</div>
+                        <button class="time-slot" onclick="selectTime(this)">09:00</button>
+<!--                        <button class="time-slot" onclick="selectTime(this)">09:30</button>-->
+                        <button class="time-slot" onclick="selectTime(this)">10:00</button>
+<!--                        <button class="time-slot" onclick="selectTime(this)">10:30</button>-->
+                        <button class="time-slot" onclick="selectTime(this)">11:00</button>
+<!--                        <button class="time-slot" onclick="selectTime(this)">11:30</button>-->
                     </div>
 
                     <div class="section-title">오후</div>
                     <div class="time-grid">
-                        <div class="time-slot">12:00</div>
-                        <div class="time-slot">12:30</div>
-                        <div class="time-slot">1:00</div>
-                        <div class="time-slot">1:30</div>
-                        <div class="time-slot">2:00</div>
-                        <div class="time-slot">2:30</div>
-                        <div class="time-slot">3:00</div>
-                        <div class="time-slot">3:30</div>
-                        <div class="time-slot">4:00</div>
-                        <div class="time-slot">4:30</div>
-                        <div class="time-slot">5:00</div>
+                        <button class="time-slot" onclick="selectTime(this)">12:00</button>
+<!--                        <button class="time-slot" onclick="selectTime(this)">12:30</button>-->
+                        <button class="time-slot" onclick="selectTime(this)">01:00</button>
+<!--                        <button class="time-slot" onclick="selectTime(this)">01:30</button>-->
+                        <button class="time-slot" onclick="selectTime(this)">02:00</button>
+<!--                        <button class="time-slot" onclick="selectTime(this)">02:30</button>-->
+                        <button class="time-slot" onclick="selectTime(this)">03:00</button>
+<!--                        <button class="time-slot" onclick="selectTime(this)">03:30</button>-->
+                        <button class="time-slot" onclick="selectTime(this)">04:00</button>
+<!--                        <button class="time-slot" onclick="selectTime(this)">04:30</button>-->
+                        <button class="time-slot" onclick="selectTime(this)">05:00</button>
                     </div>
                 </div>
                 <div class="reservation-form">

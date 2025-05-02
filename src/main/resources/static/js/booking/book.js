@@ -1,17 +1,58 @@
 'use strict';
 
-// const api = apiStore();
-let selectedDate = null;
+const api = apiStore();
+const format = formatStore();
+let selectedDate = new Date().toISOString().split('T')[0];
 let selectedTime = null;
+let selectedRoom = null;
 
-document.addEventListener('DOMContentLoaded', () => {
-
-    // 캘린더
+document.addEventListener('DOMContentLoaded', async () => {
+    await getRooms();
     getCalendar();
-    infoAlert();
+    getAlert();
 })
 
 
+async function getRooms(){
+    const button = document.querySelector('.rooms');
+    const response = await api.getMeetingRooms();
+
+    response.forEach(data => {
+        button.innerHTML += `
+                    <button class="room-button selected" value="${data.no}" onclick="selectRoom(this)">
+                        <span class="room-name">${data.meetingRoomName}</span> <br/>
+                        <span class="room-capacity">수용 인원: ${data.meetingRoomCapacity}</span>
+                    </button>
+                `;
+    })
+
+    console.log('rooms', response);
+
+}
+
+function selectRoom(button) {
+    resetUI();
+    getDate(selectedDate); // 기본값
+    button.style.backgroundColor = '#357ac8';
+    selectedRoom = button.value;
+}
+
+function resetUI(){
+    const buttons = document.querySelectorAll('.room-button');
+    buttons.forEach(btn => {
+        btn.style.backgroundColor = '';
+    });
+
+    const timeSlots = document.querySelectorAll('.time-slot');
+    timeSlots.forEach(btn => {
+        btn.disabled = false;
+    });
+
+    const inputs = document.querySelectorAll('input');
+    inputs.forEach(input => input.value = '');
+}
+
+// 캘린더
 const getCalendar = function (){
     const calendarEl = document.getElementById('calendar');
 
@@ -23,110 +64,123 @@ const getCalendar = function (){
             center: 'title',
             right: 'today next'
         },
-        selectable: true,
-        dateClick: function(info){
-            // console.log(info.dateStr); // 클릭한 날짜
-            timeButton(info.dateStr);
-            // 클릭 배경색
+        // selectable: true,
+        dateClick: async function(info){
+            getDate(info.dateStr);
+
+
+            if(selectedRoom && info.dateStr) {
+                await getBookings(selectedRoom, info.dateStr);
+            }
             document.querySelectorAll('.fc-day').forEach(cell => {
                 cell.style.backgroundColor = '';
             });
             info.dayEl.style.backgroundColor = '#e6f0ff'; // #bed5fa
-
         }
     });
 
     calendar.render();
 
-    function selectRoom(roomName) {
-        document.getElementById('selectedRoom').textContent = `회의실 ${roomName} 예약`;
-        // 이후 여기에 캘린더 API 연결 또는 예약 정보 로딩 등 추가 가능
-    }
 }
 
-// 시간 버튼
-const timeButton = function (dateStr){
+
+// 지금 시간 비교
+const getDate = function (dateStr) {
     const timeSlots = document.querySelectorAll('.time-slot');
+
     const now = new Date();
-
-    const select = dateStr == null ? now.toISOString().split('T')[0] : dateStr;
-
-    selectedDate = select;
+    selectedDate = dateStr;
 
     const selected = new Date(selectedDate);
-    selected.setHours(0, 0, 0, 0); // 이전 자정 기준
 
+    selected.setHours(0, 0, 0, 0);
     const today = new Date();
-    today.setHours(0, 0, 0, 0);
 
+    today.setHours(0, 0, 0, 0);
     const isToday = selected.getTime() === today.getTime();
     const isPast = selected < today;
-
-    // 초기화
-    timeSlots.forEach(slot => slot.classList.remove('selected'));
-
-
-    function getTimeAsDate(timeStr) {
-        const base = new Date();
-        const [h, m] = timeStr.split(':');
-
-        let hour = parseInt(h, 10);
-        let minute = parseInt(m || '0', 10);
-
-        if (timeStr.includes('오후') || hour < 8) {
-            hour += 12;
-        }
-
-        base.setHours(hour, minute, 0, 0);
-        return base;
-    }
 
     if (isToday) {
         timeSlots.forEach(slot => {
             const timeText = slot.textContent.trim();
             const cleanedTime = timeText.replace(/[^\d:]/g, '');
-            const slotTime = getTimeAsDate(cleanedTime);
-
-            if (slotTime < now) {
-                slot.classList.add('disabled');
-            } else {
-                slot.classList.remove('disabled');
-            }
+            const slotTime = format.timeAsDate(cleanedTime);
+            slot.disabled = slotTime < now;
         });
     } else if (isPast){
-        timeSlots.forEach(slot => slot.classList.add('disabled'));
-    } else {
-        timeSlots.forEach(slot => slot.classList.remove('disabled'));
-    }
-
-
-    const clickableSlots = document.querySelectorAll('.time-slot:not(.disabled)');
-    clickableSlots.forEach(slot => {
-        slot.addEventListener('click', () => {
-            if (slot.classList.contains('disabled')) return;
-
-            clickableSlots.forEach(s => s.classList.remove('selected'));
-            slot.classList.add('selected');
-            console.log('선택된 시간:', slot.textContent);
-            selectedTime = slot.textContent
-
+        timeSlots.forEach(slot => {
+            slot.disabled = true;
         });
+    } else {
+        timeSlots.forEach(slot => slot.disabled = false);
+    }
+};
+
+// 예약 시간 비교
+const getBookings = async function (roomNo, dateStr) {
+    const response = await api.getDailyBookings(roomNo, dateStr);
+
+    const bookedTimes = new Set();
+
+    response.forEach(data => {
+        const startTime = new Date(`1970-01-01T${data.date.split('T')[1]}`);
+        const endTime = new Date(`1970-01-01T${data.finishedAt.split('T')[1]}`);
+
+        const beforeStart = new Date(startTime);
+        beforeStart.setMinutes(beforeStart.getMinutes() - 30);
+
+        const beforeStartStr = format.dateExtractTime(beforeStart);
+        bookedTimes.add(beforeStartStr);
+
+        let current = new Date(startTime);
+
+        while (current < endTime) {
+            const timeStr = format.dateExtractTime(current);
+            bookedTimes.add(timeStr);
+
+            current.setMinutes(current.getMinutes() + 30);
+        }
+    });
+
+    const timeSlots = document.querySelectorAll('.time-slot');
+    timeSlots.forEach(slot => {
+        const timeText = slot.textContent.trim();
+        if (bookedTimes.has(timeText)) {
+            slot.disabled = true;
+        }
     });
 }
 
+// 시간 버튼
+const selectTime = function (button){
+    const timeSlots = document.querySelectorAll('.time-slot');
+    timeSlots.forEach(btn => {
+        btn.style.backgroundColor = '';
+        btn.style.color = '';
+        btn.style.fontWeight = 'normal';
+    });
+
+    button.style.backgroundColor = '#e6f0ff';
+    button.style.color = 'black';
+    button.style.fontWeight = 'bold';
+
+    selectedTime = button.textContent;
+    console.log('선택된 시간:', selectedTime);
+}
 
 // 알림창
-function infoAlert(){
+function getAlert(){
     const reserveBtn = document.getElementById("reserveBtn");
 
     reserveBtn.addEventListener('click', () => {
         let attendees = document.getElementById("attendees").value;
+        //
+        // console.log('날짜', selectedDate);
+        // console.log('시간', selectedTime);
+        // console.log('예약인원', attendees);
+        // console.log('회의실', selectedRoom);
 
-        console.log('날짜', selectedDate);
-        console.log('시간', selectedTime);
-        console.log('예약인원', attendees);
-
-        if(selectedDate && selectedTime && attendees){
+        if(selectedDate && selectedTime && attendees && selectedRoom){
             Swal.fire({
                 title: "예약 사용 설명",
                 icon: "info",
@@ -148,32 +202,36 @@ function infoAlert(){
                 preConfirm: async () => {
 
                     const data = {
-                        roomNo: 1,
+                        // todo 수정
+                        roomNo: selectedRoom,
                         date: selectedDate,
                         time: selectedTime,
                         attendeeCount: Number(attendees)
                     }
 
-                    const options = {
-                        method: 'POST',
-                        credentials: 'include',
-                        headers: {
-                            accepts: 'application/json',
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify(data)
+                    try{
+                        const response = await api.registerBooking(data);
+                        window.location.href = `/booking/success?id=${response.no}`
+                    } catch (error) {
+                        Swal.showValidationMessage(`${error.message}`);
+                        // sessionStorage.setItem("bookingError", error.message);
+                        // window.location.href='/booking/failed';
                     }
-                    return await fetch('http://localhost:10251/api/v1/bookings', options)
-                        .then(result => result.json())
-                        .then((data) => {
-                            const id = data.code
-                            window.location.href = `/book/success?id=${id}`
-                        })
-                        .catch(e => {
-                            console.log(e);
-                            // window.location.href='/book/failed';
-                        });
                 }
+            })
+        } else {
+            let missingFields = [];
+
+            if (!selectedRoom) missingFields.push("회의실");
+            if (!selectedDate) missingFields.push("날짜");
+            if (!selectedTime) missingFields.push("시간");
+            if (!attendees) missingFields.push("인원 수");
+
+            Swal.fire({
+                icon: 'warning',
+                title: '입력 누락',
+                text: `${missingFields.join(', ')}를(을) 입력해주세요.`,
+                confirmButtonColor: '#4a90e2',
             });
         }
     })
