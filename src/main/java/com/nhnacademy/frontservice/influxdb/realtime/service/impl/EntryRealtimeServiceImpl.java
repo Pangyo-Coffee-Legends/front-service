@@ -7,9 +7,11 @@ import com.influxdb.client.QueryApi;
 import com.influxdb.query.FluxRecord;
 import com.influxdb.query.FluxTable;
 import com.nhnacademy.frontservice.influxdb.realtime.dto.EntryRealtimeDto;
+import com.nhnacademy.frontservice.influxdb.realtime.service.EmailService;
 import com.nhnacademy.frontservice.influxdb.realtime.service.EntryRealtimeService;
 import com.nhnacademy.frontservice.log.LogWebSocketHandler;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -29,11 +31,16 @@ public class EntryRealtimeServiceImpl implements EntryRealtimeService {
     private final InfluxDBClient influxDBClient;
     private final LogWebSocketHandler logWebSocketHandler;
     private final ObjectMapper objectMapper;
+    private final EmailService emailService;
 
-    public EntryRealtimeServiceImpl(InfluxDBClient influxDBClient, LogWebSocketHandler logWebSocketHandler, ObjectMapper objectMapper) {
+    @Value("${admin.email}")
+    private String adminEmail;
+
+    public EntryRealtimeServiceImpl(InfluxDBClient influxDBClient, LogWebSocketHandler logWebSocketHandler, ObjectMapper objectMapper, EmailService emailService) {
         this.influxDBClient = influxDBClient;
         this.logWebSocketHandler = logWebSocketHandler;
         this.objectMapper = objectMapper;
+        this.emailService = emailService;
     }
 
     /**
@@ -61,7 +68,7 @@ public class EntryRealtimeServiceImpl implements EntryRealtimeService {
 
         for (FluxTable table : tables) {
             for (FluxRecord record : table.getRecords()) {
-                LocalDateTime entryTime = record.getTime().atZone(ZoneId.of("Asia/Seoul")).toLocalDateTime();
+                LocalDateTime entryTime = Objects.requireNonNull(record.getTime()).atZone(ZoneId.of("Asia/Seoul")).toLocalDateTime();
 
                 String time = Objects.requireNonNull(record.getTime()).toString().replace("T", " ").substring(0, 16);
 
@@ -83,11 +90,24 @@ public class EntryRealtimeServiceImpl implements EntryRealtimeService {
     }
 
     /**
-     * 특정 시간이 심야(23시~5시)인지 여부를 판단합니다.
+     * 출입이 허용되지 않는 '절대 통제 시간대'에 해당하는지 여부를 판단합니다.
+     * <p>
+     * 일반적인 야근 시간(예: 18시~23시)은 허용되지만,
+     * 보안상 출입이 엄격히 금지된 시간대(예: 자정 00시~새벽 4시 59분)는 '이상 출입'으로 간주합니다.
+     * <p>
+     * 이 메서드는 다음의 조건을 만족할 경우 true를 반환합니다:
+     * <ul>
+     *     <li>자정 00시(00:00)부터 오전 4시 59분(04:59) 사이</li>
+     * </ul>
+     * 이 외의 시간대는 정상 출입으로 간주되며 false를 반환합니다.
+     *
+     * @param time 출입이 감지된 시간
+     * @return 출입이 금지된 시간대일 경우 true, 그렇지 않으면 false
      */
     boolean isInTargetTime(LocalDateTime time) {
         int hour = time.getHour();
-        return hour >= 23 || hour < 5;
+
+        return hour < 5; // 00:00~04:59, 이상 출입으로 간주
     }
 
     /**
@@ -118,6 +138,11 @@ public class EntryRealtimeServiceImpl implements EntryRealtimeService {
 
             // 로그 출력
             if (isNight) {
+                emailService.sendIntrusionAlertToAdmin(
+                        adminEmail,
+                        "⚠️ 이상 출입 감지 알림",
+                        dto.getTime()+"\n이상 출입자 발생.\n관리자 확인 바랍니다."
+                );
                 log.error(fullMessage);
             } else {
                 log.info(fullMessage);
