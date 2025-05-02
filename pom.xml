@@ -93,19 +93,10 @@
             <artifactId>influxdb-client-java</artifactId>
             <version>6.10.0</version>
         </dependency>
-<!--로그 프론트 출력 의존성 추가-->
+        <!--로그 프론트 출력 의존성 추가-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-websocket</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-mail</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>me.paulschwarz</groupId>
-            <artifactId>spring-dotenv</artifactId>
-            <version>4.0.0</version>
         </dependency>
     </dependencies>
 
