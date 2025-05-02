@@ -1,6 +1,6 @@
 package com.nhnacademy.frontservice.controller;
 
-import com.nhnacademy.frontservice.dto.*;
+import com.nhnacademy.frontservice.dto.member.*;
 import com.nhnacademy.frontservice.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -29,82 +29,75 @@ public class MemberController {
     /**
      * 새로운 회원을 등록합니다.
      *
-     * @param request 회원 등록 요청 정보를 담은 DTO
-     * @return 등록된 회원의 상세 정보가 담긴 ResponseEntity (HTTP 201 Created)
+     * @param request 회원 등록 요청 정보
+     * @return 등록된 회원의 정보 (HTTP 201 Created)
      */
     @PostMapping
     public ResponseEntity<MemberResponse> registerMember(@RequestBody @Valid MemberRegisterRequest request) {
         log.debug("Request from front-service has arrived! {}", request);
         MemberResponse response = memberService.register(request);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     /**
-     * 회원 고유 번호로 특정 회원의 정보를 조회합니다.
+     * 이메일로 회원 정보를 조회합니다.
      *
-     * @param mbEmail 조회할 회원의 고유 번호 (PathVariable)
-     * @return 해당 회원의 정보가 담긴 ResponseEntity (HTTP 200 OK)
+     * @param mbEmail 조회할 회원 이메일
+     * @return 해당 회원의 정보 (HTTP 200 OK)
      */
     @GetMapping("/email/{mbEmail}")
     public ResponseEntity<MemberResponse> getMemberByEmail(@PathVariable String mbEmail) {
         MemberResponse response = memberService.getMbEmail(mbEmail);
-
         return ResponseEntity.ok(response);
     }
 
     /**
      * 회원 정보를 수정합니다.
-     * <p>
-     * 회원 이름, 이메일, 비밀번호, 전화번호 등의 정보를 업데이트합니다.
-     * </p>
      *
-     * @param request 수정할 회원 정보를 담은 DTO
-     * @return 수정된 회원 정보가 담긴 ResponseEntity (HTTP 200 OK)
+     * @param mbNo    수정할 회원의 고유 번호
+     * @param request 수정할 회원 정보
+     * @return 수정된 회원의 정보 (HTTP 200 OK)
      */
     @PutMapping("/{mbNo}")
     public ResponseEntity<MemberResponse> updateMember(@PathVariable Long mbNo,@RequestBody @Valid MemberUpdateRequest request) {
         MemberResponse response = memberService.updateMember(mbNo,request);
-
         return ResponseEntity.ok(response);
     }
 
     /**
      * 회원을 탈퇴(소프트 삭제) 처리합니다.
-     * <p>
-     * 실제 데이터 삭제는 아니며, withdrawnAt 필드를 통해 탈퇴 상태를 표시합니다.
-     * </p>
      *
-     * @param mbNo 탈퇴할 회원의 고유 번호 (PathVariable)
-     * @return 내용 없는 응답 ResponseEntity (HTTP 204 No Content)
+     * @param mbNo 탈퇴할 회원의 고유 번호
+     * @return 내용 없는 응답 (HTTP 204 No Content)
      */
     @DeleteMapping("/{mbNo}")
     public ResponseEntity<Void> deleteMember(@PathVariable Long mbNo) {
         memberService.deleteMember(mbNo);
-
         return ResponseEntity.noContent().build();
     }
 
     /**
      * 회원의 비밀번호를 업데이트합니다.
-     * <p>
-     * 기존 비밀번호를 확인하고, 새로운 비밀번호가 유효한지 체크한 후, 비밀번호를 변경합니다.
-     * </p>
      *
-     * @param mbNo 회원의 고유 번호 (PathVariable)
-     * @param request 비밀번호 업데이트에 필요한 정보 (새로운 비밀번호, 기존 비밀번호 등)
-     * @return 내용 없는 응답 ResponseEntity (HTTP 204 No Content)
+     * @param mbNo    비밀번호를 변경할 회원의 고유 번호
+     * @param request 비밀번호 변경 요청 정보
+     * @return 내용 없는 응답 (HTTP 204 No Content)
      */
     @PutMapping("/{mbNo}/password")
     public ResponseEntity<Void> updatePassword(
             @PathVariable Long mbNo,
             @RequestBody @Valid MemberUpdatePasswordRequest request){
         memberService.updatePassword(mbNo, request);
-
         return ResponseEntity.noContent().build();
     }
+
+    /**
+     * 전체 회원의 요약 정보를 조회합니다.
+     *
+     * @return 회원 요약 정보 리스트 (HTTP 200 OK)
+     */
     @GetMapping("/info-list")
-    ResponseEntity<List<MemberInfoResponse>> getMemberInfoList() {
+    public ResponseEntity<List<MemberInfoResponse>> getMemberInfoList() {
         List<MemberInfoResponse> memberInfoList = memberService.getMemberInfoList();
         return ResponseEntity.ok(memberInfoList);
     }

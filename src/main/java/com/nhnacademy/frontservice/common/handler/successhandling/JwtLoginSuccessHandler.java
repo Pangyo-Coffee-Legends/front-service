@@ -1,8 +1,8 @@
 package com.nhnacademy.frontservice.common.handler.successhandling;
 
 import com.nhnacademy.frontservice.adaptor.GatewayAdaptor;
-import com.nhnacademy.frontservice.dto.JwtIssueRequest;
-import com.nhnacademy.frontservice.dto.JwtResponse;
+import com.nhnacademy.frontservice.dto.token.JwtIssueRequest;
+import com.nhnacademy.frontservice.dto.token.JwtResponse;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;

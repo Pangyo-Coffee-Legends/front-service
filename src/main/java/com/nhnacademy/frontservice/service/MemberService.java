@@ -1,6 +1,6 @@
 package com.nhnacademy.frontservice.service;
 
-import com.nhnacademy.frontservice.dto.*;
+import com.nhnacademy.frontservice.dto.member.*;
 
 import java.util.List;
 

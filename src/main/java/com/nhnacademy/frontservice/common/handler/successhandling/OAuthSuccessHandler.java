@@ -1,10 +1,10 @@
 package com.nhnacademy.frontservice.common.handler.successhandling;
 
 import com.nhnacademy.frontservice.adaptor.GatewayAdaptor;
-import com.nhnacademy.frontservice.dto.JwtIssueRequest;
-import com.nhnacademy.frontservice.dto.JwtResponse;
-import com.nhnacademy.frontservice.dto.MemberRegisterRequest;
-import com.nhnacademy.frontservice.dto.MemberResponse;
+import com.nhnacademy.frontservice.dto.token.JwtIssueRequest;
+import com.nhnacademy.frontservice.dto.token.JwtResponse;
+import com.nhnacademy.frontservice.dto.member.MemberRegisterRequest;
+import com.nhnacademy.frontservice.dto.member.MemberResponse;
 import com.nhnacademy.frontservice.service.MemberService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
