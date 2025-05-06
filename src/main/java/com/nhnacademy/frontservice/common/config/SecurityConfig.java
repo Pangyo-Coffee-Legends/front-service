@@ -1,6 +1,7 @@
 package com.nhnacademy.frontservice.common.config;
 
 import com.nhnacademy.frontservice.adaptor.GatewayAdaptor;
+import com.nhnacademy.frontservice.common.filter.JwtAuthenticationFilter;
 import com.nhnacademy.frontservice.common.handler.exceptionhandling.CustomAccessDeniedHandler;
 import com.nhnacademy.frontservice.common.handler.successhandling.JwtLoginSuccessHandler;
 import com.nhnacademy.frontservice.common.handler.successhandling.OAuthSuccessHandler;
@@ -14,6 +15,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity(debug = true)
@@ -22,6 +24,8 @@ public class SecurityConfig {
 
     private final GatewayAdaptor gatewayAdaptor;
     private final OAuthSuccessHandler oauthSuccessHandler;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -35,6 +39,7 @@ public class SecurityConfig {
 //                        ).permitAll()
                         auth.anyRequest().permitAll();
                 })
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .formLogin(flc -> flc

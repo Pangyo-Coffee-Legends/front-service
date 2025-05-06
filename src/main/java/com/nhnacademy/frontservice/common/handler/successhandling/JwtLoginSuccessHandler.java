@@ -11,7 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import java.io.IOException;
@@ -55,7 +57,15 @@ public class JwtLoginSuccessHandler implements AuthenticationSuccessHandler {
                 .build();
 
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+
+        // ✅ SecurityContextHolder에 인증 객체 수동 등록
+        SecurityContextHolder.getContext().setAuthentication(authentication); // 🔥 여기가 핵심
+        System.out.println("ㅎㅇㅎㅇ"+authentication);
+        System.out.println("ㅎㅇㅎㅇ1"+SecurityContextHolder.getContext().getAuthentication().getName());
+
+
         response.sendRedirect("/index");
+//        request.getRequestDispatcher("/index").forward(request, response);
     }
 
 
