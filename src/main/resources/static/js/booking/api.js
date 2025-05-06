@@ -10,13 +10,24 @@ function apiStore(){
 
     const api = new Object();
     // todo 비밀번호 검증
-    api.verifyPassword = async function () {
+    api.verifyPassword = async function (data) {
+        const options = {
+            method:'POST',
+            credentials: 'include',
+            headers: {
+                accepts: 'application/json',
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        }
 
-        const response = await fetch(`${SERVER_URL}/members/password/${password}`, GET_OPTIONS);
-        if (!response.ok) {
+        const response = await fetch(`${SERVER_URL}/bookings/verify`, options);
+        if (!response.ok || !response) {
             console.log(`비밀번호가 일치하지 않습니다.`)
             return `비밀번호가 일치하지 않습니다.`;
         }
+
+        // console.log(await response.json());
         return await response.json();
     }
 
@@ -103,8 +114,30 @@ function apiStore(){
 
         return await response.json();
     }
-    // 예약 특이사항 변경(연장, 종료, 예약, 변경 등)
-    api.updateBookingChange = async function(bookingNo, changeNo) {
+    // 예약 변경
+    api.updateBooking = async function(bookingNo, data) {
+        const options = {
+            method: 'PUT',
+            credentials: 'include',
+            headers: {
+                accepts: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        };
+
+        const response = await fetch(`${SERVER_URL}/bookings/${bookingNo}`, options);
+
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.message || '요청 실패');
+        }
+
+        return await response.json();
+    }
+
+    // 예약 연장
+    api.extendBooking = async function(bookingNo) {
         const options = {
             method: 'PUT',
             credentials: 'include',
@@ -114,7 +147,45 @@ function apiStore(){
             }
         };
 
-        const response = await fetch(`${SERVER_URL}/bookings/${bookingNo}/changes/${changeNo}`, options);
+        const response = await fetch(`${SERVER_URL}/bookings/${bookingNo}/extend`, options);
+
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.message || '요청 실패');
+        }
+
+        return await response.json();
+    }
+
+    // 예약 종료
+    api.finishBooking = async function(bookingNo) {
+        const options = {
+            method: 'PUT',
+            credentials: 'include',
+            headers: {
+                accepts: 'application/json',
+                'Content-Type': 'application/json',
+            }
+        };
+
+        const response = await fetch(`${SERVER_URL}/bookings/${bookingNo}/finish`, options);
+
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.message || '요청 실패');
+        }
+
+        return await response.json();
+    }
+
+    // 예약 취소
+    api.cancelBooking = async function(bookingNo) {
+        const options = {
+            method: 'DELETE',
+            credentials: 'include'
+        };
+
+        const response = await fetch(`${SERVER_URL}/bookings/${bookingNo}`, options);
 
         if (!response.ok) {
             const error = await response.json();

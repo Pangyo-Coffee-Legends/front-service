@@ -10,10 +10,11 @@ function formatStore() {
         let hours = date.getHours();
         const minutes = String(date.getMinutes()).padStart(2, '0');
         const ampm = hours >= 12 ? '오후' : '오전';
+
         hours = hours % 12;
         hours = hours ? hours : 12; // 0시는 12로 표시
 
-        return `${yyyy}-${mm}-${dd} ${ampm} ${hours}:${minutes}`;
+        return `${yyyy}-${mm}-${dd} ${ampm} ${hours.toString().padStart(2, '0')}:${minutes}`;
     }
 
     format.dateExtractTime = function (date) {

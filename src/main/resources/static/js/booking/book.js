@@ -2,16 +2,48 @@
 
 const api = apiStore();
 const format = formatStore();
+
+const id = window.location.search.split("=")[1];
 let selectedDate = new Date().toISOString().split('T')[0];
 let selectedTime = null;
 let selectedRoom = null;
 
 document.addEventListener('DOMContentLoaded', async () => {
     await getRooms();
+    if(id) {
+        await update();
+    }
     getCalendar();
     getAlert();
 })
 
+
+const update = async function () {
+    const data = await api.getBooking(id);
+
+    selectedRoom = data.roomNo;
+    selectedDate = data.date.split('T')[0];
+    selectedTime = format.dateExtractTime(new Date(data.date));
+    document.getElementById("attendees").value = data.attendeeCount;
+
+    const timeButtons = document.querySelectorAll('.time-slot');
+    timeButtons.forEach(btn => {
+        if (btn.textContent.trim() === selectedTime) {
+            btn.style.backgroundColor = '#e6f0ff';
+            btn.style.color = 'black';
+            btn.style.fontWeight = 'bold';
+        }
+    });
+
+    const roomButtons = document.querySelectorAll('.room-button');
+    roomButtons.forEach(btn => {
+        if (btn.value === selectedRoom) {
+            btn.style.backgroundColor = '#357ac8';
+        }
+    });
+    await getBookings(selectedRoom, selectedDate);
+    getDate(selectedDate);
+}
 
 async function getRooms(){
     const button = document.querySelector('.rooms');
@@ -66,8 +98,8 @@ const getCalendar = function (){
         },
         // selectable: true,
         dateClick: async function(info){
-            getDate(info.dateStr);
 
+            getDate(info.dateStr);
 
             if(selectedRoom && info.dateStr) {
                 await getBookings(selectedRoom, info.dateStr);
@@ -174,11 +206,6 @@ function getAlert(){
 
     reserveBtn.addEventListener('click', () => {
         let attendees = document.getElementById("attendees").value;
-        //
-        // console.log('날짜', selectedDate);
-        // console.log('시간', selectedTime);
-        // console.log('예약인원', attendees);
-        // console.log('회의실', selectedRoom);
 
         if(selectedDate && selectedTime && attendees && selectedRoom){
             Swal.fire({
@@ -210,7 +237,12 @@ function getAlert(){
                     }
 
                     try{
-                        const response = await api.registerBooking(data);
+                        let response;
+                        if(id) {
+                            response = await api.updateBooking(id, data);
+                        } else {
+                            response = await api.registerBooking(data);
+                        }
                         window.location.href = `/booking/success?id=${response.no}`
                     } catch (error) {
                         Swal.showValidationMessage(`${error.message}`);

@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <link href="/css/booking/history.css" rel="stylesheet">
-    <script src="/js/booking/history.js"></script>
+    <script src="/js/booking/api.js"></script>
+    <script src="/js/booking/format.js"></script>
+    <script src="/js/booking/history.js" defer></script>
     <title>회의실 예약 내역</title>
 </head>
 <body>
@@ -26,35 +28,7 @@
             <th>관리</th>
         </tr>
         </thead>
-        <tbody>
-        <!-- 예시 데이터 -->
-        <tr>
-            <td>20240427001</td>
-            <td>김지원</td>
-            <td>5층 대회의실</td>
-            <td>ABC123</td>
-            <td>2025-04-27 14:00</td>
-            <td>2025-04-27 15:00</td>
-            <td>-</td>
-            <td>
-                <button class="edit-btn">수정</button>
-                <button class="cancel-btn">취소</button>
-            </td>
-        </tr>
-        <tr>
-            <td>20240427002</td>
-            <td>이수민</td>
-            <td>3층 소회의실</td>
-            <td>XYZ789</td>
-            <td>2025-04-28 10:00</td>
-            <td>2025-04-28 11:00</td>
-            <td>시간 변경</td>
-            <td>
-                <button class="edit-btn">수정</button>
-                <button class="cancel-btn">취소</button>
-            </td>
-        </tr>
-        <!-- 실제 데이터는 서버 연동 -->
+        <tbody class="history-container">
         </tbody>
     </table>
 </div>
