@@ -223,7 +223,7 @@ document.addEventListener('DOMContentLoaded', function () {
      * @param {string} name - 회원 이름
      */
     function loadMemberAttendance(no, name) {
-        fetchWithAuth(`http://localhost:10251/api/v1/attendances/summary/recent/${no}`)
+        fetchWithAuth(`/api/v1/attendances/summary/recent/${no}`)
             .then(res => res.ok ? res.json() : Promise.reject())
             .then(data => {
                 currentAttendanceData = data;
