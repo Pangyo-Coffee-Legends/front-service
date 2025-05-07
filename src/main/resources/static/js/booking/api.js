@@ -9,7 +9,7 @@ function apiStore(){
     }
 
     const api = new Object();
-    // todo 비밀번호 검증
+    // 비밀번호 검증
     api.verifyPassword = async function (data) {
         const options = {
             method:'POST',
@@ -83,8 +83,8 @@ function apiStore(){
     }
 
     // 예약 조회 - 사용자별 리스트
-    api.getMemberBooking = async function() {
-        const response = await fetch(`${SERVER_URL}/bookings/my`, GET_OPTIONS);
+    api.getMemberBooking = async function(page) {
+        const response = await fetch(`${SERVER_URL}/bookings/my?page=${page}`, GET_OPTIONS);
         if(!response.ok) {
             const error = await response.json();
             throw new Error(error.message || '요청 실패');
@@ -94,8 +94,8 @@ function apiStore(){
     }
 
     // 예약 조회 - 전체 리스트
-    api.getBookingAll = async function() {
-        const response = await fetch(`${SERVER_URL}/bookings`, GET_OPTIONS);
+    api.getBookingAll = async function(page) {
+        const response = await fetch(`${SERVER_URL}/bookings?page=${page}`, GET_OPTIONS);
         if(!response.ok) {
             const error = await response.json();
             throw new Error(error.message || '요청 실패');

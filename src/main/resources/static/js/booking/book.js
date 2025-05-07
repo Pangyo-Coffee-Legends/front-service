@@ -41,6 +41,7 @@ const update = async function () {
             btn.style.backgroundColor = '#357ac8';
         }
     });
+
     await getBookings(selectedRoom, selectedDate);
     getDate(selectedDate);
 }
