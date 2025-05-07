@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService {
 
-    private final JavaMailSender javaMailSender;
+//    private final JavaMailSender javaMailSender;
 
     /**
      * 지정된 수신자에게 제목과 본문이 포함된 경고 이메일을 전송합니다.
@@ -30,7 +30,7 @@ public class EmailServiceImpl implements EmailService {
         message.setTo(to);
         message.setSubject(subject);
         message.setText(text);
-        javaMailSender.send(message);
+//        javaMailSender.send(message);
 
     }
 }
