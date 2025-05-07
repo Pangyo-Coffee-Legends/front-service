@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 async function loadBookings(page = 1) {
-    const response = await api.getMemberBooking(page);
+    const response = await api.getMemberBookings(page);
     console.log(response);
 
     getBookings(response.content, response.totalElements, page, response.size);

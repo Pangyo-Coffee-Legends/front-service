@@ -1,9 +1,7 @@
 package com.nhnacademy.frontservice.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class FrontController {
@@ -58,9 +56,14 @@ public class FrontController {
         return "booking/history";
     }
 
+    @GetMapping("/booking/statistics")
+    public String bookingStatistics() {
+        return "booking/statistics";
+    }
+
     @GetMapping("/meeting/alert")
     public String meetingAlert(){
-        return "meeting/alert";
+        return "extend-end";
     }
 
     @GetMapping(value = {"/charts"})

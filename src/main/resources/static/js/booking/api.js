@@ -82,9 +82,31 @@ function apiStore(){
         return await response.json();
     }
 
+    // 예약 조회(통계) - 사용자별 리스트
+    api.getMemberBookingsList = async function() {
+        const response = await fetch(`${SERVER_URL}/bookings/me/statistics`, GET_OPTIONS);
+        if(!response.ok) {
+            const error = await response.json();
+            throw new Error(error.message || '요청 실패');
+        }
+
+        return await response.json();
+    }
+
+    // 예약 조회(통계) - 전체 리스트
+    api.getAllBookingsListList = async function() {
+        const response = await fetch(`${SERVER_URL}/bookings/statistics`, GET_OPTIONS);
+        if(!response.ok) {
+            const error = await response.json();
+            throw new Error(error.message || '요청 실패');
+        }
+
+        return await response.json();
+    }
+
     // 예약 조회 - 사용자별 리스트
-    api.getMemberBooking = async function(page) {
-        const response = await fetch(`${SERVER_URL}/bookings/my?page=${page}`, GET_OPTIONS);
+    api.getMemberBookings = async function(page) {
+        const response = await fetch(`${SERVER_URL}/bookings/me?page=${page}`, GET_OPTIONS);
         if(!response.ok) {
             const error = await response.json();
             throw new Error(error.message || '요청 실패');
@@ -94,7 +116,7 @@ function apiStore(){
     }
 
     // 예약 조회 - 전체 리스트
-    api.getBookingAll = async function(page) {
+    api.getAllBookings = async function(page) {
         const response = await fetch(`${SERVER_URL}/bookings?page=${page}`, GET_OPTIONS);
         if(!response.ok) {
             const error = await response.json();
