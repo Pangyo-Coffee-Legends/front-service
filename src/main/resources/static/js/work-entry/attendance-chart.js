@@ -239,7 +239,7 @@ document.addEventListener('DOMContentLoaded', function () {
      * 전체 회원 목록을 로드하고 테이블에 출력합니다.
      */
     function loadMemberList() {
-        fetchWithAuth('/api/v1/members/info-list')
+        fetchWithAuth('http://localhost:10251/api/v1/members')
             .then(res => res.ok ? res.json() : Promise.reject())
             .then(members => {
                 members.sort((a, b) => a.no - b.no);
