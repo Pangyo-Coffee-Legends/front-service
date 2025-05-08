@@ -4,8 +4,6 @@
  * - 특정 회원을 클릭하면 해당 회원의 최근 30일 근무 데이터를 가져와 시각화합니다.
  * - 연도/월/일 필터링 기능을 포함하며, 점심시간 보정 및 상태코드에 따라 색상을 다르게 표시합니다.
  */
-
-
 document.addEventListener('DOMContentLoaded', function () {
     const memberTableContainer = document.getElementById('member-table-container');
     const attendanceChartContainer = document.getElementById('attendance-chart-container');
@@ -225,7 +223,7 @@ document.addEventListener('DOMContentLoaded', function () {
      * @param {string} name - 회원 이름
      */
     function loadMemberAttendance(no, name) {
-        fetchWithAuth(`http://localhost:10251/api/v1/attendances/summary/recent/${no}`)
+        fetchWithAuth(`/api/v1/attendances/summary/recent/${no}`)
             .then(res => res.ok ? res.json() : Promise.reject())
             .then(data => {
                 currentAttendanceData = data;
@@ -241,7 +239,7 @@ document.addEventListener('DOMContentLoaded', function () {
      * 전체 회원 목록을 로드하고 테이블에 출력합니다.
      */
     function loadMemberList() {
-        fetchWithAuth('http://localhost:10251/api/v1/members/info-list')
+        fetchWithAuth('/api/v1/members/info-list')
             .then(res => res.ok ? res.json() : Promise.reject())
             .then(members => {
                 members.sort((a, b) => a.no - b.no);
