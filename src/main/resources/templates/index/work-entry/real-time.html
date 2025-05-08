@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="ko" layout:decorate="@{/templates/layout/index/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html lang="ko" layout:decorate="@{/layout/index/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <title>실시간 출입 통계</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="/js/realtime-entry-chart.js" defer></script>
-    <script src="/js/realtime-log-viewer.js" defer></script>
+    <script src="/js/work-entry/realtime-entry.js" defer></script>
 </head>
 <body>
 <div layout:fragment="content">

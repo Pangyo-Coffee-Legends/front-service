@@ -1,8 +1,0 @@
-2025-04-27 18:54:27.689 [http-nio-10253-exec-3] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-27 09:54 | 출입자 수: 0
-2025-04-27 18:55:11.390 [http-nio-10253-exec-2] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-27 09:55 | 출입자 수: 2
-2025-04-27 19:41:41.772 [http-nio-10253-exec-6] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-27 10:41 | 출입자 수: 1
-2025-04-27 20:28:21.463 [http-nio-10253-exec-9] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-27 11:28 | 출입자 수: 1
-2025-04-27 21:46:41.859 [http-nio-10253-exec-4] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-27 12:46 | 출입자 수: 1
-2025-04-27 21:47:17.013 [http-nio-10253-exec-6] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-27 12:47 | 출입자 수: 0
-2025-04-27 22:07:05.286 [http-nio-10253-exec-10] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-27 13:07 | 출입자 수: 0
-2025-04-27 22:07:15.017 [http-nio-10253-exec-9] INFO  c.n.f.i.r.s.i.EntryRealtimeServiceImpl - [INFO] 실시간 출입 데이터 수신 | 시간: 2025-04-27 13:07 | 출입자 수: 0

@@ -1,6 +1,0 @@
-2025-04-22 21:07:15.777 [http-nio-10253-exec-10] INFO  c.n.f.a.c.AttendanceController - 📊 최근 7일 출결 요약 요청
-2025-04-22 21:07:15.778 [http-nio-10253-exec-10] INFO  c.n.f.a.s.impl.AttendanceServiceImpl - 최근 7일간 출결 요약 조회: 기간 2025-04-15 ~ 2025-04-22
-2025-04-22 21:08:28.236 [http-nio-10253-exec-5] INFO  c.n.f.a.c.AttendanceController - 📊 최근 7일 출결 요약 요청
-2025-04-22 21:08:28.236 [http-nio-10253-exec-5] INFO  c.n.f.a.s.impl.AttendanceServiceImpl - 최근 7일간 출결 요약 조회: 기간 2025-04-15 ~ 2025-04-22
-2025-04-22 21:08:34.805 [http-nio-10253-exec-4] INFO  c.n.f.a.c.AttendanceController - 📊 최근 7일 출결 요약 요청
-2025-04-22 21:08:34.805 [http-nio-10253-exec-4] INFO  c.n.f.a.s.impl.AttendanceServiceImpl - 최근 7일간 출결 요약 조회: 기간 2025-04-15 ~ 2025-04-22

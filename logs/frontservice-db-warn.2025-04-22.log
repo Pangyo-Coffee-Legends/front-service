@@ -1,2 +1,0 @@
- 2025-04-22 21:13:40.649 [http-nio-10253-exec-10] WARN  o.h.e.jdbc.spi.SqlExceptionHelper - SQL Error: 1054, SQLState: 42S22
-2025-04-22 21:14:28.362 [http-nio-10253-exec-1] WARN  o.h.e.jdbc.spi.SqlExceptionHelper - SQL Error: 1054, SQLState: 42S22
