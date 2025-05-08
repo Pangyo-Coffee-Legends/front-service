@@ -41,7 +41,6 @@ public class JwtLoginSuccessHandler implements AuthenticationSuccessHandler {
 
         JwtResponse tokens = tokenResponse.getBody();
 
-        // todo 쿠키에 넣기
         String accessToken = tokens.getAccessToken();
         String refreshToken = tokens.getRefreshToken();
 

@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const socket = new WebSocket("ws://" + location.host + "/ws/stranger");
+    const socket = new WebSocket("ws://localhost:10256/ws/stranger");
 
     socket.onmessage = function (event) {
         const message = event.data;

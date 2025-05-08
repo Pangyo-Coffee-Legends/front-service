@@ -1,6 +1,21 @@
 document.addEventListener('DOMContentLoaded', function () {
     const ctx = document.getElementById('realtimeEntryChart').getContext('2d');
 
+    /**
+     * 인증 포함 GET 요청 함수입니다.
+     * @param {string} url - 요청 URL
+     * @param {object} options - fetch 옵션
+     * @return {Promise<Response>} 응답 결과
+     */
+    function fetchWithAuth(url, options = {}) {
+        return fetch(url, {
+            ...options,
+            method: 'GET',
+            credentials: 'include',
+            headers: { ...(options.headers || {}), 'Content-Type': 'application/json' }
+        });
+    }
+
     const realtimeChart = new Chart(ctx, {
         type: 'line',
         data: {
@@ -44,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
      */
     async function fetchAndUpdate() {
         try {
-            const response = await fetch('/api/v1/entries/realtime');
+            const response = await fetchWithAuth('http://localhost:10251/api/v1/entries/realtime');
             const data = await response.json();
 
             if (data.time && typeof data.count === 'number') {

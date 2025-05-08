@@ -1,3 +1,18 @@
+/**
+ * 인증 포함 GET 요청 함수입니다.
+ * @param {string} url - 요청 URL
+ * @param {object} options - fetch 옵션
+ * @return {Promise<Response>} 응답 결과
+ */
+function fetchWithAuth(url, options = {}) {
+    return fetch(url, {
+        ...options,
+        method: 'GET',
+        credentials: 'include',
+        headers: { ...(options.headers || {}), 'Content-Type': 'application/json' }
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     const chartCtx = document.getElementById('entryChart').getContext('2d');
     const summaryTableBody = document.getElementById('summaryTableBody');
@@ -68,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function () {
      * 서버에서 출입 통계 데이터 불러오기
      */
     function loadEntryChart() {
-        fetch('/api/v1/entries/weekly')
+        fetchWithAuth('http://localhost:10251/api/v1/entries/weekly')
             .then(res => {
                 if (!res.ok) throw new Error("응답 실패");
                 return res.json();

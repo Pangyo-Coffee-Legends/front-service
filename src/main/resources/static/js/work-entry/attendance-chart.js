@@ -32,12 +32,23 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    function getCookie(name) {
+        const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+        return match ? match[2] : null;
+    }
+
     function fetchWithAuth(url, options = {}) {
+        const accessToken = getCookie('accessToken');
+
         return fetch(url, {
             ...options,
             method: 'GET',
             credentials: 'include',
-            headers: { ...(options.headers || {}), 'Content-Type': 'application/json' }
+            headers: {
+                ...(options.headers || {}),
+                'Content-Type': 'application/json',
+                ...(accessToken ? { 'Authorization': `Bearer ${accessToken}` } : {})
+            }
         });
     }
 
@@ -143,12 +154,12 @@ document.addEventListener('DOMContentLoaded', function () {
         renderAttendanceSummary(filtered, name);
     }
 
-    function loadMemberAttendance(no, name,page=0) {
-        const size=11;
+    function loadMemberAttendance(no, name, page = 0) {
+        const size = 10;
         fetchWithAuth(`http://localhost:10251/api/v1/attendances/summary/recent/${no}?page=${page}&size=${size}`)
             .then(res => res.ok ? res.json() : Promise.reject())
             .then(data => {
-                currentAttendanceData = data;
+                currentAttendanceData = data.content;
                 currentMemberName = name;
                 filterAndRender(name);
             })
@@ -158,7 +169,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function loadMemberList(page = 0) {
-        const pageSize = 11;
+        const pageSize = 10;
         fetchWithAuth(`http://localhost:10251/api/v1/members?page=${page}&size=${pageSize}`)
             .then(res => res.ok ? res.json() : Promise.reject())
             .then(data => {

@@ -1,2 +1,0 @@
-2025-04-22 21:13:40.649 [http-nio-10253-exec-10] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
-2025-04-22 21:14:28.362 [http-nio-10253-exec-1] ERROR o.h.e.jdbc.spi.SqlExceptionHelper - Unknown column 'a1_0.no' in 'field list'
