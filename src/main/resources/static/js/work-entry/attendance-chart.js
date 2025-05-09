@@ -37,7 +37,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function fetchWithAuth(url, options = {}) {
-        const accessToken = getCookie('accessToken');
         return fetch(url, {
             ...options,
             method: 'GET',
@@ -45,7 +44,6 @@ document.addEventListener('DOMContentLoaded', function () {
             headers: {
                 ...(options.headers || {}),
                 'Content-Type': 'application/json',
-                ...(accessToken ? {'Authorization': `Bearer ${accessToken}`} : {})
             }
         });
     }
