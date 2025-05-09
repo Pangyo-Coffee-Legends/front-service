@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 /**
  * 최근 30일 근무시간 요약 DTO
  */
+
 @Value
 public class AttendanceSummaryDto {
     @JsonProperty("year")
