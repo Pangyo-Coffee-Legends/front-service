@@ -1,7 +1,5 @@
-package com.nhnacademy.frontservice.dto.comfort;
+package com.nhnacademy.frontservice.dto.rule;
 
-import jakarta.persistence.Column;
-import jakarta.validation.constraints.NotNull;
 import lombok.Value;
 
 /**
@@ -30,7 +28,6 @@ public class ConditionRegisterRequest {
      * 조건이 속할 규칙의 식별자입니다.
      * conditions 테이블의 rule_no 컬럼과 매핑되며, rules 테이블을 참조합니다.
      */
-    @NotNull(message = "규칙 이름은 필수 항목입니다.")
     Long ruleNo;
 
     /**
@@ -38,7 +35,6 @@ public class ConditionRegisterRequest {
      * 예: "EQUALS", "GREATER_THAN", "LESS_THAN", "CONTAINS" 등
      * conditions 테이블의 con_type 컬럼과 매핑됩니다.
      */
-    @NotNull(message = "조건 비교 타입은 필수 항목입니다.")
     String conType;
 
     /**
@@ -46,7 +42,6 @@ public class ConditionRegisterRequest {
      * 평가 시 이 필드명을 기준으로 데이터를 조회합니다.
      * conditions 테이블의 con_field 컬럼과 매핑됩니다.
      */
-    @NotNull(message = "조건이 적용될 필드명은 필수 항목 입니다.")
     String conField;
 
     /**
@@ -54,7 +49,6 @@ public class ConditionRegisterRequest {
      * 평가 시 conField의 값과 이 값을 conType에 따라 비교합니다.
      * conditions 테이블의 con_value 컬럼과 매핑됩니다.
      */
-    @NotNull(message = "비교할 값은 필수 항목입니다.")
     String conValue;
 
     /**
@@ -63,6 +57,5 @@ public class ConditionRegisterRequest {
      * 숫자가 낮을수록 높은 우선순위를 가집니다.
      * conditions 테이블의 con_priority 컬럼과 매핑됩니다.
      */
-    @Column(nullable = false)
     Integer conPriority;
 }

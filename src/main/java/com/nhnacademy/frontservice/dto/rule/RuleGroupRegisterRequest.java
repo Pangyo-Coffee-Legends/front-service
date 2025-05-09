@@ -1,6 +1,5 @@
-package com.nhnacademy.frontservice.dto.comfort;
+package com.nhnacademy.frontservice.dto.rule;
 
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -32,7 +31,6 @@ public class RuleGroupRegisterRequest {
      * rule_groups 테이블의 rule_group_name 컬럼과 매핑됩니다.
      */
     @NotBlank(message = "규칙 그룹 이름은 필수 항목입니다.")
-    @Column(unique = true)
     String ruleGroupName;
 
     /**

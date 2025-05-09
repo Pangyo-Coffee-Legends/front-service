@@ -1,4 +1,4 @@
-package com.nhnacademy.frontservice.dto.comfort;
+package com.nhnacademy.frontservice.dto.rule;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

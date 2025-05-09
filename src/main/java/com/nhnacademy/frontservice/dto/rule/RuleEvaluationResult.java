@@ -1,7 +1,4 @@
-package com.nhnacademy.frontservice.dto.comfort;
-
-import com.nhnacademy.frontservice.dto.comfort.ConditionResult;
-import com.nhnacademy.frontservice.dto.comfort.ActionResult;
+package com.nhnacademy.frontservice.dto.rule;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

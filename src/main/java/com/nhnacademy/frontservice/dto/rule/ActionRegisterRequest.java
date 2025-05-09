@@ -1,4 +1,4 @@
-package com.nhnacademy.frontservice.dto.comfort;
+package com.nhnacademy.frontservice.dto.rule;
 
 import lombok.Value;
 

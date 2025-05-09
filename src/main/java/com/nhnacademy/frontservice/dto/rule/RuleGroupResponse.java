@@ -1,6 +1,5 @@
-package com.nhnacademy.frontservice.dto.comfort;
+package com.nhnacademy.frontservice.dto.rule;
 
-import jakarta.persistence.Column;
 import lombok.Value;
 
 /**
@@ -28,7 +27,6 @@ public class RuleGroupResponse {
      * 규칙 그룹의 고유 식별자입니다.
      * rule_groups 테이블의 rule_group_no 컬럼과 매핑됩니다.
      */
-    @Column(unique = true)
     Long ruleGroupNo;
 
     /**
