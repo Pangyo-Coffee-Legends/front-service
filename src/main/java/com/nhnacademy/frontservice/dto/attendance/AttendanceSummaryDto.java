@@ -1,10 +1,9 @@
 package com.nhnacademy.frontservice.dto.attendance;
 
-
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Value;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -12,17 +11,24 @@ import java.time.LocalDateTime;
  */
 @Value
 public class AttendanceSummaryDto {
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    LocalDate workDate;
+    @JsonProperty("year")
+    int year;
 
+    @JsonProperty("monthValue")
+    int monthValue;
+
+    @JsonProperty("dayOfMonth")
+    int dayOfMonth;
+
+    @JsonProperty("hoursWorked")
     int hoursWorked;
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     LocalDateTime inTime;
+
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     LocalDateTime outTime;
 
+    @JsonProperty("code")
     Long code;
-
-
 }

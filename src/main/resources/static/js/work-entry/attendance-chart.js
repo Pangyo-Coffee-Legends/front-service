@@ -22,7 +22,6 @@ document.addEventListener('DOMContentLoaded', function () {
     function updateDaySelector(year, month) {
         daySelector.innerHTML = '<option value="">전체</option>';
         if (!year || !month) return;
-
         const days = [31, isLeapYear(year) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
         for (let d = 1; d <= days[month - 1]; d++) {
             const option = document.createElement('option');
@@ -39,7 +38,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function fetchWithAuth(url, options = {}) {
         const accessToken = getCookie('accessToken');
-
         return fetch(url, {
             ...options,
             method: 'GET',
@@ -55,22 +53,17 @@ document.addEventListener('DOMContentLoaded', function () {
     function updateAttendanceChart(title, chartData, chartOptions, avgHours, tableElem) {
         attendanceChartContainer.innerHTML = '';
         attendanceTableContainer.innerHTML = '';
-
         const titleElem = document.createElement('h5');
         titleElem.textContent = title;
         titleElem.className = 'mb-3';
-
         const canvas = document.createElement('canvas');
         canvas.id = 'attendanceChart';
         canvas.style.width = '100%';
         canvas.style.height = '500px';
-
         attendanceChartContainer.appendChild(titleElem);
         attendanceChartContainer.appendChild(canvas);
         attendanceTableContainer.appendChild(tableElem);
-
         if (attendanceChartInstance) attendanceChartInstance.destroy();
-
         attendanceChartInstance = new Chart(canvas.getContext('2d'), {
             type: 'bar',
             data: chartData,
@@ -85,34 +78,32 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const summaryTable = document.createElement('table');
         summaryTable.className = 'table table-bordered mt-3';
-        summaryTable.innerHTML = `
-            <thead><tr><th>날짜</th><th>출근 시간</th><th>퇴근 시간</th><th>총 근무시간 (시간)</th><th>비고</th></tr></thead>
-            <tbody></tbody>`;
+        summaryTable.innerHTML = `<thead><tr><th>날짜</th><th>출근 시간</th><th>퇴근 시간</th><th>총 근무시간 (시간)</th><th>비고</th></tr></thead><tbody></tbody>`;
         const tbody = summaryTable.querySelector('tbody');
 
         data.forEach(item => {
-            const date = new Date(item.workDate.year, item.workDate.monthValue - 1, item.workDate.dayOfMonth);
-            const dateStr = date.toISOString().split('T')[0];
+            const { year, monthValue, dayOfMonth } = item;
+            let dateStr = '유효하지 않음';
+            if (year && monthValue && dayOfMonth) {
+                const dateObj = new Date(year, monthValue - 1, dayOfMonth);
+                if (!isNaN(dateObj.getTime())) {
+                    dateStr = dateObj.toISOString().split('T')[0];
+                }
+            }
+
             const inTime = item.inTime ? new Date(item.inTime).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' }) : '-';
             const outTime = item.outTime ? new Date(item.outTime).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' }) : '-';
-
             let hours = item.hoursWorked || 0;
             if (hours === 9) hours = 8;
 
-            labels.push(dateStr);
-            workHours.push(hours);
-            totalHours += hours;
+            if (dateStr !== '유효하지 않음') {
+                labels.push(dateStr);
+                workHours.push(hours);
+                totalHours += hours;
+            }
 
             const row = document.createElement('tr');
             row.innerHTML = `<td>${dateStr}</td><td>${inTime}</td><td>${outTime}</td><td>${hours}</td><td>${statusMap[item.code] || '미확인'}</td>`;
-
-            if (item.code >= 2 && item.code <= 8) {
-                row.style.backgroundColor = {
-                    2: '#FF4C4C', 3: '#FF9900', 4: '#FFFF66', 5: '#66FF66',
-                    6: '#6699FF', 7: '#66CCFF', 8: '#CC66FF'
-                }[item.code];
-            }
-
             tbody.appendChild(row);
         });
 
@@ -146,20 +137,18 @@ document.addEventListener('DOMContentLoaded', function () {
         const day = daySelector.value;
 
         let filtered = currentAttendanceData;
-
-        if (year) filtered = filtered.filter(item => item.workDate.year === parseInt(year));
-        if (month) filtered = filtered.filter(item => item.workDate.monthValue === parseInt(month));
-        if (day) filtered = filtered.filter(item => item.workDate.dayOfMonth === parseInt(day));
+        if (year) filtered = filtered.filter(item => item.year === parseInt(year));
+        if (month) filtered = filtered.filter(item => item.monthValue === parseInt(month));
+        if (day) filtered = filtered.filter(item => item.dayOfMonth === parseInt(day));
 
         renderAttendanceSummary(filtered, name);
     }
 
-    function loadMemberAttendance(no, name, page = 0) {
-        const size = 10;
+    function loadMemberAttendance(no, name, page = 0, size = 365) {
         fetchWithAuth(`http://localhost:10251/api/v1/attendances/summary/recent/${no}?page=${page}&size=${size}`)
             .then(res => res.ok ? res.json() : Promise.reject())
             .then(data => {
-                currentAttendanceData = data.content;
+                currentAttendanceData = data.content || [];
                 currentMemberName = name;
                 filterAndRender(name);
             })
@@ -168,9 +157,8 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
-    function loadMemberList(page = 0) {
-        const pageSize = 10;
-        fetchWithAuth(`http://localhost:10251/api/v1/members?page=${page}&size=${pageSize}`)
+    function loadMemberList(page = 0, size =10) {
+        fetchWithAuth(`http://localhost:10251/api/v1/members?page=${page}&size=${size}`)
             .then(res => res.ok ? res.json() : Promise.reject())
             .then(data => {
                 const members = data.content;
@@ -211,14 +199,17 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
+
     yearInput.addEventListener('input', () => {
         updateDaySelector(yearInput.value, monthSelector.value);
         if (currentAttendanceData.length > 0) filterAndRender(currentMemberName);
     });
+
     monthSelector.addEventListener('change', () => {
         updateDaySelector(yearInput.value, monthSelector.value);
         if (currentAttendanceData.length > 0) filterAndRender(currentMemberName);
     });
+
     daySelector.addEventListener('change', () => {
         if (currentAttendanceData.length > 0) filterAndRender(currentMemberName);
     });
