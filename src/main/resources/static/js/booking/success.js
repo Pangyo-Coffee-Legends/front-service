@@ -22,7 +22,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         const error = await response.json();
         throw new Error(error.message || '요청 실패');
     };
-    // console.log(await response.json());
 
     const data = await response.json();
     const code = document.querySelector(".code");

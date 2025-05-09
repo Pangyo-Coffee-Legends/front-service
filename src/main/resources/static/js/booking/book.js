@@ -24,6 +24,7 @@ const update = async function () {
     selectedRoom = data.roomNo;
     selectedDate = data.date.split('T')[0];
     selectedTime = format.dateExtractTime(new Date(data.date));
+
     document.getElementById("attendees").value = data.attendeeCount;
 
     const timeButtons = document.querySelectorAll('.time-slot');
@@ -59,7 +60,6 @@ async function getRooms(){
                 `;
     })
 
-    console.log('rooms', response);
 
 }
 
@@ -198,7 +198,6 @@ const selectTime = function (button){
     button.style.fontWeight = 'bold';
 
     selectedTime = button.textContent;
-    console.log('선택된 시간:', selectedTime);
 }
 
 // 알림창
@@ -233,7 +232,7 @@ function getAlert(){
                         // todo 수정
                         roomNo: selectedRoom,
                         date: selectedDate,
-                        time: selectedTime,
+                        time: format.to24Hour(selectedTime),
                         attendeeCount: Number(attendees)
                     }
 
