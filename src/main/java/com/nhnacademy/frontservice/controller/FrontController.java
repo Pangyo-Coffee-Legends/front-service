@@ -34,4 +34,11 @@ public class FrontController {
 
     @GetMapping(value = {"/charts"})
     public String charts() { return "index/charts";}
+
+    @GetMapping(value = "/comfort-dashboard")
+    public String comfortDashboard() {return "index/comfort-dashboard";}
+
+    @GetMapping(value = "/data-dashboard")
+    public String dataDashboard() {return "index/data-dashboard";}
+
 }
