@@ -66,6 +66,11 @@ public class FrontController {
         return "extend-end";
     }
 
+    @GetMapping("/admin/booking")
+    public String bookAdmin(){
+        return "booking/admin";
+    }
+
     @GetMapping(value = {"/charts"})
     public String charts() { return "index/charts";}
 }

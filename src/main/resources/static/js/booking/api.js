@@ -22,12 +22,10 @@ function apiStore(){
         }
 
         const response = await fetch(`${SERVER_URL}/bookings/verify`, options);
-        if (!response.ok || !response) {
-            console.log(`비밀번호가 일치하지 않습니다.`)
+        if (!response.ok) {
             return `비밀번호가 일치하지 않습니다.`;
         }
 
-        // console.log(await response.json());
         return await response.json();
     }
 
@@ -214,7 +212,7 @@ function apiStore(){
             throw new Error(error.message || '요청 실패');
         }
 
-        return await response.json();
+        return true;
     }
 
     return api;
