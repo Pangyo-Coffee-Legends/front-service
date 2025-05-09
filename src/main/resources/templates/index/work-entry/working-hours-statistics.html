@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{/layout/index/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title>근무시간 통계</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container mt-4">
+        <h4 class="mb-3">👤 회원 목록</h4>
+        <div id="member-table-container"></div>
+        <div id="pagination-container" class="mt-3"></div> <!-- 페이지네이션 추가 -->
+    </div>
+
+    <div class="container mt-5">
+        <h2 class="mb-4">📊 근무시간 통계</h2>
+        <div class="row mb-3">
+            <div class="col-md-2">
+                <label for="yearInput" class="form-label">연도</label>
+                <input id="yearInput" class="form-control" type="number" placeholder="연도를 입력하세요." min="2000" max="2100">
+            </div>
+            <div class="col-md-2">
+                <label for="monthSelector" class="form-label">월</label>
+                <select id="monthSelector" class="form-select">
+                    <option value="">전체</option>
+                    <option value="1">1월</option><option value="2">2월</option><option value="3">3월</option>
+                    <option value="4">4월</option><option value="5">5월</option><option value="6">6월</option>
+                    <option value="7">7월</option><option value="8">8월</option><option value="9">9월</option>
+                    <option value="10">10월</option><option value="11">11월</option><option value="12">12월</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label for="daySelector" class="form-label">일</label>
+                <select id="daySelector" class="form-select">
+                    <option value="">전체</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-7">
+                <div id="attendance-chart-container"></div>
+            </div>
+            <div class="col-md-5">
+                <div id="attendance-table-container"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript 로직 연결 (클라이언트 측 데이터 처리 및 렌더링) -->
+<script src="/js/attendance-stat.js"></script>
+</body>
+</html>

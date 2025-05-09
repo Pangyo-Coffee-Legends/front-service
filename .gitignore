@@ -1,5 +1,6 @@
 HELP.md
 target/
+
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
@@ -34,3 +35,8 @@ build/
 .mvn
 mvnw
 *.cmd
+
+# application.properties 무시
+src/main/resources/application.properties
+src/main/resources/application-dev.properties
+.env
