@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
         for (let d = 1; d <= days[month - 1]; d++) {
             const option = document.createElement('option');
             option.value = d;
-            option.textContent = `${d}일`;
+            option.textContent = `${d - 1}일`;
             daySelector.appendChild(option);
         }
     }
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
             headers: {
                 ...(options.headers || {}),
                 'Content-Type': 'application/json',
-                ...(accessToken ? { 'Authorization': `Bearer ${accessToken}` } : {})
+                ...(accessToken ? {'Authorization': `Bearer ${accessToken}`} : {})
             }
         });
     }
@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const tbody = summaryTable.querySelector('tbody');
 
         data.forEach(item => {
-            const { year, monthValue, dayOfMonth } = item;
+            const {year, monthValue, dayOfMonth} = item;
             let dateStr = '유효하지 않음';
             if (year && monthValue && dayOfMonth) {
                 const dateObj = new Date(year, monthValue - 1, dayOfMonth);
@@ -91,8 +91,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
 
-            const inTime = item.inTime ? new Date(item.inTime).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' }) : '-';
-            const outTime = item.outTime ? new Date(item.outTime).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' }) : '-';
+            const inTime = item.inTime ? new Date(item.inTime).toLocaleTimeString('ko-KR', {
+                hour: '2-digit',
+                minute: '2-digit'
+            }) : '-';
+            const outTime = item.outTime ? new Date(item.outTime).toLocaleTimeString('ko-KR', {
+                hour: '2-digit',
+                minute: '2-digit'
+            }) : '-';
             let hours = item.hoursWorked || 0;
             if (hours === 9) hours = 8;
 
@@ -124,10 +130,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }, {
             responsive: true,
             scales: {
-                y: { beginAtZero: true, title: { display: true, text: '근무시간' } },
-                x: { title: { display: true, text: '날짜' } }
+                y: {beginAtZero: true, title: {display: true, text: '근무시간'}},
+                x: {title: {display: true, text: '날짜'}}
             },
-            plugins: { legend: { display: false } }
+            plugins: {legend: {display: false}}
         }, avg, summaryTable);
     }
 
@@ -157,7 +163,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
-    function loadMemberList(page = 0, size =10) {
+    function loadMemberList(page = 0, size = 10) {
         fetchWithAuth(`http://localhost:10251/api/v1/members?page=${page}&size=${size}`)
             .then(res => res.ok ? res.json() : Promise.reject())
             .then(data => {
