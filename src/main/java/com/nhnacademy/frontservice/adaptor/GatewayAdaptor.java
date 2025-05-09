@@ -1,18 +1,13 @@
 package com.nhnacademy.frontservice.adaptor;
 
-import com.nhnacademy.frontservice.dto.attendance.AttendanceDto;
-import com.nhnacademy.frontservice.dto.attendance.AttendanceSummaryDto;
 import com.nhnacademy.frontservice.dto.member.*;
 import com.nhnacademy.frontservice.dto.token.JwtIssueRequest;
 import com.nhnacademy.frontservice.dto.token.JwtResponse;
 import com.nhnacademy.frontservice.dto.token.TokenRequest;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * Gateway를 통해 member-service 및 attendance-service와 통신하는 어댑터입니다.
