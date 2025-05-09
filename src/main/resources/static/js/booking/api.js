@@ -10,7 +10,7 @@ function apiStore(){
 
     const api = new Object();
     // 비밀번호 검증
-    api.verifyPassword = async function (data) {
+    api.verifyPassword = async function (no, data) {
         const options = {
             method:'POST',
             credentials: 'include',
@@ -21,7 +21,7 @@ function apiStore(){
             body: JSON.stringify(data)
         }
 
-        const response = await fetch(`${SERVER_URL}/bookings/verify`, options);
+        const response = await fetch(`${SERVER_URL}/bookings/${no}/verify`, options);
         if (!response.ok) {
             return `비밀번호가 일치하지 않습니다.`;
         }

@@ -3,6 +3,7 @@ const api = apiStore();
 export { cancelAlert }
 
 function cancelAlert(button){
+    const bookingNo = button.dataset.value;
     Swal.fire({
         title: "정말 예약을 취소하시겠습니까?",
         text: "취소하면 다시 복구할 수 없습니다.",
@@ -28,7 +29,7 @@ function cancelAlert(button){
                 // showLoaderOnConfirm: true,
                 preConfirm: async (password) => {
                     try {
-                        const result = await api.verifyPassword({ password });
+                        const result = await api.verifyPassword(bookingNo, password);
 
                         if (!result || result !== true) {
                             Swal.showValidationMessage("비밀번호가 일치하지 않습니다.");
@@ -45,7 +46,7 @@ function cancelAlert(button){
                 allowOutsideClick: () => !Swal.isLoading()
             }).then(async (passwordResult) => {
                 if (passwordResult.value === true) {
-                    await api.cancelBooking(button.dataset.value);
+                    await api.cancelBooking(bookingNo);
 
                     Swal.fire({
                         title: "예약이 성공적으로 취소되었습니다.",
