@@ -9,21 +9,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     const id = window.location.search.split("=")[1];
-    const GET_OPTIONS = {
-        method:'GET',
-        credentials: 'include',
-        headers: {
-            accepts: 'application/json',
-        }
-    }
 
-    const response = await fetch(`http://localhost:10251/api/v1/bookings/${id}`, GET_OPTIONS);
-    if(!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || '요청 실패');
-    };
+    const data = await api.getBooking(id);
 
-    const data = await response.json();
     const code = document.querySelector(".code");
     code.innerText = data.code;
 
