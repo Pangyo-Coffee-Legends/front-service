@@ -2,6 +2,7 @@ package com.nhnacademy.frontservice.common.filter;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nhnacademy.frontservice.common.Authentication.JwtAuthentication;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -75,7 +76,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     // 인증 객체 생성
                     UserDetails userDetails = new User(email, "", authorities);
                     Authentication authentication =
-                            new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
+                            new JwtAuthentication(userDetails, jwtToken, authorities);
 
                     // SecurityContextHolder에 인증 정보 설정
                     SecurityContextHolder.getContext().setAuthentication(authentication);

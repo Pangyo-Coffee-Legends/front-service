@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="@{/layout/index/layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/chat.css">
+</head>
+<body>
+    <div class="container" layout:fragment="content">
+        <div class="card">
+            <h1 class="card-title">stomp 채팅</h1>
+            <div class="chat-box" id="chat-box-simple">
+            </div>
+            <div class="chat-input-area">
+                <input type="text" id="message-input-simple" placeholder="메시지 입력..." autocomplete="off">
+                <button id="send-button-simple" class="btn btn-primary">전송</button>
+            </div>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+
+        <script th:inline="javascript">
+            // SockJS 및 STOMP 서버 엔드포인트 (실제 환경에 맞게 수정 필요)
+            // 주의: SockJS 엔드포인트는 http:// 또는 https:// 프로토콜을 사용합니다.
+            // Spring Boot에서 STOMP를 설정했다면, 보통 WebSocketConfigurer에서 등록한 엔드포인트입니다.
+            const SOCKJS_ENDPOINT = 'http://localhost:10251/ws/chat/connect'; // 예: '/ws-stomp' 또는 서버에서 설정한 엔드포인트
+            const STOMP_SUBSCRIBE_TOPIC = '/topic'; // 서버가 메시지를 발행하는 토픽 (예시)
+            const STOMP_SEND_DESTINATION = '/publish'; // 클라이언트가 메시지를 보내는 목적지 (예시, 서버의 @MessageMapping 경로에 따름)
+
+            const userEmail = /*[[${userEmail}]]*/ 'default-email@example.com';
+            // const roomId = 1;
+            const roomId = /*[[${roomId}]]*/ 1;
+            const jwtToken = /*[[${jwtToken}]]*/ 'default-token';
+
+            // DOM 요소 가져오기
+            const chatBox = document.getElementById('chat-box-simple');
+            const messageInput = document.getElementById('message-input-simple');
+            const sendButton = document.getElementById('send-button-simple');
+
+            // STOMP 클라이언트 객체
+            let stompClient = null;
+            let username = null;
+            // let username = "User" + Math.floor(Math.random() * 1000); // 간단한 임시 사용자 이름
+
+            /**
+             * SockJS 및 STOMP 연결 함수
+             */
+            function connect() {
+                if (stompClient && stompClient.connected) {
+                    console.log("STOMP가 이미 연결되어 있습니다.");
+                    return;
+                }
+
+                // 1. SockJS 클라이언트 생성
+                stompClient = new SockJS(SOCKJS_ENDPOINT);
+
+                // 2. SockJS 클라이언트를 통해 STOMP 클라이언트 생성
+                stompClient = Stomp.over(stompClient);
+
+                // 3. STOMP 연결 시도
+                // 헤더는 필요에 따라 추가 (예: 인증 토큰)
+                // stompClient.connect(headers, connectCallback, errorCallback);
+                // connectCallback : STOMP 연결 성공 시 호출될 콜백 함수
+                // errorCallback : STOMP 연결 오류 시 실행될 콜백 함수
+                stompClient.connect({}, onConnected, onError);
+
+                username = userEmail;
+            }
+
+            /**
+             * STOMP 연결 성공 시 콜백 함수
+             */
+            function onConnected() {
+                console.log("STOMP 연결 성공!");
+                displaySystemMessage("서버에 연결되었습니다.");
+
+                // 4. 특정 토픽 구독 시작
+                // stompClient.subscribe(destination, callback, headers);
+                // 파라미터	    타입	    필수	설명
+                // destination	String	    ✅	구독할 STOMP 토픽 경로 (예: /topic/room1)
+                // callback	    Function	✅	메시지를 수신했을 때 실행될 함수
+                // headers	    Object	    ❌	구독 요청 시 함께 보낼 헤더 (ex. 인증, 세션 등)
+                stompClient.subscribe(`${STOMP_SUBSCRIBE_TOPIC}/${roomId}`, onMessageReceived);
+
+                // stompClient.send(destination, headers, body);
+                // 파라미터	    타입	필수	설명
+                // destination	String	✅	    서버에 메시지를 보낼 목적지 (예: /app/chat)
+                // headers	    Object	❌	    STOMP 전송 시 함께 보낼 헤더 (예: Authorization, 커스텀 헤더 등)
+                // body	        String	❌	    전송할 메시지 내용 (일반적으로 JSON 문자열)
+                // 연결 후 채팅 서버에 사용자 접속 알림 메시지 전송 (선택 사항)
+                stompClient.send(`${STOMP_SEND_DESTINATION}/${roomId}`, // 실제 서버의 @MessageMapping 경로에 맞춰야 함
+                    {}, // 헤더 (필요시)
+                    JSON.stringify({ sender: username, type: 'JOIN' }) // 메시지 본문 (서버가 받을 형식)
+                );
+            }
+
+            /**
+             * STOMP 연결 오류 시 콜백 함수
+             */
+            function onError(error) {
+                console.error("STOMP 연결 실패:", error);
+                displaySystemMessage("서버 연결에 실패했습니다. 잠시 후 다시 시도해주세요.");
+                // 필요 시 재연결 로직 추가 가능
+            }
+
+            /**
+             * 구독한 토픽에서 메시지 수신 시 콜백 함수
+             * @param {object} payload - STOMP 메시지 프레임 (payload.body에 실제 메시지 내용이 있음)
+             */
+            function onMessageReceived(payload) {
+                console.log("STOMP 메시지 수신:", payload);
+                try {
+                    const message = JSON.parse(payload.body); // 서버가 JSON 문자열로 보낸다고 가정
+                    displayMessage(message);
+                } catch (e) {
+                    console.error("수신 메시지 파싱 오류:", e);
+                    displayRawMessage(payload.body); // 파싱 실패 시 원본 텍스트 표시
+                }
+            }
+
+            /**
+             * 메시지 전송 함수
+             */
+            function sendMessage() {
+                const messageContent = messageInput.value.trim();
+
+                if (messageContent && stompClient && stompClient.connected) {
+                    const chatMessage = {
+                        sender: username,
+                        content: messageContent,
+                        type: 'CHAT' // 메시지 타입 (서버와 약속된 형식)
+                    };
+
+                    try {
+                        // 5. 특정 목적지로 메시지 전송
+                        // stompClient.send(destination, headers, body);
+                        stompClient.send(`${STOMP_SEND_DESTINATION}/${roomId}`, {}, JSON.stringify(chatMessage));
+                        displayOwnMessage(chatMessage); // 자신이 보낸 메시지도 화면에 표시
+                        messageInput.value = ''; // 입력 필드 초기화
+                    } catch (error) {
+                        console.error("메시지 전송 오류:", error);
+                        displaySystemMessage("메시지 전송에 실패했습니다.");
+                    }
+                } else if (!messageContent) {
+                    // 빈 메시지
+                } else {
+                    displaySystemMessage("서버에 연결되지 않았습니다.");
+                }
+                messageInput.focus();
+            }
+
+            /**
+             * 받은 메시지(JSON 객체)를 화면에 표시하는 함수
+             * @param {object} message - 서버로부터 받은 메시지 객체 (예: {sender: 'user1', content: 'hello', type: 'CHAT'})
+             */
+            function displayMessage(message) {
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('chat-message');
+
+                if (message.type === 'JOIN' || message.type === 'LEAVE') {
+                    messageElement.classList.add('system');
+                    messageElement.textContent = escapeHtml(message.sender + (message.type === 'JOIN' ? ' 님이 접속했습니다.' : ' 님이 나갔습니다.'));
+                } else if (message.type === 'CHAT') {
+                    if (message.sender === username) { // 자신이 보낸 메시지는 다른 스타일 (이미 sendMessage에서 처리)
+                        return; // displayOwnMessage에서 처리하므로 중복 방지
+                    }
+                    messageElement.classList.add('received');
+                    const senderElement = document.createElement('strong');
+                    senderElement.textContent = escapeHtml(message.sender) + ": ";
+                    messageElement.appendChild(senderElement);
+                    messageElement.appendChild(document.createTextNode(escapeHtml(message.content)));
+                } else {
+                    // 기타 타입의 메시지 (일반 텍스트로 처리)
+                    messageElement.classList.add('system');
+                    messageElement.textContent = escapeHtml(message.content || JSON.stringify(message));
+                }
+
+                chatBox.appendChild(messageElement);
+                scrollToBottom();
+            }
+
+            /**
+             * 자신이 보낸 메시지를 화면에 표시하는 함수
+             */
+            function displayOwnMessage(chatMessage) {
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('chat-message', 'sent');
+                const senderElement = document.createElement('strong');
+                // senderElement.textContent = "나: ";
+                messageElement.appendChild(senderElement);
+                messageElement.appendChild(document.createTextNode(escapeHtml(chatMessage.content)));
+                chatBox.appendChild(messageElement);
+                scrollToBottom();
+            }
+
+            /**
+             * 파싱 실패 시 원본 텍스트 메시지를 화면에 표시
+             */
+            function displayRawMessage(msgText) {
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('chat-message', 'received');
+                messageElement.textContent = escapeHtml(msgText);
+                chatBox.appendChild(messageElement);
+                scrollToBottom();
+            }
+
+            /**
+             * 시스템 메시지를 화면에 표시하는 함수
+             */
+            function displaySystemMessage(text) {
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('chat-message', 'system');
+                messageElement.textContent = escapeHtml(text);
+                chatBox.appendChild(messageElement);
+                scrollToBottom();
+            }
+
+            /**
+             * 채팅 박스 스크롤을 맨 아래로 이동
+             */
+            function scrollToBottom() {
+                setTimeout(() => {
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                }, 0);
+            }
+
+            /**
+             * STOMP 연결 해제 함수
+             */
+            function disconnect() {
+                if (stompClient && stompClient.connected) {
+                    // 연결 해제 시 서버에 알림 메시지 전송 (선택 사항)
+                    stompClient.send(STOMP_SEND_DESTINATION,
+                        {},
+                        JSON.stringify({ sender: username, type: 'LEAVE' })
+                    );
+                    stompClient.disconnect(() => {
+                        console.log("STOMP 연결 해제됨");
+                        displaySystemMessage("서버와의 연결이 종료되었습니다.");
+                        stompClient = null;
+                    });
+                }
+            }
+
+            function escapeHtml(unsafe) {
+                if (unsafe === null || typeof unsafe === 'undefined') return '';
+                return String(unsafe)
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;")
+                    .replace(/'/g, "&#039;");
+            }
+
+            // --- 이벤트 리스너 설정 ---
+            document.addEventListener('DOMContentLoaded', connect); // 페이지 로드 시 연결 시도
+
+            sendButton.addEventListener('click', sendMessage);
+
+            messageInput.addEventListener('keyup', (event) => {
+                if (event.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+
+            window.addEventListener('beforeunload', disconnect); // 페이지 이탈 전 연결 해제
+        </script>
+    </div>
+</body>
+</html>

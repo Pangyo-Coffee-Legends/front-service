@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -62,5 +63,30 @@ public class FrontController {
 
         System.out.println("1234" + userEmail);
         return "index/users";
+    }
+
+    @GetMapping("/stompChatPage/{roomId}")
+    public String stompChatPage(Model model, @PathVariable Long roomId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = auth.getName();
+        String jwtToken = auth.getCredentials().toString();
+
+        model.addAttribute("roomId", roomId);
+        model.addAttribute("userEmail", userEmail);
+        model.addAttribute("jwtToken", jwtToken);
+        System.out.println("1234" + userEmail);
+        System.out.println("12345"+jwtToken);
+
+        return "index/stompChatPage";
+    }
+
+    @GetMapping("/chatList")
+    public String chatList(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = auth.getName();
+        model.addAttribute("userEmail", userEmail);
+
+        System.out.println("1234" + userEmail);
+        return "index/chatList";
     }
 }

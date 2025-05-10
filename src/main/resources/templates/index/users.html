@@ -63,6 +63,7 @@
                     return;
                 }
 
+                // json 객체로 변환 / 변환하지 않으면 String으로 남아있기 때문임.
                 const memberList = await response.json();
                 renderMemberList(memberList);
 
@@ -145,6 +146,13 @@
                 .replace(/>/g, "&gt;")
                 .replace(/"/g, "&quot;")
                 .replace(/'/g, "&#039;");
+        }
+
+        async function createChatRoom() {
+            await fetch(`${API_BASE_URL}/chat/room/group/create`, {
+                method: 'POST',
+                credentials: 'include' // 쿠키 전송 (회원 목록 조회가 인증 필요 시)
+            });
         }
 
         // --- 이벤트 리스너 설정 ---

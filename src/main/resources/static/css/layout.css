@@ -135,3 +135,17 @@ body {
     cursor: not-allowed;
 }
 /* ... 기타 필요한 공통 스타일 ... */
+
+#btn-show-create-room-modal {
+    width: 120px;           /* 버튼의 너비 설정 */
+    padding: 8px 12px;      /* 내부 여백 설정 */
+    font-size: 14px;        /* 글꼴 크기 설정 */
+    text-align: center;     /* 텍스트 중앙 정렬 */
+    white-space: nowrap;    /* 텍스트 줄바꿈 방지 */
+    overflow: hidden;       /* 내용이 넘칠 경우 숨김 처리 */
+    text-overflow: ellipsis; /* 넘치는 텍스트에 ... 표시 */
+    margin-bottom: 10px;    /* 하단 여백 추가 */
+    position: absolute;
+    right: 80px; /* 20px에서 100px로 변경하여 왼쪽으로 이동 */
+    top: 20px;
+}

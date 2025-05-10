@@ -1,7 +1,7 @@
 package com.nhnacademy.frontservice.common.config;
 
 import com.nhnacademy.frontservice.adaptor.GatewayAdaptor;
-import com.nhnacademy.frontservice.common.filter.JwtAuthenticationFilter;
+//import com.nhnacademy.frontservice.common.filter.JwtAuthenticationFilter;
 import com.nhnacademy.frontservice.common.handler.exceptionhandling.CustomAccessDeniedHandler;
 import com.nhnacademy.frontservice.common.handler.successhandling.JwtLoginSuccessHandler;
 import com.nhnacademy.frontservice.common.handler.successhandling.OAuthSuccessHandler;
@@ -24,7 +24,7 @@ public class SecurityConfig {
 
     private final GatewayAdaptor gatewayAdaptor;
     private final OAuthSuccessHandler oauthSuccessHandler;
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+//    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -39,7 +39,7 @@ public class SecurityConfig {
 //                        ).permitAll()
                         auth.anyRequest().permitAll();
                 })
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+//                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .formLogin(flc -> flc
