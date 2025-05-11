@@ -1,3 +1,10 @@
+/**
+ * 근무시간 통계 대시보드 스크립트
+ * - 회원 목록 조회 및 선택 기능
+ * - 선택 회원의 월간 근무 통계 데이터 시각화 및 표 출력
+ * - 연도/월/일 필터 적용
+ * - 날짜 선택시 0일로 인한 전월 fallback 오류 방지
+ */
 document.addEventListener('DOMContentLoaded', function () {
     const memberTableContainer = document.getElementById('member-table-container');
     const attendanceChartContainer = document.getElementById('attendance-chart-container');
@@ -19,21 +26,21 @@ document.addEventListener('DOMContentLoaded', function () {
         return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
     }
 
+    /**
+     * 선택한 연도/월에 따라 일(day) 드롭다운을 갱신합니다.
+     * '0일' 오류 제거됨
+     */
     function updateDaySelector(year, month) {
         daySelector.innerHTML = '<option value="">전체</option>';
         if (!year || !month) return;
+
         const days = [31, isLeapYear(year) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
         for (let d = 1; d <= days[month - 1]; d++) {
             const option = document.createElement('option');
             option.value = d;
-            option.textContent = `${d - 1}일`;
+            option.textContent = `${d}일`;
             daySelector.appendChild(option);
         }
-    }
-
-    function getCookie(name) {
-        const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-        return match ? match[2] : null;
     }
 
     function fetchWithAuth(url, options = {}) {
@@ -76,27 +83,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const summaryTable = document.createElement('table');
         summaryTable.className = 'table table-bordered mt-3';
-        summaryTable.innerHTML = `<thead><tr><th>날짜</th><th>출근 시간</th><th>퇴근 시간</th><th>총 근무시간 (시간)</th><th>비고</th></tr></thead><tbody></tbody>`;
+        summaryTable.innerHTML = '<thead><tr><th>날짜</th><th>출근 시간</th><th>퇴근 시간</th><th>총 근무시간 (시간)</th><th>비고</th></tr></thead><tbody></tbody>';
         const tbody = summaryTable.querySelector('tbody');
 
         data.forEach(item => {
             const {year, monthValue, dayOfMonth} = item;
-            let dateStr = '유효하지 않음';
-            if (year && monthValue && dayOfMonth) {
-                const dateObj = new Date(year, monthValue - 1, dayOfMonth);
-                if (!isNaN(dateObj.getTime())) {
-                    dateStr = dateObj.toISOString().split('T')[0];
-                }
-            }
+            const dateObj = new Date(year, monthValue - 1, dayOfMonth);
+            const dateStr = !isNaN(dateObj.getTime()) ? dateObj.toISOString().split('T')[0] : '유효하지 않음';
 
-            const inTime = item.inTime ? new Date(item.inTime).toLocaleTimeString('ko-KR', {
-                hour: '2-digit',
-                minute: '2-digit'
-            }) : '-';
-            const outTime = item.outTime ? new Date(item.outTime).toLocaleTimeString('ko-KR', {
-                hour: '2-digit',
-                minute: '2-digit'
-            }) : '-';
+            const inTime = item.inTime ? new Date(item.inTime).toLocaleTimeString('ko-KR', {hour: '2-digit', minute: '2-digit'}) : '-';
+            const outTime = item.outTime ? new Date(item.outTime).toLocaleTimeString('ko-KR', {hour: '2-digit', minute: '2-digit'}) : '-';
             let hours = item.hoursWorked || 0;
             if (hours === 9) hours = 8;
 
@@ -135,15 +131,18 @@ document.addEventListener('DOMContentLoaded', function () {
         }, avg, summaryTable);
     }
 
+    /**
+     * 연도/월/일 필터를 적용하여 해당 회원의 근무 데이터를 다시 렌더링합니다.
+     */
     function filterAndRender(name) {
-        const year = yearInput.value;
-        const month = monthSelector.value;
-        const day = daySelector.value;
+        const year = parseInt(yearInput.value);
+        const month = parseInt(monthSelector.value);
+        const day = parseInt(daySelector.value);
 
         let filtered = currentAttendanceData;
-        if (year) filtered = filtered.filter(item => item.year === parseInt(year));
-        if (month) filtered = filtered.filter(item => item.monthValue === parseInt(month));
-        if (day) filtered = filtered.filter(item => item.dayOfMonth === parseInt(day));
+        if (!isNaN(year)) filtered = filtered.filter(item => item.year === year);
+        if (!isNaN(month)) filtered = filtered.filter(item => item.monthValue === month);
+        if (!isNaN(day)) filtered = filtered.filter(item => item.dayOfMonth === day);
 
         renderAttendanceSummary(filtered, name);
     }
@@ -154,6 +153,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(data => {
                 currentAttendanceData = data.content || [];
                 currentMemberName = name;
+                updateDaySelector(yearInput.value, monthSelector.value);
                 filterAndRender(name);
             })
             .catch(() => {
@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 const table = document.createElement('table');
                 table.className = 'table table-bordered table-hover';
-                table.innerHTML = `<thead><tr><th>회원 번호</th><th>이름</th><th>이메일</th><th>전화번호</th></tr></thead><tbody></tbody>`;
+                table.innerHTML = '<thead><tr><th>회원 번호</th><th>이름</th><th>이메일</th><th>전화번호</th></tr></thead><tbody></tbody>';
                 const tbody = table.querySelector('tbody');
 
                 members.forEach(member => {
@@ -203,7 +203,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
-
+    // 🔄 필터 동작 감지 이벤트 연결
     yearInput.addEventListener('input', () => {
         updateDaySelector(yearInput.value, monthSelector.value);
         if (currentAttendanceData.length > 0) filterAndRender(currentMemberName);
@@ -219,4 +219,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     loadMemberList();
+
+    setInterval(loadEntryChart, 30 * 60 * 1000);
 });

@@ -38,5 +38,5 @@ mvnw
 
 # application.properties 무시
 src/main/resources/application.properties
-src/main/resources/application-dev.properties
+src/main/resources/application.properties
 .env
