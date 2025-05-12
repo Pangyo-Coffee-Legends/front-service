@@ -2,6 +2,7 @@ package com.nhnacademy.frontservice.adaptor;
 
 import com.nhnacademy.frontservice.dto.rule.RuleGroupRegisterRequest;
 import com.nhnacademy.frontservice.dto.rule.RuleGroupResponse;
+import com.nhnacademy.frontservice.dto.rule.RuleGroupUpdateRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,12 @@ public interface RuleGroupAdaptor {
 
     @GetMapping
     ResponseEntity<List<RuleGroupResponse>> getRuleGroups();
+
+    @PutMapping("/{no}")
+    ResponseEntity<RuleGroupResponse> updateRuleGroup(
+            @PathVariable("no") Long no,
+            @RequestBody RuleGroupUpdateRequest request
+    );
 
     @DeleteMapping("/{ruleGroupNo}")
     ResponseEntity<Void> deleteRuleGroup(@PathVariable Long ruleGroupNo);

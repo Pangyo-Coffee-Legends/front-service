@@ -4,6 +4,7 @@ package com.nhnacademy.frontservice.adaptor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nhnacademy.frontservice.dto.rule.RuleGroupRegisterRequest;
 import com.nhnacademy.frontservice.dto.rule.RuleGroupResponse;
+import com.nhnacademy.frontservice.dto.rule.RuleGroupUpdateRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -112,6 +113,36 @@ class RuleGroupAdaptorTest {
 
         assertEquals(HttpStatus.OK, result.getStatusCode());
         assertEquals(2, Objects.requireNonNull(result.getBody()).size());
+    }
+
+    @Test
+    @DisplayName("룰 그룹 수정")
+    void testUpdateRuleGroup() throws Exception {
+        Long ruleGroupNo = 1L;
+        RuleGroupUpdateRequest request = new RuleGroupUpdateRequest(
+                "수정 룰 그룹",
+                "수정 설명",
+                1
+        );
+
+        RuleGroupResponse response = new RuleGroupResponse(
+                ruleGroupNo,
+                "수정 룰 그룹",
+                "수정 설명",
+                1,
+                true
+        );
+
+        stubFor(put(urlPathEqualTo("/api/v1/rule-groups/" + ruleGroupNo))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody(objectMapper.writeValueAsString(response))));
+
+        ResponseEntity<RuleGroupResponse> result = ruleGroupAdaptor.updateRuleGroup(ruleGroupNo, request);
+
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+
     }
 
     @Test
