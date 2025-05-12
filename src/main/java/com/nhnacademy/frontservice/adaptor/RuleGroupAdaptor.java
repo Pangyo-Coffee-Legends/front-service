@@ -3,6 +3,7 @@ package com.nhnacademy.frontservice.adaptor;
 import com.nhnacademy.frontservice.dto.rule.RuleGroupRegisterRequest;
 import com.nhnacademy.frontservice.dto.rule.RuleGroupResponse;
 import com.nhnacademy.frontservice.dto.rule.RuleGroupUpdateRequest;
+import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ import java.util.List;
 public interface RuleGroupAdaptor {
 
     @PostMapping
-    ResponseEntity<RuleGroupResponse> registerRuleGroup(@RequestBody RuleGroupRegisterRequest request);
+    ResponseEntity<RuleGroupResponse> registerRuleGroup(@Valid @RequestBody RuleGroupRegisterRequest request);
 
     @GetMapping("/{ruleGroupNo}")
     ResponseEntity<RuleGroupResponse> getRuleGroup(@PathVariable Long ruleGroupNo);

@@ -2,6 +2,7 @@ package com.nhnacademy.frontservice.adaptor;
 
 import com.nhnacademy.frontservice.dto.condition.ConditionRegisterRequest;
 import com.nhnacademy.frontservice.dto.condition.ConditionResponse;
+import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 )
 public interface ConditionAdaptor {
     @PostMapping
-    ResponseEntity<ConditionResponse> registerCondition(@RequestBody ConditionRegisterRequest request);
+    ResponseEntity<ConditionResponse> registerCondition(@Valid @RequestBody ConditionRegisterRequest request);
 
     @GetMapping("/{conditionNo}")
     ResponseEntity<ConditionResponse> getCondition(@PathVariable("conditionNo") Long conditionNo);

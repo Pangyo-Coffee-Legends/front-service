@@ -3,7 +3,9 @@ package com.nhnacademy.frontservice.dto.rule;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 규칙 그룹(RuleGroup) 등록 요청을 위한 DTO 클래스입니다.
@@ -23,7 +25,9 @@ import lombok.Value;
  * @author [작성자]
  * @since 2025-04-27
  */
-@Value
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class RuleGroupRegisterRequest {
 
     /**

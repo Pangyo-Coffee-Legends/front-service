@@ -3,6 +3,7 @@ package com.nhnacademy.frontservice.adaptor;
 import com.nhnacademy.frontservice.dto.rule.RuleRegisterRequest;
 import com.nhnacademy.frontservice.dto.rule.RuleResponse;
 import com.nhnacademy.frontservice.dto.rule.RuleUpdateRequest;
+import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ import java.util.List;
 public interface RuleAdaptor {
 
     @PostMapping
-    ResponseEntity<RuleResponse> registerRule(@RequestBody RuleRegisterRequest request);
+    ResponseEntity<RuleResponse> registerRule(@Valid @RequestBody RuleRegisterRequest request);
 
     @GetMapping("/{ruleNo}")
     ResponseEntity<RuleResponse> getRule(@PathVariable Long ruleNo);

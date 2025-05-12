@@ -1,9 +1,12 @@
 package com.nhnacademy.frontservice.dto.rule;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 규칙(Rule) 등록 요청을 위한 DTO 클래스입니다.
@@ -23,7 +26,9 @@ import lombok.Value;
  *
  * @author 강승우
  */
-@Value
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class RuleRegisterRequest {
 
     /**
@@ -52,6 +57,6 @@ public class RuleRegisterRequest {
      * rules 테이블의 rule_priority 컬럼과 매핑됩니다.
      * 숫자가 낮을수록 높은 우선순위를 가집니다.
      */
-    @NotNull(message = "우선순위는 필수 항목입니다.")
+    @Min(value = 0, message = "priority 는 0이상 이어야 합니다.")
     Integer rulePriority;
 }
