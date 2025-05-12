@@ -103,8 +103,8 @@ function apiStore(){
     }
 
     // 예약 조회 - 사용자별 리스트
-    api.getMemberBookings = async function(page) {
-        const response = await fetch(`${SERVER_URL}/bookings/me?page=${page}`, GET_OPTIONS);
+    api.getMemberBookings = async function(sortField = 'bookingDate', sortDirection = 'desc', size = 10, page= 1) {
+        const response = await fetch(`${SERVER_URL}/bookings/me?sort=${sortField},${sortDirection}&size=${size}&page=${page}`, GET_OPTIONS);
         if(!response.ok) {
             const error = await response.json();
             throw new Error(error.message || '요청 실패');
@@ -114,8 +114,8 @@ function apiStore(){
     }
 
     // 예약 조회 - 전체 리스트
-    api.getAllBookings = async function(page) {
-        const response = await fetch(`${SERVER_URL}/bookings?page=${page}`, GET_OPTIONS);
+    api.getAllBookings = async function(sortField = 'bookingDate', sortDirection = 'desc', size = 10, page= 1) {
+        const response = await fetch(`${SERVER_URL}/bookings?sort=${sortField},${sortDirection}&size=${size}&page=${page}`, GET_OPTIONS);
         if(!response.ok) {
             const error = await response.json();
             throw new Error(error.message || '요청 실패');

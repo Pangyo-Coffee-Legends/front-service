@@ -10,11 +10,25 @@ const paginationEl = document.getElementById('pagination');
 document.addEventListener('DOMContentLoaded', async () => {
     const params = new URLSearchParams(window.location.search);
     const page = parseInt(params.get('page')) || 1;
-    await loadBookings(page);
+    const controls = {
+        sortField: document.getElementById("sortField"),
+        sortDirection: document.getElementById("sortDirection"),
+        pageSize: document.getElementById("pageSizeSelect"),
+    };
+
+    Object.values(controls).forEach(el =>
+        el.addEventListener("change", () => loadBookings(1, controls))
+    );
+
+    await loadBookings(page, controls);
 });
 
-async function loadBookings(page = 1) {
-    const response = await api.getMemberBookings(page);
+async function loadBookings(page = 1, controls) {
+    const sortField = controls.sortField.value;
+    const sortDirection = controls.sortDirection.value;
+    const pageSize = controls.pageSize.value;
+
+    const response = await api.getMemberBookings(sortField, sortDirection, pageSize, page);
 
     getBookings(response.content, response.totalElements, page, response.size);
     renderPagination(paginationEl, response.totalPages, response.number, loadBookings);

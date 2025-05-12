@@ -79,3 +79,26 @@ tr:hover {
     color: #aaa;
     cursor: not-allowed;
 }
+
+.booking-controls {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.booking-controls label {
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+}
+
+.booking-controls .form-select {
+    width: 160px;
+    padding: 5px 10px;
+    margin-top: 5px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
