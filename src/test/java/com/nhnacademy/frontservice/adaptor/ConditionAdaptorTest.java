@@ -2,8 +2,8 @@ package com.nhnacademy.frontservice.adaptor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.client.WireMock;
-import com.nhnacademy.frontservice.dto.rule.ConditionRegisterRequest;
-import com.nhnacademy.frontservice.dto.rule.ConditionResponse;
+import com.nhnacademy.frontservice.dto.condition.ConditionRegisterRequest;
+import com.nhnacademy.frontservice.dto.condition.ConditionResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

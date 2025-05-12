@@ -1,7 +1,7 @@
 package com.nhnacademy.frontservice.adaptor;
 
-import com.nhnacademy.frontservice.dto.rule.ActionRegisterRequest;
-import com.nhnacademy.frontservice.dto.rule.ActionResponse;
+import com.nhnacademy.frontservice.dto.action.ActionRegisterRequest;
+import com.nhnacademy.frontservice.dto.action.ActionResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

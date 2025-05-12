@@ -1,5 +1,8 @@
 package com.nhnacademy.frontservice.dto.rule;
 
+import com.nhnacademy.frontservice.dto.action.ActionResult;
+import com.nhnacademy.frontservice.dto.condition.ConditionResult;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.nhnacademy.frontservice.dto.rule;
+package com.nhnacademy.frontservice.dto.condition;
 
 import lombok.Value;
 

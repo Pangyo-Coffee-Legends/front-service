@@ -1,7 +1,7 @@
 package com.nhnacademy.frontservice.adaptor;
 
-import com.nhnacademy.frontservice.dto.rule.ConditionRegisterRequest;
-import com.nhnacademy.frontservice.dto.rule.ConditionResponse;
+import com.nhnacademy.frontservice.dto.condition.ConditionRegisterRequest;
+import com.nhnacademy.frontservice.dto.condition.ConditionResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

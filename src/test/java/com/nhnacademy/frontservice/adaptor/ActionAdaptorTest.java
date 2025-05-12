@@ -2,8 +2,8 @@ package com.nhnacademy.frontservice.adaptor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.client.WireMock;
-import com.nhnacademy.frontservice.dto.rule.ActionRegisterRequest;
-import com.nhnacademy.frontservice.dto.rule.ActionResponse;
+import com.nhnacademy.frontservice.dto.action.ActionRegisterRequest;
+import com.nhnacademy.frontservice.dto.action.ActionResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
