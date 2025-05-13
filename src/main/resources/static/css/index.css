@@ -5,7 +5,7 @@ body {
 }
 
 /* 사이드바 스타일링 */
-.sidebar {
+.legend-box.sidebar {
   background-color: #1e2124 !important;
   width: 250px;
   height: 100vh;
@@ -16,23 +16,23 @@ body {
   transition: all 0.3s;
 }
 
-.sidebar .nav-link {
+.legend-box.sidebar .nav-link {
   padding: 10px 15px;
   border-radius: 4px;
   margin: 2px 0;
   transition: all 0.2s;
 }
 
-.sidebar .nav-link:hover {
+.legend-box.sidebar .nav-link:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-.sidebar .nav-link.active {
+.legend-box.sidebar .nav-link.active {
   background-color: #3e6553;
 }
 
 /* 드롭다운 메뉴 스타일링 */
-.sidebar-dropdown-menu {
+.legend-box.sidebar-dropdown-menu {
   list-style: none;
   padding-left: 20px;
   max-height: 0;
@@ -40,11 +40,11 @@ body {
   transition: max-height 0.3s ease;
 }
 
-.sidebar-dropdown-menu.show {
+.legend-box.sidebar-dropdown-menu.legend-box.show {
   max-height: 500px;
 }
 
-.sidebar-dropdown-menu .nav-link {
+.legend-box.sidebar-dropdown-menu .nav-link {
   font-size: 0.85rem;
   padding: 5px 15px;
 }
@@ -119,7 +119,7 @@ body {
   text-align: center;
 }
 /* 드롭다운 메뉴 스타일 */
-.sidebar-dropdown-menu {
+.legend-box.sidebar-dropdown-menu {
   list-style: none;
   padding-left: 20px;
   max-height: 0;
@@ -127,7 +127,7 @@ body {
   transition: max-height 0.3s ease;
 }
 
-.sidebar-dropdown-menu.show {
+.legend-box.sidebar-dropdown-menu.legend-box.show {
   max-height: 500px; /* 드롭다운이 열릴 때 최대 높이 */
 }
 
@@ -180,7 +180,35 @@ body {
   margin-bottom: 10px;
 }
 
-.scrollable-chart {
+.legend-box.scrollable-chart {
   overflow-x: auto;
   white-space: nowrap;
 }
+/*근태 색구분 범례*/
+/* 범례 사각형 기본 박스 스타일 */
+.legend-box {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-right: 6px;
+  vertical-align: middle;
+  border: 1px solid #ccc;
+}
+
+/* ✅ 테이블 행 색상 (출석 제외) */
+.status-warning td { background-color: #fff3cd !important; }
+.status-danger td { background-color: #f8d7da !important; }
+.status-blue td { background-color: #cce5ff !important; }
+.status-purple td { background-color: #e2d5f8 !important; }
+.status-green td { background-color: #d4edda !important; }
+.status-orange td { background-color: #ffe5b4 !important; }
+.status-pink td { background-color: #fce4ec !important; }
+
+/* ✅ 범례 색상 적용 (.legend-box 자체에 색 입힘) */
+.legend-box.status-warning { background-color: #fff3cd; }
+.legend-box.status-danger  { background-color: #f8d7da; }
+.legend-box.status-blue    { background-color: #cce5ff; }
+.legend-box.status-purple  { background-color: #e2d5f8; }
+.legend-box.status-green   { background-color: #d4edda; }
+.legend-box.status-orange  { background-color: #ffe5b4; }
+.legend-box.status-pink    { background-color: #fce4ec; }
