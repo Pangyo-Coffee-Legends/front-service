@@ -1,6 +1,11 @@
 package com.nhnacademy.frontservice.dto.action;
 
-import lombok.Value;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 액션(Action) 등록 요청을 위한 DTO 클래스입니다.
@@ -20,13 +25,16 @@ import lombok.Value;
  *
  * @author 강승우
  */
-@Value
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ActionRegisterRequest {
 
     /**
      * 액션이 속할 규칙의 식별자입니다.
      * actions 테이블의 rule_no 컬럼과 매핑되며, rules 테이블을 참조합니다.
      */
+    @NotNull(message = "룰 번호는 필수 항목입니다.")
     Long ruleNo;
 
     /**
@@ -34,6 +42,7 @@ public class ActionRegisterRequest {
      * 예: "EMAIL", "PUSH", "LOG" 등
      * actions 테이블의 act_type 컬럼과 매핑됩니다.
      */
+    @NotBlank(message = "유형은 필수항목입니다.")
     String actType;
 
     /**
@@ -41,6 +50,7 @@ public class ActionRegisterRequest {
      * JSON 문자열 등으로 다양한 실행 정보를 전달합니다.
      * actions 테이블의 act_params 컬럼과 매핑됩니다.
      */
+    @NotBlank(message = "파라미터는 필수 항목입니다.")
     String actParam;
 
     /**
@@ -48,5 +58,6 @@ public class ActionRegisterRequest {
      * 여러 액션이 있을 때 실행 순서를 결정합니다.
      * actions 테이블의 act_priority 컬럼과 매핑됩니다.
      */
+    @Min(value = 0, message = "우선순위는 0 이상이어야 합니다.")
     Integer actPriority;
 }

@@ -23,13 +23,16 @@ public interface RuleAdaptor {
     @GetMapping("/{ruleNo}")
     ResponseEntity<RuleResponse> getRule(@PathVariable Long ruleNo);
 
+    @GetMapping("/group/{no}")
+    ResponseEntity<List<RuleResponse>> getRulesByRuleGroup(@PathVariable Long no);
+
     @GetMapping
     ResponseEntity<List<RuleResponse>> getRules();
 
     @PutMapping("/{ruleNo}")
     ResponseEntity<RuleResponse> updateRule(
             @PathVariable Long ruleNo,
-            @RequestBody RuleUpdateRequest request
+            @Valid @RequestBody RuleUpdateRequest request
     );
 
     @DeleteMapping("/{ruleNo}")

@@ -29,7 +29,7 @@ public interface RuleGroupAdaptor {
     @PutMapping("/{no}")
     ResponseEntity<RuleGroupResponse> updateRuleGroup(
             @PathVariable("no") Long no,
-            @RequestBody RuleGroupUpdateRequest request
+            @Valid @RequestBody RuleGroupUpdateRequest request
     );
 
     @DeleteMapping("/{ruleGroupNo}")
