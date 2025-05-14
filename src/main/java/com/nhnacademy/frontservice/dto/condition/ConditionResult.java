@@ -1,6 +1,8 @@
 package com.nhnacademy.frontservice.dto.condition;
 
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 조건(Condition) 평가 결과를 표현하는 클래스입니다.
@@ -19,7 +21,9 @@ import lombok.Value;
  * </ul>
  * </p>
  */
-@Value
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ConditionResult {
     /**
      * 조건의 고유 식별자입니다.

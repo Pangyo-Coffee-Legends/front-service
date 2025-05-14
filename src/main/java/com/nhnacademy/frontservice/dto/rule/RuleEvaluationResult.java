@@ -2,6 +2,9 @@ package com.nhnacademy.frontservice.dto.rule;
 
 import com.nhnacademy.frontservice.dto.action.ActionResult;
 import com.nhnacademy.frontservice.dto.condition.ConditionResult;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -14,6 +17,9 @@ import java.util.List;
  * 조건 평가 결과, 실행된 액션, 성공/실패 여부 등 룰 평가와 관련된 모든 정보를 포함합니다.
  * </p>
  */
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class RuleEvaluationResult {
 
     /**
@@ -51,71 +57,10 @@ public class RuleEvaluationResult {
      */
     private LocalDateTime evaluatedAt;
 
-    /**
-     * 기본 생성자
-     */
-    protected RuleEvaluationResult() {}
-
     public RuleEvaluationResult(Long ruleNo, String ruleName, boolean success) {
         this.ruleNo = ruleNo;
         this.ruleName = ruleName;
         this.success = success;
-    }
-
-    public Long getRuleNo() {
-        return ruleNo;
-    }
-
-    public void setRuleNo(Long ruleNo) {
-        this.ruleNo = ruleNo;
-    }
-
-    public String getRuleName() {
-        return ruleName;
-    }
-
-    public void setRuleName(String ruleName) {
-        this.ruleName = ruleName;
-    }
-
-    public boolean isSuccess() {
-        return success;
-    }
-
-    public void setSuccess(boolean success) {
-        this.success = success;
-    }
-
-    public List<ConditionResult> getConditionResults() {
-        return conditionResults;
-    }
-
-    public void setConditionResults(List<ConditionResult> conditionResults) {
-        this.conditionResults = conditionResults;
-    }
-
-    public List<ActionResult> getExecutedActions() {
-        return executedActions;
-    }
-
-    public void setExecutedActions(List<ActionResult> executedActions) {
-        this.executedActions = executedActions;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public LocalDateTime getEvaluatedAt() {
-        return evaluatedAt;
-    }
-
-    public void setEvaluatedAt(LocalDateTime evaluatedAt) {
-        this.evaluatedAt = evaluatedAt;
     }
 }
 
