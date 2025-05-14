@@ -48,4 +48,7 @@ public class FrontController {
     public String realTime(){
         return "index/work-entry/real-time";
     }
+
+    @GetMapping(value = {"/analysis"})//근태 gemini 사용
+    public String analysis(){return "index/work-entry/analysis";}
 }
