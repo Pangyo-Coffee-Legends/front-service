@@ -7,6 +7,8 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @FeignClient(
         name = "condition-service",
         url = "${rule-service.url}",
@@ -18,6 +20,12 @@ public interface ConditionAdaptor {
 
     @GetMapping("/{conditionNo}")
     ResponseEntity<ConditionResponse> getCondition(@PathVariable("conditionNo") Long conditionNo);
+
+    @GetMapping
+    ResponseEntity<List<ConditionResponse>> getConditions();
+
+    @GetMapping("/rule/{ruleNo}")
+    ResponseEntity<List<ConditionResponse>> getConditionByRule(@PathVariable("ruleNo") Long ruleNo);
 
     @DeleteMapping("/{conditionNo}")
     ResponseEntity<Void> deleteCondition(@PathVariable("conditionNo") Long conditionNo);

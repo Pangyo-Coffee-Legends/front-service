@@ -12,10 +12,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
+
+import java.util.List;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ActiveProfiles("test")
 @SpringBootTest(
@@ -93,6 +97,59 @@ class ConditionAdaptorTest {
 
         assertEquals(200, response.getStatusCode().value());
         assertEquals(expectedResponse, response.getBody());
+    }
+
+    @Test
+    @DisplayName("전체 조건 조회")
+    void getConditions_ReturnsConditionList() throws Exception {
+        // 1. 테스트 데이터 준비
+        List<ConditionResponse> mockResponses = List.of(
+                new ConditionResponse(1L, 10L, "GT", "temperature", "25",1),
+                new ConditionResponse(2L, 10L, "LT", "humidity", "70",2)
+        );
+
+        // 2. WireMock 스텁 설정
+        stubFor(get(urlEqualTo("/api/v1/conditions"))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody(objectMapper.writeValueAsString(mockResponses))));
+
+        // 3. FeignClient 호출
+        ResponseEntity<List<ConditionResponse>> response = conditionAdaptor.getConditions();
+
+        // 4. 검증
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(2, response.getBody().size());
+        assertEquals("temperature", response.getBody().get(0).getConField());
+    }
+
+    @Test
+    @DisplayName("조건별 조건 전체 조회")
+    void getConditionByRule_ValidRuleNo_ReturnsConditionList() throws Exception {
+        // 1. 테스트 데이터 준비
+        Long ruleNo = 1L;
+        List<ConditionResponse> mockResponses = List.of(
+                new ConditionResponse(3L, ruleNo,"EQ", "pressure1", "1013", 1),
+                new ConditionResponse(4L, ruleNo,"EQ", "pressure2", "1014", 2)
+        );
+
+        // 2. WireMock 스텁 설정
+        stubFor(get(urlEqualTo("/api/v1/conditions/rule/" + ruleNo))
+                .willReturn(aResponse()
+                        .withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody(objectMapper.writeValueAsString(mockResponses))));
+
+        // 3. FeignClient 호출
+        ResponseEntity<List<ConditionResponse>> response = conditionAdaptor.getConditionByRule(ruleNo);
+
+        // 4. 검증
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(2, response.getBody().size());
+        assertEquals("EQ", response.getBody().get(0).getConType());
     }
 
     @Test
