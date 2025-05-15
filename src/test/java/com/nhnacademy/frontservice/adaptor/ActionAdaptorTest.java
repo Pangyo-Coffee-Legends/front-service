@@ -154,4 +154,31 @@ class ActionAdaptorTest {
 
         assertEquals(HttpStatus.NO_CONTENT.value(), response.getStatusCode().value());
     }
+
+    @Test
+    @DisplayName("룰별 그룹 삭제 성공")
+    void deleteActionByRule_Success() {
+        Long ruleNo = 1L;
+        stubFor(delete(urlEqualTo("/api/v1/actions/rule/" + ruleNo))
+                .willReturn(aResponse().withStatus(204)));
+
+        ResponseEntity<Void> response = actionAdaptor.deleteActionByRule(ruleNo);
+
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        verify(deleteRequestedFor(urlEqualTo("/api/v1/actions/rule/" + ruleNo)));
+    }
+
+    @Test
+    @DisplayName("룰, 액션별 단건 삭제 성공")
+    void deleteActionsByRuleNoAndActionNo_Success() {
+        Long ruleNo = 2L;
+        Long actionNo = 22L;
+        stubFor(delete(urlEqualTo("/api/v1/actions/rule/" + ruleNo + "/action/" + actionNo))
+                .willReturn(aResponse().withStatus(204)));
+
+        ResponseEntity<Void> response = actionAdaptor.deleteActionsByRuleNoAndActionNo(ruleNo, actionNo);
+
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        verify(deleteRequestedFor(urlEqualTo("/api/v1/actions/rule/" + ruleNo + "/action/" + actionNo)));
+    }
 }

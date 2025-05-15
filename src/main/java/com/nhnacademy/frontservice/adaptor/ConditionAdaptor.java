@@ -29,4 +29,13 @@ public interface ConditionAdaptor {
 
     @DeleteMapping("/{conditionNo}")
     ResponseEntity<Void> deleteCondition(@PathVariable("conditionNo") Long conditionNo);
+
+    @DeleteMapping("/rule/{ruleNo}")
+    ResponseEntity<Void> deleteConditionByRule(@PathVariable("ruleNo") Long ruleNo);
+
+    @DeleteMapping("/rule/{ruleNo}/condition/{conditionNo}")
+    ResponseEntity<Void> deleteConditionByRuleNoAndConditionNo(
+            @PathVariable("ruleNo") Long ruleNo,
+            @PathVariable("conditionNo") Long conditionNo
+    );
 }

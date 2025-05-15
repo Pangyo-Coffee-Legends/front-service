@@ -164,4 +164,33 @@ class ConditionAdaptorTest {
 
         assertEquals(204, response.getStatusCode().value());
     }
+
+    @Test
+    @DisplayName("룰별 그룹 삭제 성공")
+    void deleteConditionByRule_Success() {
+        Long ruleNo = 1L;
+
+        // WireMock: DELETE /api/v1/conditions/rule/1 -> 204 No Content
+        stubFor(delete(urlEqualTo("/api/v1/conditions/rule/" + ruleNo))
+                .willReturn(aResponse().withStatus(204)));
+
+        ResponseEntity<Void> response = conditionAdaptor.deleteConditionByRule(ruleNo);
+
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+    }
+
+    @Test
+    @DisplayName("룰, 조건별 단건 삭제 성공")
+    void deleteConditionByRuleNoAndConditionNo_Success() {
+        Long ruleNo = 2L;
+        Long conditionNo = 22L;
+
+        // WireMock: DELETE /api/v1/conditions/rule/2/condition/22 -> 204 No Content
+        stubFor(delete(urlEqualTo("/api/v1/conditions/rule/" + ruleNo + "/condition/" + conditionNo))
+                .willReturn(aResponse().withStatus(204)));
+
+        ResponseEntity<Void> response = conditionAdaptor.deleteConditionByRuleNoAndConditionNo(ruleNo, conditionNo);
+
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+    }
 }

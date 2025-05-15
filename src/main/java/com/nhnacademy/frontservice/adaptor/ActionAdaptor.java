@@ -28,4 +28,13 @@ public interface ActionAdaptor {
 
     @DeleteMapping("/{actNo}")
     ResponseEntity<Void> deleteAction(@PathVariable("actNo") Long actNo);
+
+    @DeleteMapping("/rule/{ruleNo}")
+    ResponseEntity<Void> deleteActionByRule(@PathVariable("ruleNo") Long ruleNo);
+
+    @DeleteMapping("/rule/{ruleNo}/action/{actionNo}")
+    ResponseEntity<Void> deleteActionsByRuleNoAndActionNo (
+            @PathVariable("ruleNo") Long ruleNo,
+            @PathVariable("actionNo") Long actionNo
+    );
 }
