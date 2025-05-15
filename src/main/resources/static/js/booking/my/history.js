@@ -1,7 +1,7 @@
 'use strict';
 
-import { renderPagination } from './utils/pagination.js';
-import { cancelAlert } from './utils/alert.js';
+import { renderPagination } from '../utils/pagination.js';
+import { cancelAlert } from '../utils/alert.js';
 
 const api = apiStore();
 const format = formatStore();
@@ -40,19 +40,19 @@ const getBookings = function (bookings, totalElements, currentPage, size) {
 
     bookings.forEach((data, idx) => {
         const index = totalElements - ((currentPage - 1) * size + idx);
-        const bookingTime = new Date(data.date);
+        const bookingTime = new Date(data.startsAt);
         const now = new Date();
         const isFuture = bookingTime > now;
 
         container.innerHTML += `
             <tr>
                 <td class="booking-no">${index}</td>
-                <td class="booking-member">${data.mbName}</td>
-                <td class="booking-room">${data.roomName}</td>
+                <td class="booking-member">${data.member.name}</td>
+                <td class="booking-room">${data.room.name}</td>
                 <td class="booking-room">${data.attendeeCount}</td>
                 <td class="booking-code">${data.code}</td>
-                <td class="booking-date">${format.ampm(data.date)}</td>
-                <td class="booking-finished">${!data.finishedAt ? '-' : format.ampm(data.finishedAt)}</td>
+                <td class="booking-date">${format.ampm(data.startsAt)}</td>
+                <td class="booking-finished">${!data.finishesAt ? '-' : format.ampm(data.finishesAt)}</td>
                 <td class="booking-change">${data.changeName == null ? '-' : data.changeName}</td>
                 <td>
                   ${data.changeName === '취소' || !isFuture ? '' :

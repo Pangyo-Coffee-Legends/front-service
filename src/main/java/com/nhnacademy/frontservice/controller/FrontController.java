@@ -53,12 +53,17 @@ public class FrontController {
 
     @GetMapping("/booking/history")
     public String bookings(){
-        return "booking/history";
+        return "booking/my/history";
     }
 
     @GetMapping("/booking/statistics")
     public String bookingStatistics() {
-        return "booking/statistics";
+        return "booking/my/statistics";
+    }
+
+    @GetMapping("/admin/booking/statistics")
+    public String adminBookingStatistics() {
+        return "booking/admin/statistics";
     }
 
     @GetMapping("/meeting/alert")
@@ -68,7 +73,7 @@ public class FrontController {
 
     @GetMapping("/admin/booking")
     public String bookAdmin(){
-        return "booking/admin";
+        return "booking/admin/history";
     }
 
     @GetMapping(value = {"/charts"})

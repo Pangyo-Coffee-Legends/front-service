@@ -1,14 +1,8 @@
 'use strict';
 
-const api = apiStore();
-const container = document.querySelector('.container');
+export { addChart, drawWeekCountChart, drawTimeCountChart, drawMonthlyCountChart }
 
-document.addEventListener('DOMContentLoaded', async function () {
-    await drawWeekCountChart(); // 요일별
-    await drawTimeCountChart(); // 시간별
-    await drawMonthlyCountChart(); // 월별
-    // await attendeeCountChart(); // 총 예약자
-});
+const container = document.querySelector('.container');
 
 function addChart(chartId, chartType, chartData, chartOptions){
     const col = document.createElement('div');
@@ -40,15 +34,14 @@ function addChart(chartId, chartType, chartData, chartOptions){
     });
 }
 
-const drawMonthlyCountChart = async function () {
-    const bookings = await api.getAllBookingsListList();
+function drawMonthlyCountChart (bookings) {
 
     const countMap = {}; // { roomName: { '2025-05': count, ... } }
     const monthSet = new Set(); // 모든 월을 수집해서 x축으로 사용
 
     bookings.forEach(booking => {
-        const room = booking.roomName;
-        const date = new Date(booking.date);
+        const room = booking.room.name;
+        const date = new Date(booking.startsAt);
         const yearMonth = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
         monthSet.add(yearMonth);
 
@@ -110,8 +103,7 @@ const drawMonthlyCountChart = async function () {
 }
 
 
-//
-const drawTimeCountChart = async function(){
+function drawTimeCountChart (bookings){
     const timeSlots = [
         "09:00",
         // "09:30",
@@ -133,13 +125,11 @@ const drawTimeCountChart = async function(){
         // "17:30"
     ];
 
-    const bookings = await api.getAllBookingsListList();
-
     const countMap = {};
 
     bookings.forEach(booking => {
-        const room = booking.roomName;
-        const startTime = booking.date.split('T')[1].substring(0, 5);
+        const room = booking.room.name;
+        const startTime = booking.startsAt.split('T')[1].substring(0, 5);
 
         if (!countMap[room]) {
             countMap[room] = {};
@@ -186,14 +176,13 @@ const drawTimeCountChart = async function(){
     addChart('시간별 회의실 예약 수', 'bar', chartData, chartOption)
 }
 
-const drawWeekCountChart = async function () {
-    const bookings = await api.getAllBookingsListList();
+function drawWeekCountChart (bookings) {
 
     const roomWeekdayMap = {};
 
     bookings.forEach(booking => {
-        const room = booking.roomName.trim();
-        const weekday = getWeekdayIndex(booking.date); // 0~6 (월~일)
+        const room = booking.room.name.trim();
+        const weekday = getWeekdayIndex(booking.startsAt); // 0~6 (월~일)
 
         if (!roomWeekdayMap[room]) {
             roomWeekdayMap[room] = Array(7).fill(0);
@@ -231,7 +220,7 @@ const drawWeekCountChart = async function () {
     };
 
     addChart('요일별 회의실 예약 수', 'bar', chartData, chartOptions);
-};
+}
 
 // todo 취소 비율
 

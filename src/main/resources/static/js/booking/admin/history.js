@@ -1,7 +1,7 @@
 'use strict';
 
-import { renderPagination } from './utils/pagination.js';
-import { cancelAlert } from './utils/alert.js';
+import { renderPagination } from '../utils/pagination.js';
+import { cancelAlert } from '../utils/alert.js';
 
 const api = apiStore();
 const format = formatStore();
