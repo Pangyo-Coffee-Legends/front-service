@@ -16,15 +16,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     code.innerText = data.code;
 
     const date = document.querySelector(".date");
-    date.innerText = format.ampm(data.date);
+    date.innerText = format.ampm(data.startsAt);
     const finished = document.querySelector(".finished-at");
-    finished.innerText = format.ampm(data.finishedAt);
+    finished.innerText = format.ampm(data.finishesAt);
     const room = document.querySelector(".room");
-    room.innerText = data.roomName;
+    room.innerText = data.room.name;
     const attendees = document.querySelector(".attendees");
     attendees.innerText = data.attendeeCount;
     const member = document.querySelector(".member-name");
-    member.innerText = data.mbName;
+    member.innerText = data.member.name;
 
 });
 

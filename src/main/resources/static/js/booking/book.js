@@ -21,9 +21,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 const update = async function () {
     const data = await api.getBooking(id);
 
-    selectedRoom = data.roomNo;
-    selectedDate = data.date.split('T')[0];
-    selectedTime = format.dateExtractTime(new Date(data.date));
+    selectedRoom = data.room.no;
+    selectedDate = data.startsAt.split('T')[0];
+    selectedTime = format.dateExtractTime(new Date(data.startsAt));
 
     document.getElementById("attendees").value = data.attendeeCount;
 
@@ -156,8 +156,8 @@ const getBookings = async function (roomNo, dateStr) {
     const bookedTimes = new Set();
 
     response.forEach(data => {
-        const startTime = new Date(`1970-01-01T${data.date.split('T')[1]}`);
-        const endTime = new Date(`1970-01-01T${data.finishedAt.split('T')[1]}`);
+        const startTime = new Date(`1970-01-01T${data.startsAt.split('T')[1]}`);
+        const endTime = new Date(`1970-01-01T${data.finishesAt.split('T')[1]}`);
 
         const beforeStart = new Date(startTime);
         beforeStart.setMinutes(beforeStart.getMinutes() - 30);

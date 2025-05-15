@@ -41,27 +41,27 @@ const getBookings = function (bookings, totalElements, currentPage, size) {
 
     bookings.forEach((data, idx) => {
         const index = totalElements - ((currentPage - 1) * size + idx);
-        const bookingTime = new Date(data.date);
+        const bookingTime = new Date(data.startsAt);
         const now = new Date();
         const isFuture = bookingTime > now;
 
         container.innerHTML += `
             <tr>
                 <td class="booking-no">${index}</td>
-                <td class="booking-member">${data.mbName}</td>
-                <td class="booking-email">${data.email}</td>
+                <td class="booking-member">${data.member.name}</td>
+                <td class="booking-email">${data.member.email}</td>
 <!--                <td class="booking-phone">${data.phoneNumber}</td>-->
-                <td class="booking-room">${data.roomName}</td>
+                <td class="booking-room">${data.room.name}</td>
                 <td class="booking-room">${data.attendeeCount}</td>
                 <td class="booking-code">${data.changeName === '취소' ? '-' : data.code}</td>
-                <td class="booking-date">${format.ampm(data.date)}</td>
-                <td class="booking-finished">${!data.finishedAt ? '-' : format.ampm(data.finishedAt)}</td>
+                <td class="booking-date">${format.ampm(data.startsAt)}</td>
+                <td class="booking-finished">${!data.finishesAt ? '-' : format.ampm(data.finishesAt)}</td>
                 <td class="booking-change">${data.changeName == null ? '-' : data.changeName}</td>
-                <td>
+<!--                <td>
                   ${data.changeName === '취소' || !isFuture ? '' :
                     `<button class="cancel-btn" data-value="${data.no}">취소</button>`
         }
-                </td>
+                </td>-->
                 <td class="booking-date">${format.ampm(data.createdAt)}</td>
             </tr>
         `;
