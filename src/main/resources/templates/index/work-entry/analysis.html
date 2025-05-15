@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{/layout/index/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title>AI 기반 근태 평가</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <style>
+        #resultText {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-family: 'Noto Sans KR', sans-serif;
+            line-height: 1.6;
+        }
+        #resultText h1, #resultText h2, #resultText h3 {
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 0.3rem;
+            margin-top: 1rem;
+        }
+        #resultText pre {
+            background-color: #eee;
+            padding: 0.5rem;
+            border-radius: 0.3rem;
+            overflow-x: auto;
+        }
+    </style>
+
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container my-5">
+        <div class="card shadow-lg border-0">
+            <div class="card-body">
+                <h2 class="mb-4 text-primary">
+                    <i class="bi bi-robot me-2"></i>AI 기반 근태 평가 도구
+                </h2>
+
+                <form id="analysisForm" class="needs-validation" novalidate>
+                    <div class="mb-3">
+                        <label for="no" class="form-label fw-semibold">👤 사원 번호</label>
+                        <input type="number" id="no" class="form-control form-control-lg" placeholder="사원 번호 입력" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="promptText" class="form-label fw-semibold">📝 프롬프트 내용</label>
+                        <textarea id="promptText" class="form-control form-control-lg" rows="5"
+                                  placeholder="프롬프트 입력 (예: 이 사원의 최근 근무 패턴을 분석해줘)" required></textarea>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="bi bi-chat-dots me-1"></i>AI 분석 요청
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="result-section" class="mt-5">
+            <div class="card border-0 shadow">
+                <div class="card-header bg-white border-bottom-0">
+                    <h4 class="fw-bold text-secondary">
+                        <i class="bi bi-journal-text me-2"></i>분석 결과
+                    </h4>
+                </div>
+                <div class="card-body bg-light">
+                    <pre id="resultText" class="p-3 text-wrap fs-6" style="white-space: pre-wrap; min-height: 200px;"></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Icons CDN (필요 시 추가) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+</div>
+</body>
+</html>
+
