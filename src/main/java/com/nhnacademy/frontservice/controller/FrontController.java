@@ -29,7 +29,7 @@ public class FrontController {
     }
 
     @GetMapping("/")
-    public String randing(){return "index/landing";}
+    public String landing(){return "index/landing";}
 
     @GetMapping("/booking")
     public String book(){
@@ -68,7 +68,7 @@ public class FrontController {
 
     @GetMapping("/meeting/alert")
     public String meetingAlert(){
-        return "extend-end";
+        return "meeting/extend-end";
     }
 
     @GetMapping("/admin/booking")
@@ -78,4 +78,19 @@ public class FrontController {
 
     @GetMapping(value = {"/charts"})
     public String charts() { return "index/charts";}
+
+    @GetMapping(value = {"/weekly-entry-charts"}) //월간 출입 차트 조회
+    public String monthlyEntryCharts(){
+        return "index/work-entry/weekly-entry-chart";
+    }
+
+    @GetMapping(value = {"/working-hours-statistics"})// 근무시간통계
+    public String workingHoursStatistics(){
+        return "index/work-entry/working-hours-statistics";
+    }
+
+    @GetMapping(value = {"/real-time"})//실시간 출입 현황
+    public String realTime(){
+        return "index/work-entry/real-time";
+    }
 }
