@@ -5,7 +5,7 @@ import {drawWeekCountChart, drawTimeCountChart, drawMonthlyCountChart} from '../
 const api = apiStore();
 
 document.addEventListener('DOMContentLoaded', async () => {
-    const bookings = await api.getAllBookingsListList();
+    const bookings = await api.getAllBookingsList();
 
     drawWeekCountChart(bookings);
     drawTimeCountChart(bookings);

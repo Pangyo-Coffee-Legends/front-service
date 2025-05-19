@@ -92,7 +92,7 @@ function apiStore(){
     }
 
     // 예약 조회(통계) - 전체 리스트
-    api.getAllBookingsListList = async function() {
+    api.getAllBookingsList = async function() {
         const response = await fetch(`${SERVER_URL}/bookings/statistics`, GET_OPTIONS);
         if(!response.ok) {
             const error = await response.json();
