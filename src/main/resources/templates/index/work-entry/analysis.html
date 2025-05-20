@@ -7,9 +7,6 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-
 </head>
 <body>
 <div layout:fragment="content">
@@ -33,17 +30,21 @@
             <div id="chatBox" class="flex-grow-1 overflow-auto bg-white border rounded p-3 mb-3"></div>
 
             <!-- 분석 그래프 출력 영역 -->
-            <div id="chartArea" class="bg-white border rounded p-3 mt-3">
+            <div id="chartArea" class="bg-white border rounded p-3 mt-3" style="overflow-y: auto; max-height: 300px;">
                 <h6 class="fw-bold text-secondary mb-3">📊 분석 그래프</h6>
-<!--                <div id="chartAreaContent"></div>-->
             </div>
 
+            <!-- 🔽 드롭다운 및 분석 폼 -->
             <form id="analysisForm" class="border rounded p-3 bg-white">
                 <div class="row g-2 align-items-end">
-                    <div class="col-md-2">
-                        <input type="number" id="no" class="form-control form-control-sm" placeholder="사원번호" required>
+                    <!-- 기존 번호 입력 제거 후 드롭다운으로 변경 -->
+                    <div class="col-md-3">
+                        <select id="memberSelect" class="form-select form-select-sm" required>
+                            <option value="">사원을 선택하세요</option>
+                            <!-- 자바스크립트에서 동적으로 채워짐 -->
+                        </select>
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-7">
                         <textarea id="promptText" class="form-control form-control-sm" rows="2"
                                   placeholder="질문을 입력하세요" required></textarea>
                     </div>
@@ -58,6 +59,7 @@
     </div>
 </div>
 
+<!-- 📎 외부 자바스크립트 -->
 <script src="/js/work-entry/analysis.js"></script>
 </body>
 </html>

@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('analysisForm');
     const promptInput = document.getElementById('promptText');
-    const memberInput = document.getElementById('no');
+    const memberInput = document.getElementById('memberSelect');
     const chatBox = document.getElementById('chatBox');
     const threadList = document.getElementById('threadList');
     const createBtn = document.getElementById('createThreadBtn');
@@ -13,7 +13,16 @@ document.addEventListener('DOMContentLoaded', function () {
         console.error("❗ 필수 요소가 누락되었습니다. HTML 구조를 다시 확인하세요.");
         return;
     }
-
+    fetch('http://localhost:10251/api/v1/members?page=0&size=100', { credentials: 'include' })
+        .then(res => res.json())
+        .then(data => {
+            data.content.forEach(member => {
+                const option = document.createElement('option');
+                option.value = member.no;
+                option.textContent = `${member.name} (${member.no})`;
+                memberInput.appendChild(option);
+            });
+        });
     promptInput.addEventListener('keydown', function (e) {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
