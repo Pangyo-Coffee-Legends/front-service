@@ -40,6 +40,51 @@ public class FrontController {
     @GetMapping("/")
     public String landing(){return "index/landing";}
 
+    @GetMapping("/booking")
+    public String book(){
+        return "booking/index";
+    }
+
+    @GetMapping("/booking/update")
+    public String updateBooking(){
+        return "booking/index";
+    }
+
+    @GetMapping("/booking/success")
+    public String success(){
+        return "booking/success";
+    }
+
+    @GetMapping("/booking/failed")
+    public String failed(){
+        return "booking/failed";
+    }
+
+    @GetMapping("/booking/history")
+    public String bookings(){
+        return "booking/my/history";
+    }
+
+    @GetMapping("/booking/statistics")
+    public String bookingStatistics() {
+        return "booking/my/statistics";
+    }
+
+    @GetMapping("/admin/booking/statistics")
+    public String adminBookingStatistics() {
+        return "booking/admin/statistics";
+    }
+
+    @GetMapping("/meeting/alert")
+    public String meetingAlert(){
+        return "meeting/extend-end";
+    }
+
+    @GetMapping("/admin/booking")
+    public String bookAdmin(){
+        return "booking/admin/history";
+    }
+
     @GetMapping(value = {"/charts"})
     public String charts() { return "index/charts";}
 
