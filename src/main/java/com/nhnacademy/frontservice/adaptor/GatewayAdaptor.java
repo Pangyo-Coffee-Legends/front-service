@@ -1,5 +1,6 @@
 package com.nhnacademy.frontservice.adaptor;
 
+import com.nhnacademy.frontservice.dto.meetingroom.MeetingRoomResponse;
 import com.nhnacademy.frontservice.dto.member.*;
 import com.nhnacademy.frontservice.dto.token.JwtIssueRequest;
 import com.nhnacademy.frontservice.dto.token.JwtResponse;
@@ -33,6 +34,9 @@ public interface GatewayAdaptor {
      */
     @GetMapping("/members/email/{mbEmail}")
     ResponseEntity<MemberResponse> getMemberByMbEmail(@PathVariable("mbEmail") String email);
+
+    @GetMapping("/meeting-rooms/{meeting-room-id}")
+    ResponseEntity<MeetingRoomResponse> getMeetingRoomById(@PathVariable("meeting-room-id") Long id);
 
     /**
      * JWT 토큰 발급 요청을 보냅니다.

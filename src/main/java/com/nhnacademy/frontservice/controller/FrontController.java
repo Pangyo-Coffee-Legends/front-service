@@ -1,10 +1,19 @@
 package com.nhnacademy.frontservice.controller;
 
+import com.nhnacademy.frontservice.adaptor.GatewayAdaptor;
+import com.nhnacademy.frontservice.dto.meetingroom.MeetingRoomResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
+@RequiredArgsConstructor
 public class FrontController {
+
+    private final GatewayAdaptor gatewayAdaptor;
+
     @GetMapping(value = {"/index"})
     public String index(){
         // Gateway에서 JWT 유효성 검증이 된 후 돌아오는 데이터의 값을 @ModelAttribute 또는 front-service에서 확인할 수 있는 형태의 데이터를 parameter로 받아서
@@ -47,5 +56,24 @@ public class FrontController {
     @GetMapping(value = {"/real-time"})//실시간 출입 현황
     public String realTime(){
         return "index/work-entry/real-time";
+    }
+
+    @GetMapping(value = "/meeting-rooms") // 회의실 목록
+    public String meetingRooms() {
+        return "index/meeting-room/meeting-rooms";
+    }
+
+    @GetMapping(value = "/meeting-rooms/{room-no}/bookings")
+    public String meetingRoomBookings(@PathVariable("room-no") Long no, Model model) {
+
+        model.addAttribute("no", no);
+
+        MeetingRoomResponse meetingRoomResponse = gatewayAdaptor.getMeetingRoomById(no).getBody();
+
+        if (meetingRoomResponse != null) {
+            model.addAttribute("roomName", meetingRoomResponse.getMeetingRoomName());
+        }
+
+        return "index/meeting-room/meeting-room-bookings";
     }
 }
