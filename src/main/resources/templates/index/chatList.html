@@ -24,6 +24,7 @@
                     <th>방 ID</th>
                     <th>채팅방 이름</th>
                     <th>현재 인원수</th>
+                    <th>안 읽은 메시지</th>
                     <th>입장</th>
                 </tr>
                 </thead>
@@ -52,9 +53,14 @@
         </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
     <script th:inline="javascript">
         // API 기본 URL (실제 환경에 맞게 수정 필요)
         const API_BASE_URL = 'http://localhost:10251'; // 실제 API 서버 주소로 변경해주세요.
+        const SOCKJS_ENDPOINT = `${API_BASE_URL}/ws/chat/connect`; // 예: '/ws-stomp' 또는 서버에서 설정한 엔드포인트
+        const CHAT_LIST_UPDATE_TOPIC = '/topic/invitations'; // 백엔드에서 지정한 사용자 구독 경로
+        // const READ_CHAT_ROOM_API_URL = `${API_BASE_URL}/api/v1/chat/room/${roomId}/read`;
 
         // DOM 요소 가져오기
         const chatRoomListBody = document.getElementById('chat-room-list-body');
@@ -65,13 +71,61 @@
         const cancelCreateRoomBtn = document.getElementById('cancelCreateRoomBtn');
         const confirmCreateRoomBtn = document.getElementById('confirmCreateRoomBtn');
 
-
         // 채팅방 목록을 가져올 API URL (원래 코드에서 사용하던 URL)
         const CHAT_ROOM_LIST_API_URL = `${API_BASE_URL}/api/v1/chat/room/list`;
         const CREATE_CHAT_ROOM_API_URL = `${API_BASE_URL}/api/v1/chat/room/group/create`;
         const JOIN_CHAT_ROOM_API_URL = `${API_BASE_URL}/api/v1/chat/room/group`;
+        const EXIT_CHAT_ROOM_API_URL = `${API_BASE_URL}/api/v1/chat/room`;
 
         const userEmail = /*[[${userEmail}]]*/ 'default-email@example.com';
+
+        let stompClient = null;
+
+        function connect() {
+            // 1. SockJS 클라이언트 생성
+            stompClient = new SockJS(SOCKJS_ENDPOINT);
+
+            // 2. SockJS 클라이언트를 통해 STOMP 클라이언트 생성
+            stompClient = Stomp.over(stompClient);
+
+
+            stompClient.connect({}, onWsConnected, onWsError); // 헤더는 필요시 추가
+        }
+
+        function onWsConnected() {
+            console.log("STOMP 연결 성공!");
+            // 채팅 목록 업데이트 신호를 받을 경로 구독
+            stompClient.subscribe(CHAT_LIST_UPDATE_TOPIC, onInvitationNotificationReceived); // 콜백 함수 연결
+            console.log(`구독 시작: ${CHAT_LIST_UPDATE_TOPIC}`);
+        }
+
+        function onWsError(error) {
+            console.error("STOMP 연결 실패:", error);
+        }
+
+        /**
+         * 구독한 토픽에서 초대 관련 알림 수신 시 콜백 함수
+         */
+        function onInvitationNotificationReceived(payload) {
+            console.log("초대 관련 알림 수신:", payload);
+            try {
+                const notification = JSON.parse(payload.body);
+
+                // **중요: 이 알림이 나(현재 사용자)를 위한 것인지 확인**
+                if (notification &&
+                    notification.action === 'reloadChatList' &&
+                    notification.invitedUser === userEmail) { // 백엔드가 보낸 이메일과 현재 사용자 이메일 비교
+
+                    console.log("나에게 온 초대 알림 확인. 채팅 목록 새로고침 실행.");
+                    loadChatRoomList(); // <<< 목록 새로고침 함수 호출
+                } else {
+                    // console.log("나에게 온 알림이 아님."); // 디버깅용 로그
+                }
+            } catch (e) {
+                console.error("수신 메시지 파싱 오류:", e);
+            }
+        }
+
 
         /**
          * 채팅방 목록을 불러와 테이블에 렌더링하는 함수
@@ -123,14 +177,21 @@
                 const roomId = room.roomId !== undefined ? room.roomId : 'N/A';
                 const roomName = room.roomName !== undefined ? room.roomName : '이름 없음';
                 const participantCount = room.participantCount !== undefined ? room.participantCount : '0';
+                const unreadCount = room.unreadCount !== undefined ? room.unreadCount : '0';
 
                 row.innerHTML = `
                     <td>${escapeHtml(roomId)}</td>
                     <td>${escapeHtml(roomName)}</td>
                     <td>${escapeHtml(participantCount)}</td>
+                    <td>${escapeHtml(unreadCount)}</td>
                     <td>
                         <button class="btn btn-primary btn-enter-room" data-room-id="${escapeHtml(roomId)}" data-room-name="${escapeHtml(roomName)}">
                             입장하기
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary btn-exit-room" data-room-id="${escapeHtml(roomId)}" data-room-name="${escapeHtml(roomName)}">
+                            나가기
                         </button>
                     </td>
                 `;
@@ -140,6 +201,10 @@
             // 동적으로 생성된 '입장하기' 버튼에 이벤트 리스너 추가
             document.querySelectorAll('.btn-enter-room').forEach(button => {
                 button.addEventListener('click', handleEnterChatRoom);
+            });
+            // 동적으로 생성된 '나가기' 버튼에 이벤트 리스너 추가
+            document.querySelectorAll('.btn-exit-room').forEach(button => {
+                button.addEventListener('click', handleExitChatRoom);
             });
         }
 
@@ -162,8 +227,20 @@
                 });
 
                 if(response.ok) {
+                    // 입장시 해당 채팅방에 존재하는 메시지 읽음 처리
+                    await fetch(`${API_BASE_URL}/api/v1/chat/room/${roomId}/read`, {
+                        method: 'POST',
+                        credentials: 'include'
+                    });
+
+                    // 채팅방 입장 시 채팅방에 존재하는 모든 사용자의 메시지 요소 중 하나인 unreadCount를 프런트로 다시 전송
+                    await fetch(`${API_BASE_URL}/api/v1/chat/room/${roomId}/unreadUpdate`, {
+                        method: 'GET',
+                        credentials: 'include'
+                    });
+
                     // 해당 컨트롤러 api로 이동
-                    window.location.href = `/stompChatPage/${roomId}`;
+                    window.location.href = `/stompChatPage/${roomId}?roomName=${encodeURIComponent(roomName)}`;
                 } else {
                     alert('채팅방 참여에 실패했습니다.');
                 }
@@ -172,13 +249,50 @@
                 alert('채팅방 참여 중 오류가 발생했습니다.');
             }
 
-            // API 요청 URL 구성 (쿼리 파라미터 방식)
-            const url = `${JOIN_CHAT_ROOM_API_URL}/${encodeURIComponent(roomId)}/join`;
+            // // API 요청 URL 구성 (쿼리 파라미터 방식)
+            // const url = `${JOIN_CHAT_ROOM_API_URL}/${encodeURIComponent(roomId)}/join`;
+            //
+            // await fetch(url, {
+            //     method: 'POST', // 또는 백엔드가 요구하는 메소드 (GET, POST 등)
+            //     credentials: 'include' // 인증 쿠키 전송
+            // });
+        }
 
-            await fetch(url, {
-                method: 'POST', // 또는 백엔드가 요구하는 메소드 (GET, POST 등)
-                credentials: 'include' // 인증 쿠키 전송
-            });
+        /**
+         * '나가기' 버튼 클릭 시 실행될 함수
+         * @param {Event} event - 클릭 이벤트
+         */
+        async function handleExitChatRoom(event) {
+            const button = event.target;
+            const roomId = button.dataset.roomId;
+            const roomName = button.dataset.roomName;
+
+            console.log(`선택된 채팅방 정보: ID=${roomId}, Name=${roomName}`);
+
+            try {
+                const url = `${EXIT_CHAT_ROOM_API_URL}/${encodeURIComponent(roomId)}/leave`;
+                const response = await fetch(url, {
+                    method: 'DELETE', // 또는 백엔드가 요구하는 메소드 (GET, POST 등)
+                    credentials: 'include' // 인증 쿠키 전송
+                });
+
+                if(response.ok) {
+                    await loadChatRoomList(); // 채팅방 목록 새로고침
+                } else {
+                    alert('채팅방 나가기에 실패했습니다.');
+                }
+            } catch (error) {
+                console.error('채팅방 나가기 중 오류 발생:', error);
+                alert('채팅방 나가기 중 오류가 발생했습니다.');
+            }
+
+            // // API 요청 URL 구성 (쿼리 파라미터 방식)
+            // const url = `${JOIN_CHAT_ROOM_API_URL}/${encodeURIComponent(roomId)}/join`;
+            //
+            // await fetch(url, {
+            //     method: 'POST', // 또는 백엔드가 요구하는 메소드 (GET, POST 등)
+            //     credentials: 'include' // 인증 쿠키 전송
+            // });
         }
 
         // 모달 영역 관련 함수
@@ -255,6 +369,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             // 페이지 로드 시 채팅방 목록 불러오기
             loadChatRoomList();
+            connect();
 
             if (btnShowCreateRoomModal) {
                 btnShowCreateRoomModal.addEventListener('click', openCreateRoomModal);
