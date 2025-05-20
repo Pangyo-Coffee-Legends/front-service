@@ -1,7 +1,5 @@
 package com.nhnacademy.frontservice.controller;
 
-import com.nhnacademy.frontservice.dto.MemberRegisterRequest;
-import com.nhnacademy.frontservice.service.MemberService;
 import com.nhnacademy.frontservice.service.impl.MemberServiceImpl;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -9,16 +7,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class FrontController {
-
-    private final MemberServiceImpl memberService;
-
-    public FrontController(MemberServiceImpl memberService) {
-        this.memberService = memberService;
-    }
 
     @GetMapping(value = {"/index"})
     public String index(){
@@ -44,16 +35,55 @@ public class FrontController {
     }
 
     @GetMapping("/")
-    public String randing(){return "index/landing";}
+    public String landing(){return "index/landing";}
 
+    @GetMapping("/booking")
+    public String book(){
+        return "booking/index";
+    }
+
+    @GetMapping("/booking/update")
+    public String updateBooking(){
+        return "booking/index";
+    }
+
+    @GetMapping("/booking/success")
+    public String success(){
+        return "booking/success";
+    }
+
+    @GetMapping("/booking/failed")
+    public String failed(){
+        return "booking/failed";
+    }
+
+    @GetMapping("/booking/history")
+    public String bookings(){
+        return "booking/my/history";
+    }
+
+    @GetMapping("/booking/statistics")
+    public String bookingStatistics() {
+        return "booking/my/statistics";
+    }
+
+    @GetMapping("/admin/booking/statistics")
+    public String adminBookingStatistics() {
+        return "booking/admin/statistics";
+    }
+
+    @GetMapping("/meeting/alert")
+    public String meetingAlert(){
+        return "meeting/extend-end";
+    }
+
+    @GetMapping("/admin/booking")
+    public String bookAdmin(){
+        return "booking/admin/history";
+    }
 
     @GetMapping(value = {"/charts"})
     public String charts() { return "index/charts";}
-
-//    @PostMapping("/register")
-//    public String register() {
-//        return "index/users";
-//    }
 
     @GetMapping("/users")
     public String chatPage(Model model) {
@@ -88,5 +118,20 @@ public class FrontController {
 
         System.out.println("1234" + userEmail);
         return "index/chatList";
+    }
+
+    @GetMapping(value = {"/weekly-entry-charts"}) //월간 출입 차트 조회
+    public String monthlyEntryCharts(){
+        return "index/work-entry/weekly-entry-chart";
+    }
+
+    @GetMapping(value = {"/working-hours-statistics"})// 근무시간통계
+    public String workingHoursStatistics(){
+        return "index/work-entry/working-hours-statistics";
+    }
+
+    @GetMapping(value = {"/real-time"})//실시간 출입 현황
+    public String realTime(){
+        return "index/work-entry/real-time";
     }
 }

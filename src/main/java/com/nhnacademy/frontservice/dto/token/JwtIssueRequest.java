@@ -1,4 +1,4 @@
-package com.nhnacademy.frontservice.dto;
+package com.nhnacademy.frontservice.dto.token;
 
 import lombok.*;
 

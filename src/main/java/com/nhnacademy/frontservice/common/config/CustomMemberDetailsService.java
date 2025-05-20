@@ -1,6 +1,6 @@
 package com.nhnacademy.frontservice.common.config;
 
-import com.nhnacademy.frontservice.dto.MemberResponse;
+import com.nhnacademy.frontservice.dto.member.MemberResponse;
 import com.nhnacademy.frontservice.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;

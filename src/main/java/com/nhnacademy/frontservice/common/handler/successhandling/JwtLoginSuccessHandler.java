@@ -1,8 +1,8 @@
 package com.nhnacademy.frontservice.common.handler.successhandling;
 
 import com.nhnacademy.frontservice.adaptor.GatewayAdaptor;
-import com.nhnacademy.frontservice.dto.JwtIssueRequest;
-import com.nhnacademy.frontservice.dto.JwtResponse;
+import com.nhnacademy.frontservice.dto.token.JwtIssueRequest;
+import com.nhnacademy.frontservice.dto.token.JwtResponse;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -43,7 +43,6 @@ public class JwtLoginSuccessHandler implements AuthenticationSuccessHandler {
 
         JwtResponse tokens = tokenResponse.getBody();
 
-        // todo 쿠키에 넣기
         String accessToken = tokens.getAccessToken();
         String refreshToken = tokens.getRefreshToken();
 

@@ -32,7 +32,8 @@ document.addEventListener('DOMContentLoaded', function () {
             // 드롭다운 아이템 추가
             const items = index === 0 ?
                 ['Analytics', 'eCommerce', 'Sales'] :
-                ['Basic UI Elements', 'Icons', 'Forms'];
+                // ['월간 출입 현황', '근무시간통계', '이상 출입 알림 목록'];
+
 
             items.forEach(item => {
                 const li = document.createElement('li');
