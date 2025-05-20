@@ -1,76 +1,63 @@
 <!DOCTYPE html>
-<html lang="ko" layout:decorate="@{/layout/index/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html lang="ko"
+      layout:decorate="~{/layout/index/layout.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-    <title>AI 기반 근태 평가</title>
+    <title>AI 기반 근태 분석</title>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <style>
-        #resultText {
-            background-color: #f8f9fa;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            font-family: 'Noto Sans KR', sans-serif;
-            line-height: 1.6;
-        }
-        #resultText h1, #resultText h2, #resultText h3 {
-            border-bottom: 1px solid #ccc;
-            padding-bottom: 0.3rem;
-            margin-top: 1rem;
-        }
-        #resultText pre {
-            background-color: #eee;
-            padding: 0.5rem;
-            border-radius: 0.3rem;
-            overflow-x: auto;
-        }
-    </style>
 
 </head>
 <body>
 <div layout:fragment="content">
-    <div class="container my-5">
-        <div class="card shadow-lg border-0">
-            <div class="card-body">
-                <h2 class="mb-4 text-primary">
-                    <i class="bi bi-robot me-2"></i>AI 기반 근태 평가 도구
-                </h2>
-
-                <form id="analysisForm" class="needs-validation" novalidate>
-                    <div class="mb-3">
-                        <label for="no" class="form-label fw-semibold">👤 사원 번호</label>
-                        <input type="number" id="no" class="form-control form-control-lg" placeholder="사원 번호 입력" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="promptText" class="form-label fw-semibold">📝 프롬프트 내용</label>
-                        <textarea id="promptText" class="form-control form-control-lg" rows="5"
-                                  placeholder="프롬프트 입력 (예: 이 사원의 최근 근무 패턴을 분석해줘)" required></textarea>
-                    </div>
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-primary btn-lg">
-                            <i class="bi bi-chat-dots me-1"></i>AI 분석 요청
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <div id="result-section" class="mt-5">
-            <div class="card border-0 shadow">
-                <div class="card-header bg-white border-bottom-0">
-                    <h4 class="fw-bold text-secondary">
-                        <i class="bi bi-journal-text me-2"></i>분석 결과
-                    </h4>
-                </div>
-                <div class="card-body bg-light">
-                    <pre id="resultText" class="p-3 text-wrap fs-6" style="white-space: pre-wrap; min-height: 200px;"></pre>
-                </div>
-            </div>
-        </div>
+    <div class="page-title">
+        <span class="emoji">🧠📊</span>
+        <span><span class="highlight">AI</span> 기반 근태 분석</span>
     </div>
 
-    <!-- Bootstrap Icons CDN (필요 시 추가) -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <div class="container-fluid vh-100 d-flex">
+        <!-- 좌측: 쓰레드 목록 -->
+        <div class="col-md-3 border-end p-3 overflow-auto">
+            <h5 class="fw-bold">💬 대화 목록</h5>
+            <ul id="threadList" class="list-group mb-3" style="max-height: 75vh;"></ul>
+            <button id="createThreadBtn" class="btn btn-outline-primary btn-sm w-100">
+                <i class="bi bi-plus-circle me-1"></i> 새 대화
+            </button>
+        </div>
+
+        <!-- 우측: 채팅 + 그래프 -->
+        <div class="col-md-9 d-flex flex-column p-3 bg-light">
+            <div id="chatBox" class="flex-grow-1 overflow-auto bg-white border rounded p-3 mb-3"></div>
+
+            <!-- 분석 그래프 출력 영역 -->
+            <div id="chartArea" class="bg-white border rounded p-3 mt-3">
+                <h6 class="fw-bold text-secondary mb-3">📊 분석 그래프</h6>
+<!--                <div id="chartAreaContent"></div>-->
+            </div>
+
+            <form id="analysisForm" class="border rounded p-3 bg-white">
+                <div class="row g-2 align-items-end">
+                    <div class="col-md-2">
+                        <input type="number" id="no" class="form-control form-control-sm" placeholder="사원번호" required>
+                    </div>
+                    <div class="col-md-8">
+                        <textarea id="promptText" class="form-control form-control-sm" rows="2"
+                                  placeholder="질문을 입력하세요" required></textarea>
+                    </div>
+                    <div class="col-md-2 d-grid">
+                        <button type="submit" class="btn btn-sm btn-primary">
+                            <i class="bi bi-send me-1"></i> 보내기
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
+
+<script src="/js/work-entry/analysis.js"></script>
 </body>
 </html>
-

@@ -212,3 +212,42 @@ body {
 .legend-box.status-green   { background-color: #d4edda; }
 .legend-box.status-orange  { background-color: #ffe5b4; }
 .legend-box.status-pink    { background-color: #fce4ec; }
+
+/*AI 기반 근태 분석 제목*/
+.page-title {
+  font-family: 'Segoe UI', 'Pretendard', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #1a237e; /* 진한 남색 */
+  padding: 1.5rem 2rem 1rem 2rem;
+  border-bottom: 2px solid #e0e0e0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.page-title .emoji {
+  font-size: 2rem;
+}
+
+.page-title .highlight {
+  color: #1976d2; /* 파란색 포인트 */
+}
+
+@media (max-width: 768px) {
+  .page-title {
+    font-size: 1.25rem;
+    padding: 1rem;
+  }
+}
+ #chartArea {
+   max-height: 400px;
+   overflow-y: auto;
+   background-color: #f9f9f9;
+   padding: 1rem;
+   border: 1px solid #ddd;
+ }
+#chartArea canvas {
+  max-height: 300px !important;
+}
+

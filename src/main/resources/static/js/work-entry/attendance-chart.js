@@ -23,8 +23,8 @@ document.addEventListener('DOMContentLoaded', function () {
      * @type {Object<number, string>}
      */
     const statusMap = {
-        1: "출석", 2: "지각", 3: "결석", 4: "외출",
-        5: "휴가", 6: "질병", 7: "조퇴", 8: "기타"
+        1: "출석", 2: "지각", 3: "결근", 4: "외근",
+        5: "연차", 6: "질병/입원", 7: "반차", 8: "상(喪)"
     };
 
     // ======= 전역 상태 변수 =======
@@ -265,8 +265,10 @@ document.addEventListener('DOMContentLoaded', function () {
      * 회원 목록 테이블을 조회 및 표시합니다.
      * 클릭 시 해당 회원의 근무 데이터를 조회 가능하게 합니다.
      */
-    function loadMemberList() {
-        fetchWithAuth('http://localhost:10251/api/v1/members?page=0&size=10')
+    const defaultPageSize = 10;
+
+    function loadMemberList(page = 0, size = defaultPageSize) {
+        fetch(`http://localhost:10251/api/v1/members?page=${page}&size=${size}`, { credentials: 'include' })
             .then(res => res.json())
             .then(json => {
                 const table = document.createElement('table');
@@ -282,19 +284,43 @@ document.addEventListener('DOMContentLoaded', function () {
                         currentMemberName = mem.name;
                         tbody.querySelectorAll('tr').forEach(row => row.classList.remove('selected-member'));
                         tr.classList.add('selected-member');
-                        attendanceChartContainer.innerHTML = `
-                            <div class="alert alert-info d-flex justify-content-between align-items-center">
-                                <span>조회할 연도와 월을 선택하세요.</span>
-                                <span class="fw-bold">선택한 사원: ${currentMemberName}</span>
-                            </div>`;
+                        document.getElementById('attendance-chart-container').innerHTML = `
+                        <div class="alert alert-info d-flex justify-content-between align-items-center">
+                            <span>조회할 연도와 월을 선택하세요.</span>
+                            <span class="fw-bold">선택한 사원: ${currentMemberName}</span>
+                        </div>`;
                     };
                     tbody.appendChild(tr);
                 });
 
-                memberTableContainer.innerHTML = '';
-                memberTableContainer.appendChild(table);
+                const container = document.getElementById('member-table-container');
+                container.innerHTML = '';
+                container.appendChild(table);
+
+                // 페이지네이션 정보 업데이트
+                document.getElementById('currentPageText').textContent = `페이지 ${page + 1}`;
+                const prevBtn = document.getElementById('prevPageBtn');
+                const nextBtn = document.getElementById('nextPageBtn');
+
+                prevBtn.disabled = page === 0;
+                nextBtn.disabled = json.last;
+
+                prevBtn.onclick = () => {
+                    if (page > 0) {
+                        currentPage--;
+                        loadMemberList(currentPage, size);
+                    }
+                };
+
+                nextBtn.onclick = () => {
+                    if (!json.last) {
+                        currentPage++;
+                        loadMemberList(currentPage, size);
+                    }
+                };
             });
     }
+
 
     /**
      * 선택된 회원, 연도, 월, 일에 대한 근무 데이터를 불러옵니다.
