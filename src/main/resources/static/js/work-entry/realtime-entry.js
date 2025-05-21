@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     const canvas = document.getElementById('realtimeEntryChart');
     if (!canvas) {
-        console.error('❌ canvas 요소(realtimeEntryChart)를 찾을 수 없습니다.');
+        console.error(':x: canvas 요소(realtimeEntryChart)를 찾을 수 없습니다.');
         return;
     }
 
@@ -60,6 +60,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    let lastProcessedTime = null; //같은 시간의 데이터를 중복 처리하지 않도록 막음
+
     /**
      * 실시간 데이터 갱신 함수
      */
@@ -69,6 +71,11 @@ document.addEventListener('DOMContentLoaded', function () {
             if (response.ok) {
                 const data = await response.json();
                 if (data.time && typeof data.count === 'number') {
+                    if (data.time === lastProcessedTime) {
+                        return; // 같은 시간은 무시
+                    }
+                    lastProcessedTime = data.time;
+
                     const kstDate = new Date(data.time);
                     const timeLabel = new Intl.DateTimeFormat('ko-KR', {
                         timeZone: 'Asia/Seoul',
@@ -98,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 throw new Error(`서버 응답 오류: ${response.status}`);
             }
         } catch (error) {
-            console.error('❌ 실시간 데이터 로드 실패:', error);
+            console.error(':x: 실시간 데이터 로드 실패:', error);
         }
     }
 
