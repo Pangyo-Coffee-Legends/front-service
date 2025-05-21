@@ -37,5 +37,5 @@ mvnw
 *.cmd
 
 # application.properties 무시
-application*.properties
+*.properties
 .env
