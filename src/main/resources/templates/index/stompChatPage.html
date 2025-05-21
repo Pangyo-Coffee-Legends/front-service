@@ -23,17 +23,6 @@
                 <input type="text" id="message-input-simple" placeholder="메시지 입력..." autocomplete="off">
                 <button id="send-button-simple" class="btn btn-primary">전송</button>
             </div>
-
-<!--            &lt;!&ndash; 멤버 조회 모달 &ndash;&gt;-->
-<!--            <dialog id="memberModal">-->
-<!--                <div style="padding: 20px; max-width: 400px;">-->
-<!--                    <h3>채팅방 멤버 목록</h3>-->
-<!--                    <div id="memberList" style="margin: 15px 0; max-height: 300px; overflow-y: auto;">-->
-<!--                        &lt;!&ndash; 멤버 목록이 여기에 표시됩니다 &ndash;&gt;-->
-<!--                    </div>-->
-<!--                    <button onclick="document.getElementById('memberModal').close()">닫기</button>-->
-<!--                </div>-->
-<!--            </dialog>-->
         </div>
 
         <dialog id="memberModal">
@@ -67,19 +56,14 @@
             // 주의: SockJS 엔드포인트는 http:// 또는 https:// 프로토콜을 사용합니다.
             // Spring Boot에서 STOMP를 설정했다면, 보통 WebSocketConfigurer에서 등록한 엔드포인트입니다.
             const SOCKJS_ENDPOINT = `${API_BASE_URL}/ws/chat/connect`; // 예: '/ws-stomp' 또는 서버에서 설정한 엔드포인트
-            const CHAT_ROOM_LIST_API_URL = `${API_BASE_URL}/api/v1/members/list`;
             const CHAT_ROOM_LIST_NON_MEMBER_API_URL = `${API_BASE_URL}/api/v1/chat/room/${roomId}/nonmember/list`;
             const HISTORY_CHAT_ROOM_API_URL = `${API_BASE_URL}/api/v1/chat/history/${roomId}`;
             const inviteMultipleURL = `${API_BASE_URL}/api/v1/chat/room/group/invite-multiple/${roomId}/join`;
             const EXIT_CHAT_ROOM_API_URL = `${API_BASE_URL}/api/v1/chat/room`;
             const READ_CHAT_ROOM_API_URL = `${API_BASE_URL}/api/v1/chat/room/${roomId}/read`;
-            const COUNT_MESSAGE_API_URL = `${API_BASE_URL}/api/v1/chat/unread/count`;
 
             const STOMP_SUBSCRIBE_TOPIC = '/topic'; // 서버가 메시지를 발행하는 토픽 (예시)
             const STOMP_SEND_DESTINATION = '/publish'; // 클라이언트가 메시지를 보내는 목적지 (예시, 서버의 @MessageMapping 경로에 따름)
-
-
-            const jwtToken = /*[[${jwtToken}]]*/ 'default-token';
 
             // DOM 요소 가져오기
             const chatBox = document.getElementById('chat-box-simple');
@@ -222,7 +206,6 @@
                         // 5. 특정 목적지로 메시지 전송
                         // stompClient.send(destination, headers, body);
                         stompClient.send(`${STOMP_SEND_DESTINATION}/${roomId}`, {}, JSON.stringify(chatMessage));
-                        // displayMessage(chatMessage); // 자신이 보낸 메시지도 화면에 표시
                         messageInput.value = ''; // 입력 필드 초기화
                     } catch (error) {
                         console.error("메시지 전송 오류:", error);
@@ -241,14 +224,6 @@
              * @param {object} message - 서버로부터 받은 메시지 객체 (예: {sender: 'user1', content: 'hello', type: 'CHAT'})
              */
             function displayMessage(message) {
-                // const messageElement = document.createElement('div');
-                // messageElement.classList.add('chat-message');
-
-                // if (message.type === 'JOIN' || message.type === 'LEAVE') {
-                //     messageElement.classList.add('system');
-                    // messageElement.textContent = escapeHtml(message.sender + (message.type === 'JOIN' ? ' 님이 접속했습니다.' : ' 님이 나갔습니다.'));
-                    // messageElement.textContent = escapeHtml(message.sender) + ' 님이 접속했습니다.';
-                // }
                 if (message.createdAt == null) {
                     message.createdAt = new Date();
                 }
@@ -264,28 +239,7 @@
                         return;
                     }
 
-                // const messageElement = document.createElement('div');
-                // messageElement.classList.add('chat-message', 'received');
-                //
-                // const senderElement = document.createElement('strong');
-                // senderElement.textContent = escapeHtml(message.sender);
-                //
-                // const timeElement = document.createElement('span'); // span 태그 사용
-                // timeElement.classList.add('message-time'); // CSS 스타일링을 위한 클래스
-                // timeElement.textContent = formatTimestamp(message.createdAt); // message 객체에 createdAt이 있다고 가정
-                //
-                // const bubble = document.createElement('div');
-                // bubble.classList.add('bubble');
-                // bubble.textContent = escapeHtml(message.content);
-                //
-                // messageElement.appendChild(senderElement);
-                // messageElement.appendChild(bubble);
-                // messageElement.appendChild(timeElement);
-
                 displayReceivedMessage(message);
-
-                // chatBox.appendChild(messageElement);
-                // scrollToBottom();
             }
 
             /**
@@ -471,8 +425,6 @@
                         checkbox.type = 'checkbox';
                         checkbox.value = member.email; // 체크박스의 값으로 이메일 저장
                         checkbox.style.marginLeft = '10px';
-                        // 필요하다면 클래스나 ID를 추가하여 스타일링 또는 접근 용이하게 할 수 있습니다.
-                        // checkbox.className = 'member-invite-checkbox';
 
                         item.appendChild(infoDiv);
                         item.appendChild(checkbox); // 초대 버튼 대신 체크박스 추가
@@ -514,9 +466,6 @@
                     });
 
                     if (response.ok) {
-                        // const result = await response.json(); // 또는 response.text() 등 백엔드 응답에 따라 처리
-                        // alert(`${selectedEmails.join(', ')} 님들을 초대했습니다.`);
-                        // 성공 시 추가 로직 (예: 모달 닫기, 목록 새로고침 등)
                         document.getElementById('memberModal').close();
                     } else {
                         const errorMsg = await response.text();
@@ -608,7 +557,6 @@
                     // 연결 해제 시 서버에 알림 메시지 전송 (선택 사항)
                     stompClient.send(STOMP_SEND_DESTINATION,
                         {},
-                        // JSON.stringify({ sender: username, type: 'LEAVE' })
                         JSON.stringify({ sender: username})
                     );
                     stompClient.disconnect(() => {

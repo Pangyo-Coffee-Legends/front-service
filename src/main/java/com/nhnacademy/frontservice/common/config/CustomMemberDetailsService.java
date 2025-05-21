@@ -21,7 +21,6 @@ public class CustomMemberDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String mbEmail) throws UsernameNotFoundException {
         MemberResponse member = memberService.getMbEmail(mbEmail);
-        System.out.println("dfdf" + member);
         if (member == null) {
             throw new UsernameNotFoundException("Member not found.");
         }

@@ -1,6 +1,5 @@
 package com.nhnacademy.frontservice.controller;
 
-import com.nhnacademy.frontservice.service.impl.MemberServiceImpl;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -91,7 +90,6 @@ public class FrontController {
         String userEmail = auth.getName();
         model.addAttribute("userEmail", userEmail);
 
-        System.out.println("1234" + userEmail);
         return "index/users";
     }
 
@@ -99,13 +97,9 @@ public class FrontController {
     public String stompChatPage(Model model, @PathVariable Long roomId) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = auth.getName();
-        String jwtToken = auth.getCredentials().toString();
 
         model.addAttribute("roomId", roomId);
         model.addAttribute("userEmail", userEmail);
-        model.addAttribute("jwtToken", jwtToken);
-        System.out.println("1234" + userEmail);
-        System.out.println("12345"+jwtToken);
 
         return "index/stompChatPage";
     }
@@ -116,7 +110,6 @@ public class FrontController {
         String userEmail = auth.getName();
         model.addAttribute("userEmail", userEmail);
 
-        System.out.println("1234" + userEmail);
         return "index/chatList";
     }
 

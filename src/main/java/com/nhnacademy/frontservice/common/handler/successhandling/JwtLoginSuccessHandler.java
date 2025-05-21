@@ -67,7 +67,6 @@ public class JwtLoginSuccessHandler implements AuthenticationSuccessHandler {
 //        request.getRequestDispatcher("/index").forward(request, response);
     }
 
-
     private void addCookie(String tokenName, String token, HttpServletResponse response){
         Cookie cookie = new Cookie(tokenName, token);
         cookie.setPath("/");
