@@ -8,11 +8,16 @@ document.addEventListener('DOMContentLoaded', function () {
     const chartArea = document.getElementById('chartArea');
     let currentThreadId = null;
     let thinkingInterval = null;
-
+/*
+위 요소들 중 하나라도 누락되면 콘솔에 에러메시지 추가 부분
+ */
     if (!form || !promptInput || !memberInput || !chatBox || !threadList || !createBtn || !chartArea) {
         console.error("❗ 필수 요소가 누락되었습니다. HTML 구조를 다시 확인하세요.");
         return;
     }
+    /*
+    member-service API 호출하여 드롭다운으로 맴버번호와 이름으로 직관적으로 찾을 수 있음
+     */
     fetch('http://localhost:10251/api/v1/members?page=0&size=100', { credentials: 'include' })
         .then(res => res.json())
         .then(data => {
@@ -30,6 +35,14 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    /**
+     * @function postWithAuth
+     * @description 인증 정보와 함께 JSON 데이터를 POST 방식으로 전송하는 유틸리티 함수입니다.
+     * @param {string} url - 요청을 보낼 서버 API URL
+     * @param {object} data - 전송할 JSON 데이터 객체
+     * @return {Promise<Response>} fetch의 응답 Promise 객체를 반환합니다.
+     */
+
     function postWithAuth(url, data) {
         return fetch(url, {
             method: 'POST',
@@ -38,7 +51,13 @@ document.addEventListener('DOMContentLoaded', function () {
             body: JSON.stringify(data)
         });
     }
-
+    /**
+     * @function appendChatMessage
+     * @description 채팅창에 메시지를 추가합니다. 사용자/AI 역할에 따라 스타일을 구분하고, 타이핑 애니메이션 또는 로딩 메시지도 지원합니다.
+     * @param {string} role - 'user' 또는 'ai'
+     * @param {string} content - 출력할 텍스트 내용
+     * @param {object} options - { type: 'typing' | 'thinking' } 옵션을 통해 표시 방식 지정
+     */
     function appendChatMessage(role, content, options = {}) {
         const wrapper = document.createElement('div');
         wrapper.className = role === 'user' ? 'text-end mb-3' : 'text-start mb-3';
@@ -87,7 +106,12 @@ document.addEventListener('DOMContentLoaded', function () {
             if (role === 'ai') appendCopyButton(bubble, content);
         }
     }
-
+    /**
+     * @function appendCopyButton
+     * @description 채팅 버블 우측 상단에 복사 버튼을 추가하고, 복사 기능을 지원합니다.
+     * @param {HTMLElement} bubble - 채팅 메시지 영역
+     * @param {string} content - 복사 대상 텍스트
+     */
     function appendCopyButton(bubble, content) {
         const copyBtn = document.createElement('button');
         copyBtn.textContent = '📋 복사';
@@ -104,6 +128,15 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         bubble.appendChild(copyBtn);
     }
+    /**
+     * @function createChartCanvas
+     * @description 분석 결과를 그래프로 시각화하여 출력합니다. 기존 그래프는 초기화되고 새 캔버스가 생성됩니다.
+     * @param {string} title - 그래프 제목
+     * @param {string[]} labels - X축 라벨 목록
+     * @param {number[]} data - Y축 데이터 배열
+     * @param {string} color - 그래프 색상 코드
+     * @param {string} type - 그래프 유형 ('bar' 또는 'line')
+     */
 
     function createChartCanvas(title, labels, data, color, type) {
         const canvas = document.createElement('canvas');
@@ -135,7 +168,11 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
-
+    /**
+     * @function parseTextChart
+     * @description AI 응답 결과에서 날짜와 근무시간 패턴을 감지하여 차트로 변환합니다.
+     * @param {string} content - AI가 생성한 응답 텍스트
+     */
     function parseTextChart(content) {
         const patterns = [
             /(\d{4}-\d{1,2}-\d{1,2})\s*\([가-힣]+\):.*?근무시간\s*(\d+)\s*시간/g,
@@ -153,12 +190,23 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     }
-
+    /**
+     * @function saveMessage
+     * @description 채팅 메시지를 현재 쓰레드 ID에 저장합니다. 서버에 메시지를 POST 전송합니다.
+     * @param {string} threadId - 대화 쓰레드 ID
+     * @param {string} role - 'user' 또는 'ai'
+     * @param {string} content - 저장할 메시지 내용
+     * @return {Promise} 저장 결과 Promise 객체
+     */
     function saveMessage(threadId, role, content) {
         if (!threadId) return Promise.resolve();
         return postWithAuth('http://localhost:10251/api/v1/analysis/history/save', { threadId, role, content });
     }
-
+    /**
+     * @function loadThreads
+     * @description 선택한 사원 번호에 해당하는 대화 쓰레드 목록을 불러와 UI에 표시합니다.
+     * @param {string} memberNo - 선택한 사원의 번호
+     */
     function loadThreads(memberNo) {
         fetch(`http://localhost:10251/api/v1/analysis/thread/${memberNo}`, { credentials: 'include' })
             .then(res => res.json())
@@ -176,7 +224,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             });
     }
-
+    /**
+     * @function loadHistory
+     * @description 선택한 쓰레드 ID의 대화 히스토리를 서버에서 가져와 출력합니다.
+     * @param {string} threadId - 대화 쓰레드 ID
+     */
     function loadHistory(threadId) {
         if (!threadId) return;
         chatBox.innerHTML = '';

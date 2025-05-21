@@ -264,6 +264,7 @@ document.addEventListener('DOMContentLoaded', function () {
     /**
      * 회원 목록 테이블을 조회 및 표시합니다.
      * 클릭 시 해당 회원의 근무 데이터를 조회 가능하게 합니다.
+     * 1페이지에 10명의 회원 조회가능
      */
     const defaultPageSize = 10;
 
