@@ -257,3 +257,9 @@ body {
 #chartArea canvas {
   max-height: 300px !important; /* 그래프 높이 제한 (중요도 높음) */
 }
+/*AI 근태관리 대화목록 삭제버튼*/
+#threadList .btn-outline-danger:hover {
+  background-color: #dc3545;
+  color: white;
+  border-color: #dc3545;
+}

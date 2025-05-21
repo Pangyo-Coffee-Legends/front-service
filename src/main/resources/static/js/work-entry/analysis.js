@@ -214,22 +214,54 @@ document.addEventListener('DOMContentLoaded', function () {
      * @param {string} memberNo - 선택한 사원의 번호
      */
     function loadThreads(memberNo) {
-        fetch(`http://localhost:10251/api/v1/analysis/thread/${memberNo}`, {credentials: 'include'})
+        fetch(`http://localhost:10251/api/v1/analysis/thread/${memberNo}`, { credentials: 'include' })
             .then(res => res.json())
             .then(data => {
                 threadList.innerHTML = '';
                 data.forEach(thread => {
                     const li = document.createElement('li');
-                    li.textContent = thread.title;
-                    li.className = 'list-group-item list-group-item-action';
-                    li.onclick = () => {
+                    li.className = 'list-group-item d-flex justify-content-between align-items-center';
+
+                    const titleSpan = document.createElement('span');
+                    titleSpan.textContent = thread.title;
+                    titleSpan.className = 'flex-grow-1';
+                    titleSpan.style.cursor = 'pointer';
+                    titleSpan.onclick = () => {
                         currentThreadId = thread.threadId;
                         loadHistory(thread.threadId);
                     };
+
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.innerHTML = '<i class="bi bi-trash"></i>';
+                    deleteBtn.className = 'btn btn-sm btn-outline-danger ms-2';
+                    deleteBtn.title = '삭제';
+                    deleteBtn.onclick = (e) => {
+                        e.stopPropagation(); // 부모 클릭 이벤트 방지
+                        if (confirm(`"${thread.title}" 대화를 삭제하시겠습니까?`)) {
+                            fetch(`http://localhost:10251/api/v1/analysis/thread/${thread.threadId}`, {
+                                method: 'DELETE',
+                                credentials: 'include'
+                            })
+                                .then(res => {
+                                    if (res.status === 204) {
+                                        alert(`"${thread.title}"이(가) 삭제되었습니다.`);
+                                        loadThreads(memberNo);
+                                        chatBox.innerHTML = '';
+                                        chartArea.innerHTML = '';
+                                    } else {
+                                        alert("❌ 삭제 실패");
+                                    }
+                                });
+                        }
+                    };
+
+                    li.appendChild(titleSpan);
+                    li.appendChild(deleteBtn);
                     threadList.appendChild(li);
                 });
             });
     }
+
 
     /**
      * @function loadHistory
