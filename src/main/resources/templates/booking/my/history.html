@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="@{/layout/index/layout.html}">
+
+<head>
+    <meta charset="UTF-8">
+    <link href="/css/booking/history.css" rel="stylesheet">
+    <script src="/js/booking/api.js"></script>
+    <script src="/js/booking/utils/format.js"></script>
+    <script type="module" src="/js/booking/my/history.js" defer></script>
+    <title>회의실 예약 내역</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+
+    <h1>회의실 예약 내역</h1>
+
+    <div class="booking-controls">
+        <div class="form-group">
+            <label for="sortField" class="form-label">정렬 기준</label>
+            <select id="sortField" class="form-select">
+                <option value="bookingDate">시작 시간</option>
+                <option value="roomNo">회의실</option>
+                <option value="createdAt">생성일</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="sortDirection" class="form-label">정렬 순서</label>
+            <select id="sortDirection" class="form-select">
+                <option value="desc">내림차순</option>
+                <option value="asc">오름차순</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="pageSizeSelect" class="form-label">페이지당 표시 개수</label>
+            <select id="pageSizeSelect" class="form-select">
+                <option value="10">10개</option>
+                <option value="20">20개</option>
+                <option value="50">50개</option>
+                <option value="100">100개</option>
+            </select>
+        </div>
+    </div>
+
+
+    <table>
+        <thead>
+        <tr>
+            <th>번호</th>
+            <th>예약자</th>
+            <th>회의실 이름</th>
+            <th>예약 인원</th>
+            <th>예약 코드</th>
+            <th>예약 시작 시간</th>
+            <th>예약 종료 시간</th>
+            <th>특이사항</th>
+            <th>관리</th>
+        </tr>
+        </thead>
+        <tbody class="history-container">
+        </tbody>
+    </table>
+    <div id="pagination" class="pagination"></div>
+</div>
+
+</body>
+</html>
