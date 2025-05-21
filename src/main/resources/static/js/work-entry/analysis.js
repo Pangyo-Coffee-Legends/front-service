@@ -8,9 +8,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const chartArea = document.getElementById('chartArea');
     let currentThreadId = null;
     let thinkingInterval = null;
-/*
-위 요소들 중 하나라도 누락되면 콘솔에 에러메시지 추가 부분
- */
+    /*
+    위 요소들 중 하나라도 누락되면 콘솔에 에러메시지 추가 부분
+     */
     if (!form || !promptInput || !memberInput || !chatBox || !threadList || !createBtn || !chartArea) {
         console.error("❗ 필수 요소가 누락되었습니다. HTML 구조를 다시 확인하세요.");
         return;
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
     /*
     member-service API 호출하여 드롭다운으로 맴버번호와 이름으로 직관적으로 찾을 수 있음
      */
-    fetch('http://localhost:10251/api/v1/members?page=0&size=100', { credentials: 'include' })
+    fetch('http://localhost:10251/api/v1/members?page=0&size=100', {credentials: 'include'})
         .then(res => res.json())
         .then(data => {
             data.content.forEach(member => {
@@ -47,10 +47,11 @@ document.addEventListener('DOMContentLoaded', function () {
         return fetch(url, {
             method: 'POST',
             credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(data)
         });
     }
+
     /**
      * @function appendChatMessage
      * @description 채팅창에 메시지를 추가합니다. 사용자/AI 역할에 따라 스타일을 구분하고, 타이핑 애니메이션 또는 로딩 메시지도 지원합니다.
@@ -106,6 +107,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (role === 'ai') appendCopyButton(bubble, content);
         }
     }
+
     /**
      * @function appendCopyButton
      * @description 채팅 버블 우측 상단에 복사 버튼을 추가하고, 복사 기능을 지원합니다.
@@ -128,6 +130,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         bubble.appendChild(copyBtn);
     }
+
     /**
      * @function createChartCanvas
      * @description 분석 결과를 그래프로 시각화하여 출력합니다. 기존 그래프는 초기화되고 새 캔버스가 생성됩니다.
@@ -163,11 +166,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 responsive: true,
                 maintainAspectRatio: false,
                 scales: type === 'bar' ? {
-                    y: { beginAtZero: true, ticks: { stepSize: 1 } }
+                    y: {beginAtZero: true, ticks: {stepSize: 1}}
                 } : {}
             }
         });
     }
+
     /**
      * @function parseTextChart
      * @description AI 응답 결과에서 날짜와 근무시간 패턴을 감지하여 차트로 변환합니다.
@@ -190,6 +194,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     }
+
     /**
      * @function saveMessage
      * @description 채팅 메시지를 현재 쓰레드 ID에 저장합니다. 서버에 메시지를 POST 전송합니다.
@@ -200,15 +205,16 @@ document.addEventListener('DOMContentLoaded', function () {
      */
     function saveMessage(threadId, role, content) {
         if (!threadId) return Promise.resolve();
-        return postWithAuth('http://localhost:10251/api/v1/analysis/history/save', { threadId, role, content });
+        return postWithAuth('http://localhost:10251/api/v1/analysis/history/save', {threadId, role, content});
     }
+
     /**
      * @function loadThreads
      * @description 선택한 사원 번호에 해당하는 대화 쓰레드 목록을 불러와 UI에 표시합니다.
      * @param {string} memberNo - 선택한 사원의 번호
      */
     function loadThreads(memberNo) {
-        fetch(`http://localhost:10251/api/v1/analysis/thread/${memberNo}`, { credentials: 'include' })
+        fetch(`http://localhost:10251/api/v1/analysis/thread/${memberNo}`, {credentials: 'include'})
             .then(res => res.json())
             .then(data => {
                 threadList.innerHTML = '';
@@ -224,6 +230,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             });
     }
+
     /**
      * @function loadHistory
      * @description 선택한 쓰레드 ID의 대화 히스토리를 서버에서 가져와 출력합니다.
@@ -233,7 +240,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!threadId) return;
         chatBox.innerHTML = '';
         chartArea.innerHTML = '';
-        fetch(`http://localhost:10251/api/v1/analysis/history/${threadId}`, { credentials: 'include' })
+        fetch(`http://localhost:10251/api/v1/analysis/history/${threadId}`, {credentials: 'include'})
             .then(res => res.json())
             .then(history => {
                 history.reverse().forEach(m => appendChatMessage(m.role, m.content));
@@ -252,9 +259,9 @@ document.addEventListener('DOMContentLoaded', function () {
         appendChatMessage('user', prompt);
         saveMessage(currentThreadId, 'user', prompt);
         promptInput.value = '';
-        appendChatMessage('ai', '', { type: 'thinking' });
+        appendChatMessage('ai', '', {type: 'thinking'});
 
-        fetch(`http://localhost:10251/api/v1/attendances/summary/recent/${memberNo}`, { credentials: 'include' })
+        fetch(`http://localhost:10251/api/v1/attendances/summary/recent/${memberNo}`, {credentials: 'include'})
             .then(res => res.json())
             .then(summaryData => {
                 const records = summaryData.content.map(r => ({
@@ -297,8 +304,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 }).join('\n');
 
                 const messagePayload = [
-                    { role: 'user', content: prompt },
-                    { role: 'user', content: '[근무 기록]\n' + formattedRecords }
+                    {role: 'user', content: prompt},
+                    {role: 'user', content: '[근무 기록]\n' + formattedRecords}
                 ];
 
                 return postWithAuth('http://localhost:10251/api/v1/analysis/custom', {
@@ -314,8 +321,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 const result = data.fullText || "⚠️ 분석 결과 없음";
 
                 if (result.includes('import matplotlib') || result.includes('plt.')) {
-                    if (prompt.includes('파이선')||prompt.includes('파이썬') || prompt.toLowerCase().includes('python')) {
-                        appendChatMessage('ai', result, { type: 'typing' });
+                    if (prompt.includes('파이선') || prompt.includes('파이썬') || prompt.toLowerCase().includes('python')) {
+                        appendChatMessage('ai', result, {type: 'typing'});
                     } else {
                         appendChatMessage('ai', "아래 자료는 요청하신 자료입니다. 자세한 정보는 추가 요청을 부탁드립니다.");
                     }
@@ -343,7 +350,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const title = prompt('새 대화 제목을 입력하세요');
         if (!title?.trim()) return;
 
-        postWithAuth('http://localhost:10251/api/v1/analysis/thread', { mbNo, title: title.trim() })
+        postWithAuth('http://localhost:10251/api/v1/analysis/thread', {mbNo, title: title.trim()})
             .then(res => res.json())
             .then(thread => {
                 currentThreadId = thread.threadId;
