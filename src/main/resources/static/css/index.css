@@ -213,41 +213,47 @@ body {
 .legend-box.status-orange  { background-color: #ffe5b4; }
 .legend-box.status-pink    { background-color: #fce4ec; }
 
-/*AI 기반 근태 분석 제목*/
+/* 🧠 AI 기반 근태 분석 제목 스타일 */
 .page-title {
-  font-family: 'Segoe UI', 'Pretendard', sans-serif;
-  font-size: 2rem;
-  font-weight: 800;
-  color: #1a237e; /* 진한 남색 */
-  padding: 1.5rem 2rem 1rem 2rem;
-  border-bottom: 2px solid #e0e0e0;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
+  font-family: 'Segoe UI', 'Pretendard', sans-serif; /* 사용 폰트 설정 */
+  font-size: 2rem;            /* 기본 제목 글꼴 크기 */
+  font-weight: 800;           /* 글꼴 두께: 매우 굵게 */
+  color: #1a237e;             /* 글자 색상: 진한 남색 */
+  padding: 1.5rem 2rem 1rem 2rem; /* 위, 오른쪽, 아래, 왼쪽 패딩 */
+  border-bottom: 2px solid #e0e0e0; /* 하단 구분선 */
+  display: flex;              /* 내부 요소를 가로 정렬 */
+  align-items: center;        /* 세로 방향 중앙 정렬 */
+  gap: 0.75rem;               /* 이모지와 텍스트 사이 간격 */
 }
 
+/* 🔹 제목 내 이모지 스타일 */
 .page-title .emoji {
-  font-size: 2rem;
+  font-size: 2rem; /* 이모지 크기 설정 */
 }
 
+/* 🔹 강조 텍스트(파란색) */
 .page-title .highlight {
-  color: #1976d2; /* 파란색 포인트 */
+  color: #1976d2; /* 강조 색상: 파란색 */
 }
 
+/* 📱 반응형 스타일 (768px 이하 화면에서 크기 조정) */
 @media (max-width: 768px) {
   .page-title {
-    font-size: 1.25rem;
-    padding: 1rem;
+    font-size: 1.25rem;   /* 모바일에서 글꼴 크기 축소 */
+    padding: 1rem;        /* 패딩 축소 */
   }
 }
- #chartArea {
-   max-height: 400px;
-   overflow-y: auto;
-   background-color: #f9f9f9;
-   padding: 1rem;
-   border: 1px solid #ddd;
- }
-#chartArea canvas {
-  max-height: 300px !important;
+
+/* 📊 분석 그래프 출력 영역 전체 스타일 */
+#chartArea {
+  max-height: 400px;      /* 최대 높이 설정: 스크롤 가능하게 함 */
+  overflow-y: auto;       /* 세로 스크롤 활성화 */
+  background-color: #f9f9f9; /* 배경 색상: 연한 회색 */
+  padding: 1rem;          /* 내부 여백 */
+  border: 1px solid #ddd; /* 테두리 색상 설정 */
 }
 
+/* 📉 그래프 캔버스 자체 높이 제한 */
+#chartArea canvas {
+  max-height: 300px !important; /* 그래프 높이 제한 (중요도 높음) */
+}
