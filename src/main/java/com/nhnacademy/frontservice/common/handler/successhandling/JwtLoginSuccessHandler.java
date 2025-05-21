@@ -11,9 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import java.io.IOException;
@@ -44,28 +42,21 @@ public class JwtLoginSuccessHandler implements AuthenticationSuccessHandler {
         JwtResponse tokens = tokenResponse.getBody();
 
         String accessToken = tokens.getAccessToken();
-        String refreshToken = tokens.getRefreshToken();
-
         addCookie("accessToken", accessToken, response);
-        ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
-                .httpOnly(true)
-                .secure(true)
-                .path("/")
-                .sameSite("Strict")
-                .maxAge(Duration.ofDays(7))
-                .build();
+//        String refreshToken = tokens.getRefreshToken();
 
-        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
-
-        // ✅ SecurityContextHolder에 인증 객체 수동 등록
-        SecurityContextHolder.getContext().setAuthentication(authentication); // 🔥 여기가 핵심
-        System.out.println("ㅎㅇㅎㅇ"+authentication);
-        System.out.println("ㅎㅇㅎㅇ1"+SecurityContextHolder.getContext().getAuthentication().getName());
-
-
+//        ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
+//                .httpOnly(true)
+//                .secure(true)
+//                .path("/")
+//                .sameSite("Strict")
+//                .maxAge(Duration.ofDays(7))
+//                .build();
+//
+//        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
         response.sendRedirect("/index");
-//        request.getRequestDispatcher("/index").forward(request, response);
     }
+
 
     private void addCookie(String tokenName, String token, HttpServletResponse response){
         Cookie cookie = new Cookie(tokenName, token);
