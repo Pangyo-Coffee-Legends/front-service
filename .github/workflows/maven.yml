@@ -52,7 +52,7 @@ jobs:
         username: ${{ secrets.SSH_ID }}
         key: ${{ secrets.SSH_KEY }}
         port: ${{ secrets.SSH_PORT }}
-        source: "front/*.jar"
+        source: "/front/*.jar"
         target: "~/front/target"
         strip_components: 1
         overwrite: true
