@@ -3,7 +3,9 @@
 
 <html lang="ko" layout:decorate="~{layout/index/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-    <title>월간 출입 통계</title>
+    <script src="/js/work-entry/weekly-entry-chart.js" defer></script> <!-- 월간 출입 관련 JS -->
+    <script src="/js/logprint.js" defer></script> <!--로그 화면 출력 관련 JS-->
+    <title>주간 출입 통계</title>
 </head>
 <body>
 <div layout:fragment="content">
@@ -51,5 +53,7 @@
     </div>
 
 </div>
+
+
 </body>
 </html>
