@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class FrontController {
-
     @GetMapping(value = {"/index"})
     public String index(){
         // Gateway에서 JWT 유효성 검증이 된 후 돌아오는 데이터의 값을 @ModelAttribute 또는 front-service에서 확인할 수 있는 형태의 데이터를 parameter로 받아서
@@ -82,7 +81,7 @@ public class FrontController {
         return "booking/admin/history";
     }
 
-    @GetMapping(value = {"/charts"})
+    @GetMapping( "/charts")
     public String charts() { return "index/charts";}
 
     @GetMapping("/users")
@@ -120,18 +119,21 @@ public class FrontController {
         return "index/chatList";
     }
 
-    @GetMapping(value = {"/weekly-entry-charts"}) //월간 출입 차트 조회
+    @GetMapping("/weekly-entry-charts") //월간 출입 차트 조회
     public String monthlyEntryCharts(){
         return "index/work-entry/weekly-entry-chart";
     }
 
-    @GetMapping(value = {"/working-hours-statistics"})// 근무시간통계
+    @GetMapping("/working-hours-statistics")// 근무시간통계
     public String workingHoursStatistics(){
         return "index/work-entry/working-hours-statistics";
     }
 
-    @GetMapping(value = {"/real-time"})//실시간 출입 현황
+    @GetMapping("/real-time")//실시간 출입 현황
     public String realTime(){
         return "index/work-entry/real-time";
     }
+
+    @GetMapping("/analysis")//근태 gemini 사용
+    public String analysis(){return "index/work-entry/analysis";}
 }

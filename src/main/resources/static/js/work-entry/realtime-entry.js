@@ -1,5 +1,11 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const ctx = document.getElementById('realtimeEntryChart').getContext('2d');
+    const canvas = document.getElementById('realtimeEntryChart');
+    if (!canvas) {
+        console.error(':x: canvas 요소(realtimeEntryChart)를 찾을 수 없습니다.');
+        return;
+    }
+
+    const ctx = canvas.getContext('2d');
 
     /**
      * 인증 포함 GET 요청 함수입니다.
@@ -17,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     const realtimeChart = new Chart(ctx, {
-        type: 'line',
+        type: 'bar',
         data: {
             labels: [],
             datasets: [{
@@ -54,37 +60,52 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    let lastProcessedTime = null; //같은 시간의 데이터를 중복 처리하지 않도록 막음
+
     /**
      * 실시간 데이터 갱신 함수
      */
     async function fetchAndUpdate() {
         try {
             const response = await fetchWithAuth('http://localhost:10251/api/v1/entries/realtime');
-            const data = await response.json();
+            if (response.ok) {
+                const data = await response.json();
+                if (data.time && typeof data.count === 'number') {
+                    if (data.time === lastProcessedTime) {
+                        return; // 같은 시간은 무시
+                    }
+                    lastProcessedTime = data.time;
 
-            if (data.time && typeof data.count === 'number') {
-                const kstDate = new Date(new Date(data.time).getTime() + 9 * 60 * 60 * 1000);
-                const timeLabel = kstDate.toTimeString().substring(0, 5);
+                    const kstDate = new Date(data.time);
+                    const timeLabel = new Intl.DateTimeFormat('ko-KR', {
+                        timeZone: 'Asia/Seoul',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: false,
+                    }).format(kstDate);
 
-                if (!realtimeChart.data.labels.includes(timeLabel)) {
-                    realtimeChart.data.labels.push(timeLabel);
-                    realtimeChart.data.datasets[0].data.push(data.count);
+                    if (!realtimeChart.data.labels.includes(timeLabel)) {
+                        realtimeChart.data.labels.push(timeLabel);
+                        realtimeChart.data.datasets[0].data.push(data.count);
+                    }
+
+                    const dataset = realtimeChart.data.datasets[0].data;
+                    const avg = (dataset.reduce((a, b) => a + b, 0) / dataset.length).toFixed(2);
+                    const max = Math.max(...dataset);
+
+                    document.getElementById('latest-time').textContent = timeLabel;
+                    document.getElementById('latest-count').textContent = data.count;
+                    document.getElementById('average-count').textContent = avg;
+                    document.getElementById('max-count').textContent = max.toFixed();
+                    document.getElementById('entry-count').textContent = dataset.length;
+
+                    realtimeChart.update();
                 }
-
-                const dataset = realtimeChart.data.datasets[0].data;
-                const avg = (dataset.reduce((a, b) => a + b, 0) / dataset.length).toFixed(2);
-                const max = Math.max(...dataset);
-
-                document.getElementById('latest-time').textContent = timeLabel;
-                document.getElementById('latest-count').textContent = data.count;
-                document.getElementById('average-count').textContent = avg;
-                document.getElementById('max-count').textContent = max;
-                document.getElementById('entry-count').textContent = dataset.length;
-
-                realtimeChart.update();
+            } else {
+                throw new Error(`서버 응답 오류: ${response.status}`);
             }
         } catch (error) {
-            console.error('❌ 실시간 데이터 로드 실패:', error);
+            console.error(':x: 실시간 데이터 로드 실패:', error);
         }
     }
 
@@ -101,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // 초기 실행
-    fetchAndUpdate();
+    fetchAndUpdate().catch(console.error);
     updateClock();
 
     // 반복 실행 (데이터: 10초, 시계: 1초)

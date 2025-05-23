@@ -12,11 +12,11 @@
 <body>
 <div class="d-flex">
     <!-- 사이드바 -->
-    <th:block th:insert="~{/layout/index/sidebar.html}"></th:block>
+    <th:block th:insert="~{layout/index/sidebar.html}"></th:block>
 
     <div class="main-content flex-grow-1">
         <!-- 상단 네비게이션 -->
-        <th:block th:insert="~{/layout/index/nav.html}"></th:block>
+        <th:block th:insert="~{layout/index/nav.html}"></th:block>
         <!-- 메인 콘텐츠 영역 -->
         <div style="margin-top: 70px; padding: 20px;" layout:fragment="content">
 
@@ -41,6 +41,10 @@ cn<script src="/js/work-entry/weekly-entry-chart.js"></script> <!-- 월간 출�
 <script src="/js/work-entry/realtime-entry.js"></script> <!-- 실시간 출입 통계 관련 JS-->
 
 <script src="/js/work-entry/strange-access.js"></script> <!-- 이상 출입 알림 관련 JS-->
+
+<script src="/js/work-entry/analysis.js"></script>
+
+
 
 </body>
 </html>

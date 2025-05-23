@@ -44,25 +44,19 @@ public class JwtLoginSuccessHandler implements AuthenticationSuccessHandler {
         JwtResponse tokens = tokenResponse.getBody();
 
         String accessToken = tokens.getAccessToken();
-        String refreshToken = tokens.getRefreshToken();
-
         addCookie("accessToken", accessToken, response);
-        ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
-                .httpOnly(true)
-                .secure(true)
-                .path("/")
-                .sameSite("Strict")
-                .maxAge(Duration.ofDays(7))
-                .build();
-
-        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
-
-        // ✅ SecurityContextHolder에 인증 객체 수동 등록
-        SecurityContextHolder.getContext().setAuthentication(authentication); // 🔥 여기가 핵심
-        System.out.println("ㅎㅇㅎㅇ"+authentication);
-        System.out.println("ㅎㅇㅎㅇ1"+SecurityContextHolder.getContext().getAuthentication().getName());
+//        String refreshToken = tokens.getRefreshToken();
 
 
+//        ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
+//                .httpOnly(true)
+//                .secure(true)
+//                .path("/")
+//                .sameSite("Strict")
+//                .maxAge(Duration.ofDays(7))
+//                .build();
+//
+//        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
         response.sendRedirect("/index");
 //        request.getRequestDispatcher("/index").forward(request, response);
     }
