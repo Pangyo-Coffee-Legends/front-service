@@ -1,7 +1,6 @@
 package com.nhnacademy.frontservice.common.config;
 
 import com.nhnacademy.frontservice.adaptor.GatewayAdaptor;
-//import com.nhnacademy.frontservice.common.filter.JwtAuthenticationFilter;
 import com.nhnacademy.frontservice.common.handler.exceptionhandling.CustomAccessDeniedHandler;
 import com.nhnacademy.frontservice.common.handler.successhandling.JwtLoginSuccessHandler;
 import com.nhnacademy.frontservice.common.handler.successhandling.OAuthSuccessHandler;

@@ -94,13 +94,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 
     <script th:inline="javascript" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-        const loggedInUsername = /*[[${#authentication.principal.username}]]*/ null;
-
-        if (loggedInUsername) {
-            console.log("Sidebar: 현재 로그인된 사용자 (username/email): " + loggedInUsername);
-        } else {
-            console.log("Sidebar: 사용자가 로그인하지 않았습니다.");
-        }
 
         // API 기본 URL (실제 환경에 맞게 수정 필요)
         const SIDEBAR_API_BASE_URL = 'http://localhost:10251'; // 실제 API 서버 주소로 변경해주세요.
