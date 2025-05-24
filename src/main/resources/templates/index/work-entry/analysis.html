@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="~{/layout/index/layout.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title>AI 기반 근태 분석</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="page-title">
+        <span class="emoji">🧠📊</span>
+        <span><span class="highlight">AI</span> 기반 근태 분석</span>
+    </div>
+
+    <div class="container-fluid vh-100 d-flex">
+        <!-- 좌측: 쓰레드 목록 -->
+        <div class="col-md-3 border-end p-3 overflow-auto">
+            <h5 class="fw-bold">💬 대화 목록</h5>
+            <ul id="threadList" class="list-group mb-3" style="max-height: 75vh;"></ul>
+            <button id="createThreadBtn" class="btn btn-outline-primary btn-sm w-100">
+                <i class="bi bi-plus-circle me-1"></i> 새 대화
+            </button>
+        </div>
+
+        <!-- 우측: 채팅 + 그래프 -->
+        <div class="col-md-9 d-flex flex-column p-3 bg-light">
+            <div id="chatBox" class="flex-grow-1 overflow-auto bg-white border rounded p-3 mb-3"></div>
+
+            <!-- 분석 그래프 출력 영역 -->
+            <div id="chartArea" class="bg-white border rounded p-3 mt-3" style="overflow-y: auto; max-height: 300px;">
+                <h6 class="fw-bold text-secondary mb-3">📊 분석 그래프</h6>
+            </div>
+
+            <!-- 🔽 드롭다운 및 분석 폼 -->
+            <form id="analysisForm" class="border rounded p-3 bg-white">
+                <div class="row g-2 align-items-end">
+                    <!-- 기존 번호 입력 제거 후 드롭다운으로 변경 -->
+                    <div class="col-md-3">
+                        <select id="memberSelect" class="form-select form-select-sm" required>
+                            <option value="">사원을 선택하세요</option>
+                            <!-- 자바스크립트에서 동적으로 채워짐 -->
+                        </select>
+                    </div>
+                    <div class="col-md-7">
+                        <textarea id="promptText" class="form-control form-control-sm" rows="2"
+                                  placeholder="질문을 입력하세요" required></textarea>
+                    </div>
+                    <div class="col-md-2 d-grid">
+                        <button type="submit" class="btn btn-sm btn-primary">
+                            <i class="bi bi-send me-1"></i> 보내기
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 📎 외부 자바스크립트 -->
+<script src="/js/work-entry/analysis.js"></script>
+</body>
+</html>

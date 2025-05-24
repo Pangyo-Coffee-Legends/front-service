@@ -5,7 +5,7 @@ body {
 }
 
 /* 사이드바 스타일링 */
-.sidebar {
+.legend-box.sidebar {
   background-color: #1e2124 !important;
   width: 250px;
   height: 100vh;
@@ -16,23 +16,23 @@ body {
   transition: all 0.3s;
 }
 
-.sidebar .nav-link {
+.legend-box.sidebar .nav-link {
   padding: 10px 15px;
   border-radius: 4px;
   margin: 2px 0;
   transition: all 0.2s;
 }
 
-.sidebar .nav-link:hover {
+.legend-box.sidebar .nav-link:hover {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-.sidebar .nav-link.active {
+.legend-box.sidebar .nav-link.active {
   background-color: #3e6553;
 }
 
 /* 드롭다운 메뉴 스타일링 */
-.sidebar-dropdown-menu {
+.legend-box.sidebar-dropdown-menu {
   list-style: none;
   padding-left: 20px;
   max-height: 0;
@@ -40,11 +40,11 @@ body {
   transition: max-height 0.3s ease;
 }
 
-.sidebar-dropdown-menu.show {
+.legend-box.sidebar-dropdown-menu.legend-box.show {
   max-height: 500px;
 }
 
-.sidebar-dropdown-menu .nav-link {
+.legend-box.sidebar-dropdown-menu .nav-link {
   font-size: 0.85rem;
   padding: 5px 15px;
 }
@@ -119,7 +119,7 @@ body {
   text-align: center;
 }
 /* 드롭다운 메뉴 스타일 */
-.sidebar-dropdown-menu {
+.legend-box.sidebar-dropdown-menu {
   list-style: none;
   padding-left: 20px;
   max-height: 0;
@@ -127,7 +127,7 @@ body {
   transition: max-height 0.3s ease;
 }
 
-.sidebar-dropdown-menu.show {
+.legend-box.sidebar-dropdown-menu.legend-box.show {
   max-height: 500px; /* 드롭다운이 열릴 때 최대 높이 */
 }
 
@@ -180,7 +180,86 @@ body {
   margin-bottom: 10px;
 }
 
-.scrollable-chart {
+.legend-box.scrollable-chart {
   overflow-x: auto;
   white-space: nowrap;
+}
+/*근태 색구분 범례*/
+/* 범례 사각형 기본 박스 스타일 */
+.legend-box {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-right: 6px;
+  vertical-align: middle;
+  border: 1px solid #ccc;
+}
+
+/* ✅ 테이블 행 색상 (출석 제외) */
+.status-warning td { background-color: #fff3cd !important; }
+.status-danger td { background-color: #f8d7da !important; }
+.status-blue td { background-color: #cce5ff !important; }
+.status-purple td { background-color: #e2d5f8 !important; }
+.status-green td { background-color: #d4edda !important; }
+.status-orange td { background-color: #ffe5b4 !important; }
+.status-pink td { background-color: #fce4ec !important; }
+
+/* ✅ 범례 색상 적용 (.legend-box 자체에 색 입힘) */
+.legend-box.status-warning { background-color: #fff3cd; }
+.legend-box.status-danger  { background-color: #f8d7da; }
+.legend-box.status-blue    { background-color: #cce5ff; }
+.legend-box.status-purple  { background-color: #e2d5f8; }
+.legend-box.status-green   { background-color: #d4edda; }
+.legend-box.status-orange  { background-color: #ffe5b4; }
+.legend-box.status-pink    { background-color: #fce4ec; }
+
+/* 🧠 AI 기반 근태 분석 제목 스타일 */
+.page-title {
+  font-family: 'Segoe UI', 'Pretendard', sans-serif; /* 사용 폰트 설정 */
+  font-size: 2rem;            /* 기본 제목 글꼴 크기 */
+  font-weight: 800;           /* 글꼴 두께: 매우 굵게 */
+  color: #1a237e;             /* 글자 색상: 진한 남색 */
+  padding: 1.5rem 2rem 1rem 2rem; /* 위, 오른쪽, 아래, 왼쪽 패딩 */
+  border-bottom: 2px solid #e0e0e0; /* 하단 구분선 */
+  display: flex;              /* 내부 요소를 가로 정렬 */
+  align-items: center;        /* 세로 방향 중앙 정렬 */
+  gap: 0.75rem;               /* 이모지와 텍스트 사이 간격 */
+}
+
+/* 🔹 제목 내 이모지 스타일 */
+.page-title .emoji {
+  font-size: 2rem; /* 이모지 크기 설정 */
+}
+
+/* 🔹 강조 텍스트(파란색) */
+.page-title .highlight {
+  color: #1976d2; /* 강조 색상: 파란색 */
+}
+
+/* 📱 반응형 스타일 (768px 이하 화면에서 크기 조정) */
+@media (max-width: 768px) {
+  .page-title {
+    font-size: 1.25rem;   /* 모바일에서 글꼴 크기 축소 */
+    padding: 1rem;        /* 패딩 축소 */
+  }
+}
+
+/* 📊 분석 그래프 출력 영역 전체 스타일 */
+#chartArea {
+  max-height: 400px;      /* 최대 높이 설정: 스크롤 가능하게 함 */
+  overflow-y: auto;       /* 세로 스크롤 활성화 */
+  background-color: #f9f9f9; /* 배경 색상: 연한 회색 */
+  padding: 1rem;          /* 내부 여백 */
+  border: 1px solid #ddd; /* 테두리 색상 설정 */
+}
+
+/* 📉 그래프 캔버스 자체 높이 제한 */
+#chartArea canvas {
+  max-height: 300px !important; /* 그래프 높이 제한 (중요도 높음) */
+}
+/*AI 근태관리 대화목록 삭제버튼*/
+#threadList .btn-outline-danger:hover {
+  background-color: #dc3545;
+  color: white;
+  border-color: #dc3545;
 }
