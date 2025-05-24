@@ -100,7 +100,7 @@ public class FrontController {
         model.addAttribute("roomId", roomId);
         model.addAttribute("userEmail", userEmail);
 
-        return "index/stompChatPage";
+        return "chat/stompChatPage";
     }
 
     @GetMapping("/chatList")
@@ -109,7 +109,7 @@ public class FrontController {
         String userEmail = auth.getName();
         model.addAttribute("userEmail", userEmail);
 
-        return "index/chatList";
+        return "chat/chatList";
     }
 
     @GetMapping("/weekly-entry-charts") //월간 출입 차트 조회
