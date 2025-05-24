@@ -2,6 +2,9 @@
 <!--레이아웃 설정 시 work-entry 패키지 안 html 설정 시 template 하위 경로부터 작성-->
 <html lang="ko" layout:decorate="~{layout/index/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
+    <script src="/js/work-entry/realtime-entry.js" defer></script> <!-- 실시간 출입 통계 관련 JS-->
+    <script src="/js/work-entry/strange-access.js" defer></script> <!-- 이상 출입 알림 관련 JS-->
+    <script src="/js/logprint.js" defer></script> <!--로그 화면 출력 관련 JS-->
     <title>실시간 출입 통계</title>
 </head>
 <body>
@@ -38,5 +41,6 @@
         </div>
     </div>
 </div>
+
 </body>
 </html>
