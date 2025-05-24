@@ -108,7 +108,6 @@ public class FrontController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = auth.getName();
         model.addAttribute("userEmail", userEmail);
-        model.addAttribute("테스트 userEmail", userEmail);
 
         return "index/chatList";
     }
