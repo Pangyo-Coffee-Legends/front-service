@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class FrontController {
-    @GetMapping( {"/index"})
+    @GetMapping(value = {"/index"})
     public String index(){
         // Gateway에서 JWT 유효성 검증이 된 후 돌아오는 데이터의 값을 @ModelAttribute 또는 front-service에서 확인할 수 있는 형태의 데이터를 parameter로 받아서
         // 본 method 내에서 null/false 등 검증 후 검증 실패 시 exception을 발생시켜 exception 내에서 login page로 리다이렉트
@@ -129,6 +129,4 @@ public class FrontController {
 
     @GetMapping("/analysis")//근태 gemini 사용
     public String analysis(){return "index/work-entry/analysis";}
-
-
 }
