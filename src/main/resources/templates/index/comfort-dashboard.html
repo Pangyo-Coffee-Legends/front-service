@@ -1,174 +1,195 @@
 <!DOCTYPE html>
 <html lang="ko" layout:decorate="@{/layout/index/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-  <title>오피스 제어 대시보드</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    #floor-wrapper {
-      position: relative;
-      width: 100%;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
+    <title>오피스 제어 대시보드</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/js/comfort-dashboard.js" defer></script>
+    <style>
+        body {
+            background-color: #2b2c32;
+            color: #ffffff;
+            font-family: 'Segoe UI', sans-serif;
+            user-select: none;
+        }
 
-    #floor-image {
-      width: 100%;
-      height: auto;
-      display: block;
-      border: 1px solid #444;
-      border-radius: 10px;
-    }
+        #floor-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-    .info-box {
-      position: absolute;
-      transform: translate(-50%, -50%);
-      background-color: #333;
-      color: white;
-      border-radius: 10px;
-      padding: 1em;
-      font-size: clamp(11px, 1vw, 15px);
-      width: 140px;
-      text-align: center;
-      box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
-      cursor: pointer;
-    }
+        #floor-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            border: 1px solid #444;
+            border-radius: 10px;
+            pointer-events: none;
+            -webkit-user-drag: none;
+            user-drag: none;
+        }
 
-    .info-box .label {
-      font-weight: bold;
-      font-size: 1em;
-    }
+        .info-box {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            background-color: #2e3038;
+            color: white;
+            border-radius: 10px;
+            padding: 1em;
+            font-size: clamp(11px, 1vw, 15px);
+            width: 140px;
+            text-align: center;
+            box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+            border: 1px solid #3c3c3c;
+            transition: transform 0.2s ease;
+        }
 
-    .info-box .divider {
-      border: 0;
-      border-top: 1px solid rgba(255, 255, 255, 0.3);
-      margin: 6px 0;
-    }
+        .info-box:hover {
+            transform: translate(-50%, -50%) scale(1.05);
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
+        }
 
-    .info-box .grade {
-      font-size: 0.95em;
-    }
+        .info-box .label {
+            font-weight: bold;
+            font-size: 1em;
+        }
 
-    .grade.pleasant {
-      color: #00ffc8;
-    }
+        .info-box .divider {
+            border: 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            margin: 6px 0;
+        }
 
-    .grade.normal {
-      color: #ffd700;
-    }
+        .info-box .grade {
+            font-size: 0.95em;
+            font-weight: bold;
+        }
 
-    .grade.unpleasant {
-      color: #ff4c4c;
-    }
+        .grade.pleasant::before { content: "🟢 "; color: #00ffa2; }
+        .grade.normal::before { content: "🟡 "; color: #ffd700; }
+        .grade.unpleasant::before { content: "🔴 "; color: #ff6b6b; }
 
-    .popup-panel {
-      position: absolute;
-      width: 380px;
-      background: #222;
-      color: white;
-      border: 1px solid #555;
-      border-radius: 10px;
-      padding: 20px;
-      z-index: 100;
-      box-shadow: 0 0 10px #000;
-      display: none;
-    }
+        .popup-panel {
+            position: absolute;
+            width: 380px;
+            background: #2e3038;
+            color: white;
+            border: 1px solid #3c3c3c;
+            border-radius: 10px;
+            padding: 20px;
+            z-index: 9999;
+            box-shadow: 0 0 10px #000;
+            display: none;
+        }
 
-    .popup-panel.left {
-      transform: translate(-100%, -50%);
-    }
+        .popup-panel.left { transform: translate(-100%, -50%); }
+        .popup-panel.right { transform: translate(0%, -50%); }
 
-    .popup-panel.right {
-      transform: translate(0%, -50%);
-    }
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 14px;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
 
-    .close-btn {
-      position: absolute;
-      top: 10px;
-      right: 14px;
-      color: white;
-      font-size: 20px;
-      cursor: pointer;
-    }
+        .popup-table table {
+            font-size: 14px;
+            width: 100%;
+            background-color: #2e3038;
+            color: white;
+            border: 1px solid #444;
+            border-collapse: collapse;
+        }
 
-    .popup-table table {
-      font-size: 14px;
-      width: 100%;
-    }
+        .popup-table th,
+        .popup-table td {
+            border: 1px solid #444;
+            padding: 6px 8px;
+        }
 
-    .form-check-label {
-      margin-left: 0.5em;
-    }
-  </style>
+        .device-status {
+            margin-top: 1rem;
+        }
+
+        .device-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        .device-row span:last-child {
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+
+        .on {
+            background-color: #00e67620;
+            color: #00e676;
+        }
+
+        .off {
+            background-color: #ff525220;
+            color: #ff5252;
+        }
+
+        @media (max-width: 600px) {
+            .info-box {
+                width: 100px;
+                font-size: 12px;
+            }
+
+            .popup-panel {
+                width: 90%;
+                left: 5% !important;
+                transform: translate(0, -50%) !important;
+            }
+        }
+    </style>
 </head>
-<body>
+<body oncontextmenu="return false">
 <div layout:fragment="content">
-  <div class="container-fluid mt-4">
-    <h4 class="mb-3 text-center">오피스 제어</h4>
+    <div class="container-fluid mt-4">
+        <h2 class="mb-4 text-center" style="font-weight: bold; color: #ffffff;">오피스 제어 대시보드</h2>
 
-    <div id="floor-wrapper">
-      <img id="floor-image" src="/images/academy.png" alt="오피스 도면">
+        <div id="floor-wrapper">
+            <img id="floor-image" src="/images/academy.png" alt="오피스 도면" draggable="false">
 
-      <!-- 상태 박스들 -->
-      <div class="info-box" style="top: 55%; left: 17%;" onclick="showPopup('deptA', this)" role="button" tabindex="0" onkeypress="if(event.key === 'Enter') showPopup('deptA', this)">
-        <div class="label">부서 A</div>
-        <hr class="divider">
-        <div class="grade pleasant">쾌적</div>
-      </div>
-
-      <div class="info-box" style="top: 20%; left: 17%;" onclick="showPopup('deptB', this)" role="button" tabindex="0" onkeypress="if(event.key === 'Enter') showPopup('deptB', this)">
-        <div class="label">부서 B</div>
-        <hr class="divider">
-        <div class="grade normal">보통</div>
-      </div>
-
-      <div class="info-box" style="top: 20%; left: 80%;" onclick="showPopup('meetingA', this)" role="button" tabindex="0" onkeypress="if(event.key === 'Enter') showPopup('meetingA', this)">
-        <div class="label">회의실 A</div>
-        <hr class="divider">
-        <div class="grade unpleasant">불쾌</div>
-      </div>
-
-      <div class="info-box" style="top: 55%; left: 57%;" onclick="showPopup('meetingB', this)" role="button" tabindex="0" onkeypress="if(event.key === 'Enter') showPopup('meetingB', this)">
-        <div class="label">회의실 B</div>
-        <hr class="divider">
-        <div class="grade unpleasant">불쾌</div>
-      </div>
-
-      <!-- 팝업 패널 -->
-      <div id="popup-panel" class="popup-panel">
-        <span class="close-btn" onclick="closePopup()">×</span>
-        <h5 id="popup-title">공간명</h5>
-        <canvas id="popupChart" height="180"></canvas>
-        <div id="popup-table" class="popup-table mt-3"></div>
-
-        <!-- IoT 제어 패널 -->
-        <div id="iot-controls" class="mt-3 text-white">
-          <div class="mb-2">
-            <strong>제어 모드:</strong>
-            <button class="btn btn-sm btn-outline-light" id="mode-auto" onclick="setControlMode('auto')">자동</button>
-            <button class="btn btn-sm btn-outline-info" id="mode-manual" onclick="setControlMode('manual')">수동</button>
-          </div>
-          <div id="device-controls">
-            <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" id="aircon" disabled>
-              <label class="form-check-label" for="aircon">에어컨</label>
+            <div class="info-box" style="top: 55%; left: 17%;" onclick="showPopup('deptA', this)">
+                <div class="label">사무실 A</div><hr class="divider">
+                <div class="grade" id="grade-deptA">-</div>
             </div>
-            <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" id="heater" disabled>
-              <label class="form-check-label" for="heater">히터</label>
+
+            <div class="info-box" style="top: 18%; left: 17%;" onclick="showPopup('deptB', this)">
+                <div class="label">사무실 B</div><hr class="divider">
+                <div class="grade" id="grade-deptB">-</div>
             </div>
-            <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" id="dehumidifier" disabled>
-              <label class="form-check-label" for="dehumidifier">제습기</label>
+
+            <div class="info-box" style="top: 18%; left: 80%;" onclick="showPopup('meetingA', this)">
+                <div class="label">회의실 A</div><hr class="divider">
+                <div class="grade" id="grade-meetingA">-</div>
             </div>
-            <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" id="vent" disabled>
-              <label class="form-check-label" for="vent">환기</label>
+
+            <div class="info-box" style="top: 55%; left: 57%;" onclick="showPopup('meetingB', this)">
+                <div class="label">회의실 B</div><hr class="divider">
+                <div class="grade" id="grade-meetingB">-</div>
             </div>
-          </div>
+
+            <div id="popup-panel" class="popup-panel">
+                <span class="close-btn" onclick="closePopup()">×</span>
+                <h5 id="popup-title" class="text-white">📍 공간명</h5>
+                <hr style="border-top: 1px solid #555;">
+                <canvas id="popupChart" height="180"></canvas>
+                <div id="popup-table" class="popup-table mt-3"></div>
+                <div id="device-status" class="device-status"></div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
 </body>
 </html>

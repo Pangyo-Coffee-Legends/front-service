@@ -31,7 +31,6 @@ public class FrontController {
     @GetMapping("/")
     public String randing(){return "index/landing";}
 
-
     @GetMapping(value = {"/charts"})
     public String charts() { return "index/charts";}
 
@@ -40,5 +39,23 @@ public class FrontController {
 
     @GetMapping(value = "/data-dashboard")
     public String dataDashboard() {return "index/data-dashboard";}
+
+    @GetMapping(value = "/rule-group")
+    public String ruleGroup() {return "rule-group/rule-group";}
+
+    @GetMapping(value = "/rule")
+    public String rule() {return "rule/rule";}
+
+    @GetMapping(value = "/action-condition")
+    public String actionCondition() {return "action-condition/action-condition";}
+
+    @GetMapping(value = "/sensor")
+    public String sensor() {return "sensor/sensor";}
+
+    @GetMapping(value = "/my-info")
+    public String myInfo() {return "my-info/my-info";}
+
+    @GetMapping(value = "/my-info-change")
+    public String myInfoChange() {return "my-info/my-info-change";}
 
 }

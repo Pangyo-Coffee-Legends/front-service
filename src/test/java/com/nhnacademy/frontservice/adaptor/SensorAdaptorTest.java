@@ -37,7 +37,7 @@ class SensorAdaptorTest {
     @DisplayName("센서 등록 테스트")
     void registerSensor_returnsCreatedResponse() throws Exception {
         // 1. 테스트 데이터 준비
-        SensorRegisterRequest request = new SensorRegisterRequest("TempSensor-01", "heater", true, "회의실");
+        SensorRegisterRequest request = new SensorRegisterRequest(1L, "TempSensor-01", "heater", true, "회의실");
         SensorResponse mockResponse = new SensorResponse(1L, "TempSensor-01", "heater", true, "회의실");
 
         // 2. WireMock으로 API 응답 정의

@@ -1,120 +1,163 @@
-const comfortData = {
-    deptA: {label: "부서 A", temp: 24.5, humid: 50, co2: 520, grade: "pleasant"},
-    deptB: {label: "부서 B", temp: 25.8, humid: 55, co2: 630, grade: "normal"},
-    meetingA: {label: "회의실 A", temp: 26.3, humid: 60, co2: 920, grade: "unpleasant"},
-    meetingB: {label: "회의실 B", temp: 27.1, humid: 65, co2: 1200, grade: "unpleasant"}
-};
-
 let currentChart = null;
 let currentRoom = null;
 
-function showPopup(roomName, el) {
-    const data = comfortData[roomName];
-    if (!data) return;
+const roomToLocationMap = {
+    deptA: '보드',
+    deptB: '보드',
+    meetingA: '보드',
+    meetingB: '보드'
+};
 
+const roomLabelMap = {
+    deptA: '사무실 A',
+    deptB: '사무실 B',
+    meetingA: '회의실 A',
+    meetingB: '회의실 B'
+};
+
+window.showPopup = async function (roomName, el) {
     currentRoom = roomName;
+    const location = roomToLocationMap[roomName];
+    const label = roomLabelMap[roomName];
+
+    if (!location) return;
 
     const popup = document.getElementById('popup-panel');
     const wrapper = document.getElementById('floor-wrapper');
     const boxRect = el.getBoundingClientRect();
     const wrapperRect = wrapper.getBoundingClientRect();
-
     const boxCenterY = boxRect.top - wrapperRect.top + boxRect.height / 2;
     const boxX = boxRect.left - wrapperRect.left;
     const isLeft = boxX < wrapperRect.width / 2;
 
-    popup.classList.remove('left', 'right');
-    popup.classList.add(isLeft ? 'left' : 'right');
-
+    popup.classList.remove("left", "right");
+    popup.classList.add(isLeft ? "left" : "right");
     popup.style.top = `${boxCenterY}px`;
     popup.style.left = `${boxX + (isLeft ? -20 : el.offsetWidth + 20)}px`;
     popup.style.display = 'block';
 
-    document.getElementById('popup-title').innerText = `📍 ${data.label}`;
+    document.getElementById("popup-title").innerText = `📍 ${label}`;
 
-    const ctx = document.getElementById('popupChart');
+    try {
+        const res = await fetch(`http://localhost:10263/api/v1/comfort/scheduled-result`, {
+            headers: {
+                "Content-Type": "application/json",
+                "X-USER": "test-user@aiot.com"
+            },
+            credentials: "include"
+        });
+
+        if (!res.ok) throw new Error("룰 엔진 API 실패");
+
+        const ruleResults = await res.json();
+
+        const actionWithComfortInfo = ruleResults
+            .flatMap(r => r.executedActions || [])
+            .find(a => a.output && a.output.comfortInfo && a.output.comfortInfo.location === location);
+
+        if (!actionWithComfortInfo) throw new Error("comfortInfo 없음");
+
+        const comfort = actionWithComfortInfo.output.comfortInfo;
+
+        const temperature = parseFloat(comfort.temperature);
+        const humidity = parseFloat(comfort.humidity);
+        const co2 = parseFloat(comfort.co2);
+        const comfortIndex = comfort.comfort_index;
+        const co2Comment = comfort.co2_comment;
+
+        const data = { temperature, humidity, co2, comfortIndex, co2Comment };
+
+        updateGradeDisplay(roomName, comfortIndex); // ✅ 쾌적도 표시
+        renderChart(data);
+        renderComfortTable(data);
+        renderSensorStatus(actionWithComfortInfo.output.deviceCommands);
+
+    } catch (err) {
+        console.error(err);
+        document.getElementById('popup-table').innerHTML = "<p>❌ 환경 데이터 오류</p>";
+        document.getElementById('device-status').innerHTML = "<p>❌ 상태 불러오기 실패</p>";
+    }
+};
+
+function updateGradeDisplay(roomName, comfortIndex) {
+    const gradeElement = document.getElementById(`grade-${roomName}`);
+    if (!gradeElement) return;
+
+    gradeElement.className = 'grade';
+    gradeElement.innerText = comfortIndex; // 예: "덥고 습함"
+}
+
+function renderChart({ temperature, humidity, co2 }) {
+    const ctx = document.getElementById("popupChart");
     if (currentChart) currentChart.destroy();
 
     currentChart = new Chart(ctx, {
-        type: 'bar',
+        type: "bar",
         data: {
-            labels: ['온도 (℃)', '습도 (%)', 'CO₂ (ppm)'],
+            labels: ["온도 (℃)", "습도 (%)", "CO₂ (ppm)"],
             datasets: [{
-                data: [data.temp, data.humid, data.co2],
-                backgroundColor: ['#ff6384', '#36a2eb', '#4bc0c0']
+                data: [temperature, humidity, co2],
+                backgroundColor: ["#ff6384", "#36a2eb", "#4bc0c0"]
             }]
         },
         options: {
             responsive: true,
             plugins: {
-                legend: {display: false},
+                legend: { display: false },
                 tooltip: {
                     callbacks: {
-                        label: function (context) {
-                            return `${context.parsed.y} ${getUnit(context.dataIndex)}`;
-                        }
+                        label: context => `${context.parsed.y} ${getUnit(context.dataIndex)}`
                     }
                 }
             },
-            scales: {
-                y: {beginAtZero: true}
-            }
+            scales: { y: { beginAtZero: true } }
         }
     });
+}
 
-    const gradeClass = data.grade === 'pleasant' ? 'pleasant' : data.grade === 'normal' ? 'normal' : 'unpleasant';
-    document.getElementById('popup-table').innerHTML = `
-        <table class="table table-sm table-bordered text-white mt-3">
-          <tr><th>온도</th><td>${data.temp} ℃</td></tr>
-          <tr><th>습도</th><td>${data.humid} %</td></tr>
-          <tr><th>CO₂</th><td>${data.co2} ppm</td></tr>
-          <tr><th>상태</th><td class="grade ${gradeClass}">${gradeText(data.grade)}</td></tr>
+function renderComfortTable({ temperature, humidity, co2, comfortIndex, co2Comment }) {
+    document.getElementById("popup-table").innerHTML = `
+        <table>
+            <tr><th>온도</th><td>${temperature.toFixed(1)} ℃</td></tr>
+            <tr><th>습도</th><td>${humidity.toFixed(1)} %</td></tr>
+            <tr><th>CO₂</th><td>${co2} ppm</td></tr>
+            <tr><th>쾌적도</th><td>${comfortIndex}</td></tr>
+            <tr><th>CO₂ 상태</th><td>${co2Comment}</td></tr>
         </table>
-      `;
-
-    // IoT 제어 초기화
-    setControlMode('auto');
-    ['aircon', 'heater', 'dehumidifier', 'vent'].forEach(id => {
-        document.getElementById(id).checked = false;
-    });
+    `;
 }
 
-function setControlMode(mode) {
-    const isManual = mode === 'manual';
+function renderSensorStatus(deviceCommands) {
+    const map = {
+        aircon: "에어컨",
+        heater: "히터",
+        ventilator: "환풍기",
+        dehumidifier: "제습기"
+    };
 
-    document.getElementById('mode-auto').classList.toggle('btn-light', mode === 'auto');
-    document.getElementById('mode-auto').classList.toggle('btn-outline-light', mode !== 'auto');
-    document.getElementById('mode-manual').classList.toggle('btn-info', mode === 'manual');
-    document.getElementById('mode-manual').classList.toggle('btn-outline-info', mode !== 'manual');
+    const html = Object.entries(deviceCommands).map(([type, state]) => `
+        <div class="device-row">
+            <span>${map[type] || type}</span>
+            <span class="${state ? 'on' : 'off'}">${state ? 'ON' : 'OFF'}</span>
+        </div>
+    `).join("");
 
-    ['aircon', 'heater', 'dehumidifier', 'vent'].forEach(id => {
-        document.getElementById(id).disabled = !isManual;
-    });
-}
-
-function getUnit(index) {
-    return index === 0 ? '℃' : index === 1 ? '%' : 'ppm';
-}
-
-function gradeText(grade) {
-    switch (grade) {
-        case 'pleasant':
-            return '쾌적';
-        case 'normal':
-            return '보통';
-        case 'unpleasant':
-            return '불쾌';
-        default:
-            return '-';
-    }
+    document.getElementById("device-status").innerHTML = `
+        <h6>작동 상태</h6>
+        ${html}
+    `;
 }
 
 function closePopup() {
-    document.getElementById('popup-panel').style.display = 'none';
+    document.getElementById("popup-panel").style.display = "none";
     currentRoom = null;
 }
 
-window.addEventListener('resize', () => {
+function getUnit(index) {
+    return index === 0 ? "℃" : index === 1 ? "%" : "ppm";
+}
+
+window.addEventListener("resize", () => {
     if (currentRoom) {
         const el = document.querySelector(`[onclick*="${currentRoom}"]`);
         if (el) showPopup(currentRoom, el);
