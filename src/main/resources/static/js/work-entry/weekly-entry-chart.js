@@ -9,7 +9,7 @@ function fetchWithAuth(url, options = {}) {
         ...options,
         method: 'GET',
         credentials: 'include',
-        headers: { ...(options.headers || {}), 'Content-Type': 'application/json' }
+        headers: {'Content-Type': 'application/json' }
     });
 }
 

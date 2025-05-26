@@ -30,7 +30,7 @@
             <div id="chatBox" class="flex-grow-1 overflow-auto bg-white border rounded p-3 mb-3"></div>
 
             <!-- 분석 그래프 출력 영역 -->
-            <div id="chartArea" class="bg-white border rounded p-3 mt-3" style="overflow-y: auto; max-height: 300px;">
+            <div id="chartArea" class="bg-white border rounded p-3 mt-3" >
                 <h6 class="fw-bold text-secondary mb-3">📊 분석 그래프</h6>
             </div>
 
@@ -45,8 +45,8 @@
                         </select>
                     </div>
                     <div class="col-md-7">
-                        <textarea id="promptText" class="form-control form-control-sm" rows="2"
-                                  placeholder="질문을 입력하세요" required></textarea>
+                        <label for="promptText"></label><textarea id="promptText" class="form-control form-control-sm" rows="2"
+                                                                  placeholder="질문을 입력하세요" required></textarea>
                     </div>
                     <div class="col-md-2 d-grid">
                         <button type="submit" class="btn btn-sm btn-primary">

@@ -205,7 +205,7 @@ document.addEventListener('DOMContentLoaded', function () {
      */
     function saveMessage(threadId, role, content) {
         if (!threadId) return Promise.resolve();
-        return postWithAuth('http://localhost:10251/api/v1/analysis/history/save', {threadId, role, content});
+        return postWithAuth('http://localhost:10251/api/v1/analysis/histories/save', {threadId, role, content});
     }
 
     /**
@@ -214,7 +214,7 @@ document.addEventListener('DOMContentLoaded', function () {
      * @param {string} memberNo - 선택한 사원의 번호
      */
     function loadThreads(memberNo) {
-        fetch(`http://localhost:10251/api/v1/analysis/thread/${memberNo}`, { credentials: 'include' })
+        fetch(`http://localhost:10251/api/v1/analysis/members/${memberNo}/threads`, { credentials: 'include' })
             .then(res => res.json())
             .then(data => {
                 threadList.innerHTML = '';
@@ -238,7 +238,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     deleteBtn.onclick = (e) => {
                         e.stopPropagation(); // 부모 클릭 이벤트 방지
                         if (confirm(`"${thread.title}" 대화를 삭제하시겠습니까?`)) {
-                            fetch(`http://localhost:10251/api/v1/analysis/thread/${thread.threadId}`, {
+                            fetch(`http://localhost:10251/api/v1/analysis/threads/${thread.threadId}`, {
                                 method: 'DELETE',
                                 credentials: 'include'
                             })
@@ -272,7 +272,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!threadId) return;
         chatBox.innerHTML = '';
         chartArea.innerHTML = '';
-        fetch(`http://localhost:10251/api/v1/analysis/history/${threadId}`, {credentials: 'include'})
+        fetch(`http://localhost:10251/api/v1/analysis/histories/${threadId}`, {credentials: 'include'})
             .then(res => res.json())
             .then(history => {
                 history.reverse().forEach(m => appendChatMessage(m.role, m.content));
@@ -285,6 +285,10 @@ document.addEventListener('DOMContentLoaded', function () {
         const prompt = promptInput.value.trim();
         if (!memberNo || !prompt || !currentThreadId) {
             alert('사원번호, 질문, 대화 선택을 모두 완료하세요.');
+            return;
+        }
+        if (!prompt || prompt.trim() === "") {
+            alert("메시지를 입력해주세요.");
             return;
         }
 
@@ -340,7 +344,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     {role: 'user', content: '[근무 기록]\n' + formattedRecords}
                 ];
 
-                return postWithAuth('http://localhost:10251/api/v1/analysis/custom', {
+                return postWithAuth('http://localhost:10251/api/v1/analysis/customs', {
                     memberNo,
                     messages: messagePayload,
                     workRecords: records
@@ -376,13 +380,13 @@ document.addEventListener('DOMContentLoaded', function () {
     createBtn.addEventListener('click', () => {
         const mbNo = memberInput.value.trim();
         if (!mbNo || isNaN(mbNo)) {
-            alert('유효한 사원번호를 입력하세요.');
+            alert('먼저 사원을 선택하세요.');
             return;
         }
         const title = prompt('새 대화 제목을 입력하세요');
         if (!title?.trim()) return;
 
-        postWithAuth('http://localhost:10251/api/v1/analysis/thread', {mbNo, title: title.trim()})
+        postWithAuth('http://localhost:10251/api/v1/analysis/threads', {mbNo, title: title.trim()})
             .then(res => res.json())
             .then(thread => {
                 currentThreadId = thread.threadId;
