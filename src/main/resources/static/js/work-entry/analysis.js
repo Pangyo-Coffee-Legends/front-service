@@ -6,8 +6,64 @@ document.addEventListener('DOMContentLoaded', function () {
     const threadList = document.getElementById('threadList');
     const createBtn = document.getElementById('createThreadBtn');
     const chartArea = document.getElementById('chartArea');
+    const reportBtn = document.getElementById('generateReportBtn');
+    const reportMonth = document.getElementById('reportMonth');
+    const reportYear = document.getElementById('reportYear');
+
     let currentThreadId = null;
     let thinkingInterval = null;
+    if (reportYear) {
+        for (let y = 2000; y <= 2100; y++) {
+            const option = document.createElement('option');
+            option.value = y;
+            option.textContent = `${y}년`;
+            if (y === new Date().getFullYear()) {
+                option.selected = true;
+            }
+            reportYear.appendChild(option);
+        }
+    }
+    if (reportBtn) {
+        reportBtn.addEventListener('click', () => {
+            const mbNo = memberInput.value.trim();
+            const month = parseInt(reportMonth.value, 10);
+            const year = parseInt(reportYear.value, 10);
+
+            if (!mbNo || isNaN(month) || isNaN(year)) {
+                alert("사원번호, 연도, 월을 모두 선택해주세요.");
+                return;
+            }
+
+            const keywordMap = {
+                "출근": 1, "지각": 2, "결근": 3, "외근": 4,
+                "연차": 5, "질병": 6, "반차": 7, "상": 8
+            };
+
+            const statusCodes = Object.values(keywordMap).map(String); // ["1", "2", ..., "8"]
+
+            postWithAuth("http://localhost:10251/api/v1/analysis/reports", {
+                mbNo: parseInt(mbNo),
+                year,
+                month,
+                statusCodes
+            })
+                .then(res => {
+                    if (!res.ok) throw new Error(`에러 발생 (status: ${res.status})`);
+                    return res.json();
+                })
+                .then(data => {
+                    alert("✅ 리포트 분석이 완료되었습니다.");
+                    appendChatMessage('ai', data.fullText, { type: 'typing' });
+                    if (currentThreadId) {
+                        saveMessage(currentThreadId, 'ai', data.fullText);
+                    }
+                })
+                .catch(err => {
+                    console.error("❌ 리포트 생성 실패:", err);
+                    alert("리포트 생성에 실패했습니다.");
+                });
+        });
+    }
     /*
     위 요소들 중 하나라도 누락되면 콘솔에 에러메시지 추가 부분
      */

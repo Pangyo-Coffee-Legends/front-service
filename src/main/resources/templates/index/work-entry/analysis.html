@@ -31,24 +31,28 @@
             <div id="chatBox" class="flex-grow-1 overflow-auto bg-white border rounded p-3 mb-3"></div>
 
             <!-- 분석 그래프 출력 영역 -->
-            <div id="chartArea" class="bg-white border rounded p-3 mt-3" >
+            <div id="chartArea" class="bg-white border rounded p-3 mt-3">
                 <h6 class="fw-bold text-secondary mb-3">📊 분석 그래프</h6>
             </div>
 
             <!-- 🔽 드롭다운 및 분석 폼 -->
             <form id="analysisForm" class="border rounded p-3 bg-white">
                 <div class="row g-2 align-items-end">
-                    <!-- 기존 번호 입력 제거 후 드롭다운으로 변경 -->
+                    <!-- 사원 선택 드롭다운 -->
                     <div class="col-md-3">
                         <select id="memberSelect" class="form-select form-select-sm" required>
                             <option value="">사원을 선택하세요</option>
-                            <!-- 자바스크립트에서 동적으로 채워짐 -->
                         </select>
                     </div>
+
+                    <!-- 프롬프트 입력창 -->
                     <div class="col-md-7">
-                        <label for="promptText"></label><textarea id="promptText" class="form-control form-control-sm" rows="2"
-                                                                  placeholder="질문을 입력하세요" required></textarea>
+                        <label for="promptText" class="form-label visually-hidden">프롬프트</label>
+                        <textarea id="promptText" class="form-control form-control-sm" rows="2"
+                                  placeholder="질문을 입력하세요" required></textarea>
                     </div>
+
+                    <!-- 전송 버튼 -->
                     <div class="col-md-2 d-grid">
                         <button type="submit" class="btn btn-sm btn-primary">
                             <i class="bi bi-send me-1"></i> 보내기
@@ -56,12 +60,45 @@
                     </div>
                 </div>
             </form>
+
+            <!-- 📄 리포트 생성 기능 -->
+            <div class="border rounded p-3 mt-3 bg-white">
+                <div class="row g-2 align-items-center">
+                    <div class="col-auto">
+                        <label class="form-label fw-bold mb-0">📄 금월 리포트 생성</label>
+                    </div>
+                    <div class="col-auto">
+                        <select id="reportYear" class="form-select form-select-sm">
+                            <option value="">연도</option>
+                            <!-- JS에서 2000~2100년 동적으로 채워짐 -->
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <select id="reportMonth" class="form-select form-select-sm">
+                            <option value="">월</option>
+                            <option value="1">1월</option>
+                            <option value="2">2월</option>
+                            <option value="3">3월</option>
+                            <option value="4">4월</option>
+                            <option value="5">5월</option>
+                            <option value="6">6월</option>
+                            <option value="7">7월</option>
+                            <option value="8">8월</option>
+                            <option value="9">9월</option>
+                            <option value="10">10월</option>
+                            <option value="11">11월</option>
+                            <option value="12">12월</option>
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <button type="button" id="generateReportBtn" class="btn btn-sm btn-outline-success">
+                            <i class="bi bi-file-earmark-text me-1"></i> 생성
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-
-<!-- 📎 외부 자바스크립트 -->
-<!--<script src="/js/work-entry/attendance-chart.js" defer></script> &lt;!&ndash; 근무시간통계 관련 JS&ndash;&gt;-->
-
 </body>
 </html>
