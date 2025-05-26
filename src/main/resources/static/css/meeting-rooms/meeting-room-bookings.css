@@ -154,7 +154,12 @@ tr:hover {
     color: #155724;
 }
 
-.message-box.error {
+.message-box.not_found {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.message-box.bad_request {
     background-color: #f8d7da;
     color: #721c24;
 }

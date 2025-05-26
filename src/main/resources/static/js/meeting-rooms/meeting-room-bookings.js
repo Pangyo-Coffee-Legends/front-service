@@ -1,6 +1,8 @@
 const SERVER_URL = "http://localhost:10251";
 const BOOKING_API_URL = `${SERVER_URL}/api/v1/bookings`;
 const MEETING_ROOM_API_URL = `${SERVER_URL}/api/v1/meeting-rooms`;
+const EARLY_ENTRY_MESSAGE = "예약 시간 10분 전부터 입장 가능합니다.";
+const LATE_ENTRY_MESSAGE = "예약시간 10분 후까지만 입실 가능합니다.";
 
 document.addEventListener("DOMContentLoaded", async () => {
     console.log("예약페이지 로딩 완료.");
@@ -10,48 +12,88 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Java의 LocalDateTime 형식에 맞는 현재 날짜, 시간 정보 string
     const dateTimeString = getLocalDateTimeString();
+    const dateTime = dateTimeString.split("T")[0];
 
-    const testDate = "2025-05-11";
+    await getBookings(meetingRoomNo, dateTime);
 
-    await getBookings(meetingRoomNo, testDate);
-
-    let selectedMeetingRoomNo = null;
-    let selectedBookingNo = null;
-    let email = null;
-
-    document.addEventListener("click", async (e) => {
-
-        if (e.target.tagName === "BUTTON" && e.target.id === "enter-code") {
-            selectedMeetingRoomNo = e.target.dataset.meetingRoomNo;
-            selectedBookingNo = e.target.dataset.bookingNo;
-
-            console.log("입실 selectedMeetingRoomNo: ", selectedMeetingRoomNo);
-            console.log("입실 selectedBookingNo: ", selectedBookingNo);
-
-            openModal(selectedMeetingRoomNo, selectedBookingNo);
-        }
-
-        if (e.target.id === "modal-close") {
-            closeModal();
-        }
-
-        if (e.target.id === "modal-submit") {
-            let inputCode = document.getElementById("booking-code-input").value;
-            console.log(inputCode);
-
-            email = "test@test.com"; // 테스트를 위해 test 계정 부여. 추후 실제 사용자의 email을 받아오는 코드로 refactoring 필요함.
-
-            let meetingRoomNo = document.getElementById("modal-submit").dataset.meetingRoomNo;
-            let bookingNo = document.getElementById("modal-submit").dataset.bookingNo;
-
-            console.log(meetingRoomNo);
-            console.log(bookingNo);
-
-            await verifyBookingCode(email, meetingRoomNo, bookingNo, inputCode, "2025-05-11T13:30:00");
-        }
-    })
+    bindButtonHandler();
 
 });
+
+function bindButtonHandler() {
+    document.getElementById("enter-code").addEventListener("click", onEnterCode);
+    document.getElementById("modal-close").addEventListener("click", onModalClose);
+    document.getElementById("modal-submit").addEventListener("click", onModalSubmit);
+}
+
+function onEnterCode(e) {
+    let selectedMeetingRoomNo = e.target.dataset.meetingRoomNo;
+    let selectedBookingNo = e.target.dataset.bookingNo;
+
+    openModal(selectedMeetingRoomNo, selectedBookingNo);
+}
+
+function onModalClose() {
+    document.getElementById("modal").classList.add("hidden");
+}
+
+async function onModalSubmit() {
+    let inputCode = document.getElementById("booking-code-input").value;
+
+    let meetingRoomNo = document.getElementById("modal-submit").dataset.meetingRoomNo;
+    let bookingNo = document.getElementById("modal-submit").dataset.bookingNo;
+
+    await verifyBookingCode(meetingRoomNo, bookingNo, inputCode, getLocalDateTimeString());
+}
+
+function openModal(meetingRoomNo, bookingNo) {
+    const modal = document.getElementById("modal");
+    modal.classList.remove("hidden");
+
+    const submitBtn = document.getElementById("modal-submit");
+    submitBtn.setAttribute("data-meeting-room-no", meetingRoomNo);
+    submitBtn.setAttribute("data-booking-no", bookingNo);
+
+    document.getElementById("booking-code-input").focus();
+}
+
+async function verifyBookingCode(meetingRoomNo, selectedBookingNo, inputCode, entryTime) {
+
+    let date = entryTime.split("T")[0];
+    let time = entryTime.split("T")[1].substring(0, 5);
+
+    const response = await fetch(`${MEETING_ROOM_API_URL}/verify`,
+        {
+            method: "POST",
+            headers: {
+                "Content-type": "application/json"
+            },
+            credentials: "include",
+            body: JSON.stringify({
+                "bookingNo": selectedBookingNo,
+                "entryTime": date.concat(" ", time),
+                "code": inputCode
+            })
+        });
+
+    const result = await response.json();
+
+    console.log("result: ", result);
+
+    if (result.statusCode === 200) {
+        showMessage("success", result.message);
+    } else if (result.statusCode === 404) {
+        showMessage("not_found", result.message)
+    } else if (result.statusCode === 400) {
+        if (result.message === EARLY_ENTRY_MESSAGE) {
+            showMessage("bad_request", result.message)
+        } else if (result.message === LATE_ENTRY_MESSAGE) {
+            showMessage("bad_request", result.message)
+        }
+    }
+
+    console.log(result);
+}
 
 // format: yyyy-MM-dd`T`HH:mm:ss (Java의 LocalDateTime 형식을 맞추기 위함)
 function getLocalDateTimeString() {
@@ -74,9 +116,9 @@ async function getBookings(meetingRoomNo, date) {
         const response = await fetch(`${BOOKING_API_URL}/meeting-rooms/${meetingRoomNo}/date/${date}`, {
             method: "GET",
             headers: {
-                "Content-Type": "application/json",
-                "X-USER": "test@test.com"
-            }
+                Accept: "application/json"
+            },
+            credentials: "include"
         });
 
         if (!response.ok) {
@@ -85,14 +127,9 @@ async function getBookings(meetingRoomNo, date) {
 
         const bookings = await response.json();
 
-        console.log("회의실 번호: ", meetingRoomNo);
-        console.log("현재날짜: ", date);
-        console.log(bookings);
-
         const th = document.querySelector("thead");
 
         bookings.forEach(booking => {
-            console.log(booking);
 
             const tr = document.createElement("tr");
             const td1 = document.createElement("td");
@@ -134,54 +171,6 @@ async function getBookings(meetingRoomNo, date) {
         })
     } catch (error) {
         console.log("예약정보 불러오기 실패: ", error);
-    }
-}
-
-function openModal(meetingRoomNo, bookingNo) {
-    const modal = document.getElementById("modal");
-    modal.classList.remove("hidden");
-
-    const submitBtn = document.getElementById("modal-submit");
-    submitBtn.setAttribute("data-meeting-room-no", meetingRoomNo);
-    submitBtn.setAttribute("data-booking-no", bookingNo);
-
-    document.getElementById("booking-code-input").focus();
-}
-
-function closeModal() {
-    document.getElementById("modal").classList.add("hidden");
-}
-
-async function verifyBookingCode(email,  meetingRoomNo, selectedBookingNo, inputCode, entryTime) {
-    try {
-        console.log("input code: ", inputCode);
-        const response = await fetch(`${MEETING_ROOM_API_URL}/verify`,
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-USER": email
-                },
-                body: JSON.stringify({
-                    "bookingNo": selectedBookingNo,
-                    "code": inputCode,
-                    "entryTime": "2025-05-11 13:30"
-                })
-            });
-
-        if (!response.ok) {
-            throw new Error("예약 코드가 일치하지 않습니다.")
-        }
-
-        const result = await response.json();
-
-        showMessage("success", "입실이 완료되었습니다.");
-        console.log(result);
-
-    } catch (error) {
-        showMessage("error", "예약 코드가 일치하지 않습니다.");
-        console.error(error);
-
     }
 }
 

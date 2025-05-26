@@ -8,11 +8,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 async function getMeetingRooms() {
     try {
-        const response = await fetch(`${MEETING_ROOM_API_URL}/list`, {
+        const response = await fetch(`${MEETING_ROOM_API_URL}`, {
             method: "GET",
             headers: {
-                "Content-Type": "application/json"
-            }
+                "Accept": "application/json"
+            },
+            credentials: "include"
         });
 
         if (!response.ok) {

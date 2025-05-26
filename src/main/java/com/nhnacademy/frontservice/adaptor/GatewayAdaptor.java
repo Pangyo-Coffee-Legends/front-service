@@ -35,8 +35,14 @@ public interface GatewayAdaptor {
     @GetMapping("/members/email/{mbEmail}")
     ResponseEntity<MemberResponse> getMemberByMbEmail(@PathVariable("mbEmail") String email);
 
+    /**
+     *
+     * @param id 회의실 id
+     * @param authHeader Gateway에서 식별할 인증된 사용자 정보
+     * @return 회의실 DTO
+     */
     @GetMapping("/meeting-rooms/{meeting-room-id}")
-    ResponseEntity<MeetingRoomResponse> getMeetingRoomById(@PathVariable("meeting-room-id") Long id);
+    ResponseEntity<MeetingRoomResponse> getMeetingRoomById(@PathVariable("meeting-room-id") Long id, @RequestHeader("Authorization") String authHeader);
 
     /**
      * JWT 토큰 발급 요청을 보냅니다.

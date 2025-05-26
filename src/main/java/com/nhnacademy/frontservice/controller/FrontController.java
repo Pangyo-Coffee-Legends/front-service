@@ -5,6 +5,7 @@ import com.nhnacademy.frontservice.dto.meetingroom.MeetingRoomResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -109,11 +110,12 @@ public class FrontController {
     }
 
     @GetMapping(value = "/meeting-rooms/{room-no}/bookings")
-    public String meetingRoomBookings(@PathVariable("room-no") Long no, Model model) {
+    public String meetingRoomBookings(@PathVariable("room-no") Long no, @CookieValue(name = "accessToken", required = false) String accessToken, Model model) {
 
         model.addAttribute("no", no);
 
-        MeetingRoomResponse meetingRoomResponse = gatewayAdaptor.getMeetingRoomById(no).getBody();
+        String authHeader = "Bearer " + accessToken;
+        MeetingRoomResponse meetingRoomResponse = gatewayAdaptor.getMeetingRoomById(no, authHeader).getBody();
 
         if (meetingRoomResponse != null) {
             model.addAttribute("roomName", meetingRoomResponse.getMeetingRoomName());
