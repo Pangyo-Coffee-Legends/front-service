@@ -1,9 +1,9 @@
 
 // API 기본 URL (실제 환경에 맞게 수정 필요)
-const API_BASE_URL = 'http://localhost:10251'; // 실제 API 서버 주소로 변경해주세요.
-const SOCKJS_ENDPOINT = `${API_BASE_URL}/ws/chat/connect`; // 예: '/ws-stomp' 또는 서버에서 설정한 엔드포인트
-const CHAT_LIST_UPDATE_TOPIC = '/topic/invitations'; // 백엔드에서 지정한 사용자 구독 경로
-// const READ_CHAT_ROOM_API_URL = `${API_BASE_URL}/api/v1/chat/room/${roomId}/read`;
+// const API_BASE_URL = 'http://localhost:10251'; // 실제 API 서버 주소로 변경해주세요.
+// const SOCKJS_ENDPOINT = `${API_BASE_URL}/ws/chat/connect`; // 예: '/ws-stomp' 또는 서버에서 설정한 엔드포인트
+const CHAT_LIST_INVITATION_TOPIC = '/topic/invitations'; // 백엔드에서 지정한 사용자 구독 경로
+const CHAT_LIST_UPDATE_TOPIC = '/topic/chat-list-updates'; // 백엔드에서 지정한 사용자 구독 경로
 
 // DOM 요소 가져오기
 const chatRoomListBody = document.getElementById('chat-room-list-body');
@@ -32,17 +32,21 @@ function connect() {
     stompClient = Stomp.over(stompClient);
 
 
-    stompClient.connect({}, onWsConnected, onWsError); // 헤더는 필요시 추가
+    stompClient.connect({
+        'X-USER': userEmail,
+    }, onConnected, onError); // 헤더는 필요시 추가
 }
 
-function onWsConnected() {
+function onConnected() {
     console.log("STOMP 연결 성공!");
     // 채팅 목록 업데이트 신호를 받을 경로 구독
-    stompClient.subscribe(CHAT_LIST_UPDATE_TOPIC, onInvitationNotificationReceived); // 콜백 함수 연결
+    stompClient.subscribe(CHAT_LIST_INVITATION_TOPIC, onInvitationNotificationReceived); // 콜백 함수 연결
+    stompClient.subscribe(CHAT_LIST_UPDATE_TOPIC, onChatListUpdateReceived); // 콜백 함수 연결
+    console.log(`구독 시작: ${CHAT_LIST_INVITATION_TOPIC}`);
     console.log(`구독 시작: ${CHAT_LIST_UPDATE_TOPIC}`);
 }
 
-function onWsError(error) {
+function onError(error) {
     console.error("STOMP 연결 실패:", error);
 }
 
@@ -68,6 +72,29 @@ function onInvitationNotificationReceived(payload) {
         console.error("수신 메시지 파싱 오류:", e);
     }
 }
+
+function onChatListUpdateReceived(payload) {
+    const roomList = JSON.parse(payload.body);
+    console.log("채팅 목록 수신:", roomList);
+
+    const tbody = document.getElementById('chat-room-list-body');
+
+    roomList.forEach(room => {
+        // 각 tr을 roomId 기준으로 찾는다
+        const row = [...tbody.rows].find(tr => {
+            const cellRoomId = tr.cells[0]?.textContent?.trim();
+            return cellRoomId === String(room.roomId);
+        });
+
+        if (row && room.email === userEmail) {
+            // 기존 행이 있으면 해당 td만 업데이트
+            row.cells[1].textContent = escapeHtml(room.roomName);
+            row.cells[2].textContent = escapeHtml(room.participantCount);
+            row.cells[3].textContent = escapeHtml(room.unreadCount);
+        }
+    });
+}
+
 
 
 /**

@@ -1,0 +1,128 @@
+// API 기본 URL (실제 환경에 맞게 수정 필요)
+// const API_BASE_URL = 'http://localhost:10251'; // 예: 'http://localhost:8080'
+
+// DOM 요소 가져오기
+const memberListBody = document.getElementById('member-list-body');
+
+// const userEmail = /*[[${userEmail}]]*/ 'default-email@example.com';
+
+/**
+ * 회원 목록을 불러와 테이블에 렌더링하는 함수
+ */
+async function loadMemberList() {
+    try {
+        console.log(userEmail);
+
+        const response = await fetch(`${API_BASE_URL}/api/v1/members/list`, {
+            method: 'GET',
+            credentials: 'include' // 쿠키 전송 (회원 목록 조회가 인증 필요 시)
+        });
+
+        if (!response.ok) {
+            if (response.status === 401 || response.status === 403) {
+                alert('회원 목록을 볼 권한이 없습니다. 로그인이 필요할 수 있습니다.');
+                // 로그인 페이지로 리디렉션 필요 시
+                // window.location.href = '/login';
+            } else {
+                throw new Error(`회원 목록 로딩 실패: ${response.statusText}`);
+            }
+            return;
+        }
+
+        // json 객체로 변환 / 변환하지 않으면 String으로 남아있기 때문임.
+        const memberList = await response.json();
+        renderMemberList(memberList);
+
+    } catch (error) {
+        console.error('회원 목록 로딩 중 오류:', error);
+        memberListBody.innerHTML = '<tr><td colspan="4">회원 목록을 불러오는 중 오류가 발생했습니다.</td></tr>';
+    }
+}
+
+/**
+ * 회원 목록 데이터를 받아 HTML 테이블 행으로 변환하여 표시하는 함수
+ * @param {Array} memberList - 회원 목록 데이터 배열 [{id, name, email}, ...]
+ */
+function renderMemberList(memberList) {
+    memberListBody.innerHTML = ''; // 기존 목록 초기화
+
+    if (!memberList || memberList.length === 0) {
+        memberListBody.innerHTML = '<tr><td colspan="4">등록된 회원이 없습니다.</td></tr>';
+        return;
+    }
+
+    // 현재 로그인한 사용자 이메일 가져오기 (자기 자신에게 채팅하기 버튼 숨김 처리 등에 사용 가능)
+    // const currentUserEmail = localStorage.getItem('userEmail');
+
+    memberList.forEach(member => {
+        // 자기 자신인 경우 목록에서 제외하거나 '채팅하기' 버튼 비활성화 가능
+        // if (member.email === currentUserEmail) return; // 예: 자기 자신은 목록에서 제외
+
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${escapeHtml(member.id)}</td>
+            <td>${escapeHtml(member.name)}</td>
+            <td>${escapeHtml(member.email)}</td>
+            <td>
+                <button class="btn btn-primary btn-chat" data-member-id="${escapeHtml(member.id)}" data-member-email="${escapeHtml(member.email)}" ${member.email === userEmail ? 'disabled' : ''}>
+                    채팅하기
+                </button>
+            </td>
+        `;
+        memberListBody.appendChild(row);
+    });
+
+    // 동적으로 생성된 '채팅하기' 버튼에 이벤트 리스너 추가
+    document.querySelectorAll('.btn-chat').forEach(button => {
+        if (!button.disabled) { // 활성화된 버튼에만 리스너 추가
+            button.addEventListener('click', handleStartChat);
+        }
+    });
+}
+
+/**
+ * '채팅하기' 버튼 클릭 시 실행될 함수 (임시 구현)
+ * @param {Event} event - 클릭 이벤트
+ */
+function handleStartChat(event) {
+    const button = event.target;
+    const memberId = button.dataset.memberId;
+    const memberEmail = button.dataset.memberEmail;
+
+    console.log(`선택된 회원 정보: ID=${memberId}, Email=${memberEmail}`);
+    alert(`${memberEmail}님과 채팅을 시작합니다. (실제 채팅 시작 로직 필요)`);
+
+    // 여기에 실제 1:1 채팅방 생성 또는 참여 로직 구현 필요
+    // 예시: 백엔드 API 호출하여 1:1 채팅방 생성/조회 후 해당 채팅방으로 이동
+    // const response = await fetch(`${API_BASE_URL}/chat/room/direct/${memberId}`, { method: 'POST', credentials: 'include' });
+    // if (response.ok) {
+    //     const chatRoomInfo = await response.json();
+    //     window.location.href = `/chatpage/${chatRoomInfo.roomId}`;
+    // } else {
+    //     alert("채팅방 시작에 실패했습니다.");
+    // }
+}
+
+// 간단한 HTML 이스케이프 함수 (XSS 방지 목적)
+function escapeHtml(unsafe) {
+    if (unsafe === null || typeof unsafe === 'undefined') return '';
+    return String(unsafe)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+async function createChatRoom() {
+    await fetch(`${API_BASE_URL}/chat/room/group/create`, {
+        method: 'POST',
+        credentials: 'include' // 쿠키 전송 (회원 목록 조회가 인증 필요 시)
+    });
+}
+
+// --- 이벤트 리스너 설정 ---
+document.addEventListener('DOMContentLoaded', () => {
+    // 페이지 로드 시 회원 목록 불러오기
+    loadMemberList();
+});

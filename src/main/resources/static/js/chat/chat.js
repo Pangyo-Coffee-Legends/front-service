@@ -1,9 +1,9 @@
-const API_BASE_URL = 'http://localhost:10251';
+// const API_BASE_URL = 'http://localhost:10251';
 
 // SockJS 및 STOMP 서버 엔드포인트 (실제 환경에 맞게 수정 필요)
 // 주의: SockJS 엔드포인트는 http:// 또는 https:// 프로토콜을 사용합니다.
 // Spring Boot에서 STOMP를 설정했다면, 보통 WebSocketConfigurer에서 등록한 엔드포인트입니다.
-const SOCKJS_ENDPOINT = `${API_BASE_URL}/ws/chat/connect`; // 예: '/ws-stomp' 또는 서버에서 설정한 엔드포인트
+// const SOCKJS_ENDPOINT = `${API_BASE_URL}/ws/chat/connect`; // 예: '/ws-stomp' 또는 서버에서 설정한 엔드포인트
 const CHAT_ROOM_LIST_NON_MEMBER_API_URL = `${API_BASE_URL}/api/v1/chat/room/${roomId}/nonmember/list`;
 const HISTORY_CHAT_ROOM_API_URL = `${API_BASE_URL}/api/v1/chat/history/${roomId}`;
 const inviteMultipleURL = `${API_BASE_URL}/api/v1/chat/room/group/invite-multiple/${roomId}/join`;
