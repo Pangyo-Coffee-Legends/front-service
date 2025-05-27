@@ -133,5 +133,6 @@ public class FrontController {
         }
 
         return "index/meeting-room/meeting-room-bookings";
+
     }
 }
