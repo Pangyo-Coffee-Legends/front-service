@@ -246,17 +246,12 @@ body {
 
 /* 📊 분석 그래프 출력 영역 전체 스타일 */
 #chartArea {
-  max-height: 400px;      /* 최대 높이 설정: 스크롤 가능하게 함 */
-  overflow-y: auto;       /* 세로 스크롤 활성화 */
   background-color: #f9f9f9; /* 배경 색상: 연한 회색 */
   padding: 1rem;          /* 내부 여백 */
   border: 1px solid #ddd; /* 테두리 색상 설정 */
 }
 
-/* 📉 그래프 캔버스 자체 높이 제한 */
-#chartArea canvas {
-  max-height: 300px !important; /* 그래프 높이 제한 (중요도 높음) */
-}
+
 /*AI 근태관리 대화목록 삭제버튼*/
 #threadList .btn-outline-danger:hover {
   background-color: #dc3545;
