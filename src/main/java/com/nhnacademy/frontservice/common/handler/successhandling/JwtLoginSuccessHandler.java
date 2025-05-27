@@ -42,18 +42,18 @@ public class JwtLoginSuccessHandler implements AuthenticationSuccessHandler {
         JwtResponse tokens = tokenResponse.getBody();
 
         String accessToken = tokens.getAccessToken();
-        String refreshToken = tokens.getRefreshToken();
-
         addCookie("accessToken", accessToken, response);
-        ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
-                .httpOnly(true)
-                .secure(true)
-                .path("/")
-                .sameSite("Strict")
-                .maxAge(Duration.ofDays(7))
-                .build();
+//        String refreshToken = tokens.getRefreshToken();
 
-        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+//        ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
+//                .httpOnly(true)
+//                .secure(true)
+//                .path("/")
+//                .sameSite("Strict")
+//                .maxAge(Duration.ofDays(7))
+//                .build();
+//
+//        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
         response.sendRedirect("/index");
     }
 
