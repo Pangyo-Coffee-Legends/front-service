@@ -11,8 +11,10 @@
     <link rel="stylesheet" href="/css/table.css">
     <link rel="stylesheet" href="/css/modal.css">
 </head>
-<body class="body-with-fixed-header">
 
+<!--<body class="body-with-fixed-header">-->
+
+<body>
 <div class="container" layout:fragment="content">
     <div class="card">
         <h1 class="card-title">채팅방 목록</h1>
@@ -24,7 +26,7 @@
                     <th>채팅방 이름</th>
                     <th>현재 인원수</th>
                     <th>안 읽은 메시지</th>
-                    <th>입장</th>
+                    <th colspan="2" >입장</th>
                 </tr>
                 </thead>
                 <tbody id="chat-room-list-body">

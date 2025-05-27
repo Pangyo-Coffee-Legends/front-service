@@ -11,24 +11,29 @@
     <link rel="stylesheet" href="/css/table.css">
     <link rel="stylesheet" href="/css/modal.css">
 </head>
-<body class="body-with-fixed-header">
 
+<!--<body class="body-with-fixed-header">-->
+
+<body>
 <div class="container" layout:fragment="content">
 
     <div class="card">
         <h1 class="card-title">회원 목록</h1>
         <div class="card-body">
-            <table id="member-table">
-                <thead>
-                <tr>
-                    <th>이름</th>
-                    <th>Email</th>
-                    <th>채팅</th>
-                </tr>
-                </thead>
-                <tbody id="member-list-body">
-                </tbody>
-            </table>
+            <!-- 테이블을 감싸는 스크롤 컨테이너 추가 -->
+            <div class="table-scroll-container">
+                <table id="member-table">
+                    <thead>
+                    <tr>
+                        <th>이름</th>
+                        <th>Email</th>
+                        <th>채팅</th>
+                    </tr>
+                    </thead>
+                    <tbody id="member-list-body">
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 

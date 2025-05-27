@@ -69,7 +69,7 @@ function renderMemberList(memberList) {
     memberList.forEach(member => {
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td>${escapeHtml(member.id)}</td>
+<!--            <td>${escapeHtml(member.id)}</td>-->
             <td>${escapeHtml(member.name)}</td>
             <td>${escapeHtml(member.email)}</td>
             <td>

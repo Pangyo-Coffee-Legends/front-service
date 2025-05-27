@@ -82,19 +82,21 @@ function onChatListUpdateReceived(payload) {
     roomList.forEach(room => {
         // 각 tr을 roomId 기준으로 찾는다
         const row = [...tbody.rows].find(tr => {
-            const cellRoomId = tr.cells[0]?.textContent?.trim();
-            return cellRoomId === String(room.roomId);
+            // const cellRoomId = tr.cells[0]?.textContent?.trim();
+
+            // 수정: tr의 dataset에서 roomId를 추출 (✅ 정답)
+            const storedRoomId = tr.dataset.roomId; // 👈 변경
+            return storedRoomId === String(room.roomId);
         });
 
         if (row && room.email === userEmail) {
             // 기존 행이 있으면 해당 td만 업데이트
-            row.cells[1].textContent = escapeHtml(room.roomName);
-            row.cells[2].textContent = escapeHtml(room.participantCount);
-            row.cells[3].textContent = escapeHtml(room.unreadCount);
+            row.cells[0].textContent = escapeHtml(room.roomName);
+            row.cells[1].textContent = escapeHtml(room.participantCount);
+            row.cells[2].textContent = escapeHtml(room.unreadCount);
         }
     });
 }
-
 
 
 /**
@@ -144,23 +146,25 @@ function renderChatRoomList(roomList) {
     roomList.forEach(room => {
         const row = document.createElement('tr');
         // room 객체에 roomId와 roomName이 있는지 확인 (데이터 일관성 체크)
-        const roomId = room.roomId !== undefined ? room.roomId : 'N/A';
+        // const roomId = room.roomId !== undefined ? room.roomId : 'N/A';
+
+        // roomId를 tr 요소의 dataset에 저장 (화면에 안 보임)
+        row.dataset.roomId = room.roomId || 'N/A';  // 👈 데이터 저장 위치 변경
         const roomName = room.roomName !== undefined ? room.roomName : '이름 없음';
         const participantCount = room.participantCount !== undefined ? room.participantCount : '0';
         const unreadCount = room.unreadCount !== undefined ? room.unreadCount : '0';
 
         row.innerHTML = `
-                    <td>${escapeHtml(roomId)}</td>
                     <td>${escapeHtml(roomName)}</td>
                     <td>${escapeHtml(participantCount)}</td>
                     <td>${escapeHtml(unreadCount)}</td>
                     <td>
-                        <button class="btn btn-primary btn-enter-room" data-room-id="${escapeHtml(roomId)}" data-room-name="${escapeHtml(roomName)}">
+                        <button class="btn btn-primary btn-enter-room" data-room-id="${escapeHtml(row.dataset.roomId)}" data-room-name="${escapeHtml(roomName)}">
                             입장하기
                         </button>
                     </td>
                     <td>
-                        <button class="btn btn-primary btn-exit-room" data-room-id="${escapeHtml(roomId)}" data-room-name="${escapeHtml(roomName)}">
+                        <button class="btn btn-primary btn-exit-room" data-room-id="${escapeHtml(row.dataset.roomId)}" data-room-name="${escapeHtml(roomName)}">
                             나가기
                         </button>
                     </td>
@@ -172,6 +176,7 @@ function renderChatRoomList(roomList) {
     document.querySelectorAll('.btn-enter-room').forEach(button => {
         button.addEventListener('click', handleEnterChatRoom);
     });
+
     // 동적으로 생성된 '나가기' 버튼에 이벤트 리스너 추가
     document.querySelectorAll('.btn-exit-room').forEach(button => {
         button.addEventListener('click', handleExitChatRoom);
