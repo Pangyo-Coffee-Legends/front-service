@@ -2,6 +2,7 @@ package com.nhnacademy.frontservice.dto.meetingroom;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 
 @RequiredArgsConstructor
 @Getter

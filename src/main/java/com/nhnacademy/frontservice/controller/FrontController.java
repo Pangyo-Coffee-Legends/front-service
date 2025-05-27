@@ -109,6 +109,17 @@ public class FrontController {
         return "index/meeting-room/meeting-rooms";
     }
 
+
+    /**
+     *
+     * meeting-rooms.html에서 회의실을 선택하면 해당 회의실에 등록되어 있는 예약을 보여주는
+     * 페이지로 이동하기 위해 GET 요청 발생 시 호출되는 controller method입니다.
+     *
+     * @param no 회의실 ID
+     * @param accessToken 인증된 사용자에게 부여되는 access token
+     * @param model 선택한 회의실에 등록된 예약 내역을 표시할 때 HTML에 나타낼 회의실 이름을 담아서 전달해줄 Model
+     * @return 선택한 회의실에 등록되어 있는 예약내역을 보여주는 페이지로 이동합니다.
+     */
     @GetMapping(value = "/meeting-rooms/{room-no}/bookings")
     public String meetingRoomBookings(@PathVariable("room-no") Long no, @CookieValue(name = "accessToken", required = false) String accessToken, Model model) {
 
