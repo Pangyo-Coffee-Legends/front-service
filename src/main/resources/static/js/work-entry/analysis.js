@@ -64,6 +64,66 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
         });
     }
+
+    /**
+     * @function downloadChatAsPdf
+     * @description chatBox에 출력된 분석 내용을 A4 용지에 꽉 차게 PDF로 저장합니다.
+     */
+    function downloadChatAsPdf() {
+        const chatContent = document.getElementById('chatBox');
+        if (!chatContent || chatContent.innerText.trim() === '') {
+            alert("분석 결과가 없습니다. 먼저 내용을 생성한 후 다시 시도하세요.");
+            return;
+        }
+
+        // 사원 이름 추출
+        const selectedOption = memberInput.options[memberInput.selectedIndex];
+        let memberName = selectedOption?.textContent?.split('(')[0]?.trim() || '사원';
+
+        // 날짜 포맷 yyyy-MM-dd
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const dd = String(today.getDate()).padStart(2, '0');
+        const formattedDate = `${yyyy}-${mm}-${dd}`;
+
+        const fileName = `${memberName}_근무_리포트_${formattedDate}.pdf`;
+        // chatBox의 내용을 복사하여 PDF 전용 스타일을 덮어씌움
+        const tempClone = chatContent.cloneNode(true);
+        tempClone.style.fontSize = '14px';
+        tempClone.style.padding = '30px';
+        tempClone.style.margin = '0';
+        tempClone.style.backgroundColor = '#ffffff';
+        tempClone.style.width = '100%';
+        tempClone.style.maxWidth = '100%';
+        tempClone.style.boxShadow = 'none';
+        tempClone.style.borderRadius = '0';
+
+        // 전체 페이지를 감싸기 위한 div 생성 (용지 크기에 맞게 조절)
+        const wrapper = document.createElement('div');
+        wrapper.style.width = '210mm';        // A4 가로
+        wrapper.style.minHeight = '297mm';    // A4 세로
+        wrapper.style.padding = '20mm';
+        wrapper.style.boxSizing = 'border-box';
+        wrapper.style.backgroundColor = '#ffffff';
+        wrapper.appendChild(tempClone);
+
+        const opt = {
+            margin:       0,
+            filename:    fileName,
+            image:        { type: 'jpeg', quality: 1 },
+            html2canvas:  { scale: 2 },
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        html2pdf().set(opt).from(wrapper).save();
+    }
+// PDF 저장 버튼에 이벤트 연결
+    const downloadBtn = document.getElementById('downloadPdfBtn');
+    if (downloadBtn) {
+        downloadBtn.addEventListener('click', downloadChatAsPdf);
+    }
+
     /*
     위 요소들 중 하나라도 누락되면 콘솔에 에러메시지 추가 부분
      */
