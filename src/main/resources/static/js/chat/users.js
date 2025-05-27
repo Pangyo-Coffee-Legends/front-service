@@ -152,7 +152,7 @@ async function handleCreateChatRoom() {
         }
 
         closeModal();
-        inviteSelectedMembers(invitedUserEmail, roomId);
+        await inviteSelectedMembers(invitedUserEmail, roomId);
         handleEnterChatRoom(roomName ,roomId);
 
 
