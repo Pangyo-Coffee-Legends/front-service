@@ -32,7 +32,7 @@ public interface GatewayAdaptor {
      * @param email 조회할 회원 이메일
      * @return 조회된 회원 정보
      */
-    @GetMapping("/members/email/{mbEmail}")
+    @GetMapping("/members/email/{mbEmail}?view=detailed")
     ResponseEntity<MemberResponse> getMemberByMbEmail(@PathVariable("mbEmail") String email);
 
     /**
