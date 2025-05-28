@@ -1,8 +1,8 @@
-/*.page-wrapper {*/
-/*    display: flex;*/
-/*    justify-content: center;*/
-/*    align-items: center;*/
-/*}*/
+.page-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 .success-container {
     text-align: center;
