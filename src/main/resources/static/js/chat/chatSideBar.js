@@ -2,6 +2,7 @@
 const API_BASE_URL = 'http://localhost:10251'; // 실제 API 서버 주소로 변경해주세요.
 const SOCKJS_ENDPOINT = `${API_BASE_URL}/ws/chat/connect`; // 예: '/ws-stomp' 또는 서버에서 설정한 엔드포인트
 const UNREAD_COUNT_TOPIC = '/topic/unread-count-updates'; // 백엔드에서 지정한 사용자 구독 경로
+const UNREAD_NOTIFICATION_COUNT_TOPIC = '/topic/unread-notification-count-updates'; // 백엔드에서 지정한 사용자 구독 경로
 
 let SIDEBAR_stompClient = null;
 
@@ -21,6 +22,7 @@ function onSidebarStompConnected() {
     console.log("STOMP 연결 성공!");
     // 채팅 목록 업데이트 신호를 받을 경로 구독
     SIDEBAR_stompClient.subscribe(UNREAD_COUNT_TOPIC, handleUnreadCountUpdate); // 콜백 함수 연결
+    SIDEBAR_stompClient.subscribe(UNREAD_NOTIFICATION_COUNT_TOPIC, handleUnreadNotificationCountUpdate); // 콜백 함수 연결
     console.log(`구독 시작: ${UNREAD_COUNT_TOPIC}`);
 
     fetchInitialUnreadCount();
@@ -50,11 +52,34 @@ function handleUnreadCountUpdate(message) {
     }
 }
 
+// --- 2. STOMP 메시지 수신 시 콜백 함수 ---
+function handleUnreadNotificationCountUpdate(message) {
+    console.log("사이드 바 안 읽은 메시지 테스트 :", message);
+    try {
+        // const payload  = JSON.parse(message.body);
+        const payload  = message.body;
+
+        // **중요: 이 알림이 나(현재 사용자)를 위한 것인지 확인**
+        // if (payload && payload.userEmail === userEmail) { // 백엔드가 보낸 이메일과 현재 사용자 이메일 비교
+        //     console.log(payload);
+        //     console.log("나에게 온 초대 알림 확인. 채팅 목록 새로고침 실행.");
+
+        displayNotificationUnreadCountBadge(payload); // <<< 목록 새로고침 함수 호출
+        // } else {
+        //     // console.log("나에게 온 알림이 아님."); // 디버깅용 로그
+        // }
+    } catch (e) {
+        console.error("수신 메시지 파싱 오류:", e);
+    }
+}
+
 // --- 3. UI 업데이트 함수 ---
 function displayUnreadCountBadge(count) {
     const chatListLink = document.querySelector('ul.nav a[href="/chatList"]');
+
     if (chatListLink) {
         let badge = chatListLink.querySelector('.unread-badge');
+
         if (!badge) {
             badge = document.createElement('span');
             badge.className = 'badge bg-danger ms-1 unread-badge'; // Bootstrap 배지 클래스 예시
@@ -70,6 +95,28 @@ function displayUnreadCountBadge(count) {
     }
 }
 
+// --- 4. Notification UI 업데이트 함수 ---
+function displayNotificationUnreadCountBadge(count) {
+    const chatListLink = document.querySelector('ul.nav a[href="/notification"]');
+
+    if (chatListLink) {
+        let notificationBadge = chatListLink.querySelector('.notification-unread-badge');
+
+        if (!notificationBadge) {
+            notificationBadge = document.createElement('span');
+            notificationBadge.className = 'badge bg-danger ms-1 unread-badge'; // Bootstrap 배지 클래스 예시
+            chatListLink.appendChild(notificationBadge);
+        }
+
+        if (count > 0) {
+            notificationBadge.textContent = count;
+            notificationBadge.style.display = 'inline-block';
+        } else {
+            notificationBadge.style.display = 'none';
+        }
+    }
+}
+
 async function fetchInitialUnreadCount() {
     try {
         const response = await fetch(`${API_BASE_URL}/api/v1/chat/unread/count`, {
@@ -77,15 +124,30 @@ async function fetchInitialUnreadCount() {
             credentials: 'include'
         });
 
+        const notificationResponse = await fetch(`${API_BASE_URL}/api/v1/chat/notification/unread/count`, {
+            method: 'GET',
+            credentials: 'include'
+        });
+
         if(response.ok) {
             const data = await response.json();
-            console.log("gdgdgdgdg"+data);
+            console.log("내가 안 읽은 메시지 전체 개수"+data);
             displayUnreadCountBadge(data);
         } else {
             displayUnreadCountBadge(0);
         }
+
+        if(notificationResponse.ok) {
+            const data = await notificationResponse.json();
+            console.log("내가 안 읽은 알림 메시지 전체 개수"+data);
+            displayNotificationUnreadCountBadge(data);
+        } else {
+            displayNotificationUnreadCountBadge(0);
+        }
+
     } catch (error) {
         displayUnreadCountBadge(0);
+        displayNotificationUnreadCountBadge(0);
     }
 }
 

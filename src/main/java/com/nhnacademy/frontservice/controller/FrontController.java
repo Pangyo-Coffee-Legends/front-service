@@ -112,6 +112,15 @@ public class FrontController {
         return "chat/chatList";
     }
 
+    @GetMapping("/notification")
+    public String notification(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String userEmail = auth.getName();
+        model.addAttribute("userEmail", userEmail);
+
+        return "chat/notification";
+    }
+
     @GetMapping("/weekly-entry-charts") //월간 출입 차트 조회
     public String monthlyEntryCharts(){
         return "index/work-entry/weekly-entry-chart";
