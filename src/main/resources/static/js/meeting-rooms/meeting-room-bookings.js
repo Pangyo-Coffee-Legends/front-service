@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 function bindButtonHandler() {
-    document.getElementById("enter-code").addEventListener("click", onEnterCode);
+    document.querySelectorAll(".enter-code").forEach(e => e.addEventListener("click", onEnterCode));
     document.getElementById("modal-close").addEventListener("click", onModalClose);
     document.getElementById("modal-submit").addEventListener("click", onModalSubmit);
 }
@@ -160,7 +160,7 @@ async function getBookings(meetingRoomNo, date) {
 
             enterBtn.setAttribute("data-meeting-room-no", `${meetingRoomNo}`);
             enterBtn.setAttribute("data-booking-no", `${booking.no}`);
-            enterBtn.setAttribute("id", "enter-code")
+            enterBtn.setAttribute("class", "enter-code")
             enterBtn.innerText = "입실";
 
             td6.append(enterBtn);
