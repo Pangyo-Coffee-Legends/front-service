@@ -38,12 +38,9 @@ function connect() {
 }
 
 function onConnected() {
-    console.log("STOMP 연결 성공!");
     // 채팅 목록 업데이트 신호를 받을 경로 구독
     stompClient.subscribe(CHAT_LIST_INVITATION_TOPIC, onInvitationNotificationReceived); // 콜백 함수 연결
     stompClient.subscribe(CHAT_LIST_UPDATE_TOPIC, onChatListUpdateReceived); // 콜백 함수 연결
-    console.log(`구독 시작: ${CHAT_LIST_INVITATION_TOPIC}`);
-    console.log(`구독 시작: ${CHAT_LIST_UPDATE_TOPIC}`);
 }
 
 function onError(error) {
@@ -122,7 +119,6 @@ async function loadChatRoomList() {
 
         // json 객체로 변환
         const chatRoomList = await response.json();
-        console.log(chatRoomList);
         renderChatRoomList(chatRoomList);
 
     } catch (error) {
@@ -326,7 +322,6 @@ function escapeHtml(unsafe) {
 
 // --- 이벤트 리스너 설정 ---
 document.addEventListener('DOMContentLoaded', () => {
-    console.log(userEmail);
     // 페이지 로드 시 채팅방 목록 불러오기
     loadChatRoomList();
     connect();
