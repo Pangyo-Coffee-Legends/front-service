@@ -1,0 +1,28 @@
+/*근태 색구분 범례*/
+/* 범례 사각형 기본 박스 스타일 */
+.legend-box {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin-right: 6px;
+    vertical-align: middle;
+    border: 1px solid #ccc;
+}
+
+/* ✅ 테이블 행 색상 (출석 제외) */
+.status-warning td { background-color: #fff3cd !important; }
+.status-danger td { background-color: #f8d7da !important; }
+.status-blue td { background-color: #cce5ff !important; }
+.status-purple td { background-color: #e2d5f8 !important; }
+.status-green td { background-color: #d4edda !important; }
+.status-orange td { background-color: #ffe5b4 !important; }
+.status-pink td { background-color: #fce4ec !important; }
+
+/* ✅ 범례 색상 적용 (.legend-box 자체에 색 입힘) */
+.legend-box.status-warning { background-color: #fff3cd; }
+.legend-box.status-danger  { background-color: #f8d7da; }
+.legend-box.status-blue    { background-color: #cce5ff; }
+.legend-box.status-purple  { background-color: #e2d5f8; }
+.legend-box.status-green   { background-color: #d4edda; }
+.legend-box.status-orange  { background-color: #ffe5b4; }
+.legend-box.status-pink    { background-color: #fce4ec; }
