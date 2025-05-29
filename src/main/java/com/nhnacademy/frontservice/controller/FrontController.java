@@ -86,7 +86,7 @@ public class FrontController {
         return "booking/admin/history";
     }
 
-    @GetMapping( "/charts")
+    @GetMapping(value = {"/charts"})
     public String charts() { return "index/charts";}
 
     @GetMapping("/weekly-entry-charts") //월간 출입 차트 조회
@@ -135,7 +135,32 @@ public class FrontController {
         return "index/meeting-room/meeting-room-bookings";
 
     }
-  
+
     @GetMapping("/analysis")//근태 gemini 사용
     public String analysis(){return "index/work-entry/analysis";}
+
+    @GetMapping(value = "/comfort-dashboard")
+    public String comfortDashboard() {return "index/comfort-dashboard";}
+
+    @GetMapping(value = "/data-dashboard")
+    public String dataDashboard() {return "index/data-dashboard";}
+
+    @GetMapping(value = "/rule-group")
+    public String ruleGroup() {return "rule-group/rule-group";}
+
+    @GetMapping(value = "/rule")
+    public String rule() {return "rule/rule";}
+
+    @GetMapping(value = "/action-condition")
+    public String actionCondition() {return "action-condition/action-condition";}
+
+    @GetMapping(value = "/sensor")
+    public String sensor() {return "sensor/sensor";}
+
+    @GetMapping(value = "/my-info")
+    public String myInfo() {return "my-info/my-info";}
+
+    @GetMapping(value = "/my-info-change")
+    public String myInfoChange() {return "my-info/my-info-change";}
+
 }
