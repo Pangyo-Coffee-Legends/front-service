@@ -1,8 +1,8 @@
 package com.nhnacademy.frontservice.common.advice;
 
 import com.nhnacademy.frontservice.adaptor.GatewayAdaptor;
-import com.nhnacademy.frontservice.dto.JwtResponse;
-import com.nhnacademy.frontservice.dto.TokenRequest;
+import com.nhnacademy.frontservice.dto.token.JwtResponse;
+import com.nhnacademy.frontservice.dto.token.TokenRequest;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;

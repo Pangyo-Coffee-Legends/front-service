@@ -1,4 +1,4 @@
-package com.nhnacademy.frontservice.dto;
+package com.nhnacademy.frontservice.dto.member;
 
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;

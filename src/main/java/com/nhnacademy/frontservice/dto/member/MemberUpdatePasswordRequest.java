@@ -1,4 +1,4 @@
-package com.nhnacademy.frontservice.dto;
+package com.nhnacademy.frontservice.dto.member;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
