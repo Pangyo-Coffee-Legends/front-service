@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 사이드바 메뉴 아이템에 아이콘 추가
     const navLinks = document.querySelectorAll('.sidebar .nav-item');
-    const icons = ['fas fa-tachometer-alt', 'fas fa-desktop', 'fas fa-chart-bar', 'fas fa-table'];
+    const icons = ['fas fa-tachometer-alt', 'fas fa-desktop', 'fas fa-chart-bar', 'fas fa-table', 'fas fa-user', 'fas fa-comments'];
 
     navLinks.forEach((link, index) => {
         const anchor = link.querySelector('a');

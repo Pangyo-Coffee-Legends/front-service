@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="@{layout/index/layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/chat.css">
+</head>
+<body>
+    <div class="container" layout:fragment="content">
+        <div class="card">
+            <div class = "card-title-row">
+                <h1 class="card-title" id="chat-room-title">stomp 채팅</h1>
+                <!-- 채팅방 내 초대 버튼 -->
+                <button class="invite-btn" onclick="openInviteModal()">멤버 초대</button>
+                <button class="btn btn-primary btn-exit-room" onclick="handleExitChatRoom()">나가기</button>
+            </div>
+            <div class="chat-box" id="chat-box-simple"></div>
+            <div class="chat-input-area">
+                <input type="text" id="message-input-simple" placeholder="메시지 입력..." autocomplete="off">
+                <button id="send-button-simple" class="btn btn-primary">전송</button>
+            </div>
+        </div>
+
+        <dialog id="memberModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>채팅방 멤버 목록</h2>
+                    <button class="close-button" onclick="document.getElementById('memberModal').close()" aria-label="닫기">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div id="memberList">
+                        <!-- 멤버 목록이 여기에 표시됩니다 -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn invite" id="invite-button" onclick="document.getElementById('memberModal').close()">초대</button>
+                    <button class="btn cancel" onclick="document.getElementById('memberModal').close()">닫기</button>
+                </div>
+            </div>
+        </dialog>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+        <script th:inline="javascript">
+            const roomId = /*[[${roomId}]]*/ 1;
+        </script>
+        <script src="/js/chat/chat.js"></script>
+    </div>
+</body>
+</html>

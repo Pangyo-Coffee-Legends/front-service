@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="@{layout/index/layout.html}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>채팅방 목록</title>
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/table.css">
+    <link rel="stylesheet" href="/css/modal.css">
+</head>
+
+<!--<body class="body-with-fixed-header">-->
+
+<body>
+<div class="container" layout:fragment="content">
+    <div class="card">
+        <h1 class="card-title">채팅방 목록</h1>
+        <button id="btn-show-create-room-modal" class="btn btn-secondary">채팅방 생성</button>
+        <div class="card-body">
+            <table id="chat-room-table">
+                <thead>
+                <tr>
+                    <th>채팅방 이름</th>
+                    <th>현재 인원수</th>
+                    <th>안 읽은 메시지</th>
+                    <th colspan="2" >입장</th>
+                </tr>
+                </thead>
+                <tbody id="chat-room-list-body">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="createChatRoomModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>새 채팅방 생성</h2>
+                <span class="close-button" id="closeCreateRoomModalBtn">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="newRoomNameInput">채팅방 이름:</label>
+                    <input type="text" id="newRoomNameInput" name="newRoomName" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="cancelCreateRoomBtn" class="btn btn-secondary">취소</button>
+                <button id="confirmCreateRoomBtn" class="btn btn-primary">생성</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+
+    <script src="/js/chat/chatList.js"></script>
+</div>
+
+</body>
+</html>

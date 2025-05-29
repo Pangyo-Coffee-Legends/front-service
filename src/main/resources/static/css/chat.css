@@ -1,0 +1,432 @@
+/* chat.css 또는 해당 페이지 전용 CSS */
+
+/* ======== 기본 페이지 및 레이아웃 설정 ======== */
+html, body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f6f8; /* 전체 페이지 배경 (채팅창 바깥쪽) */
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* ★★★ 페이지 전체 스크롤바 제거 ★★★ */
+    /*overflow: auto; !* ★★★ 페이지 전체 스크롤바 제거 ★★★ *!*/
+}
+
+/* body.body-with-fixed-header 는 상단 고정 헤더가 있을 때 사용 */
+body.body-with-fixed-header {
+    padding-top: 60px; /* 실제 헤더 높이 */
+    height: calc(100vh - 60px); /* 헤더를 제외한 뷰포트 높이 */
+    box-sizing: border-box;
+}
+
+/* .container는 Thymeleaf layout fragment의 루트.
+   대시보드 오른쪽 영역을 100% 채우고, 내부 스크롤 X */
+.container {
+    max-width: none !important; /* layout.css의 max-width 덮어쓰기 */
+    margin: 0 !important;       /* layout.css의 margin 덮어쓰기 */
+    padding: 0 !important;      /* layout.css의 padding 덮어쓰기 */
+    height: 100vh;
+    display: flex; /* 내부 .card가 높이를 100% 사용하도록 */
+    flex-direction: column;
+    overflow: hidden;
+    background-color: #fff; /* 채팅 UI의 기본 배경색 */
+}
+
+/* .card는 채팅 UI 전체를 감싸는 컨테이너 */
+.card {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column; /* 제목 - 채팅창 - 입력창 수직 정렬 */
+    background-color: inherit; /* 부모(.container) 배경색 상속 또는 직접 지정 */
+
+    /* layout.css의 .card 스타일 초기화/변경 */
+    padding: 60px 0 20px 0;
+    border-radius: 0;
+    box-shadow: none;
+    margin-bottom: 0;
+    border: none; /* 테두리 완전히 제거 */
+    overflow: hidden; /* 이 자체는 스크롤 X */
+}
+
+/* ======== 채팅방 제목 영역 (상단 고정) ======== */
+.card-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1.25rem; /* 패딩 약간 줄임 */
+    background-color: #fff; /* 배경은 카드와 동일하게 */
+    border-bottom: 1px solid #e0e0e0; /* 옅은 구분선 */
+    flex-shrink: 0; /* 높이가 줄어들지 않도록 고정 */
+    position: relative; /* z-index를 위해 */
+    z-index: 2; /* 채팅 내용보다 위에 표시 */
+}
+
+.card-title { /* h1 태그 */
+    font-size: 1.1rem; /* 크기 조정 */
+    font-weight: 700; /* 더 강조 */
+    color: #1a1a1a;
+    margin: 0;
+    flex-grow: 1; /* 남는 공간 차지 */
+    line-height: 1.5; /* 버튼과 수직 정렬 용이하게 */
+}
+
+.invite-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.875rem;
+    background-color: #f0f0f0;
+    color: #333;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    flex-shrink: 0;
+}
+.invite-btn:hover {
+    background-color: #e0e0e0;
+}
+
+/* ======== 채팅 메시지 목록 (.chat-box) - 스크롤 영역 ======== */
+.chat-box {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+
+    padding: 1rem 1.25rem; /* 내부 여백 */
+    background-color: #fff; /* 카드 배경과 동일하게 하여 경계 없앰 */
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem; /* 메시지 간 간격 */
+}
+
+/* ======== 메시지 입력 영역 (.chat-input-area) - 하단 고정 ======== */
+.chat-input-area {
+    flex-shrink: 0; /* 높이가 내용에 맞게 고정 */
+    z-index: 2; /* 채팅 내용보다 위에 표시 */
+    background: #f8f8f8; /* 약간 다른 배경으로 구분 (선택 사항) */
+    display: flex;
+    align-items: center; /* 내부 요소 세로 정렬 */
+    gap: 0.75rem;
+    padding: 0.75rem 1.25rem;
+    border-top: 1px solid #e0e0e0; /* 옅은 구분선 */
+    box-sizing: border-box;
+}
+
+.chat-input-area input[type="text"] {
+    flex: 1;
+    padding: 0.65rem 0.85rem;
+    border-radius: 18px; /* 더 둥글게 (Discord/Slack 스타일) */
+    border: 1px solid #ccc;
+    font-size: 0.95rem;
+    background: #fff;
+    outline: none;
+}
+.chat-input-area input[type="text"]:focus {
+    border-color: #5897fb; /* 포커스 색상 */
+    box-shadow: 0 0 0 3px rgba(88,151,251,0.2);
+}
+
+.chat-input-area .btn-primary { /* 전송 버튼 */
+    padding: 0.65rem 1rem;
+    background-color: #5897fb; /* 좀 더 밝은 파란색 */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+}
+.chat-input-area .btn-primary:hover {
+    background-color: #4a80d3;
+}
+
+/* ======== 채팅 메시지 스타일 ======== */
+.chat-message {
+    display: flex; /* 내부 strong과 .bubble 정렬 */
+    flex-direction: column;
+    margin-bottom: 0.2rem; /* 간격 약간 줄임 */
+    max-width: 75%; /* 말풍선 최대 너비 */
+    word-break: break-word; /* 긴 단어 줄바꿈 (break-all 보다 부드러움) */
+}
+
+.chat-message strong { /* 보낸 사람 이름 */
+    font-size: 0.875rem;
+    color: #606060;
+    margin-bottom: 0.15rem;
+    font-weight: 600;
+}
+
+.chat-message.sent {
+    align-self: flex-end; /* 오른쪽 정렬 */
+}
+.chat-message.received {
+    align-self: flex-start; /* 왼쪽 정렬 */
+}
+
+/* 보낸 메시지(speaker) - 메타 왼쪽 정렬 */
+.chat-message.sent .bubble-wrapper {
+    flex-direction: row-reverse; /* 말풍선이 오른쪽에 오게끔 반전 */
+}
+
+/* 받은 메시지(receiver) - 메타 오른쪽 정렬 */
+.chat-message.received .bubble-wrapper {
+    flex-direction: row;
+}
+
+.chat-message.received strong { /* 받은 메시지의 보낸 사람 이름은 왼쪽에 */
+    align-self: flex-start;
+}
+.chat-message.sent strong { /* 보낸 메시지의 보낸 사람 이름 (보통 표시 안함) */
+    display: none; /* 필요하면 주석 해제 */
+    /* align-self: flex-end; */
+}
+
+
+.chat-message .bubble {
+    padding: 0.5rem 0.85rem;
+    border-radius: 1rem; /* Discord/Slack 스타일은 더 둥근 편 */
+    line-height: 1.45;
+    box-shadow: none; /* 그림자 제거 */
+    /* ★★★ 너비를 내용에 맞게 자동으로 조절 (핵심) ★★★ */
+    display: inline-block; /* 내용만큼만 너비 차지 */
+    width: fit-content;    /* (최신 브라우저) 내용에 맞게 너비 조절 */
+    max-width: 100%;       /* 부모(.chat-message)의 max-width를 넘지 않도록 */
+    text-align: left;      /* 버블 내 텍스트는 항상 왼쪽 정렬 */
+}
+
+.chat-message.received .bubble {
+    background: #f0f0f0; /* 받은 메시지 배경 */
+    color: #1a1a1a;
+}
+
+.chat-message.sent .bubble {
+    background: #e1effd; /* 보낸 메시지 배경 (예: 연한 하늘색) */
+    color: #0b57a2;
+    /* .sent 클래스가 있는 .chat-message가 align-self:flex-end로 오른쪽 정렬되므로,
+       .bubble 자체는 text-align:left로 두어도 됩니다. */
+}
+
+/* 꼬리표 제거 (선택 사항) */
+.chat-message.sent .bubble::after,
+.chat-message.received .bubble::after {
+    display: none;
+}
+
+.chat-message.system {
+    align-self: center;
+    color: #888;
+    font-size: 0.8rem;
+    margin: 0.5rem 0;
+}
+
+.bubble-wrapper {
+    display: flex;
+    align-items: flex-end; /* 두 요소를 하단 기준으로 정렬 */
+    gap: 0.4rem;
+    max-width: 100%;
+}
+
+/* 시간 + 읽지 않음 */
+.bubble-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-end;
+    gap: 0.15rem;
+    font-size: 0.75rem;
+}
+
+/* 시간 스타일 */
+.message-time {
+    color: #999;
+}
+
+/* 안읽은 메시지 수 */
+.message-unread {
+    color: #5b9df9;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.7rem;
+}
+
+/* 받은 메시지 (received)일 때의 스타일 */
+.chat-message.received .message-unread {
+    padding: 25px 20px 0px 0px;
+}
+
+/* 보낸 메시지 (sent)일 때의 스타일 */
+.chat-message.sent .message-unread {
+    padding: 25px 0px 0px 20px;
+}
+
+
+ /*멤버 모달, 스크롤바 등 이하 기존 코드 유지 */
+
+/* ======== 멤버 모달 스타일 ======== */
+
+/* <dialog> 요소 자체의 기본 스타일 (닫혀있을 때 또는 기본값) */
+#memberModal {
+    padding: 0;      /* 브라우저 기본 패딩 제거 */
+    border: none;    /* 브라우저 기본 테두리 제거 */
+    background: transparent; /* dialog 자체는 투명하게, 실제 보이는 건 .modal-content */
+    /* 여기에 display: flex 등을 직접 지정하지 마세요! */
+    /* 브라우저가 open/close 상태에 따라 display를 제어하도록 둡니다. */
+    max-width: 100vw; /* 화면을 넘어가지 않도록 */
+    max-height: 100vh;
+    /* 기본적으로 dialog는 display:none 상태와 유사하게 숨겨져 있습니다. */
+    /* showModal() 호출 시 브라우저가 알아서 화면 중앙에 레이어로 띄웁니다. */
+}
+
+/* <dialog> 요소가 열렸을 때 (open 속성이 있을 때) 적용될 스타일 */
+/* 여기서 flex를 사용하여 내부 .modal-content를 중앙 정렬합니다. */
+#memberModal[open] {
+    display: flex; /* ★★★ 열렸을 때만 flex로 설정하여 중앙 정렬 활성화 ★★★ */
+    align-items: center;
+    justify-content: center;
+    animation: modal-fadein 0.34s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* 모달 배경 (::backdrop은 showModal()로 열었을 때만 적용됨) */
+#memberModal::backdrop {
+    background: rgba(30, 34, 42, 0.32);
+    /* backdrop 애니메이션도 추가 가능 */
+    /* animation: backdrop-fadein 0.3s ease-out; */
+}
+
+/* @keyframes backdrop-fadein {
+    from { opacity: 0; }
+    to { opacity: 1; }
+} */
+
+
+/* 실제 보이는 모달 내용 부분 (이 부분은 이전 코드와 거의 동일) */
+#memberModal .modal-content {
+    background: #fff;
+    width: 94vw; /* dialog가 flex 컨테이너가 되므로, content는 그 안에서 크기 결정 */
+    max-width: 420px;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px 0 rgba(0,0,0,0.16);
+    overflow: hidden; /* 내부 컨텐츠가 radius를 넘어가지 않도록 */
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    /* padding: 0; /* 헤더, 바디, 푸터에서 패딩을 관리하므로 여기서는 0 */
+}
+
+
+
+/* 모달 헤더 */
+#memberModal .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 22px 28px 14px 28px;
+    border-bottom: 1px solid #f0f0f0;
+    background: #fafbfc;
+}
+
+#memberModal .modal-header h2 {
+    margin: 0;
+    font-size: 1.23rem;
+    font-weight: 600;
+    color: #222;
+    letter-spacing: -0.5px;
+}
+
+/* 닫기(X) 버튼 */
+#memberModal .close-button {
+    color: #b0b8c1;
+    font-size: 1.7rem;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+    border: none;
+    background: none;
+    padding: 0 2px;
+    transition: color 0.15s;
+    outline: none;
+}
+#memberModal .close-button:hover,
+#memberModal .close-button:focus {
+    color: #1976d2;
+}
+
+/* 모달 바디 */
+#memberModal .modal-body {
+    padding: 22px 28px 10px 28px;
+    font-size: 15px;
+    color: #222;
+    max-height: 180px; /* 내용이 많을 경우 스크롤 */
+    overflow-y: auto;
+}
+
+#memberModal #memberList > div {
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 15px;
+}
+#memberModal #memberList > div:last-child {
+    border-bottom: none;
+}
+
+#memberModal #memberList button {
+    padding: 6px 14px;
+    border-radius: 7px;
+    border: none;
+    background: #e9f2ff;
+    color: #1976d2;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+#memberModal #memberList button:hover {
+    background: #d2e4ff;
+}
+
+/* 모달 푸터 */
+#memberModal .modal-footer {
+    padding: 14px 28px 20px 28px;
+    border-top: 1px solid #f0f0f0;
+    background: #fafbfc;
+    display: flex;
+    justify-content: flex-end; /* 버튼 오른쪽 정렬 */
+    gap: 0.5rem; /* 버튼 사이 간격 */
+}
+
+/* 멤버 초대 모달 푸터 버튼 공통 스타일 (선택 사항) */
+#memberModal .modal-footer .btn {
+    padding: 8px 15px; /* 버튼 크기 조절 */
+    border: none;
+    border-radius: 4px; /* 버튼 모서리 둥글게 */
+    cursor: pointer;
+    font-size: 14px;
+    margin-left: 10px; /* 버튼 사이 간격 */
+}
+
+/* 선택 멤버 초대 버튼 (id="inviteSelectedButton") 스타일 */
+#memberModal .modal-footer .btn.invite {
+    background-color: #007bff; /* 파란색 계열 배경 (예시) */
+    color: white; /* 흰색 글씨 */
+}
+
+#memberModal .modal-footer .btn.invite:hover {
+    background-color: #0056b3; /* 호버 시 약간 어두운 파란색 */
+}
+
+/* 닫기(취소) 버튼 (class="btn cancel") 스타일 */
+#memberModal .modal-footer .btn.cancel {
+    background-color: #e5e5ea; /* 회색 계열 배경 (사용자 요청 반영) */
+    color: #222; /* 어두운 색 글씨 (사용자 요청 반영) */
+}
+
+#memberModal .modal-footer .btn.cancel:hover {
+    background-color: #dadbe0; /* 호버 시 약간 어두운 회색 (사용자 요청 반영) */
+}
+
+
+/* 모달 나타나는 애니메이션 (이전과 동일) */
+@keyframes modal-fadein {
+    from { transform: translateY(-48px); opacity: 0; }
+    to   { transform: translateY(0); opacity: 1; }
+}
