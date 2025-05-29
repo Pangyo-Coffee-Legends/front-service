@@ -2,14 +2,8 @@
     box-sizing: border-box;
 }
 
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-}
-
 .container {
     display: flex;
-    /*height: 100vh;*/
 }
 
 .info-container{
@@ -29,7 +23,7 @@ body {
 /* 회의실 */
 .rooms {
     width: 30%;
-    background-color: #f4f4f4;
+    /*background-color: #f4f4f4;*/
     padding: 20px;
     border-right: 1px solid #ccc;
 }

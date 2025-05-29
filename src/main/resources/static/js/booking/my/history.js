@@ -30,6 +30,8 @@ async function loadBookings(page = 1, controls) {
 
     const response = await api.getMemberBookings(sortField, sortDirection, pageSize, page);
 
+    console.log(response);
+
     getBookings(response.content, response.totalElements, page, response.size);
     renderPagination(paginationEl, response.totalPages, response.number, loadBookings);
 }

@@ -1,0 +1,45 @@
+.container {
+    display: flex;
+    gap: 2rem;
+}
+
+.room-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    flex: 2;
+}
+
+.room-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    cursor: pointer;
+    transition: box-shadow 0.3s;
+
+    /* 정사각형 스타일 */
+    aspect-ratio: 1 / 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.room-card:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.room-details {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    flex: 1;
+}
+
+.hidden {
+    display: none;
+}
+

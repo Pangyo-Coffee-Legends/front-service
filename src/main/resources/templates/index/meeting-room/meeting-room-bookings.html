@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="~{layout/index/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>회의실 예약내역</title>
+    <link rel="stylesheet" th:href="@{/css/meeting-rooms/meeting-room-bookings.css}">
+    <script th:src="@{/js/meeting-rooms/meeting-room-bookings.js}" defer></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <h1><span th:text="${roomName}"></span> 예약 현황</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>번호</th>
+            <th>예약자</th>
+            <th>예약 인원</th>
+            <th>예약 시작 시간</th>
+            <th>예약 종료 시간</th>
+            <th>사용여부</th>
+        </tr>
+        </thead>
+        <tbody class="history-container">
+        </tbody>
+    </table>
+    <div id="pagination" class="pagination"></div>
+
+
+    <!-- 모달 -->
+    <div id="modal" class="modal hidden">
+        <div class="modal-content">
+            <span id="modal-close" class="modal-close">&times;</span>
+            <h2>예약 코드 확인</h2>
+            <input type="text" id="booking-code-input" placeholder="예약 코드를 입력하세요" />
+            <button id="modal-submit">확인</button>
+        </div>
+    </div>
+
+    <!-- 결과 메시지 -->
+    <div id="message-box" class="message-box hidden"></div>
+
+</div>
+</body>
+</html>
