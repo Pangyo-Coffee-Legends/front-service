@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @SpringBootTest
 @AutoConfigureWireMock(port = 0)
 @TestPropertySource(properties = {
-        "iot-service.url=http://localhost:${wiremock.server.port}" // FeignClient가 WireMock을 바라보도록 설정
+        "iot-service.url=http://localhost:${wiremock.server.port}"
 })
 class SensorAdaptorTest {
 
@@ -36,11 +36,9 @@ class SensorAdaptorTest {
     @Test
     @DisplayName("센서 등록 테스트")
     void registerSensor_returnsCreatedResponse() throws Exception {
-        // 1. 테스트 데이터 준비
-        SensorRegisterRequest request = new SensorRegisterRequest(1L, "TempSensor-01", "heater", true, "회의실");
-        SensorResponse mockResponse = new SensorResponse(1L, "TempSensor-01", "heater", true, "회의실");
+        SensorRegisterRequest request = new SensorRegisterRequest("TempSensor-01", "heater", true, "회의실");
+        SensorResponse mockResponse = new SensorResponse("TempSensor-01", "heater", true, "회의실");
 
-        // 2. WireMock으로 API 응답 정의
         stubFor(post(urlEqualTo("/api/v1/sensors"))
                 .withRequestBody(equalToJson(objectMapper.writeValueAsString(request)))
                 .willReturn(aResponse()
@@ -48,62 +46,56 @@ class SensorAdaptorTest {
                         .withHeader("Content-Type", "application/json")
                         .withBody(objectMapper.writeValueAsString(mockResponse))));
 
-        // 3. FeignClient 호출
         ResponseEntity<SensorResponse> response = sensorAdaptor.registerSensor(request);
 
-        // 4. 검증
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertNotNull(response.getBody());
-        assertEquals(1L, response.getBody().getSensorNo());
         assertEquals("TempSensor-01", response.getBody().getSensorName());
+        assertEquals("heater", response.getBody().getSensorType());
+        assertEquals("회의실", response.getBody().getLocation());
+        assertEquals(true, response.getBody().getSensorStatus());
     }
 
     @Test
     @DisplayName("단일 센서 조회 테스트")
     void getSensor_returnsSensorDetails() throws Exception {
-        // 1. 테스트 데이터 준비
-        Long sensorNo = 1L;
-        SensorResponse mockResponse = new SensorResponse(sensorNo, "HumiditySensor-01", "heater", false, "회의실");
+        Long sensorNo = 1L;  // 실제 사용은 안 됨
+        SensorResponse mockResponse = new SensorResponse("HumiditySensor-01", "heater", false, "회의실");
 
-        // 2. WireMock으로 API 응답 정의
         stubFor(get(urlEqualTo("/api/v1/sensors/" + sensorNo))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
                         .withBody(objectMapper.writeValueAsString(mockResponse))));
 
-        // 3. FeignClient 호출
         ResponseEntity<SensorResponse> response = sensorAdaptor.getSensor(sensorNo);
 
-        // 4. 검증
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
-        assertEquals(sensorNo, response.getBody().getSensorNo());
         assertEquals("HumiditySensor-01", response.getBody().getSensorName());
+        assertEquals("heater", response.getBody().getSensorType());
+        assertEquals("회의실", response.getBody().getLocation());
+        assertEquals(false, response.getBody().getSensorStatus());
     }
 
     @Test
     @DisplayName("위치별 센서 목록 조회 테스트")
     void getSensorsByPlace_returnsSensorList() throws Exception {
-        // 1. 테스트 데이터 준비
         String place = "회의실";
         String encodedPlace = URLEncoder.encode(place, StandardCharsets.UTF_8);
         List<SensorResponse> mockResponse = List.of(
-                new SensorResponse(2L, "LightSensor-01", "heater", true, place),
-                new SensorResponse(3L, "MotionSensor-01", "heater", false, place)
+                new SensorResponse("LightSensor-01", "heater", true, place),
+                new SensorResponse("MotionSensor-01", "heater", false, place)
         );
 
-        // 2. WireMock으로 API 응답 정의
         stubFor(get(urlEqualTo("/api/v1/sensors/place/" + encodedPlace))
                 .willReturn(aResponse()
                         .withStatus(200)
                         .withHeader("Content-Type", "application/json")
                         .withBody(objectMapper.writeValueAsString(mockResponse))));
 
-        // 3. FeignClient 호출
         ResponseEntity<List<SensorResponse>> response = sensorAdaptor.getSensors(encodedPlace);
 
-        // 4. 검증
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
         assertEquals(2, response.getBody().size());

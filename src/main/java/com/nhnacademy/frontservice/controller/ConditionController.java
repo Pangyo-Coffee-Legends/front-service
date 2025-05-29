@@ -1,7 +1,9 @@
 package com.nhnacademy.frontservice.controller;
 
 import com.nhnacademy.frontservice.adaptor.ConditionAdaptor;
+import com.nhnacademy.frontservice.dto.condition.ConditionRegisterRequest;
 import com.nhnacademy.frontservice.dto.condition.ConditionResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,9 +32,13 @@ public class ConditionController {
         return conditionAdaptor.getConditionByRule(ruleNo);
     }
 
+    @PostMapping
+    public ResponseEntity<ConditionResponse> register(@Valid @RequestBody ConditionRegisterRequest request) {
+        return conditionAdaptor.registerCondition(request);
+    }
+
     @DeleteMapping("/{conditionNo}")
     public ResponseEntity<Void> delete(@PathVariable Long conditionNo) {
         return conditionAdaptor.deleteCondition(conditionNo);
     }
 }
-

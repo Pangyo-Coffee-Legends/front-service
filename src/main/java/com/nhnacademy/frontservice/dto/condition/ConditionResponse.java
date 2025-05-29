@@ -29,7 +29,7 @@ public class ConditionResponse {
      * 조건의 고유 식별자입니다.
      * conditions 테이블의 con_no 컬럼과 매핑됩니다.
      */
-    Long conditionNo;
+    Long conNo;
 
     /**
      * 조건이 속한 규칙의 식별자입니다.

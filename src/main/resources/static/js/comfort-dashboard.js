@@ -1,3 +1,13 @@
+const COMFORT_API = "http://localhost:10251/api/v1/comfort/scheduled-result";
+const USER_HEADER = { "X-USER": "admin@aiot.com" };
+const FETCH_CONFIG = {
+    headers: {
+        "Content-Type": "application/json",
+        ...USER_HEADER
+    },
+    credentials: "include"
+};
+
 let currentChart = null;
 let currentRoom = null;
 
@@ -19,9 +29,51 @@ window.showPopup = async function (roomName, el) {
     currentRoom = roomName;
     const location = roomToLocationMap[roomName];
     const label = roomLabelMap[roomName];
-
     if (!location) return;
 
+    positionPopup(el, label);
+
+    try {
+        const res = await fetch(COMFORT_API, FETCH_CONFIG);
+        if (!res.ok) throw new Error("룰 엔진 API 실패");
+
+        const ruleResults = await res.json();
+        const comfortData = extractComfortInfo(ruleResults, location);
+        if (!comfortData) throw new Error("comfortInfo 없음");
+
+        updateGradeDisplay(roomName, comfortData.comfortIndex);
+        renderChart(comfortData);
+        renderComfortTable(comfortData);
+        renderSensorStatus(comfortData.deviceCommands);
+
+    } catch (err) {
+        console.error(err);
+        document.getElementById('popup-table').innerHTML = "<p>❌ 환경 데이터 오류</p>";
+        document.getElementById('device-status').innerHTML = "<p>❌ 상태 불러오기 실패</p>";
+    }
+};
+
+function extractComfortInfo(results, location) {
+    for (const rule of results) {
+        for (const action of rule.executedActions || []) {
+            const output = action.output;
+            if (output?.comfortInfo?.location === location) {
+                const { temperature, humidity, co2, comfort_index, co2_comment, deviceCommands } = output.comfortInfo;
+                return {
+                    temperature: parseFloat(temperature),
+                    humidity: parseFloat(humidity),
+                    co2: parseFloat(co2),
+                    comfortIndex: comfort_index,
+                    co2Comment: co2_comment,
+                    deviceCommands: output.deviceCommands || {}
+                };
+            }
+        }
+    }
+    return null;
+}
+
+function positionPopup(el, label) {
     const popup = document.getElementById('popup-panel');
     const wrapper = document.getElementById('floor-wrapper');
     const boxRect = el.getBoundingClientRect();
@@ -37,54 +89,14 @@ window.showPopup = async function (roomName, el) {
     popup.style.display = 'block';
 
     document.getElementById("popup-title").innerText = `📍 ${label}`;
-
-    try {
-        const res = await fetch(`http://localhost:10263/api/v1/comfort/scheduled-result`, {
-            headers: {
-                "Content-Type": "application/json",
-                "X-USER": "test-user@aiot.com"
-            },
-            credentials: "include"
-        });
-
-        if (!res.ok) throw new Error("룰 엔진 API 실패");
-
-        const ruleResults = await res.json();
-
-        const actionWithComfortInfo = ruleResults
-            .flatMap(r => r.executedActions || [])
-            .find(a => a.output && a.output.comfortInfo && a.output.comfortInfo.location === location);
-
-        if (!actionWithComfortInfo) throw new Error("comfortInfo 없음");
-
-        const comfort = actionWithComfortInfo.output.comfortInfo;
-
-        const temperature = parseFloat(comfort.temperature);
-        const humidity = parseFloat(comfort.humidity);
-        const co2 = parseFloat(comfort.co2);
-        const comfortIndex = comfort.comfort_index;
-        const co2Comment = comfort.co2_comment;
-
-        const data = { temperature, humidity, co2, comfortIndex, co2Comment };
-
-        updateGradeDisplay(roomName, comfortIndex); // ✅ 쾌적도 표시
-        renderChart(data);
-        renderComfortTable(data);
-        renderSensorStatus(actionWithComfortInfo.output.deviceCommands);
-
-    } catch (err) {
-        console.error(err);
-        document.getElementById('popup-table').innerHTML = "<p>❌ 환경 데이터 오류</p>";
-        document.getElementById('device-status').innerHTML = "<p>❌ 상태 불러오기 실패</p>";
-    }
-};
+}
 
 function updateGradeDisplay(roomName, comfortIndex) {
     const gradeElement = document.getElementById(`grade-${roomName}`);
-    if (!gradeElement) return;
-
-    gradeElement.className = 'grade';
-    gradeElement.innerText = comfortIndex; // 예: "덥고 습함"
+    if (gradeElement) {
+        gradeElement.className = 'grade';
+        gradeElement.innerText = comfortIndex;
+    }
 }
 
 function renderChart({ temperature, humidity, co2 }) {
@@ -148,11 +160,6 @@ function renderSensorStatus(deviceCommands) {
     `;
 }
 
-function closePopup() {
-    document.getElementById("popup-panel").style.display = "none";
-    currentRoom = null;
-}
-
 function getUnit(index) {
     return index === 0 ? "℃" : index === 1 ? "%" : "ppm";
 }
@@ -163,3 +170,8 @@ window.addEventListener("resize", () => {
         if (el) showPopup(currentRoom, el);
     }
 });
+
+function closePopup() {
+    document.getElementById("popup-panel").style.display = "none";
+    currentRoom = null;
+}
