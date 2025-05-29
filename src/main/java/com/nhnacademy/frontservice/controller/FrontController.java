@@ -84,40 +84,24 @@ public class FrontController {
     public String charts() { return "index/charts";}
 
     @GetMapping("/users")
-    public String chatPage(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String userEmail = auth.getName();
-        model.addAttribute("userEmail", userEmail);
-
+    public String chatPage() {
         return "index/users";
     }
 
     @GetMapping("/stompChatPage/{roomId}")
     public String stompChatPage(Model model, @PathVariable Long roomId) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String userEmail = auth.getName();
-
         model.addAttribute("roomId", roomId);
-        model.addAttribute("userEmail", userEmail);
 
         return "chat/stompChatPage";
     }
 
     @GetMapping("/chatList")
-    public String chatList(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String userEmail = auth.getName();
-        model.addAttribute("userEmail", userEmail);
-
+    public String chatList() {
         return "chat/chatList";
     }
 
     @GetMapping("/notification")
-    public String notification(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String userEmail = auth.getName();
-        model.addAttribute("userEmail", userEmail);
-
+    public String notification() {
         return "chat/notification";
     }
 
