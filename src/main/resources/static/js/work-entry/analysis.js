@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(blob => {
                 const memberName = memberSelect.options[memberSelect.selectedIndex].textContent.split('(')[0].trim();
                 const today = new Date();
-                const fileName = `${memberName}_근무_리포트_${today.getFullYear()}년${today.getMonth() + 1}월.pdf`;
+                const fileName = `${memberName}_근태_리포트_${today.getFullYear()}년_${today.getMonth() + 1}월.pdf`;
 
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
