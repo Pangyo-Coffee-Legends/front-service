@@ -18,13 +18,14 @@
                 근태 관리
             </a>
             <ul class="collapse list-unstyled ps-3" id="sidebarDropdownMenu2">
-                <li><a href="weekly-entry-charts" class="nav-link text-white">주간 출입 현황</a></li>
-                <li><a href="real-time" class="nav-link text-white">실시간 출입 현황</a></li>
-                <li><a href="working-hours-statistics" class="nav-link text-white">근무 시간 통계</a></li>
-                <li><a href="#" class="nav-link text-white">이상 출입 알림 목록</a></li>
+                <li><a href="/weekly-entry-charts" class="nav-link text-white">주간 출입 현황</a></li>
+                <li><a href="/real-time" class="nav-link text-white">실시간 출입 현황</a></li>
+                <li><a href="/working-hours-statistics" class="nav-link text-white">근무 시간 통계</a></li>
+                <li><a href="/analysis" class="nav-link text-white">AI 기반 근태 관리</a></li>
             </ul>
         </li>
-        <!--        근태 관리 사이드바 추가-->
+<!--        근태 관리 사이드바 추가-->
+
         <li class="nav-item">
             <a
                     class="nav-link dropdown-toggle text-white"
@@ -39,11 +40,56 @@
             </a>
             <ul class="collapse list-unstyled ps-3" id="sidebarDropdownMenu3">
                 <li><a href="/comfort-dashboard" class="nav-link text-white">환경 제어</a></li>
-                <li><a href="/data-dashboard" class="nav-link text-white">환경 데이터</a></li>
+                <li><a href="/rule-group" class="nav-link text-white">IOT 서비스</a></li>
+                <li><a href="/sensor" class="nav-link text-white">기기 관리</a> </li>
             </ul>
         </li>
         <!--        오피스 관리 사이드바 추가-->
 
+        <!--   회의실 메뉴   -->
+        <li class="nav-item">
+            <a
+                    class="nav-link text-white"
+                    href="/meeting-rooms"
+            >
+                회의실
+            </a>
+        </li>
+        <li class="nav-item">
+            <a
+                    class="nav-link dropdown-toggle text-white"
+                    href="#"
+                    id="booking"
+                    role="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#bookingMenu"
+                    aria-expanded="false"
+            >
+                예약
+            </a>
+            <ul class="collapse list-unstyled ps-3" id="bookingMenu">
+                <li><a href="/booking" class="nav-link text-white">예약하기</a></li>
+                <li><a href="/booking/history" class="nav-link text-white">예약 내역</a></li>
+                <li><a href="/booking/statistics" class="nav-link text-white">통계</a></li>
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a
+                    class="nav-link dropdown-toggle text-white"
+                    href="#"
+                    id="admin"
+                    role="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#adminMenu"
+                    aria-expanded="false"
+            >
+                관리자
+            </a>
+            <ul class="collapse list-unstyled ps-3" id="adminMenu">
+                <li><a href="/admin/booking" class="nav-link text-white">예약 현황</a></li>
+                <li><a href="/admin/booking/statistics" class="nav-link text-white">전체 통계</a></li>
+            </ul>
+        </li>
         <li class="nav-item"><a href="charts" class="nav-link text-white">Charts</a></li>
         <li class="nav-item"><a href="#" class="nav-link text-white">Tables</a></li>
     </ul>
@@ -54,7 +100,7 @@
                 사용자 이름
             </a>
             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="sidebarUserDropdown">
-                <li><a class="dropdown-item" href="#">내 정보</a></li>
+                <li><a class="dropdown-item" href="/my-info">내 정보</a></li>
                 <li><a class="dropdown-item" href="#">설정</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <form action="/logout" method="POST" style="display: inline;">

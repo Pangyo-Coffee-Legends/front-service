@@ -1,61 +1,98 @@
+// rule-group.js (중복 생성 방지 포함)
+const API_BASE = "http://localhost:10251/api/v1";
+let dataTable;
+let confirmCallback = null;
+let isCreatingNewGroup = false;
+
 document.addEventListener("DOMContentLoaded", () => {
     fetchRuleGroups();
 });
 
-let dataTable;
+function fetchWithAuth(url, options = {}) {
+    const defaultHeaders = {
+        "X-USER": "test-user@aiot.com",
+        "Content-Type": "application/json"
+    };
+
+    return fetch(url, {
+        credentials: "include",
+        ...options,
+        headers: {
+            ...defaultHeaders,
+            ...(options.headers || {})
+        }
+    });
+}
 
 function hideLoadingCard() {
-    const loadingCard = document.getElementById("loadingCard");
-    if (loadingCard) loadingCard.style.display = "none";
+    const card = document.getElementById("loadingCard");
+    if (card) card.style.display = "none";
 }
 
 function fetchRuleGroups() {
-    fetch("http://localhost:10263/api/v1/rule-groups")
-        .then(response => response.json())
+    fetchWithAuth(`${API_BASE}/rule-groups`)
+        .then(res => res.json())
         .then(data => {
             if (dataTable) dataTable.destroy();
 
             dataTable = $('#ruleGroupTable').DataTable({
-                data: data,
+                data,
                 columns: [
                     { data: 'ruleGroupNo' },
                     { data: 'ruleGroupName' },
                     { data: 'ruleGroupDescription' },
-                    { data: 'active', render: active => active ? '활성화' : '비활성화' },
-                    { data: 'priority' },
+                    {
+                        data: 'active',
+                        render: val => val ? '✔' : '✘'
+                    },
+                    {
+                        data: 'priority',
+                        render: val => val ?? ''
+                    },
                     {
                         data: null,
                         orderable: false,
-                        render: (data) => `
+                        render: data => `
                             <div class="action-buttons">
                                 <button class="btn-view" onclick="viewRuleGroup(${data.ruleGroupNo})">조회</button>
                                 <button class="btn-edit" onclick="editRuleGroup(${data.ruleGroupNo}, this)">수정</button>
-                                <button class="btn-delete" onclick="deleteRuleGroup(${data.ruleGroupNo})">삭제</button>
+                                <button class="btn-delete" onclick="onDeleteRuleGroup(${data.ruleGroupNo})">삭제</button>
                             </div>
                         `
                     }
                 ],
-                destroy: true,
                 responsive: true,
-                autoWidth: false
+                autoWidth: false,
+                order: []
             });
 
+            isCreatingNewGroup = false;
             hideLoadingCard();
         })
-        .catch(error => {
-            console.error("RuleGroup 데이터를 불러오는 중 오류 발생:", error);
+        .catch(err => {
             hideLoadingCard();
+            showCustomAlert("RuleGroup 목록을 불러오는 중 오류가 발생했습니다.", "시스템 오류", (err.message || '').split("\n"));
         });
 }
 
 function addNewRuleGroup() {
-    const newRow = dataTable.row.add({
+    if (isCreatingNewGroup) {
+        showCustomAlert("이미 생성 중인 항목이 있습니다. 저장 또는 취소 후 다시 시도해 주세요.");
+        return;
+    }
+
+    isCreatingNewGroup = true;
+
+    const newRowData = {
         ruleGroupNo: '-',
         ruleGroupName: `<input type="text" id="newName" placeholder="이름">`,
         ruleGroupDescription: `<input type="text" id="newDesc" placeholder="설명">`,
         active: true,
         priority: `<input type="number" id="newPriority" placeholder="우선순위">`
-    }).draw().node();
+    };
+
+    const newRow = dataTable.row.add(newRowData).draw(false).node();
+    $('#ruleGroupTable tbody').append(newRow);
 
     $(newRow).find('td:last').html(`
         <div class="action-buttons">
@@ -67,41 +104,49 @@ function addNewRuleGroup() {
 
 function saveNewRuleGroup(btn) {
     const row = $(btn).closest('tr');
-    const name = row.find('#newName').val();
-    const desc = row.find('#newDesc').val();
+    const name = row.find('#newName').val()?.trim();
+    const desc = row.find('#newDesc').val()?.trim();
     const priority = row.find('#newPriority').val();
 
-    if (!name || !priority) {
-        alert("이름과 우선순위는 필수입니다.");
+    if (!name || priority === '') {
+        showCustomAlert("<이름>과 <우선순위>는 필수입니다.", "입력 오류");
         return;
     }
 
     const payload = {
         ruleGroupName: name,
-        ruleGroupDescription: desc,
+        ruleGroupDescription: desc || '',
         priority: parseInt(priority),
         active: true
     };
 
-    fetch("http://localhost:10263/api/v1/rule-groups", {
+    fetchWithAuth(`${API_BASE}/rule-groups`, {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "X-USER": "test-user@aiot.com"
-        },
         body: JSON.stringify(payload)
     })
         .then(res => {
             if (res.ok) {
-                alert("등록 성공!");
+                showCustomAlert("등록이 완료되었습니다.", "로그 출력", [
+                    `POST /rule-groups`,
+                    `Payload: ${JSON.stringify(payload)}`
+                ]);
                 fetchRuleGroups();
             } else {
-                alert("등록 실패");
+                return res.text().then(msg => {
+                    throw new Error(`등록 실패: ${msg}`);
+                });
             }
+        })
+        .catch(err => {
+            showCustomAlert("RuleGroup 등록 중 오류가 발생했습니다.", "로그 출력", (err.message || '').split("\n"));
+        })
+        .finally(() => {
+            isCreatingNewGroup = false;
         });
 }
 
 function cancelNewRow(btn) {
+    isCreatingNewGroup = false;
     dataTable.row($(btn).closest('tr')).remove().draw();
 }
 
@@ -127,62 +172,150 @@ function editRuleGroup(id, btn) {
 
 function saveEditRow(id, btn) {
     const row = $(btn).closest('tr');
-    const name = row.find('#editName').val();
-    const desc = row.find('#editDesc').val();
+    const name = row.find('#editName').val()?.trim();
+    const desc = row.find('#editDesc').val()?.trim();
     const priority = row.find('#editPriority').val();
 
     const payload = {
         ruleGroupName: name,
-        ruleGroupDescription: desc,
+        ruleGroupDescription: desc || '',
         priority: parseInt(priority),
         active: true
     };
 
-    fetch(`http://localhost:10263/api/v1/rule-groups/${id}`, {
+    fetchWithAuth(`${API_BASE}/rule-groups/${id}`, {
         method: "PUT",
-        headers: {
-            "Content-Type": "application/json",
-            "X-USER": "test-user@aiot.com"
-        },
         body: JSON.stringify(payload)
-    }).then(res => {
-        if (res.ok) {
-            alert("수정 성공!");
-            fetchRuleGroups();
-        } else {
-            alert("수정 실패");
-        }
-    });
+    })
+        .then(res => {
+            if (res.ok) {
+                showCustomAlert("수정이 완료되었습니다.", "로그 출력", [
+                    `PUT /rule-groups/${id}`,
+                    `Payload: ${JSON.stringify(payload)}`
+                ]);
+                fetchRuleGroups();
+            } else {
+                return res.text().then(msg => {
+                    throw new Error(`수정 실패: ${msg}`);
+                });
+            }
+        })
+        .catch(err => {
+            showCustomAlert("RuleGroup 수정 중 오류가 발생했습니다.", "로그 출력", (err.message || '').split("\n"));
+        });
 }
 
 function cancelEditRow() {
     fetchRuleGroups();
 }
 
-function deleteRuleGroup(id) {
-    if (!confirm(`RuleGroup [${id}]을 삭제하시겠습니까?`)) return;
+function onDeleteRuleGroup(id) {
+    showConfirmDialog(`정말 RuleGroup [${id}]을 삭제하시겠습니까?`, () => deleteRuleGroup(id));
+}
 
-    fetch(`http://localhost:10263/api/v1/rule-groups/${id}`, {
-        method: "DELETE",
-        headers: {
-            "X-USER": "test-user@aiot.com"
-        }
-    }).then(res => {
-        if (res.ok) {
-            alert("삭제 성공!");
-            fetchRuleGroups();
-        } else {
-            alert("삭제 실패");
-        }
-    });
+function deleteRuleGroup(id) {
+    fetchWithAuth(`${API_BASE}/rule-groups/${id}`, {
+        method: "DELETE"
+    })
+        .then(res => {
+            if (res.ok) {
+                showCustomAlert("삭제가 완료되었습니다.", "로그 출력", [`DELETE /rule-groups/${id}`]);
+                fetchRuleGroups();
+            } else {
+                return res.json().then(err => {
+                    const errorMsg = (err?.error || '').toLowerCase();
+                    const status = err?.status || 0;
+
+                    if ((errorMsg.includes("internal server error") || errorMsg.includes("constraint")) && status === 500) {
+                        throw new Error("Error: 해당 RuleGroup 외래키 존재 (Rule/Action/Condition)\n먼저 관련 데이터를 삭제한 후 다시 시도해 주세요.");
+                    } else {
+                        throw new Error(`❌ 삭제 실패: ${JSON.stringify(err)}`);
+                    }
+                });
+            }
+        })
+        .catch(err => {
+            showCustomAlert("RuleGroup 삭제 중 오류가 발생했습니다.", "로그 출력", (err.message || '').split("\n"));
+        });
 }
 
 function viewRuleGroup(id) {
     window.location.href = `/rule?groupId=${id}`;
 }
 
-window.addEventListener('resize', () => {
-    if (dataTable) {
-        dataTable.columns.adjust().draw();
+function showCustomAlert(message, title = "로그 출력", logs = []) {
+    const alertBox = document.getElementById("customAlert");
+    alertBox.querySelector(".custom-alert-header").innerHTML = title;
+    alertBox.querySelector(".custom-alert-body").innerHTML = message;
+
+    const logConsole = document.getElementById("logConsole");
+    if (logs.length > 0 && logConsole) {
+        logConsole.style.display = "block";
+        typeLines(logs, "logConsole", 25, 400);
+    } else {
+        logConsole.style.display = "none";
+        logConsole.innerHTML = '';
     }
-});
+
+    alertBox.style.display = "flex";
+}
+
+function closeCustomAlert() {
+    document.getElementById("customAlert").style.display = "none";
+    clearCustomLogs();
+}
+
+function showConfirmDialog(message, onConfirm) {
+    document.getElementById("confirmMessage").innerHTML = message;
+    document.getElementById("customConfirm").style.display = "flex";
+    confirmCallback = onConfirm;
+}
+
+function confirmOk() {
+    document.getElementById("customConfirm").style.display = "none";
+    if (confirmCallback) confirmCallback();
+}
+
+function confirmCancel() {
+    document.getElementById("customConfirm").style.display = "none";
+    confirmCallback = null;
+}
+
+function clearCustomLogs() {
+    const logConsole = document.getElementById("logConsole");
+    if (logConsole) {
+        logConsole.style.display = 'none';
+        logConsole.innerHTML = '';
+    }
+}
+
+function typeLines(lines, containerId, delay = 20, lineDelay = 300) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = "";
+
+    let lineIndex = 0;
+
+    function typeLine() {
+        if (lineIndex >= lines.length) return;
+
+        const line = lines[lineIndex];
+        const lineElem = document.createElement("div");
+        container.appendChild(lineElem);
+
+        let charIndex = 0;
+
+        function typeChar() {
+            if (charIndex < line.length) {
+                lineElem.textContent += line[charIndex++];
+                setTimeout(typeChar, delay);
+            } else {
+                lineIndex++;
+                setTimeout(typeLine, lineDelay);
+            }
+        }
+
+        typeChar();
+    }
+
+    typeLine();
+}

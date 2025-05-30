@@ -1,3 +1,11 @@
+const API_BASE = "http://localhost:10251/api/v1";
+
+let globalGroupMap = {};
+let globalRules = [];
+let dataTable;
+let pendingDeleteId = null;
+let isCreatingNewRule = false;
+
 document.addEventListener("DOMContentLoaded", async () => {
     await fetchRulesWithGroupNames();
 });
@@ -7,23 +15,29 @@ function getQueryParam(name) {
     return urlParams.get(name);
 }
 
-const API_BASE = "http://localhost:10251/api/v1";
+function fetchWithAuth(url, options = {}) {
+    const defaultHeaders = {
+        "Content-Type": "application/json",
+        "X-USER": "test-user@aiot.com"
+    };
 
-let globalGroupMap = {};
-let globalRules = [];
-let dataTable;
+    return fetch(url, {
+        credentials: "include",
+        ...options,
+        headers: {
+            ...defaultHeaders,
+            ...(options.headers || {})
+        }
+    });
+}
 
 async function fetchRulesWithGroupNames() {
-    document.getElementById("loadingCard").style.display = "flex"; // 로딩 시작
-
-    const headers = {
-        "Accept": "application/json",
-    };
+    document.getElementById("loadingCard").style.display = "flex";
 
     try {
         const [ruleGroupsRes, rulesRes] = await Promise.all([
-            fetch(`${API_BASE}/rule-groups`, { headers, credentials: "include" }),
-            fetch(`${API_BASE}/rules`, { headers, credentials: "include" })
+            fetchWithAuth(`${API_BASE}/rule-groups`),
+            fetchWithAuth(`${API_BASE}/rules`)
         ]);
 
         const ruleGroups = await ruleGroupsRes.json();
@@ -36,9 +50,10 @@ async function fetchRulesWithGroupNames() {
 
         renderRuleTable();
     } catch (error) {
-        console.error("❌ Rule 목록 불러오기 실패:", error);
+        showCustomAlert("❌ Rule 목록 불러오기 실패", [error.message]);
     } finally {
-        document.getElementById("loadingCard").style.display = "none"; // 로딩 종료
+        document.getElementById("loadingCard").style.display = "none";
+        isCreatingNewRule = false;
     }
 }
 
@@ -56,7 +71,7 @@ function renderRuleTable() {
             { data: 'ruleNo' },
             {
                 data: 'ruleGroupNo',
-                render: groupNo => globalGroupMap[groupNo] || 'N/A'
+                render: groupNo => `${globalGroupMap[groupNo] || 'N/A'} (${groupNo})`
             },
             { data: 'ruleName' },
             { data: 'ruleDescription' },
@@ -80,67 +95,56 @@ function renderRuleTable() {
                     <div class="action-buttons">
                         <button class="btn-view" onclick="viewRule(${data.ruleNo})">조회</button>
                         <button class="btn-edit" onclick="editRule(${data.ruleNo}, this)">수정</button>
-                        <button class="btn-delete" onclick="deleteRule(${data.ruleNo})">삭제</button>
+                        <button class="btn-delete" onclick="confirmDeleteRule(${data.ruleNo})">삭제</button>
                     </div>
                 `
             }
-        ],
-        destroy: true,
-        language: {
-            emptyTable: "데이터가 없습니다.",
-            lengthMenu: "페이지당 _MENU_ 개씩 보기",
-            search: "검색:",
-            zeroRecords: "일치하는 항목이 없습니다.",
-            info: "_START_ - _END_ / 총 _TOTAL_건",
-            infoEmpty: "0건",
-            paginate: {
-                first: "처음",
-                last: "마지막",
-                next: "다음",
-                previous: "이전"
-            }
-        }
+        ]
     });
 }
 
 function addNewRule() {
+    if (isCreatingNewRule) {
+        showCustomAlert("이미 생성 중인 항목이 있습니다. 저장 또는 취소 후 다시 시도해 주세요.");
+        return;
+    }
+    isCreatingNewRule = true;
+
     const groupOptions = Object.entries(globalGroupMap)
         .map(([no, name]) => `<option value="${no}">${name}</option>`)
         .join("");
 
-    const newRow = dataTable.row.add({
-        ruleNo: '-',
-        ruleGroupNo: '',
-        ruleName: '',
-        ruleDescription: '',
-        rulePriority: '',
-        active: true,
-        createdAt: '',
-        updatedAt: '',
-        null: ''
-    }).draw().node();
+    const newRowHtml = `
+        <tr class="new-rule-row">
+            <td>-</td>
+            <td><select id="newGroupId">${groupOptions}</select></td>
+            <td><input type="text" id="newName" placeholder="Rule 이름"></td>
+            <td><input type="text" id="newDesc" placeholder="설명"></td>
+            <td><input type="number" id="newPriority" placeholder="우선순위"></td>
+            <td>✔</td>
+            <td></td>
+            <td></td>
+            <td>
+                <div class="action-buttons">
+                    <button class="btn-edit" onclick="saveNewRule(this)">저장</button>
+                    <button class="btn-delete" onclick="cancelNewRow(this)">취소</button>
+                </div>
+            </td>
+        </tr>
+    `;
 
-    $(newRow).find('td').eq(1).html(`<select id="newGroupId">${groupOptions}</select>`);
-    $(newRow).find('td').eq(2).html(`<input type="text" id="newName" placeholder="Rule 이름">`);
-    $(newRow).find('td').eq(3).html(`<input type="text" id="newDesc" placeholder="설명">`);
-    $(newRow).find('td').eq(4).html(`<input type="number" id="newPriority" placeholder="우선순위">`);
-    $(newRow).find('td').eq(8).html(`
-        <div class="action-buttons">
-            <button class="btn-edit" onclick="saveNewRule(this)">저장</button>
-            <button class="btn-delete" onclick="cancelNewRow(this)">취소</button>
-        </div>
-    `);
+    $('#ruleTable tbody').append(newRowHtml);
 }
 
 function saveNewRule(btn) {
     const row = $(btn).closest('tr');
     const groupId = row.find('#newGroupId').val();
-    const name = row.find('#newName').val();
-    const desc = row.find('#newDesc').val();
+    const name = row.find('#newName').val()?.trim();
+    const desc = row.find('#newDesc').val()?.trim();
     const priority = row.find('#newPriority').val();
 
     if (!groupId || !name || !priority) {
-        alert("Group No, 이름, 우선순위는 필수입니다.");
+        showCustomAlert("Group No, 이름, 우선순위는 필수입니다.");
         return;
     }
 
@@ -152,35 +156,46 @@ function saveNewRule(btn) {
         active: true
     };
 
-    fetch(`${API_BASE}/rules`, {
+    fetchWithAuth(`${API_BASE}/rules`, {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        credentials: "include",
         body: JSON.stringify(payload)
-    }).then(res => {
-        if (res.ok) {
-            alert("등록 성공!");
-            fetchRulesWithGroupNames();
-        } else {
-            alert("등록 실패");
-        }
-    });
+    })
+        .then(res => {
+            if (res.ok) {
+                showCustomAlert("등록 성공!", [`POST /rules`, `Payload: ${JSON.stringify(payload)}`]);
+                fetchRulesWithGroupNames();
+            } else {
+                return res.text().then(msg => {
+                    throw new Error(`등록 실패: ${msg}`);
+                });
+            }
+        })
+        .catch(err => {
+            showCustomAlert("Rule 등록 실패", (err.message || "").split("\n"));
+        });
 }
 
 function cancelNewRow(btn) {
-    dataTable.row($(btn).closest('tr')).remove().draw();
+    $(btn).closest('tr').remove();
+    isCreatingNewRule = false;
 }
 
 function editRule(id, btn) {
     const row = $(btn).closest('tr');
     const cells = row.find('td');
 
+    const groupNoText = cells.eq(1).text();
+    const groupOptions = Object.entries(globalGroupMap)
+        .map(([no, name]) => {
+            const selected = groupNoText.includes(no) ? "selected" : "";
+            return `<option value="${no}" ${selected}>${name}</option>`;
+        }).join("");
+
     const name = cells.eq(2).text();
     const desc = cells.eq(3).text();
     const priority = cells.eq(4).text();
 
+    cells.eq(1).html(`<select id="editGroupId">${groupOptions}</select>`);
     cells.eq(2).html(`<input type="text" id="editName" value="${name}">`);
     cells.eq(3).html(`<input type="text" id="editDesc" value="${desc}">`);
     cells.eq(4).html(`<input type="number" id="editPriority" value="${priority}">`);
@@ -195,61 +210,93 @@ function editRule(id, btn) {
 
 function saveEditRule(id, btn) {
     const row = $(btn).closest('tr');
-    const name = row.find('#editName').val();
-    const desc = row.find('#editDesc').val();
+    const groupId = row.find('#editGroupId').val();
+    const name = row.find('#editName').val()?.trim();
+    const desc = row.find('#editDesc').val()?.trim();
     const priority = row.find('#editPriority').val();
 
-    if (!name || !priority) {
-        alert("이름과 우선순위는 필수입니다.");
+    if (!groupId || !name || !priority) {
+        showCustomAlert("그룹, 이름, 우선순위는 필수입니다.");
         return;
     }
 
     const payload = {
+        ruleGroupNo: parseInt(groupId),
         ruleName: name,
         ruleDescription: desc || '',
         rulePriority: parseInt(priority),
         active: true
     };
 
-    fetch(`${API_BASE}/rules/${id}`, {
+    fetchWithAuth(`${API_BASE}/rules/${id}`, {
         method: "PUT",
-        headers: {
-            "Content-Type": "application/json",
-            "X-USER": "test-user@aiot.com"
-        },
-        credentials: "include",
         body: JSON.stringify(payload)
-    }).then(res => {
-        if (res.ok) {
-            alert("수정 성공!");
-            fetchRulesWithGroupNames();
-        } else {
-            alert("수정 실패");
-        }
-    });
+    })
+        .then(res => {
+            if (res.ok) {
+                showCustomAlert("수정 성공!", [`PUT /rules/${id}`, `Payload: ${JSON.stringify(payload)}`]);
+                fetchRulesWithGroupNames();
+            } else {
+                return res.text().then(msg => {
+                    throw new Error(`수정 실패: ${msg}`);
+                });
+            }
+        })
+        .catch(err => {
+            showCustomAlert("Rule 수정 실패", (err.message || "").split("\n"));
+        });
 }
 
 function cancelEditRule() {
     fetchRulesWithGroupNames();
 }
 
-function deleteRule(id) {
-    if (!confirm(`Rule [${id}]을 삭제하시겠습니까?`)) return;
+function confirmDeleteRule(id) {
+    pendingDeleteId = id;
+    document.getElementById("confirmMessage").innerText = `Rule [${id}]을(를) 삭제하시겠습니까?`;
+    document.getElementById("customConfirm").style.display = "flex";
+}
 
-    fetch(`${API_BASE}/rules/${id}`, {
-        method: "DELETE",
-        headers: {
-            "X-USER": "test-user@aiot.com"
-        },
-        credentials: "include"
-    }).then(res => {
-        if (res.ok) {
-            alert("삭제 성공!");
-            fetchRulesWithGroupNames();
-        } else {
-            alert("삭제 실패");
-        }
-    });
+function confirmOk() {
+    deleteRule(pendingDeleteId);
+    document.getElementById("customConfirm").style.display = "none";
+    pendingDeleteId = null;
+}
+
+function confirmCancel() {
+    document.getElementById("customConfirm").style.display = "none";
+    pendingDeleteId = null;
+}
+
+function deleteRule(id) {
+    fetchWithAuth(`${API_BASE}/rules/${id}`, {
+        method: "DELETE"
+    })
+        .then(res => {
+            if (res.ok) {
+                showCustomAlert("삭제 성공!", [`DELETE /rules/${id}`]);
+                fetchRulesWithGroupNames();
+            } else {
+                return res.json().then(err => {
+                    const errorMsg = (err?.error || "").toLowerCase();
+                    const status = err?.status || 0;
+
+                    if (
+                        (errorMsg.includes("internal server error") || errorMsg.includes("constraint")) &&
+                        status === 500
+                    ) {
+                        throw new Error(
+                            "해당 Rule에 연결된 하위 데이터(Action/Condition)가 존재합니다.\n먼저 관련 데이터를 삭제한 후 다시 시도해 주세요."
+                        );
+                    } else {
+                        throw new Error(`❌ 삭제 실패: ${JSON.stringify(err)}`);
+                    }
+                });
+            }
+        })
+        .catch(err => {
+            showCustomAlert("Rule 삭제 실패", (err.message || "").split("\n"));
+        });
 }
 
 function viewRule(id) {
@@ -259,5 +306,68 @@ function viewRule(id) {
 window.addEventListener('resize', () => {
     if (dataTable) {
         dataTable.columns.adjust().draw();
+    }
+});
+
+function typeLines(lines, containerId, delay = 20, lineDelay = 300) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = "";
+
+    let lineIndex = 0;
+    function typeLine() {
+        if (lineIndex >= lines.length) return;
+        const line = lines[lineIndex];
+        const lineElem = document.createElement("div");
+        container.appendChild(lineElem);
+
+        let charIndex = 0;
+        function typeChar() {
+            if (charIndex < line.length) {
+                lineElem.textContent += line[charIndex++];
+                setTimeout(typeChar, delay);
+            } else {
+                lineIndex++;
+                setTimeout(typeLine, lineDelay);
+            }
+        }
+        typeChar();
+    }
+    typeLine();
+}
+
+function showCustomAlert(message, logs = []) {
+    const alertBox = document.getElementById("customAlert");
+    alertBox.querySelector(".custom-alert-header").innerHTML = "로그 출력";
+    alertBox.querySelector(".custom-alert-body").innerHTML = message;
+
+    const logConsole = document.getElementById("logConsole");
+    if (logs.length > 0) {
+        logConsole.style.display = "block";
+        typeLines(logs, "logConsole", 25, 300);
+    } else {
+        logConsole.style.display = "none";
+        logConsole.innerHTML = "";
+    }
+
+    alertBox.style.display = "flex";
+}
+
+function closeCustomAlert() {
+    document.getElementById("customAlert").style.display = "none";
+    const logConsole = document.getElementById("logConsole");
+    if (logConsole) {
+        logConsole.style.display = "none";
+        logConsole.innerHTML = "";
+    }
+}
+
+window.addEventListener("load", () => {
+    const coffee = document.querySelector(".popup-coffee");
+    if (coffee && coffee.complete) {
+        coffee.style.visibility = "visible";
+    } else if (coffee) {
+        coffee.onload = () => {
+            coffee.style.visibility = "visible";
+        };
     }
 });

@@ -1,0 +1,54 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    /*background-color: #fff5f5;*/
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.failure-container {
+    text-align: center;
+    background: white;
+    padding: 3.5rem 2.5rem;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    max-width: 600px;
+    width: 100%;
+}
+
+.failure-icon {
+    font-size: 4rem;
+    /*color: #e74c3c;*/
+    margin-bottom: 1rem;
+}
+
+.failure-container h1 {
+    font-size: 2.4rem;
+    /*color: #e74c3c;*/
+    margin-bottom: 1rem;
+}
+
+.failure-container p {
+    color: #444;
+    font-size: 1.2rem;
+    margin-bottom: 2.5rem;
+}
+
+.failure-container button {
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin: 0.5rem;
+}
+
+.failure-container button:hover {
+    background-color: #357ac8;
+}

@@ -1,10 +1,10 @@
 package com.nhnacademy.frontservice.common.handler.successhandling;
 
 import com.nhnacademy.frontservice.adaptor.GatewayAdaptor;
-import com.nhnacademy.frontservice.dto.JwtIssueRequest;
-import com.nhnacademy.frontservice.dto.JwtResponse;
-import com.nhnacademy.frontservice.dto.MemberRegisterRequest;
-import com.nhnacademy.frontservice.dto.MemberResponse;
+import com.nhnacademy.frontservice.dto.token.JwtIssueRequest;
+import com.nhnacademy.frontservice.dto.token.JwtResponse;
+import com.nhnacademy.frontservice.dto.member.MemberRegisterRequest;
+import com.nhnacademy.frontservice.dto.member.MemberResponse;
 import com.nhnacademy.frontservice.service.MemberService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -52,18 +52,18 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
         JwtResponse tokens = tokenResponse.getBody();
 
         String accessToken = tokens.getAccessToken();
-        String refreshToken = tokens.getRefreshToken();
-
         addCookie("accessToken", accessToken, response);
-        ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
-                                                .httpOnly(true)
-                                                .secure(true)
-                                                .path("/")
-                                                .sameSite("Strict")
-                                                .maxAge(Duration.ofDays(7))
-                                                .build();
 
-        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+//        String refreshToken = tokens.getRefreshToken();
+//        ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
+//                                                .httpOnly(true)
+//                                                .secure(true)
+//                                                .path("/")
+//                                                .sameSite("Strict")
+//                                                .maxAge(Duration.ofDays(7))
+//                                                .build();
+//
+//        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
         response.sendRedirect("/index");
     }
 

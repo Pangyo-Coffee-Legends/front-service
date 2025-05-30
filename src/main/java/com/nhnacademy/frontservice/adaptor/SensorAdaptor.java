@@ -26,7 +26,4 @@ public interface SensorAdaptor {
 
     @GetMapping("/place/{sensorPlace}")
     ResponseEntity<List<SensorResponse>> getSensors(@PathVariable("sensorPlace") String sensorPlace);
-
-    @GetMapping
-    ResponseEntity<List<SensorResponse>> getAllSensors();
 }
