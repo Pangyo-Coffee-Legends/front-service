@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const socket = new WebSocket("wss://localhost:10256/ws/stranger");
+    const socket = new WebSocket("wss://aiot2.live/ws/stranger");
 
     socket.onmessage = function (event) {
         const message = event.data;
