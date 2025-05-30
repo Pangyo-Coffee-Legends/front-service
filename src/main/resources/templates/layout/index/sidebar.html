@@ -1,10 +1,10 @@
 <nav class="sidebar bg-dark text-white flex-shrink-0 p-3" style="width: 250px; min-height: 100vh;">
     <a href="/index" style="text-decoration: none; color: white">
-        <h4 class="text-center py-3">
-            대시보드 메뉴
-        </h4>
+        <h4 class="text-center py-3">대시보드 메뉴</h4>
     </a>
+
     <ul class="nav flex-column">
+        <!-- 근태 관리 -->
         <li class="nav-item">
             <a
                     class="nav-link dropdown-toggle text-white"
@@ -14,6 +14,7 @@
                     data-bs-toggle="collapse"
                     data-bs-target="#sidebarDropdownMenu2"
                     aria-expanded="false"
+                    aria-controls="sidebarDropdownMenu2"
             >
                 근태 관리
             </a>
@@ -24,37 +25,34 @@
                 <li><a href="/analysis" class="nav-link text-white">AI 기반 근태 관리</a></li>
             </ul>
         </li>
-<!--        근태 관리 사이드바 추가-->
 
-        <!--   회의실 메뉴   -->
+        <!-- 회의실 -->
         <li class="nav-item">
-            <a
-                class="nav-link text-white"
-                href="/meeting-rooms"
-            >
-                회의실
-            </a>
+            <a class="nav-link text-white" href="/meeting-rooms">회의실</a>
         </li>
 
-
+        <!-- 예약 -->
         <li class="nav-item">
             <a
                     class="nav-link dropdown-toggle text-white"
                     href="#"
-                    id="booking"
+                    id="sidebarDropdown4"
                     role="button"
                     data-bs-toggle="collapse"
-                    data-bs-target="#bookingMenu"
+                    data-bs-target="#sidebarDropdownMenu4"
                     aria-expanded="false"
+                    aria-controls="sidebarDropdownMenu4"
             >
                 예약
             </a>
-            <ul class="collapse list-unstyled ps-3" id="bookingMenu">
+            <ul class="collapse list-unstyled ps-3" id="sidebarDropdownMenu4">
                 <li><a href="/booking" class="nav-link text-white">예약하기</a></li>
                 <li><a href="/booking/history" class="nav-link text-white">예약 내역</a></li>
                 <li><a href="/booking/statistics" class="nav-link text-white">통계</a></li>
             </ul>
         </li>
+
+        <!-- 관리자 -->
         <li class="nav-item">
             <a
                     class="nav-link dropdown-toggle text-white"
@@ -64,6 +62,7 @@
                     data-bs-toggle="collapse"
                     data-bs-target="#adminMenu"
                     aria-expanded="false"
+                    aria-controls="adminMenu"
             >
                 관리자
             </a>
@@ -72,9 +71,11 @@
                 <li><a href="/admin/booking/statistics" class="nav-link text-white">전체 통계</a></li>
             </ul>
         </li>
+
         <li class="nav-item"><a href="charts" class="nav-link text-white">Charts</a></li>
         <li class="nav-item"><a href="#" class="nav-link text-white">Tables</a></li>
     </ul>
+
     <!-- 유저 정보 -->
     <div class="mt-auto pt-3">
         <div class="dropdown">
