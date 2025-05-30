@@ -7,7 +7,6 @@ import com.nhnacademy.frontservice.dto.member.MemberRegisterRequest;
 import com.nhnacademy.frontservice.dto.member.MemberResponse;
 import com.nhnacademy.frontservice.service.MemberService;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -53,26 +52,29 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
 
         String accessToken = tokens.getAccessToken();
         addCookie("accessToken", accessToken, response);
+        String refreshToken = tokens.getRefreshToken();
+        addCookie("refreshToken", refreshToken, response);
 
-//        String refreshToken = tokens.getRefreshToken();
 //        ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
-//                                                .httpOnly(true)
-//                                                .secure(true)
-//                                                .path("/")
-//                                                .sameSite("Strict")
-//                                                .maxAge(Duration.ofDays(7))
-//                                                .build();
+//                .httpOnly(true)
+//                .secure(true)
+//                .path("/")
+//                .sameSite("Strict")
+//                .maxAge(Duration.ofDays(7))
+//                .build();
 //
 //        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
         response.sendRedirect("/index");
     }
 
     private void addCookie(String tokenName, String token, HttpServletResponse response){
-        Cookie cookie = new Cookie(tokenName, token);
-        cookie.setPath("/");
-        cookie.setHttpOnly(true);
-        cookie.setSecure(false);
-        cookie.setMaxAge(36000);
-        response.addCookie(cookie);
+        ResponseCookie cookie = ResponseCookie.from(tokenName, token)
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .sameSite("Strict")
+                .maxAge(Duration.ofDays(7))
+                .build();
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
     }
 }

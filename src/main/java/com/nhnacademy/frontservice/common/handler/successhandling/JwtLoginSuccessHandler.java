@@ -43,8 +43,11 @@ public class JwtLoginSuccessHandler implements AuthenticationSuccessHandler {
 
         String accessToken = tokens.getAccessToken();
         addCookie("accessToken", accessToken, response);
-//        String refreshToken = tokens.getRefreshToken();
 
+        String refreshToken = tokens.getRefreshToken();
+        addCookie("refreshToken", refreshToken, response);
+
+//
 //        ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
 //                .httpOnly(true)
 //                .secure(true)
@@ -59,11 +62,13 @@ public class JwtLoginSuccessHandler implements AuthenticationSuccessHandler {
 
 
     private void addCookie(String tokenName, String token, HttpServletResponse response){
-        Cookie cookie = new Cookie(tokenName, token);
-        cookie.setPath("/");
-        cookie.setHttpOnly(true);
-        cookie.setSecure(false);
-        cookie.setMaxAge(36000);
-        response.addCookie(cookie);
+        ResponseCookie cookie = ResponseCookie.from(tokenName, token)
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .sameSite("Strict")
+                .maxAge(Duration.ofDays(7))
+                .build();
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
     }
 }

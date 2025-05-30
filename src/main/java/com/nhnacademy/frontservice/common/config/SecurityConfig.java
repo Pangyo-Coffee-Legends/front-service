@@ -53,6 +53,7 @@ public class SecurityConfig {
                                 .clearAuthentication(true)
                                 .deleteCookies("JSESSIONID")
                                 .deleteCookies("accessToken")
+                                .deleteCookies("refreshToken")
                                 .logoutSuccessUrl("/")
                 )
         ;
