@@ -337,9 +337,10 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        fetchWithAuth(`http://localhost:10251/api/v1/attendances/summary/recent/${currentMemberNo}`)
+        fetchWithAuth(`http://localhost:10251/api/v1/attendances/${currentMemberNo}/summary/recent`)
             .then(res => res.json())
             .then(json => {
+
                 currentData = json.content.filter(it => it.year === y && it.monthValue === m);
                 if (!isNaN(d)) currentData = currentData.filter(it => it.dayOfMonth === d);
                 if (!currentData.length) {
