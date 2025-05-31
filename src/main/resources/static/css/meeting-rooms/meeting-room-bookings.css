@@ -5,31 +5,6 @@ h1 {
     color: #333;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: white;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-th, td {
-    padding: 16px 20px;
-    text-align: center;
-    font-size: 16px;
-}
-
-th {
-    background-color: #007bff;
-    color: white;
-    font-weight: bold;
-}
-
-tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
 tr:hover {
     background-color: #e9f5ff;
 }

@@ -173,6 +173,33 @@ body {
 .list-unstyled {
   padding-left: 20px;
 }
+/* 테이블 스타일 */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+th, td {
+  padding: 16px 20px;
+  text-align: center;
+  font-size: 16px;
+}
+
+th {
+  /*background-color: #007bff;*/
+  background-color: #03cf5d;
+  color: white;
+  font-weight: bold;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
 /*실시간 출입자 시계 스타일*/
 #clock {
   font-size: 1.5rem;
