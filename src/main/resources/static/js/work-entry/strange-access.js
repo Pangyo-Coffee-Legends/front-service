@@ -2,6 +2,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const socket = new WebSocket("wss://aiot2.live/ws/stranger");
 
     socket.onmessage = function (event) {
+        if (event.data === "ping") return; // ping은 무시
+
         const message = event.data;
         console.log("📩 WebSocket 수신 메시지:", message);
 

@@ -6,6 +6,8 @@ socket.onopen = function () {
 };
 
 socket.onmessage = function (event) {
+    if (event.data === "ping") return; // ping은 무시
+
     const logLine = event.data + '\n';
     logViewer.textContent += logLine;
     logViewer.scrollTop = logViewer.scrollHeight;
