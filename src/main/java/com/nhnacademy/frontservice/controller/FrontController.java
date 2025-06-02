@@ -97,17 +97,17 @@ public class FrontController {
     public String stompChatPage(Model model, @PathVariable Long roomId) {
         model.addAttribute("roomId", roomId);
 
-        return "chat/stompChatPage";
+        return "index/chat/stompChatPage";
     }
 
     @GetMapping("/chatList")
     public String chatList() {
-        return "chat/chatList";
+        return "index/chat/chatList";
     }
 
     @GetMapping("/notification")
     public String notification() {
-        return "chat/notification";
+        return "index/chat/notification";
     }
 
     @GetMapping("/weekly-entry-charts") //월간 출입 차트 조회
