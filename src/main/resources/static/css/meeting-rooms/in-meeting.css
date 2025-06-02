@@ -28,20 +28,20 @@ body {
     transition: background-color 0.3s ease;
 }
 
-.extend-btn {
-    background-color: #4CAF50;
-    color: white;
-}
+/*.extend-btn {*/
+/*    background-color: #4CAF50;*/
+/*    color: white;*/
+/*}*/
 
-.extend-btn:hover {
-    background-color: #45a049;
-}
+/*.extend-btn:hover {*/
+/*    background-color: #45a049;*/
+/*}*/
 
-.end-btn {
-    background-color: #dc3545;
-    color: white;
-}
+/*.end-btn {*/
+/*    background-color: #dc3545;*/
+/*    color: white;*/
+/*}*/
 
-.end-btn:hover {
-    background-color: #c82333;
-}
+/*.end-btn:hover {*/
+/*    background-color: #c82333;*/
+/*}*/
