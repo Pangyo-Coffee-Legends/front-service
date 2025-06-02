@@ -66,7 +66,7 @@ async function getRooms(){
 function selectRoom(button) {
     resetUI();
     getDate(selectedDate); // 기본값
-    button.style.backgroundColor = '#357ac8';
+    button.style.backgroundColor = '#70a1da';
     selectedRoom = button.value;
 }
 

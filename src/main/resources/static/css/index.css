@@ -210,12 +210,14 @@ body.light-theme table {
 }
 
 body.light-theme th {
-  background-color: #4CAF50;
-  color: white;
+  /*background-color: #4CAF50;*/
+  background-color: white;
+  color: black;
   font-weight: bold;
+  border-bottom: 2px solid #ccc;
 }
 
-body.light-theme tr:nth-child(even) {
+body.light-theme tr:nth-child(odd) {
   background-color: #f2f2f2;
 }
 
@@ -227,8 +229,9 @@ body.dark-theme table {
 }
 
 body.dark-theme th {
-  background-color: #388e3c;
+  background-color: #33373c;
   color: #f1f1f1;
+  border-bottom: 2px solid #2a2d31;
 }
 
 body.dark-theme tr:nth-child(even) {
@@ -248,27 +251,36 @@ button {
 
 /* === 라이트 모드 버튼 === */
 body.light-theme .btn-primary {
-  background-color: #4CAF50;
-  color: white;
+  background-color: white;
+  color: #388e3c;
+  border: 1px solid #388e3c;
 }
-
 body.light-theme .btn-secondary {
   background-color: #4a90e2;
   color: white;
 }
 
 body.light-theme .btn-danger {
-  background-color: #e74c3c;
-  color: white;
+  background-color: white;
+  color: #e74c3c;
+  border: 1px solid #e74c3c;
+
 }
 
 body.light-theme .btn-primary:hover {
-  background-color: #45a049;
+  background-color: #e8f5e9; /* 연한 녹색 배경 */
+  color: #2e7d32;
+  border: 1px solid #388e3c;
+}
+
+body.light-theme .btn-danger:hover {
+  background-color: #f5e8e8;
+  color: #e74c3c;
+  border: 1px solid #e74c3c;
 }
 
 /* === 다크 모드 버튼 === */
 body.dark-theme .btn-primary {
-  background-color: #388e3c;
   color: #ffffff;
 }
 
@@ -300,176 +312,4 @@ body.dark-theme textarea {
   border: 1px solid #555;
   background-color: #2a2a2a;
   color: #e0e0e0;
-}
-
-/*실시간 출입자 시계 스타일*/
-#clock {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.legend-box.scrollable-chart {
-  overflow-x: auto;
-  white-space: nowrap;
-}
-/*근태 색구분 범례*/
-/* 범례 사각형 기본 박스 스타일 */
-.legend-box {
-  display: inline-block;
-  width: 16px;
-  height: 16px;
-  margin-right: 6px;
-  vertical-align: middle;
-  border: 1px solid #ccc;
-}
-
-/* === 라이트 모드 상태 색상 === */
-body.light-theme .status-warning td {
-  background-color: #fff3cd !important;
-}
-body.light-theme .status-danger td {
-  background-color: #f8d7da !important;
-}
-body.light-theme .status-blue td {
-  background-color: #cce5ff !important;
-}
-body.light-theme .status-purple td {
-  background-color: #e2d5f8 !important;
-}
-body.light-theme .status-green td {
-  background-color: #d4edda !important;
-}
-body.light-theme .status-orange td {
-  background-color: #ffe5b4 !important;
-}
-body.light-theme .status-pink td {
-  background-color: #fce4ec !important;
-}
-
-body.light-theme .legend-box.status-warning {
-  background-color: #fff3cd;
-}
-body.light-theme .legend-box.status-danger {
-  background-color: #f8d7da;
-}
-body.light-theme .legend-box.status-blue {
-  background-color: #cce5ff;
-}
-body.light-theme .legend-box.status-purple {
-  background-color: #e2d5f8;
-}
-body.light-theme .legend-box.status-green {
-  background-color: #d4edda;
-}
-body.light-theme .legend-box.status-orange {
-  background-color: #ffe5b4;
-}
-body.light-theme .legend-box.status-pink {
-  background-color: #fce4ec;
-}
-
-/* === 다크 모드 상태 색상 === */
-body.dark-theme .status-warning td {
-  background-color: #665f3c !important;
-  color: #fff9db;
-}
-body.dark-theme .status-danger td {
-  background-color: #6b2f34 !important;
-  color: #f8d7da;
-}
-body.dark-theme .status-blue td {
-  background-color: #2c3e59 !important;
-  color: #cce5ff;
-}
-body.dark-theme .status-purple td {
-  background-color: #4a3b5c !important;
-  color: #e2d5f8;
-}
-body.dark-theme .status-green td {
-  background-color: #325b33 !important;
-  color: #d4edda;
-}
-body.dark-theme .status-orange td {
-  background-color: #7a5a2e !important;
-  color: #ffe5b4;
-}
-body.dark-theme .status-pink td {
-  background-color: #6d3b49 !important;
-  color: #fce4ec;
-}
-
-body.dark-theme .legend-box.status-warning {
-  background-color: #665f3c;
-  color: #fff9db;
-}
-body.dark-theme .legend-box.status-danger {
-  background-color: #6b2f34;
-  color: #f8d7da;
-}
-body.dark-theme .legend-box.status-blue {
-  background-color: #2c3e59;
-  color: #cce5ff;
-}
-body.dark-theme .legend-box.status-purple {
-  background-color: #4a3b5c;
-  color: #e2d5f8;
-}
-body.dark-theme .legend-box.status-green {
-  background-color: #325b33;
-  color: #d4edda;
-}
-body.dark-theme .legend-box.status-orange {
-  background-color: #7a5a2e;
-  color: #ffe5b4;
-}
-body.dark-theme .legend-box.status-pink {
-  background-color: #6d3b49;
-  color: #fce4ec;
-}
-
-/* 🧠 AI 기반 근태 분석 제목 스타일 */
-.page-title {
-  font-family: 'Segoe UI', 'Pretendard', sans-serif; /* 사용 폰트 설정 */
-  font-size: 2rem;            /* 기본 제목 글꼴 크기 */
-  font-weight: 800;           /* 글꼴 두께: 매우 굵게 */
-  color: #1a237e;             /* 글자 색상: 진한 남색 */
-  padding: 1.5rem 2rem 1rem 2rem; /* 위, 오른쪽, 아래, 왼쪽 패딩 */
-  border-bottom: 2px solid #e0e0e0; /* 하단 구분선 */
-  display: flex;              /* 내부 요소를 가로 정렬 */
-  align-items: center;        /* 세로 방향 중앙 정렬 */
-  gap: 0.75rem;               /* 이모지와 텍스트 사이 간격 */
-}
-
-/* 🔹 제목 내 이모지 스타일 */
-.page-title .emoji {
-  font-size: 2rem; /* 이모지 크기 설정 */
-}
-
-/* 🔹 강조 텍스트(파란색) */
-.page-title .highlight {
-  color: #1976d2; /* 강조 색상: 파란색 */
-}
-
-/* 📱 반응형 스타일 (768px 이하 화면에서 크기 조정) */
-@media (max-width: 768px) {
-  .page-title {
-    font-size: 1.25rem;   /* 모바일에서 글꼴 크기 축소 */
-    padding: 1rem;        /* 패딩 축소 */
-  }
-}
-
-/* 📊 분석 그래프 출력 영역 전체 스타일 */
-#chartArea {
-  background-color: #f9f9f9; /* 배경 색상: 연한 회색 */
-  padding: 1rem;          /* 내부 여백 */
-  border: 1px solid #ddd; /* 테두리 색상 설정 */
-}
-
-
-/*AI 근태관리 대화목록 삭제버튼*/
-#threadList .btn-outline-danger:hover {
-  background-color: #dc3545;
-  color: white;
-  border-color: #dc3545;
 }

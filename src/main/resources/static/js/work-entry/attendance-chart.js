@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let total = 0;
 
         const table = document.createElement('table');
-        table.className = 'table table-bordered';
+        // table.className = 'table table-bordered';
         table.innerHTML = '<thead><tr><th>날짜</th><th>출근</th><th>퇴근</th><th>근무시간</th><th>비고</th></tr></thead><tbody></tbody>';
         const tbody = table.querySelector('tbody');
 
@@ -248,7 +248,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // 통계 테이블 생성
         const table = document.createElement('table');
-        table.className = 'table table-bordered mt-3';
+        // table.className = 'table table-bordered mt-3';
         table.innerHTML = '<thead><tr><th>근태 상태</th><th>건수</th></tr></thead><tbody></tbody>';
         const tbody = table.querySelector('tbody');
 
@@ -273,7 +273,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(res => res.json())
             .then(json => {
                 const table = document.createElement('table');
-                table.className = 'table table-bordered table-hover';
+                // table.className = 'table table-bordered table-hover';
                 table.innerHTML = '<thead><tr><th>회원 번호</th><th>이름</th><th>이메일</th><th>전화번호</th></tr></thead><tbody></tbody>';
                 const tbody = table.querySelector('tbody');
 

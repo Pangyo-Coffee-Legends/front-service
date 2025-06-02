@@ -4,13 +4,13 @@ h1 {
     font-size: 32px;
     /*color: #333;*/
 }
-tr:hover {
-    background-color: #e9f5ff;
-}
+/*tr:hover {*/
+/*    background-color: #e9f5ff;*/
+/*}*/
 
-body.light-theme tr:hover {
-    background-color: #eafaf1;
-}
+/*body.light-theme tr:hover {*/
+/*    background-color: #cacaca;*/
+/*}*/
 
 
 body.dark-theme tr:hover {
