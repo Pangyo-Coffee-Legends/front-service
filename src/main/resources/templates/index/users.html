@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="@{/layout/index/layout.html}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>회원 목록</title>
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/table.css">
+    <link rel="stylesheet" href="/css/modal.css">
+</head>
+
+<!--<body class="body-with-fixed-header">-->
+
+<body>
+<div class="container" layout:fragment="content">
+
+    <div class="card">
+        <h1 class="card-title">회원 목록</h1>
+        <div class="card-body">
+            <!-- 테이블을 감싸는 스크롤 컨테이너 추가 -->
+            <div class="table-scroll-container">
+                <table id="member-table">
+                    <thead>
+                    <tr>
+                        <th>이름</th>
+                        <th>Email</th>
+                        <th>채팅</th>
+                    </tr>
+                    </thead>
+                    <tbody id="member-list-body">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="createChatRoomModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">새 채팅방 생성</h2>
+                <span class="close-button" id="closeCreateRoomModalBtn">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="newRoomNameInput">채팅방 이름:</label>
+                    <input type="text" id="newRoomNameInput" name="newRoomName" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="cancelCreateRoomBtn" class="btn btn-secondary">취소</button>
+                <button id="confirmCreateRoomBtn" class="btn btn-primary">생성</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="/js/chat/users.js"></script>
+</div>
+
+</body>
+
+</html>
