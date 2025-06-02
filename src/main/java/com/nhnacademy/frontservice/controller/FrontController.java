@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
@@ -43,47 +44,42 @@ public class FrontController {
 
     @GetMapping("/booking")
     public String book(){
-        return "booking/index";
+        return "index/booking/index";
     }
 
     @GetMapping("/booking/update")
     public String updateBooking(){
-        return "booking/index";
+        return "index/booking/index";
     }
 
     @GetMapping("/booking/success")
     public String success(){
-        return "booking/success";
+        return "index/booking/success";
     }
 
     @GetMapping("/booking/failed")
     public String failed(){
-        return "booking/failed";
+        return "index/booking/failed";
     }
 
     @GetMapping("/booking/history")
     public String bookings(){
-        return "booking/my/history";
+        return "index/booking/my/history";
     }
 
     @GetMapping("/booking/statistics")
     public String bookingStatistics() {
-        return "booking/my/statistics";
+        return "index/booking/my/statistics";
     }
 
     @GetMapping("/admin/booking/statistics")
     public String adminBookingStatistics() {
-        return "booking/admin/statistics";
-    }
-
-    @GetMapping("/meeting/alert")
-    public String meetingAlert(){
-        return "meeting/extend-end";
+        return "index/booking/admin/statistics";
     }
 
     @GetMapping("/admin/booking")
     public String bookAdmin(){
-        return "booking/admin/history";
+        return "index/booking/admin/history";
     }
 
     @GetMapping( "/charts")
@@ -135,6 +131,16 @@ public class FrontController {
         return "index/meeting-room/meeting-room-bookings";
 
     }
+
+    @GetMapping(value = "/meeting-room/{room-no}/{booking-no}/in-meeting")
+    public String inMeeting(@PathVariable("room-no") Long roomNo, @PathVariable("booking-no") Long bookingNo, Model model) {
+
+        model.addAttribute("roomNo", roomNo);
+        model.addAttribute("bookingNo", bookingNo);
+
+        return "index/meeting-room/in-meeting";
+    }
+
   
     @GetMapping("/analysis")//근태 gemini 사용
     public String analysis(){return "index/work-entry/analysis";}

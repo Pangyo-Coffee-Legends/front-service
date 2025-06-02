@@ -63,7 +63,6 @@ body {
 
 /* 메인 콘텐츠 영역 */
 .main-content {
-  margin-left: 250px;
   padding: 20px;
   transition: all 0.3s;
 }

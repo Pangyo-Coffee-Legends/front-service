@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="~{layout/index/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <link href="/css/meeting-rooms/in-meeting.css" rel="stylesheet">
+    <script src="/js/meeting-rooms/in-meeting.js" defer></script>
+    <title>회의 중...</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container text-center py-5">
+        <h1 class="mb-4">⏱ 회의 시간</h1>
+        <div id="time-display">--:--</div>
+
+        <div class="button-group mt-4">
+            <button class="extend-btn">회의 연장</button>
+            <button class="end-btn">회의 종료</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>
