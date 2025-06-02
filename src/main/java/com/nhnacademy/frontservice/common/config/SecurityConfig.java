@@ -1,6 +1,7 @@
 package com.nhnacademy.frontservice.common.config;
 
 import com.nhnacademy.frontservice.adaptor.GatewayAdaptor;
+import com.nhnacademy.frontservice.common.auth.EmailThreadLocal;
 import com.nhnacademy.frontservice.common.handler.exceptionhandling.CustomAccessDeniedHandler;
 import com.nhnacademy.frontservice.common.handler.successhandling.JwtLoginSuccessHandler;
 import com.nhnacademy.frontservice.common.handler.successhandling.OAuthSuccessHandler;
@@ -22,8 +23,6 @@ public class SecurityConfig {
 
     private final GatewayAdaptor gatewayAdaptor;
     private final OAuthSuccessHandler oauthSuccessHandler;
-//    private final JwtAuthenticationFilter jwtAuthenticationFilter;
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -57,7 +56,10 @@ public class SecurityConfig {
                                 .deleteCookies("JSESSIONID")
                                 .deleteCookies("accessToken")
                                 .deleteCookies("refreshToken")
-                                .logoutSuccessUrl("/")
+                                .logoutSuccessHandler((request, response, authentication) -> {
+                                    EmailThreadLocal.removeEmail();
+                                    response.sendRedirect("/");
+                                })
                 )
         ;
 

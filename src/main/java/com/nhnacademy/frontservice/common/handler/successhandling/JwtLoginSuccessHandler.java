@@ -1,19 +1,17 @@
 package com.nhnacademy.frontservice.common.handler.successhandling;
 
 import com.nhnacademy.frontservice.adaptor.GatewayAdaptor;
+import com.nhnacademy.frontservice.common.auth.EmailThreadLocal;
 import com.nhnacademy.frontservice.dto.token.JwtIssueRequest;
 import com.nhnacademy.frontservice.dto.token.JwtResponse;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import java.io.IOException;
@@ -49,6 +47,7 @@ public class JwtLoginSuccessHandler implements AuthenticationSuccessHandler {
         String refreshToken = tokens.getRefreshToken();
         addCookie("refreshToken", refreshToken, response);
 
+        EmailThreadLocal.setEmailLocal(authentication.getName());
 //
 //        ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
 //                .httpOnly(true)
@@ -68,7 +67,7 @@ public class JwtLoginSuccessHandler implements AuthenticationSuccessHandler {
                 .httpOnly(true)
                 .secure(true)
                 .path("/")
-                .sameSite("Strict")
+                .sameSite("None")
                 .maxAge(Duration.ofDays(7))
                 .build();
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());

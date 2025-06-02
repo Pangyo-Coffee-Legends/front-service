@@ -1,6 +1,7 @@
 package com.nhnacademy.frontservice.common.handler.successhandling;
 
 import com.nhnacademy.frontservice.adaptor.GatewayAdaptor;
+import com.nhnacademy.frontservice.common.auth.EmailThreadLocal;
 import com.nhnacademy.frontservice.dto.token.JwtIssueRequest;
 import com.nhnacademy.frontservice.dto.token.JwtResponse;
 import com.nhnacademy.frontservice.dto.member.MemberRegisterRequest;
@@ -55,6 +56,8 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
         String refreshToken = tokens.getRefreshToken();
         addCookie("refreshToken", refreshToken, response);
 
+        EmailThreadLocal.setEmailLocal(email);
+
 //        ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
 //                .httpOnly(true)
 //                .secure(true)
@@ -72,7 +75,7 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
                 .httpOnly(true)
                 .secure(true)
                 .path("/")
-                .sameSite("Strict")
+                .sameSite("None")
                 .maxAge(Duration.ofDays(7))
                 .build();
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
