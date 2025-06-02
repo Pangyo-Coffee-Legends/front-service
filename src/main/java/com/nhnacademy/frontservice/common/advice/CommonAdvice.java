@@ -53,7 +53,7 @@ public class CommonAdvice {
                 .httpOnly(true)
                 .secure(true)
                 .path("/")
-                .sameSite("Lax")
+                .sameSite("None")
                 .maxAge(Duration.ofMinutes(60))
                 .build()
                 .toString();
@@ -64,7 +64,7 @@ public class CommonAdvice {
                 .httpOnly(true)
                 .secure(true)
                 .path("/")
-                .sameSite("Lax")
+                .sameSite("None")
                 .maxAge(Duration.ofDays(1))
                 .build()
                 .toString();
