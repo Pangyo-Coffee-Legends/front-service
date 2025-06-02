@@ -29,11 +29,19 @@
         <!--   회의실 메뉴   -->
         <li class="nav-item">
             <a
-                class="nav-link text-white"
-                href="/meeting-rooms"
+                class="nav-link dropdown-toggle text-white"
+                href="#"
+                id="meetingRoom"
+                role="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#meetingRoomMenu"
+                aria-expanded="false"
             >
                 회의실
             </a>
+            <ul class="collapse list-unstyled ps-3" id="meetingRoomMenu">
+                <li><a href="/meeting-rooms" class="nav-link text-white">입실 하기</a></li>
+            </ul>
         </li>
 
 
@@ -72,15 +80,22 @@
                 <li><a href="/admin/booking/statistics" class="nav-link text-white">전체 통계</a></li>
             </ul>
         </li>
-        <li class="nav-item"><a href="/charts" class="nav-link text-white">Charts</a></li>
-        <li class="nav-item"><a href="#" class="nav-link text-white">Tables</a></li>
-        <li class="nav-item"><a href="/users" class="nav-link text-white">Users</a></li>
         <li class="nav-item">
-            <a href="/chatList" class="nav-link text-white">
-                ChatList
+            <a class="nav-link dropdown-toggle text-white"
+               href="#"
+               id="chat"
+               role="button"
+               data-bs-toggle="collapse"
+               data-bs-target="#chatMenu"
+               aria-expanded="false">
+                Chat
 <!--                {/* 안 읽은 메시지 수를 표시할 배지 (초기에는 숨김) */}-->
                 <span class="badge bg-danger ms-1 unread-badge" style="display: none;"></span>
             </a>
+            <ul class="collapse list-unstyled ps-3" id="chatMenu">
+                <li><a href="/chatList" class="nav-link text-white">채팅 리스트</a></li>
+                <li><a href="/users" class="nav-link text-white">회원 목록</a></li>
+            </ul>
         </li>
         <li class="nav-item" id="notification-menu" style="display: none;">
             <a href="/notification" class="nav-link text-white">
@@ -109,14 +124,4 @@
             </ul>
         </div>
     </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-    <!-- 전역 userEmail 변수 설정 -->
-    <script th:inline="javascript">
-        const userEmail = /*[[${userEmail}]]*/ 'guest@example.com';
-    </script>
-    <script src="/js/chat/chatSideBar.js"></script>
-
-
 </nav>
