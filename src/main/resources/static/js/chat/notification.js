@@ -1,10 +1,7 @@
-const STOMP_SUBSCRIBE_TOPIC = '/topic'; // 서버가 메시지를 발행하는 토픽 (예시)
-const STOMP_SEND_DESTINATION = '/publish'; // 클라이언트가 메시지를 보내는 목적지 (예시, 서버의 @MessageMapping 경로에 따름)
+const STOMP_SUBSCRIBE_TOPIC = '/notification'; // 서버가 메시지를 발행하는 토픽 (예시)
 
 // DOM 요소 가져오기
 const chatBox = document.getElementById('chat-box-simple');
-const messageInput = document.getElementById('message-input-simple');
-const sendButton = document.getElementById('send-button-simple');
 
 // STOMP 클라이언트 객체
 let stompClient = null;
@@ -29,7 +26,7 @@ function connect() {
     getHistoryNotification();
 
     // 1. SockJS 클라이언트 생성
-    stompClient = new SockJS(SOCKJS_ENDPOINT);
+    stompClient = new SockJS(`${API_BASE_URL}/ws/notification/connect`);
 
     // 2. SockJS 클라이언트를 통해 STOMP 클라이언트 생성
     stompClient = Stomp.over(stompClient);
@@ -51,7 +48,7 @@ function connect() {
  * STOMP 연결 성공 시 콜백 함수
  */
 function onConnected() {
-    console.log("STOMP 연결 성공!");
+    console.log("STOMP 연결 성공! notification");
     displaySystemMessage("서버에 연결되었습니다.");
 
     // 4. 특정 토픽 구독 시작
@@ -134,7 +131,7 @@ function displayMessage(message) {
 // === 저장된 알림 내역 조회 ===
 async function getHistoryNotification() {
     try {
-        const response = await fetch(`${API_BASE_URL}/api/v1/chat/notification/history`, {
+        const response = await fetch(`${API_BASE_URL}/api/v1/notification/history`, {
             method: 'GET', // 또는 백엔드가 요구하는 메소드 (GET, POST 등)
             credentials: 'include' // 인증 쿠키 전송
         });
@@ -224,11 +221,6 @@ function scrollToBottom() {
  */
 function disconnect() {
     if (stompClient && stompClient.connected) {
-        // 연결 해제 시 서버에 알림 메시지 전송 (선택 사항)
-        stompClient.send(STOMP_SEND_DESTINATION,
-            {},
-            JSON.stringify({ sender: username})
-        );
         stompClient.disconnect(() => {
             console.log("STOMP 연결 해제됨");
             displaySystemMessage("서버와의 연결이 종료되었습니다.");
