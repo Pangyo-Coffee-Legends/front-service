@@ -61,4 +61,12 @@ public interface GatewayAdaptor {
      */
     @PostMapping("/token/reissue")
     ResponseEntity<JwtResponse> reissueToken(@RequestBody TokenRequest request);
+
+    /**
+     *
+     * @param bookingNo 예약번호
+     * @return 해당 예약번호 정보 DTO
+     */
+    @GetMapping("/bookings/{booking-no}")
+    ResponseEntity<JwtResponse> getBooking(@PathVariable("booking-no") Long bookingNo, @RequestHeader("Authorization") String authHeader);
 }

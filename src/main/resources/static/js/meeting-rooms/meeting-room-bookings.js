@@ -24,7 +24,22 @@ function bindButtonHandler() {
     document.querySelectorAll(".enter-code").forEach(e => e.addEventListener("click", onEnterCode));
     document.getElementById("modal-close").addEventListener("click", onModalClose);
     document.getElementById("modal-submit").addEventListener("click", onModalSubmit);
+
+    document.getElementById("booking-code-input").addEventListener("keydown", e => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            document.getElementById("modal-submit").click();
+        }
+    })
 }
+
+document.addEventListener("keydown", e => {
+    const modal = document.getElementById("modal");
+
+    if (e.key === "Escape" && !modal.classList.contains("hidden")) {
+        onModalClose();
+    }
+})
 
 function onEnterCode(e) {
     let selectedMeetingRoomNo = e.target.dataset.meetingRoomNo;
@@ -82,6 +97,10 @@ async function verifyBookingCode(meetingRoomNo, selectedBookingNo, inputCode, en
 
     if (result.statusCode === 200) {
         showMessage("success", result.message);
+
+        setTimeout(() => {
+            window.location.href = `/meeting-room/${meetingRoomNo}/${selectedBookingNo}/in-meeting`;
+        }, 2000);
     } else if (result.statusCode === 404) {
         showMessage("not_found", result.message)
     } else if (result.statusCode === 400) {
@@ -160,7 +179,7 @@ async function getBookings(meetingRoomNo, date) {
 
             enterBtn.setAttribute("data-meeting-room-no", `${meetingRoomNo}`);
             enterBtn.setAttribute("data-booking-no", `${booking.no}`);
-            enterBtn.setAttribute("class", "enter-code")
+            enterBtn.setAttribute("class", "enter-code");
             enterBtn.innerText = "입실";
 
             td6.append(enterBtn);
