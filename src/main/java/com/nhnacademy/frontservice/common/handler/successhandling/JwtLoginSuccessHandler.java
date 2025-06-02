@@ -59,11 +59,15 @@ public class JwtLoginSuccessHandler implements AuthenticationSuccessHandler {
 
 
     private void addCookie(String tokenName, String token, HttpServletResponse response){
-        Cookie cookie = new Cookie(tokenName, token);
-        cookie.setPath("/");
-        cookie.setHttpOnly(true);
-        cookie.setSecure(false);
-        cookie.setMaxAge(36000);
-        response.addCookie(cookie);
+        ResponseCookie cookie = ResponseCookie.from(tokenName, token)
+                .httpOnly(true)
+                .secure(true)
+                .sameSite("None")            
+                .domain("aiot2.live")
+                .path("/")
+                .maxAge(Duration.ofSeconds(36000))
+                .build();
+    
+        response.addHeader("Set-Cookie", cookie.toString());
     }
 }
