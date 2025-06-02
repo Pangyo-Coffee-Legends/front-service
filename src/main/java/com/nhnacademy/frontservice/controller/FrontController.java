@@ -1,11 +1,14 @@
 package com.nhnacademy.frontservice.controller;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import com.nhnacademy.frontservice.adaptor.GatewayAdaptor;
 import com.nhnacademy.frontservice.dto.meetingroom.MeetingRoomResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -89,6 +92,28 @@ public class FrontController {
     @GetMapping( "/charts")
     public String charts() { return "index/charts";}
 
+    @GetMapping("/users")
+    public String chatPage() {
+        return "index/users";
+    }
+
+    @GetMapping("/stompChatPage/{roomId}")
+    public String stompChatPage(Model model, @PathVariable Long roomId) {
+        model.addAttribute("roomId", roomId);
+
+        return "chat/stompChatPage";
+    }
+
+    @GetMapping("/chatList")
+    public String chatList() {
+        return "chat/chatList";
+    }
+
+    @GetMapping("/notification")
+    public String notification() {
+        return "chat/notification";
+    }
+
     @GetMapping("/weekly-entry-charts") //월간 출입 차트 조회
     public String monthlyEntryCharts(){
         return "index/work-entry/weekly-entry-chart";
@@ -135,7 +160,7 @@ public class FrontController {
         return "index/meeting-room/meeting-room-bookings";
 
     }
-  
+
     @GetMapping("/analysis")//근태 gemini 사용
     public String analysis(){return "index/work-entry/analysis";}
 }

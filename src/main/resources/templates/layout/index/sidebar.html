@@ -1,10 +1,10 @@
 <nav class="sidebar bg-dark text-white flex-shrink-0 p-3" style="width: 250px; min-height: 100vh;">
     <a href="/index" style="text-decoration: none; color: white">
-        <h4 class="text-center py-3">대시보드 메뉴</h4>
+        <h4 class="text-center py-3">
+            대시보드 메뉴
+        </h4>
     </a>
-
     <ul class="nav flex-column">
-        <!-- 근태 관리 -->
         <li class="nav-item">
             <a
                     class="nav-link dropdown-toggle text-white"
@@ -14,7 +14,6 @@
                     data-bs-toggle="collapse"
                     data-bs-target="#sidebarDropdownMenu2"
                     aria-expanded="false"
-                    aria-controls="sidebarDropdownMenu2"
             >
                 근태 관리
             </a>
@@ -25,34 +24,45 @@
                 <li><a href="/analysis" class="nav-link text-white">AI 기반 근태 관리</a></li>
             </ul>
         </li>
+<!--        근태 관리 사이드바 추가-->
 
-        <!-- 회의실 -->
+        <!--   회의실 메뉴   -->
         <li class="nav-item">
-            <a class="nav-link text-white" href="/meeting-rooms">회의실</a>
+            <a
+                class="nav-link dropdown-toggle text-white"
+                href="#"
+                id="meetingRoom"
+                role="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#meetingRoomMenu"
+                aria-expanded="false"
+            >
+                회의실
+            </a>
+            <ul class="collapse list-unstyled ps-3" id="meetingRoomMenu">
+                <li><a href="/meeting-rooms" class="nav-link text-white">입실 하기</a></li>
+            </ul>
         </li>
 
-        <!-- 예약 -->
+
         <li class="nav-item">
             <a
                     class="nav-link dropdown-toggle text-white"
                     href="#"
-                    id="sidebarDropdown4"
+                    id="booking"
                     role="button"
                     data-bs-toggle="collapse"
-                    data-bs-target="#sidebarDropdownMenu4"
+                    data-bs-target="#bookingMenu"
                     aria-expanded="false"
-                    aria-controls="sidebarDropdownMenu4"
             >
                 예약
             </a>
-            <ul class="collapse list-unstyled ps-3" id="sidebarDropdownMenu4">
+            <ul class="collapse list-unstyled ps-3" id="bookingMenu">
                 <li><a href="/booking" class="nav-link text-white">예약하기</a></li>
                 <li><a href="/booking/history" class="nav-link text-white">예약 내역</a></li>
                 <li><a href="/booking/statistics" class="nav-link text-white">통계</a></li>
             </ul>
         </li>
-
-        <!-- 관리자 -->
         <li class="nav-item">
             <a
                     class="nav-link dropdown-toggle text-white"
@@ -62,7 +72,6 @@
                     data-bs-toggle="collapse"
                     data-bs-target="#adminMenu"
                     aria-expanded="false"
-                    aria-controls="adminMenu"
             >
                 관리자
             </a>
@@ -71,10 +80,33 @@
                 <li><a href="/admin/booking/statistics" class="nav-link text-white">전체 통계</a></li>
             </ul>
         </li>
+        <li class="nav-item">
+            <a class="nav-link dropdown-toggle text-white"
+               href="#"
+               id="chat"
+               role="button"
+               data-bs-toggle="collapse"
+               data-bs-target="#chatMenu"
+               aria-expanded="false">
+                Chat
+<!--                {/* 안 읽은 메시지 수를 표시할 배지 (초기에는 숨김) */}-->
+                <span class="badge bg-danger ms-1 unread-badge" style="display: none;"></span>
+            </a>
+            <ul class="collapse list-unstyled ps-3" id="chatMenu">
+                <li><a href="/chatList" class="nav-link text-white">채팅 리스트</a></li>
+                <li><a href="/users" class="nav-link text-white">회원 목록</a></li>
+            </ul>
+        </li>
+        <li class="nav-item" id="notification-menu" style="display: none;">
+            <a href="/notification" class="nav-link text-white">
+                notification
+                <span class="badge bg-danger ms-1 notification-unread-badge" style="display: none;"></span>
+            </a>
+        </li>
 
-        <li class="nav-item"><a href="charts" class="nav-link text-white">Charts</a></li>
-        <li class="nav-item"><a href="#" class="nav-link text-white">Tables</a></li>
     </ul>
+
+    <div id="custom-toast"></div>
 
     <!-- 유저 정보 -->
     <div class="mt-auto pt-3">
