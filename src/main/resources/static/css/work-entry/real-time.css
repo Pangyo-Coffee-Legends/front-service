@@ -9,3 +9,7 @@
     overflow-x: auto;
     white-space: nowrap;
 }
+
+body.dark-theme tr:nth-child(even) {
+    background-color: transparent !important;
+}

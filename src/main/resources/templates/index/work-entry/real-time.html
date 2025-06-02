@@ -2,7 +2,7 @@
 <!--레이아웃 설정 시 work-entry 패키지 안 html 설정 시 template 하위 경로부터 작성-->
 <html lang="ko" layout:decorate="~{layout/index/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-    <link href="/css/work-entry/realtime-entry.css" rel="stylesheet">
+    <link href="/css/work-entry/real-time.css" rel="stylesheet">
     <script src="/js/work-entry/realtime-entry.js" defer></script> <!-- 실시간 출입 통계 관련 JS-->
     <script src="/js/work-entry/strange-access.js" defer></script> <!-- 이상 출입 알림 관련 JS-->
     <script src="/js/logprint.js" defer></script> <!--로그 화면 출력 관련 JS-->
@@ -23,7 +23,7 @@
             <!-- 실시간 요약 -->
             <div class="col-md-5">
                 <h5 class="mb-3">📋 실시간 출입 요약</h5>
-                <table class="table table-bordered">
+                <table>
                     <tbody>
                     <tr><th>최신 측정 시각</th><td id="latest-time">-</td></tr>
                     <tr><th>현재 출입 횟수</th><td id="latest-count">-</td></tr>
