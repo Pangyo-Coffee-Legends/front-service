@@ -2,30 +2,21 @@ h1 {
     text-align: center;
     margin-bottom: 30px;
     font-size: 32px;
-    color: #333;
+    /*color: #333;*/
 }
 tr:hover {
     background-color: #e9f5ff;
 }
-.edit-btn, .cancel-btn {
-    padding: 8px 12px;
-    margin: 0 4px;
-    border: none;
-    border-radius: 6px;
-    font-size: 14px;
-    cursor: pointer;
+
+body.light-theme tr:hover {
+    background-color: #eafaf1;
 }
 
-.edit-btn {
-    background-color: #4caf50; /* 초록 */
-    color: white;
-}
 
-.cancel-btn {
-    background-color: #f44336; /* 빨강 */
-    color: white;
+body.dark-theme tr:hover {
+    background-color: #3e444b;
 }
-
+/* 공통 스타일 */
 .pagination {
     margin-top: 20px;
     text-align: center;
@@ -33,19 +24,49 @@ tr:hover {
 .page-btn {
     margin: 0 4px;
     padding: 6px 12px;
-    border: 1px solid #ccc;
-    background-color: white;
+    border: 1px solid;
     cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
 }
 .page-btn.active {
-    background-color: #4a90e2;
-    color: white;
+    font-weight: bold;
 }
 .page-btn:disabled {
-    color: #aaa;
     cursor: not-allowed;
 }
 
+/* 라이트 테마 */
+body.light-theme .page-btn {
+    background-color: white;
+    color: #333;
+    border-color: #ccc;
+}
+body.light-theme .page-btn.active {
+    background-color: #4a90e2;
+    color: white;
+}
+body.light-theme .page-btn:disabled {
+    color: #aaa;
+    background-color: #f5f5f5;
+}
+
+/* 다크 테마 */
+body.dark-theme .page-btn {
+    background-color: #2a2d31;
+    color: #e0e0e0;
+    border-color: #555;
+}
+body.dark-theme .page-btn.active {
+    background-color: #3a78c2;
+    color: white;
+}
+body.dark-theme .page-btn:disabled {
+    color: #777;
+    background-color: #3a3d42;
+}
+
+/* 공통 예약 컨트롤 */
 .booking-controls {
     display: flex;
     gap: 20px;
@@ -53,18 +74,32 @@ tr:hover {
     margin-bottom: 20px;
     flex-wrap: wrap;
 }
-
 .booking-controls label {
     font-weight: bold;
     display: flex;
     flex-direction: column;
     font-size: 14px;
 }
-
 .booking-controls .form-select {
     width: 160px;
     padding: 5px 10px;
     margin-top: 5px;
     border-radius: 4px;
-    border: 1px solid #ccc;
+    border: 1px solid;
+    background-color: transparent;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* 라이트 테마 예약 컨트롤 */
+body.light-theme .form-select {
+    background-color: white;
+    color: #333;
+    border-color: #ccc;
+}
+
+/* 다크 테마 예약 컨트롤 */
+body.dark-theme .form-select {
+    background-color: #2a2d31;
+    color: #e0e0e0;
+    border-color: #555;
 }

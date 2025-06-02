@@ -58,8 +58,8 @@ const getBookings = function (bookings, totalElements, currentPage, size) {
                 <td class="booking-change">${data.changeName == null ? '-' : data.changeName}</td>
                 <td>
                   ${data.changeName === '취소' || !isFuture ? '' :
-            `<button class="edit-btn" onclick="window.location.href='/booking/update?id=${data.no}'">수정</button>
-                     <button class="cancel-btn" data-value="${data.no}">취소</button>`
+            `<button class="btn-primary" onclick="window.location.href='/booking/update?id=${data.no}'">수정</button>
+                     <button class="btn-danger" data-value="${data.no}">취소</button>`
         }
                 </td>
             </tr>
@@ -67,7 +67,7 @@ const getBookings = function (bookings, totalElements, currentPage, size) {
     });
 
     container.addEventListener('click', (e) => {
-        if (e.target.classList.contains('cancel-btn')) {
+        if (e.target.classList.contains('btn-danger')) {
             cancelAlert(e.target);
         }
     });

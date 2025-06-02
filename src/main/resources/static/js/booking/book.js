@@ -105,10 +105,12 @@ const getCalendar = function (){
             if(selectedRoom && info.dateStr) {
                 await getBookings(selectedRoom, info.dateStr);
             }
+
             document.querySelectorAll('.fc-day').forEach(cell => {
-                cell.style.backgroundColor = '';
+                cell.classList.remove('selected-day');
             });
-            info.dayEl.style.backgroundColor = '#e6f0ff'; // #bed5fa
+
+            info.dayEl.classList.add('selected-day');
         }
     });
 
@@ -185,20 +187,15 @@ const getBookings = async function (roomNo, dateStr) {
 }
 
 // 시간 버튼
-const selectTime = function (button){
+const selectTime = function (button) {
     const timeSlots = document.querySelectorAll('.time-slot');
     timeSlots.forEach(btn => {
-        btn.style.backgroundColor = '';
-        btn.style.color = '';
-        btn.style.fontWeight = 'normal';
+        btn.classList.remove('selected-time-slot');
     });
 
-    button.style.backgroundColor = '#e6f0ff';
-    button.style.color = 'black';
-    button.style.fontWeight = 'bold';
-
+    button.classList.add('selected-time-slot');
     selectedTime = button.textContent;
-}
+};
 
 // 알림창
 function getAlert(){

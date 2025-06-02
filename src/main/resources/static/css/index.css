@@ -1,7 +1,16 @@
 /* 전체 레이아웃 */
 body {
   font-family: 'Poppins', sans-serif;
-  background-color: #f8f9fa;
+}
+
+body.light-theme {
+  background-color: #f5f7fa;
+  color: #2a2a2a;
+}
+
+body.dark-theme {
+  background-color: #1e1f25;
+  color: #e0e0e0;
 }
 
 /* 사이드바 스타일링 */
@@ -68,28 +77,64 @@ body {
   transition: all 0.3s;
 }
 
-/* 상단 네비게이션 바 */
+/* 공통 스타일 */
 .navbar {
   margin-left: 250px;
+  padding: 0.75rem 1.5rem;
+  transition: background-color 0.3s, color 0.3s;
   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-  background-color: white !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-/* 카드 스타일링 */
+/* 라이트 테마 */
+body.light-theme .navbar {
+  background-color: #ffffff;
+  color: #333;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* 다크 테마 */
+body.dark-theme .navbar {
+  background-color: #2b2d32;
+  color: #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* 공통 카드 스타일 */
 .card {
   border: none;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
   border-radius: 10px;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s, background-color 0.3s, color 0.3s;
 }
 
 .card-body {
   padding: 1.5rem;
+}
+
+/* 라이트 테마 카드 */
+body.light-theme .card {
+  background-color: #ffffff;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
+  color: #2a2a2a;
+}
+
+body.light-theme .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
+}
+
+/* 다크 테마 카드 */
+body.dark-theme .card {
+  background-color: #2a2d31;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.3);
+  color: #e0e0e0;
+}
+
+body.dark-theme .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.5);
 }
 
 /* 유저 정보 섹션 */
@@ -118,30 +163,7 @@ body {
   margin-right: 8px;
   text-align: center;
 }
-/* 드롭다운 메뉴 스타일 */
-.legend-box.sidebar-dropdown-menu {
-  list-style: none;
-  padding-left: 20px;
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease;
-}
 
-.legend-box.sidebar-dropdown-menu.legend-box.show {
-  max-height: 500px; /* 드롭다운이 열릴 때 최대 높이 */
-}
-
-.nav-item .dropdown-indicator::after {
-  content: '\f105'; /* Font Awesome 아이콘 */
-  font-family: 'Font Awesome 5 Free';
-  font-weight: 900;
-  float: right;
-  transition: transform 0.3s;
-}
-
-.nav-item.expanded .dropdown-indicator::after {
-  transform: rotate(90deg);
-}
 /* 사용자 드롭다운 스타일 */
 .nav-link.dropdown-toggle {
   color: #ffffff;
@@ -161,10 +183,6 @@ body {
   font-size: 14px;
 }
 
-.dropdown-item:hover {
-  background-color: #f8f9fa;
-}
-
 /* 사이드바 드롭다운 스타일 */
 .collapse {
   transition: max-height 0.3s ease-in-out;
@@ -173,31 +191,115 @@ body {
 .list-unstyled {
   padding-left: 20px;
 }
-/* 테이블 스타일 */
+
+/* === 공통 테이블 스타일 === */
 table {
   width: 100%;
   border-collapse: collapse;
-  background-color: white;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-  border-radius: 10px;
-  overflow: hidden;
 }
 
 th, td {
-  padding: 16px 20px;
+  padding: 14px 18px;
   text-align: center;
-  font-size: 16px;
 }
 
-th {
-  /*background-color: #007bff;*/
-  background-color: #03cf5d;
+/* === 라이트 테마 테이블 === */
+body.light-theme table {
+  background-color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+body.light-theme th {
+  background-color: #4CAF50;
   color: white;
   font-weight: bold;
 }
 
-tr:nth-child(even) {
+body.light-theme tr:nth-child(even) {
   background-color: #f2f2f2;
+}
+
+/* === 다크 테마 테이블 === */
+body.dark-theme table {
+  background-color: #2a2d31;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  color: #e0e0e0;
+}
+
+body.dark-theme th {
+  background-color: #388e3c;
+  color: #f1f1f1;
+}
+
+body.dark-theme tr:nth-child(even) {
+  background-color: #33373c;
+}
+
+/* 기본 버튼 공통 스타일 */
+button {
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* === 라이트 모드 버튼 === */
+body.light-theme .btn-primary {
+  background-color: #4CAF50;
+  color: white;
+}
+
+body.light-theme .btn-secondary {
+  background-color: #4a90e2;
+  color: white;
+}
+
+body.light-theme .btn-danger {
+  background-color: #e74c3c;
+  color: white;
+}
+
+body.light-theme .btn-primary:hover {
+  background-color: #45a049;
+}
+
+/* === 다크 모드 버튼 === */
+body.dark-theme .btn-primary {
+  background-color: #388e3c;
+  color: #ffffff;
+}
+
+body.dark-theme .btn-secondary {
+  background-color: #3a78c2;
+  color: #ffffff;
+}
+
+body.dark-theme .btn-danger {
+  background-color: #c0392b;
+  color: #ffffff;
+}
+
+body.dark-theme .btn-primary:hover {
+  background-color: #2e7d32;
+}
+
+body.light-theme input,
+body.light-theme select,
+body.light-theme textarea {
+  border: 1px solid #ccc;
+  background-color: white;
+  color: #333;
+}
+
+body.dark-theme input,
+body.dark-theme select,
+body.dark-theme textarea {
+  border: 1px solid #555;
+  background-color: #2a2a2a;
+  color: #e0e0e0;
 }
 
 /*실시간 출입자 시계 스타일*/
@@ -222,23 +324,109 @@ tr:nth-child(even) {
   border: 1px solid #ccc;
 }
 
-/* ✅ 테이블 행 색상 (출석 제외) */
-.status-warning td { background-color: #fff3cd !important; }
-.status-danger td { background-color: #f8d7da !important; }
-.status-blue td { background-color: #cce5ff !important; }
-.status-purple td { background-color: #e2d5f8 !important; }
-.status-green td { background-color: #d4edda !important; }
-.status-orange td { background-color: #ffe5b4 !important; }
-.status-pink td { background-color: #fce4ec !important; }
+/* === 라이트 모드 상태 색상 === */
+body.light-theme .status-warning td {
+  background-color: #fff3cd !important;
+}
+body.light-theme .status-danger td {
+  background-color: #f8d7da !important;
+}
+body.light-theme .status-blue td {
+  background-color: #cce5ff !important;
+}
+body.light-theme .status-purple td {
+  background-color: #e2d5f8 !important;
+}
+body.light-theme .status-green td {
+  background-color: #d4edda !important;
+}
+body.light-theme .status-orange td {
+  background-color: #ffe5b4 !important;
+}
+body.light-theme .status-pink td {
+  background-color: #fce4ec !important;
+}
 
-/* ✅ 범례 색상 적용 (.legend-box 자체에 색 입힘) */
-.legend-box.status-warning { background-color: #fff3cd; }
-.legend-box.status-danger  { background-color: #f8d7da; }
-.legend-box.status-blue    { background-color: #cce5ff; }
-.legend-box.status-purple  { background-color: #e2d5f8; }
-.legend-box.status-green   { background-color: #d4edda; }
-.legend-box.status-orange  { background-color: #ffe5b4; }
-.legend-box.status-pink    { background-color: #fce4ec; }
+body.light-theme .legend-box.status-warning {
+  background-color: #fff3cd;
+}
+body.light-theme .legend-box.status-danger {
+  background-color: #f8d7da;
+}
+body.light-theme .legend-box.status-blue {
+  background-color: #cce5ff;
+}
+body.light-theme .legend-box.status-purple {
+  background-color: #e2d5f8;
+}
+body.light-theme .legend-box.status-green {
+  background-color: #d4edda;
+}
+body.light-theme .legend-box.status-orange {
+  background-color: #ffe5b4;
+}
+body.light-theme .legend-box.status-pink {
+  background-color: #fce4ec;
+}
+
+/* === 다크 모드 상태 색상 === */
+body.dark-theme .status-warning td {
+  background-color: #665f3c !important;
+  color: #fff9db;
+}
+body.dark-theme .status-danger td {
+  background-color: #6b2f34 !important;
+  color: #f8d7da;
+}
+body.dark-theme .status-blue td {
+  background-color: #2c3e59 !important;
+  color: #cce5ff;
+}
+body.dark-theme .status-purple td {
+  background-color: #4a3b5c !important;
+  color: #e2d5f8;
+}
+body.dark-theme .status-green td {
+  background-color: #325b33 !important;
+  color: #d4edda;
+}
+body.dark-theme .status-orange td {
+  background-color: #7a5a2e !important;
+  color: #ffe5b4;
+}
+body.dark-theme .status-pink td {
+  background-color: #6d3b49 !important;
+  color: #fce4ec;
+}
+
+body.dark-theme .legend-box.status-warning {
+  background-color: #665f3c;
+  color: #fff9db;
+}
+body.dark-theme .legend-box.status-danger {
+  background-color: #6b2f34;
+  color: #f8d7da;
+}
+body.dark-theme .legend-box.status-blue {
+  background-color: #2c3e59;
+  color: #cce5ff;
+}
+body.dark-theme .legend-box.status-purple {
+  background-color: #4a3b5c;
+  color: #e2d5f8;
+}
+body.dark-theme .legend-box.status-green {
+  background-color: #325b33;
+  color: #d4edda;
+}
+body.dark-theme .legend-box.status-orange {
+  background-color: #7a5a2e;
+  color: #ffe5b4;
+}
+body.dark-theme .legend-box.status-pink {
+  background-color: #6d3b49;
+  color: #fce4ec;
+}
 
 /* 🧠 AI 기반 근태 분석 제목 스타일 */
 .page-title {

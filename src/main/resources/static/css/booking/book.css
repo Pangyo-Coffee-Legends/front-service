@@ -1,3 +1,4 @@
+/* 공통 초기화 */
 * {
     box-sizing: border-box;
 }
@@ -6,47 +7,61 @@
     display: flex;
 }
 
-.info-container{
+.info-container {
     width: 100%;
 }
 
-.time-container {
-    font-family: Arial, sans-serif;
-    padding: 20px;
-}
-
+.time-container,
 .reservation-form {
     font-family: Arial, sans-serif;
     padding: 20px;
 }
 
-/* 회의실 */
+/* 회의실 목록 */
 .rooms {
     width: 30%;
-    /*background-color: #f4f4f4;*/
     padding: 20px;
     border-right: 1px solid #ccc;
 }
 
+body.dark-theme .rooms {
+    border-color: #444;
+}
+
+/* 공통 버튼 스타일 */
 .room-button {
     display: block;
     width: 100%;
     padding: 15px;
     margin-bottom: 10px;
-    background-color: #b6d2f9;
-    color: white;
     border: none;
     border-radius: 6px;
     cursor: pointer;
     font-size: 16px;
     text-align: left;
     height: 120px;
-
+    transition: background-color 0.3s, color 0.3s;
 }
 
-/*.room-button:hover {*/
-/*    background-color: #0056b3;*/
-/*}*/
+/* 라이트 테마 버튼 */
+body.light-theme .room-button {
+    background-color: #b6d2f9;
+    color: #003366;
+}
+
+body.light-theme .room-button:hover {
+    background-color: #a1c0f2;
+}
+
+/* 다크 테마 버튼 */
+body.dark-theme .room-button {
+    background-color: #3a4a5f;
+    color: #ffffff;
+}
+
+body.dark-theme .room-button:hover {
+    background-color: #46596f;
+}
 
 /* 캘린더 */
 .calendar {
@@ -58,35 +73,47 @@
     margin-top: 0;
 }
 
-#calendarContent {
-    margin-top: 20px;
+/* 날짜 클릭 시 공통 클래스 */
+.selected-day {
+    position: relative;
 }
 
-.fc-col-header-cell-cushion, .fc-daygrid-day-number {
+/* 라이트 테마 클릭 효과 */
+body.light-theme .selected-day {
+    background-color: #e6f0ff !important;
+}
+
+/* 다크 테마 클릭 효과 */
+body.dark-theme .selected-day {
+    background-color: #3d4857 !important;
+}
+/* FullCalendar 날짜 텍스트 */
+.fc-col-header-cell-cushion,
+.fc-daygrid-day-number {
     text-decoration: none;
 }
 
-.fc-scrollgrid-sync-inner > .fc-col-header-cell-cushion,
-.fc-day-mon .fc-daygrid-day-number,
-.fc-day-tue .fc-daygrid-day-number,
-.fc-day-wed .fc-daygrid-day-number,
-.fc-day-thu .fc-daygrid-day-number,
-.fc-day-fri .fc-daygrid-day-number {
+body.light-theme .fc-col-header-cell-cushion,
+body.light-theme .fc-daygrid-day-number {
     color: black;
 }
 
-.fc-day-sun .fc-col-header-cell-cushion,
-.fc-day-sun a{
-    color : red;
+body.dark-theme .fc-col-header-cell-cushion,
+body.dark-theme .fc-daygrid-day-number {
+    color: #e0e0e0;
 }
 
+/* 요일 색상 강조 */
+.fc-day-sun .fc-col-header-cell-cushion,
+.fc-day-sun a {
+    color: red;
+}
 .fc-day-sat .fc-col-header-cell-cushion,
 .fc-day-sat a {
-    color : blue;
+    color: blue;
 }
 
-
- /*시간버튼 */
+/* 시간 선택 그리드 */
 .section-title {
     font-weight: bold;
     margin-top: 30px;
@@ -102,68 +129,87 @@
 .time-slot {
     padding: 10px 0;
     text-align: center;
-    border: 1px solid #ccc;
     border-radius: 10px;
     cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.2s, color 0.2s;
+    border: 1px solid;
+}
+
+/* 라이트 테마 시간 슬롯 */
+body.light-theme .time-slot {
     background-color: white;
     color: #333;
-    font-size: 16px;
-    transition: background-color 0.2s;
+    border-color: #ccc;
 }
-
-.time-slot:hover {
+body.light-theme .time-slot:hover {
     background-color: #e6f0ff;
 }
-
-.time-slot:disabled {
+body.light-theme .time-slot:disabled {
     color: #ccc;
     border-color: #eee;
-    cursor: not-allowed;
     background-color: #f8f8f8;
 }
 
-/*.time-slot:active {*/
-/*    background-color: #e6f0ff;*/
-/*    color: black;*/
-/*    font-weight: bold;*/
-/*}*/
+/* 다크 테마 시간 슬롯 */
+body.dark-theme .time-slot {
+    background-color: #2f2f33;
+    color: #e0e0e0;
+    border-color: #555;
+}
+body.dark-theme .time-slot:hover {
+    background-color: #3d4857;
+}
+body.dark-theme .time-slot:disabled {
+    color: #777;
+    background-color: #2a2a2a;
+    border-color: #444;
+    cursor: not-allowed;
+}
 
-/*.reservation-form {*/
-/*    margin-top: 1rem;*/
-/*    display: flex;*/
-/*    flex-direction: column;*/
-/*    gap: 0.5rem;*/
-/*    font-family: sans-serif;*/
-/*    max-width: 220px;*/
-/*}*/
+/* 공통 선택된 시간 스타일 */
+.selected-time-slot {
+    font-weight: bold;
+}
 
-#attendees, #reserveBtn {
+/* 라이트 테마에서 선택된 시간 */
+body.light-theme .selected-time-slot {
+    background-color: #e6f0ff;
+    color: black;
+}
+
+/* 다크 테마에서 선택된 시간 */
+body.dark-theme .selected-time-slot {
+    background-color: #3d4857;
+    color: white;
+}
+/* 예약 폼 */
+#attendees {
     padding: 0.5rem;
     font-size: 1rem;
     border-radius: 6px;
+    /*width: 100%;*/
 }
 
-#attendees {
-    border: 1px solid #ccc;
-}
+/*!* 라이트 테마 입력 *!*/
+/*body.light-theme #attendees {*/
+/*    border: 1px solid #ccc;*/
+/*    background-color: white;*/
+/*    color: #333;*/
+/*}*/
 
-.reservation-action {
-    text-align: center;
-    margin-top: 1.5rem;
-}
+/*!* 다크 테마 입력 *!*/
+/*body.dark-theme #attendees {*/
+/*    border: 1px solid #555;*/
+/*    background-color: #2a2a2a;*/
+/*    color: #e0e0e0;*/
+/*}*/
 
-.reservation-action p {
-    margin-bottom: 1rem;
-    font-size: 0.95rem;
-    color: #555;
-}
-
-#reserveBtn{
-    width: 80%;            /* 더 넓게 */
-    max-width: 250px;       /* 너무 넓어지지 않게 제한 */
+/* 예약 버튼 */
+#reserveBtn {
+    width: 80%;
+    max-width: 250px;
     padding: 0.75rem 1rem;
-    background-color: #4a90e2;
-    color: white;
     font-size: 1.1rem;
     border: none;
     border-radius: 6px;
@@ -171,6 +217,38 @@
     transition: background-color 0.2s ease;
 }
 
-#reserveBtn:hover, .room-button:hover {
+/* 라이트 테마 버튼 */
+body.light-theme #reserveBtn {
+    background-color: #4a90e2;
+    color: white;
+}
+body.light-theme #reserveBtn:hover {
     background-color: #357ac8;
+}
+
+/* 다크 테마 버튼 */
+body.dark-theme #reserveBtn {
+    background-color: #2e6dbb;
+    color: white;
+}
+body.dark-theme #reserveBtn:hover {
+    background-color: #24589d;
+}
+
+/* 예약 액션 설명 텍스트 */
+.reservation-action {
+    text-align: center;
+    margin-top: 1.5rem;
+}
+.reservation-action p {
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+}
+
+/* 설명 텍스트 색상 */
+body.light-theme .reservation-action p {
+    color: #555;
+}
+body.dark-theme .reservation-action p {
+    color: #bbb;
 }

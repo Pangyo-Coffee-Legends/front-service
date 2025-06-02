@@ -5,8 +5,8 @@ h1 {
     color: #333;
 }
 
-tr:hover {
-    background-color: #e9f5ff;
+body.light-theme tr:hover {
+    background-color: #eafaf1;
 }
 
 .edit-btn, .cancel-btn {
@@ -18,15 +18,15 @@ tr:hover {
     cursor: pointer;
 }
 
-.edit-btn {
-    background-color: #4caf50; /* 초록 */
-    color: white;
-}
+/*.edit-btn {*/
+/*    background-color: #4caf50; !* 초록 *!*/
+/*    color: white;*/
+/*}*/
 
-.cancel-btn {
-    background-color: #f44336; /* 빨강 */
-    color: white;
-}
+/*.cancel-btn {*/
+/*    background-color: #f44336; !* 빨강 *!*/
+/*    color: white;*/
+/*}*/
 
 .pagination {
     margin-top: 20px;
