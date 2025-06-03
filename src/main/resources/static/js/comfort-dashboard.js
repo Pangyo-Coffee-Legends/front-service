@@ -64,27 +64,21 @@ function extractComfortInfo(results, location) {
     for (const rule of results) {
         for (const action of rule.executedActions || []) {
             const output = action.output;
-            if (output?.location?.includes(location)) {
-                const {
-                    temperature,
-                    humidity,
-                    co2,
-                    comfort_index,
-                    co2_comment,
-                    deviceCommands
-                } = output;
+            const comfortInfo = output?.comfortInfo;
+            const deviceCommands = output?.deviceCommands;
 
+            if (comfortInfo?.location?.includes(location)) {
                 return {
-                    temperature: parseFloat(temperature),
-                    humidity: parseFloat(humidity),
-                    co2: parseFloat(co2),
-                    comfortIndex: comfort_index,
-                    co2Comment: co2_comment,
+                    temperature: parseFloat(comfortInfo.temperature),
+                    humidity: parseFloat(comfortInfo.humidity),
+                    co2: parseFloat(comfortInfo.co2),
+                    comfortIndex: comfortInfo.comfort_index,
+                    co2Comment: comfortInfo.co2_comment,
                     deviceCommands: {
-                        aircon: output.aircon ?? false,
-                        ventilator: output.ventilator ?? false,
-                        dehumidifier: output.dehumidifier ?? false,
-                        heater: output.heater ?? false
+                        aircon: deviceCommands?.aircon ?? false,
+                        ventilator: deviceCommands?.ventilator ?? false,
+                        dehumidifier: deviceCommands?.dehumidifier ?? false,
+                        heater: deviceCommands?.heater ?? false
                     }
                 };
             }
