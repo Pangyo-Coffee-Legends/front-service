@@ -142,9 +142,6 @@ public class FrontController {
     @GetMapping(value = "/comfort-dashboard")
     public String comfortDashboard() {return "index/comfort-dashboard";}
 
-    @GetMapping(value = "/data-dashboard")
-    public String dataDashboard() {return "index/data-dashboard";}
-
     @GetMapping(value = "/rule-group")
     public String ruleGroup() {return "rule-group/rule-group";}
 

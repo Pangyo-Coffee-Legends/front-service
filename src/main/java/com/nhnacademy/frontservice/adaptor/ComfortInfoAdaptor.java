@@ -14,7 +14,7 @@ import java.util.List;
 )
 public interface ComfortInfoAdaptor {
 
-    @PostMapping("/results")
+    @PostMapping
     void sendComfortInfo(@RequestBody ComfortInfoDTO comfortInfo);
 
     @GetMapping("/scheduled-result")

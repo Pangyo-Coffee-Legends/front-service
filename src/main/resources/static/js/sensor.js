@@ -1,5 +1,5 @@
 const SENSOR_API = "http://localhost:10251/api/v1/sensors";
-const USER_HEADER = { "X-USER": "phh@example.com" };// 101 권한 필요함
+const USER_HEADER = { "X-USER": "test-user@aiot.com" };
 const FETCH_CONFIG = {
     headers: {
         "Content-Type": "application/json",
@@ -9,8 +9,11 @@ const FETCH_CONFIG = {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-    const defaultLocation = "회의실";
-    loadSensorsByLocation(defaultLocation);
+    const selected = document.getElementById("filterLocationSelect").value;
+    loadSensorsByLocation(selected); // ✅ 드롭다운 선택값 기준 초기 로딩
+
+    // 🔧 오류 방지: WebSocket 연결 필요 없으면 아래 줄 삭제해도 됩니다
+    // connectSensorSocket(); // ❌ 주석 처리 또는 삭제
 
     document.getElementById("addDeviceBtn").addEventListener("click", () => {
         document.getElementById("addDeviceModal").style.display = "block";
@@ -75,7 +78,29 @@ function loadSensorsByLocation(location) {
 }
 
 function renderSensorTable(sensorList) {
-    const formattedData = sensorList.map(sensor => ({
+    const formattedData = sensorList.map(sensor => formatSensor(sensor));
+    const tableEl = $('#sensorResultTable');
+
+    if ($.fn.DataTable.isDataTable('#sensorResultTable')) {
+        tableEl.DataTable().clear().destroy(); // ✅ 헤더는 그대로 유지하면서 초기화
+    }
+
+    tableEl.DataTable({
+        data: formattedData,
+        columns: [
+            { data: 'sensorName', title: '센서 이름' },
+            { data: 'sensorType', title: '센서 타입' },
+            { data: 'status', title: '센서 상태' },
+            { data: 'location', title: '센서 장소' },
+            // { data: 'ruleResults', title: '룰 결과' }
+        ],
+        destroy: true,
+        responsive: true
+    });
+}
+
+function formatSensor(sensor) {
+    return {
         sensorNo: sensor.sensorNo,
         sensorName: sensor.sensorName,
         sensorType: sensor.sensorType,
@@ -84,22 +109,5 @@ function renderSensorTable(sensorList) {
             : `<span style="color:gray;font-weight:bold">OFF</span>`,
         location: sensor.location,
         ruleResults: "-"
-    }));
-
-    if ($.fn.DataTable.isDataTable('#sensorResultTable')) {
-        $('#sensorResultTable').DataTable().clear().rows.add(formattedData).draw();
-    } else {
-        $('#sensorResultTable').DataTable({
-            data: formattedData,
-            columns: [
-                { data: 'sensorName' },
-                { data: 'sensorType' },
-                { data: 'status' },
-                { data: 'location' },
-                { data: 'ruleResults' }
-            ],
-            destroy: true,
-            responsive: true
-        });
-    }
+    };
 }
