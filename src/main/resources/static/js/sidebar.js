@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 사이드바 메뉴 아이템에 아이콘 추가
     const navLinks = document.querySelectorAll('.sidebar .nav-item');
-    const icons = ['fas fa-tachometer-alt', 'fas fa-desktop', 'fas fa-chart-bar', 'fas fa-table'];
+    const icons = ['fas fa-tachometer-alt', 'fas fa-desktop', 'fas fa-clock', 'fas fa-user-tie', 'fas fa-comments'];
 
     navLinks.forEach((link, index) => {
         const anchor = link.querySelector('a');
@@ -22,25 +22,12 @@ document.addEventListener('DOMContentLoaded', function () {
         anchor.insertBefore(icon, anchor.firstChild);
 
         // 드롭다운 메뉴 설정
-        if (index === 0 || index === 1) { // Dashboard와 UI Features에만 드롭다운 추가
+        if (index >= 0) { // Dashboard와 UI Features에만 드롭다운 추가
             anchor.classList.add('dropdown-indicator');
 
             // 드롭다운 메뉴 생성
             const dropdownMenu = document.createElement('ul');
             dropdownMenu.className = 'sidebar-dropdown-menu';
-
-            // 드롭다운 아이템 추가
-            const items = index === 0 ?
-                ['Analytics', 'eCommerce', 'Sales'] :
-                // ['월간 출입 현황', '근무시간통계', '이상 출입 알림 목록'];
-
-
-            items.forEach(item => {
-                const li = document.createElement('li');
-                li.className = 'nav-item';
-                li.innerHTML = `<a class="nav-link text-white" href="#">${item}</a>`;
-                dropdownMenu.appendChild(li);
-            });
 
             // 메뉴 아이템 뒤에 드롭다운 메뉴 추가
             link.appendChild(dropdownMenu);
