@@ -352,7 +352,7 @@ document.addEventListener('DOMContentLoaded', function () {
         promptInput.value = '';
         appendChatMessage('ai', '', {type: 'thinking'});
 
-        fetch(`https://aiot2.live/api/v1/attendances/summary/recent/${memberNo}`, {credentials: 'include'})
+        fetch(`https://aiot2.live/api/v1/attendances/${memberNo}/summary/recent`, {credentials: 'include'})
             .then(res => res.json())
             .then(summaryData => {
                 const records = summaryData.content.map(r => ({
