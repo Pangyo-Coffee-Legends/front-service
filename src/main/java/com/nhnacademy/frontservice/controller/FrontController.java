@@ -169,25 +169,25 @@ public class FrontController {
     @GetMapping("/analysis")//근태 gemini 사용
     public String analysis(){return "index/work-entry/analysis";}
 
-    @GetMapping(value = "/comfort-dashboard")
+    @GetMapping("/comfort-dashboard")
     public String comfortDashboard() {return "index/comfort-dashboard";}
 
-    @GetMapping(value = "/rule-group")
+    @GetMapping("/rule-group")
     public String ruleGroup() {return "rule-group/rule-group";}
 
-    @GetMapping(value = "/rule")
+    @GetMapping("/rule")
     public String rule() {return "rule/rule";}
 
-    @GetMapping(value = "/action-condition")
+    @GetMapping("/action-condition")
     public String actionCondition() {return "action-condition/action-condition";}
 
-    @GetMapping(value = "/sensor")
+    @GetMapping("/sensor")
     public String sensor() {return "sensor/sensor";}
 
-    @GetMapping(value = "/my-info")
+    @GetMapping("/my-info")
     public String myInfo() {return "my-info/my-info";}
 
-    @GetMapping(value = "/my-info-change")
+    @GetMapping("/my-info-change")
     public String myInfoChange() {return "my-info/my-info-change";}
 
 }
