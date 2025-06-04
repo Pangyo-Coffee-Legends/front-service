@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="~{layout/index/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <meta charset="UTF-8" />
+  <title>기기 관리</title>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+  <style>
+    body {
+      background-color: #2b2c32;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      padding: 2rem;
+    }
+
+    table.dataTable {
+      background-color: #2e3038;
+      color: #ffffff;
+      border-color: #3c3c3c;
+    }
+
+    table.dataTable thead th {
+      background-color: #393c44;
+    }
+
+    .button-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 1.5rem;
+    }
+
+    #addDeviceBtn {
+      padding: 0.6rem 1.2rem;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    #addDeviceBtn:hover {
+      background-color: #45a049;
+    }
+
+    #addDeviceModal {
+      display: none;
+      position: fixed;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #2e3038;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #000;
+      color: white;
+      z-index: 1000;
+    }
+
+    #addDeviceModal input,
+    #addDeviceModal select {
+      margin-top: 8px;
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 4px;
+      border: 1px solid #666;
+      background-color: #3c3f4a;
+      color: white;
+      font-size: 14px;
+    }
+
+    #addDeviceModal select {
+      appearance: none;
+      background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='14' viewBox='0 0 24 24' width='14' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      background-size: 12px;
+    }
+
+    #addDeviceModal button {
+      margin-top: 12px;
+      margin-right: 8px;
+      padding: 0.4rem 0.8rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    #addDeviceModal button[type="submit"] {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    #addDeviceModal button[type="button"] {
+      background-color: #777;
+      color: white;
+    }
+
+    #filterLocationSelect {
+      margin-bottom: 1rem;
+      padding: 0.5rem 0.8rem;
+      background-color: #3c3f4a;
+      color: white;
+      border: 1px solid #666;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+<div layout:fragment="content">
+  <h2>기기 관리</h2>
+
+  <!-- ✅ 조회용 장소 선택 드롭다운 -->
+  <label for="filterLocationSelect">장소별 보기:</label>
+  <select id="filterLocationSelect">
+    <option value="회의실">회의실</option>
+    <option value="사무실">사무실</option>
+  </select>
+
+  <!-- ✅ 센서 출력 테이블 -->
+  <table id="sensorResultTable" class="display" style="width:100%">
+    <thead>
+    <tr>
+      <th>센서 이름</th>
+      <th>센서 타입</th>
+      <th>센서 상태</th>
+      <th>센서 장소</th>
+      <th>동작</th>
+    </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <!-- ✅ 새로운 기기 추가 버튼 -->
+  <div class="button-container">
+    <button id="addDeviceBtn">➕ 새로운 기기 추가</button>
+  </div>
+
+  <!-- ✅ 기기 등록 모달 -->
+  <div id="addDeviceModal">
+    <h3>새 기기 추가</h3>
+    <form id="deviceForm">
+      <label>센서 이름:
+        <input type="text" name="sensorName" required>
+      </label><br><br>
+
+      <label>센서 타입:
+        <select name="sensorType" required>
+          <option value="">센서 타입 선택</option>
+          <option value="aircon">냉방기</option>
+          <option value="heater">난방기</option>
+          <option value="humidifier">가습기</option>
+          <option value="dehumidifier">제습기</option>
+          <option value="ventilator">환풍기</option>
+        </select>
+      </label><br><br>
+
+      <label>장소:
+        <select name="location" required>
+          <option value="회의실">회의실</option>
+          <option value="사무실">사무실</option>
+        </select>
+      </label><br><br>
+
+      <button type="submit">등록</button>
+      <button type="button" onclick="closeAddDeviceModal()">취소</button>
+    </form>
+  </div>
+
+  <!-- ✅ 외부 JS 및 DataTables 의존성 -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+  <!-- WebSocket 클라이언트 STOMP cnrk -->
+  <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+
+  <script src="/js/sensor.js" defer></script>
+</div>
+</body>
+</html>
