@@ -17,8 +17,7 @@ function getQueryParam(name) {
 
 function fetchWithAuth(url, options = {}) {
     const defaultHeaders = {
-        "Content-Type": "application/json",
-        "X-USER": "test-user@aiot.com"
+        "Content-Type": "application/json"
     };
 
     return fetch(url, {

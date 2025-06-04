@@ -85,7 +85,7 @@ public class FrontController {
         return "index/booking/admin/history";
     }
 
-    @GetMapping(value = {"/charts"})
+    @GetMapping("/charts")
     public String charts() { return "index/charts";}
 
     @GetMapping("/users")

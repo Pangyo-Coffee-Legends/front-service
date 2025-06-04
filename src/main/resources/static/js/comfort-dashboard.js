@@ -20,10 +20,10 @@ const roomToLocationMap = {
 };
 
 const roomLabelMap = {
-    deptA: '사무실 A',
-    deptB: '사무실 B',
-    meetingA: '회의실 A',
-    meetingB: '회의실 B'
+    deptA: '사무실A',
+    deptB: '사무실B',
+    meetingA: '회의실A',
+    meetingB: '회의실B'
 };
 
 window.showPopup = async function (roomName, el) {

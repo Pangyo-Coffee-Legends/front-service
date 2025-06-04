@@ -10,7 +10,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function fetchWithAuth(url, options = {}) {
     const defaultHeaders = {
-        "X-USER": "test-user@aiot.com",
         "Content-Type": "application/json"
     };
 

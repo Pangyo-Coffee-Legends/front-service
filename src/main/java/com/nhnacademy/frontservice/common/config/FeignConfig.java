@@ -15,7 +15,6 @@ public class FeignConfig {
         return new RequestInterceptor() {
             @Override
             public void apply(RequestTemplate template) {
-                template.header("X-USER", "test-user@aiot.com");
                 System.out.println("💬 FeignInterceptor - X-USER 헤더 추가됨");
             }
         };
