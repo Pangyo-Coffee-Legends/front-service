@@ -1,12 +1,7 @@
-body {
-    font-family: 'Segoe UI', sans-serif;
-    /*background-color: #f0f9f4;*/
-    margin: 0;
-    padding: 0;
+.page-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
 }
 
 .success-container {

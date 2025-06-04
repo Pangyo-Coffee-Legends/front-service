@@ -1,5 +1,6 @@
 const SENSOR_API = "http://localhost:10251/api/v1/sensors";
-const USER_HEADER = { "X-USER": "phh@example.com" };// 101 권한 필요함
+const USER_HEADER = { "X-USER": "test-user@aiot.com" }; // ✅ 추가
+
 const FETCH_CONFIG = {
     headers: {
         "Content-Type": "application/json",
@@ -9,8 +10,8 @@ const FETCH_CONFIG = {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-    const defaultLocation = "회의실";
-    loadSensorsByLocation(defaultLocation);
+    const selected = document.getElementById("filterLocationSelect").value;
+    loadSensorsByLocation(selected);
 
     document.getElementById("addDeviceBtn").addEventListener("click", () => {
         document.getElementById("addDeviceModal").style.display = "block";
@@ -20,11 +21,17 @@ document.addEventListener("DOMContentLoaded", () => {
         event.preventDefault();
         const formData = new FormData(event.target);
 
+        const sensorType = formData.get("sensorType");
+        if (!sensorType) {
+            alert("센서 타입을 선택해주세요.");
+            return;
+        }
+
         const newSensor = {
             sensorName: formData.get("sensorName"),
-            sensorType: formData.get("sensorType").toUpperCase(),
+            sensorType: sensorType, // 그대로 전송
             location: formData.get("location"),
-            sensorStatus: false // 기본 OFF
+            sensorStatus: false
         };
 
         fetch(SENSOR_API, {
@@ -36,8 +43,11 @@ document.addEventListener("DOMContentLoaded", () => {
             .then(() => {
                 alert("기기 등록 완료");
                 closeAddDeviceModal();
-                loadSensorsByLocation(newSensor.location);
-                document.getElementById("filterLocationSelect").value = newSensor.location;
+
+                // 드롭다운 선택 반영 + 로딩
+                const dropdown = document.getElementById("filterLocationSelect");
+                dropdown.value = newSensor.location;
+                dropdown.dispatchEvent(new Event("change"));
             })
             .catch(err => {
                 console.error("기기 등록 실패:", err);
@@ -75,31 +85,48 @@ function loadSensorsByLocation(location) {
 }
 
 function renderSensorTable(sensorList) {
-    const formattedData = sensorList.map(sensor => ({
+    const formattedData = sensorList.map(sensor => formatSensor(sensor));
+    const tableEl = $('#sensorResultTable');
+
+    if ($.fn.DataTable.isDataTable('#sensorResultTable')) {
+        tableEl.DataTable().clear().destroy();
+    }
+
+    tableEl.DataTable({
+        data: formattedData,
+        columns: [
+            { data: 'sensorName', title: '센서 이름' },
+            { data: 'sensorType', title: '센서 타입' },
+            { data: 'status', title: '센서 상태' },
+            { data: 'location', title: '센서 장소' },
+        ],
+        destroy: true,
+        responsive: true
+    });
+}
+
+function formatSensor(sensor) {
+    return {
         sensorNo: sensor.sensorNo,
         sensorName: sensor.sensorName,
-        sensorType: sensor.sensorType,
-        status: sensor.sensorStatus
+        sensorType: normalizeType(sensor.sensorType),
+        status: Boolean(sensor.sensorStatus)
             ? `<span style="color:lightgreen;font-weight:bold">ON</span>`
             : `<span style="color:gray;font-weight:bold">OFF</span>`,
         location: sensor.location,
         ruleResults: "-"
-    }));
+    };
+}
 
-    if ($.fn.DataTable.isDataTable('#sensorResultTable')) {
-        $('#sensorResultTable').DataTable().clear().rows.add(formattedData).draw();
-    } else {
-        $('#sensorResultTable').DataTable({
-            data: formattedData,
-            columns: [
-                { data: 'sensorName' },
-                { data: 'sensorType' },
-                { data: 'status' },
-                { data: 'location' },
-                { data: 'ruleResults' }
-            ],
-            destroy: true,
-            responsive: true
-        });
+function normalizeType(type) {
+    if (!type) return "";
+    const lower = type.toLowerCase();
+    switch (lower) {
+        case "aircon": return "Aircon";
+        case "heater": return "Heater";
+        case "humidifier": return "Humidifier";
+        case "dehumidifier": return "Dehumidifier";
+        case "ventilator": return "Ventilator";
+        default: return type.charAt(0).toUpperCase() + type.slice(1).toLowerCase();
     }
 }

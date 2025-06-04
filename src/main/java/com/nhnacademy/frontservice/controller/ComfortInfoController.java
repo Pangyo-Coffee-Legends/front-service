@@ -12,7 +12,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/front/comfort")
+@RequestMapping("/api/v1/comfort")
 @RequiredArgsConstructor
 public class ComfortInfoController {
 
@@ -21,7 +21,7 @@ public class ComfortInfoController {
     /**
      * 프론트에서 전달한 쾌적 지수 정보를 백엔드(rule-engine)에 전달
      */
-    @PostMapping("/results")
+    @PostMapping
     public ResponseEntity<Void> sendComfortInfo(@RequestBody ComfortInfoDTO comfortInfoDTO) {
         log.debug("[Front] 쾌적 정보 전달 요청: {}", comfortInfoDTO);
         comfortInfoAdaptor.sendComfortInfo(comfortInfoDTO);

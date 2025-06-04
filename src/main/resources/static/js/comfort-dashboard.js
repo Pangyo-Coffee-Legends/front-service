@@ -1,5 +1,6 @@
 const COMFORT_API = "http://localhost:10251/api/v1/comfort/scheduled-result";
 const USER_HEADER = { "X-USER": "admin@aiot.com" };
+
 const FETCH_CONFIG = {
     headers: {
         "Content-Type": "application/json",
@@ -19,10 +20,10 @@ const roomToLocationMap = {
 };
 
 const roomLabelMap = {
-    deptA: '사무실 A',
-    deptB: '사무실 B',
-    meetingA: '회의실 A',
-    meetingB: '회의실 B'
+    deptA: '사무실A',
+    deptB: '사무실B',
+    meetingA: '회의실A',
+    meetingB: '회의실B'
 };
 
 window.showPopup = async function (roomName, el) {
@@ -35,10 +36,15 @@ window.showPopup = async function (roomName, el) {
 
     try {
         const res = await fetch(COMFORT_API, FETCH_CONFIG);
-        if (!res.ok) throw new Error("룰 엔진 API 실패");
+        if (!res.ok) throw new Error(`룰 엔진 API 실패 (${res.status})`);
 
-        const ruleResults = await res.json();
+        const text = await res.text();
+        const ruleResults = text ? JSON.parse(text) : [];
+
+        console.log("[디버그] 전체 ruleResults:", ruleResults);
+
         const comfortData = extractComfortInfo(ruleResults, location);
+        console.log('comfortData', comfortData);
         if (!comfortData) throw new Error("comfortInfo 없음");
 
         updateGradeDisplay(roomName, comfortData.comfortIndex);
@@ -54,22 +60,31 @@ window.showPopup = async function (roomName, el) {
 };
 
 function extractComfortInfo(results, location) {
+    console.log('results', results);
     for (const rule of results) {
         for (const action of rule.executedActions || []) {
             const output = action.output;
-            if (output?.comfortInfo?.location === location) {
-                const { temperature, humidity, co2, comfort_index, co2_comment, deviceCommands } = output.comfortInfo;
+            const comfortInfo = output?.comfortInfo;
+            const deviceCommands = output?.deviceCommands;
+
+            if (comfortInfo?.location?.includes(location)) {
                 return {
-                    temperature: parseFloat(temperature),
-                    humidity: parseFloat(humidity),
-                    co2: parseFloat(co2),
-                    comfortIndex: comfort_index,
-                    co2Comment: co2_comment,
-                    deviceCommands: output.deviceCommands || {}
+                    temperature: parseFloat(comfortInfo.temperature),
+                    humidity: parseFloat(comfortInfo.humidity),
+                    co2: parseFloat(comfortInfo.co2),
+                    comfortIndex: comfortInfo.comfort_index,
+                    co2Comment: comfortInfo.co2_comment,
+                    deviceCommands: {
+                        aircon: deviceCommands?.aircon ?? false,
+                        ventilator: deviceCommands?.ventilator ?? false,
+                        dehumidifier: deviceCommands?.dehumidifier ?? false,
+                        heater: deviceCommands?.heater ?? false
+                    }
                 };
             }
         }
     }
+    console.warn(`[디버그] 매칭되는 output 없음 for location: ${location}`);
     return null;
 }
 
@@ -87,15 +102,14 @@ function positionPopup(el, label) {
     popup.style.top = `${boxCenterY}px`;
     popup.style.left = `${boxX + (isLeft ? -20 : el.offsetWidth + 20)}px`;
     popup.style.display = 'block';
-
     document.getElementById("popup-title").innerText = `📍 ${label}`;
 }
 
 function updateGradeDisplay(roomName, comfortIndex) {
-    const gradeElement = document.getElementById(`grade-${roomName}`);
-    if (gradeElement) {
-        gradeElement.className = 'grade';
-        gradeElement.innerText = comfortIndex;
+    const gradeEl = document.getElementById(`grade-${roomName}`);
+    if (gradeEl) {
+        gradeEl.className = 'grade';
+        gradeEl.innerText = comfortIndex;
     }
 }
 
@@ -118,7 +132,7 @@ function renderChart({ temperature, humidity, co2 }) {
                 legend: { display: false },
                 tooltip: {
                     callbacks: {
-                        label: context => `${context.parsed.y} ${getUnit(context.dataIndex)}`
+                        label: ctx => `${ctx.parsed.y} ${getUnit(ctx.dataIndex)}`
                     }
                 }
             },
@@ -146,14 +160,14 @@ function renderSensorStatus(deviceCommands) {
         ventilator: "환풍기",
         dehumidifier: "제습기"
     };
-
     const html = Object.entries(deviceCommands).map(([type, state]) => `
         <div class="device-row">
             <span>${map[type] || type}</span>
-            <span class="${state ? 'on' : 'off'}">${state ? 'ON' : 'OFF'}</span>
+            <span class="${state ? 'on' : 'off'}">
+                ${state ? 'ON' : 'OFF'}
+            </span>
         </div>
     `).join("");
-
     document.getElementById("device-status").innerHTML = `
         <h6>작동 상태</h6>
         ${html}
@@ -172,6 +186,6 @@ window.addEventListener("resize", () => {
 });
 
 function closePopup() {
-    document.getElementById("popup-panel").style.display = "none";
+    document.getElementById('popup-panel').style.display = "none";
     currentRoom = null;
 }

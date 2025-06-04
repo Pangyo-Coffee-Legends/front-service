@@ -32,7 +32,7 @@ public interface GatewayAdaptor {
      * @param email 조회할 회원 이메일
      * @return 조회된 회원 정보
      */
-    @GetMapping("/members/email/{mbEmail}")
+    @GetMapping("/members/email/{mbEmail}?view=detailed")
     ResponseEntity<MemberResponse> getMemberByMbEmail(@PathVariable("mbEmail") String email);
 
     /**
@@ -61,4 +61,12 @@ public interface GatewayAdaptor {
      */
     @PostMapping("/token/reissue")
     ResponseEntity<JwtResponse> reissueToken(@RequestBody TokenRequest request);
+
+    /**
+     *
+     * @param bookingNo 예약번호
+     * @return 해당 예약번호 정보 DTO
+     */
+    @GetMapping("/bookings/{booking-no}")
+    ResponseEntity<JwtResponse> getBooking(@PathVariable("booking-no") Long bookingNo, @RequestHeader("Authorization") String authHeader);
 }

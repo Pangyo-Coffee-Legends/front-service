@@ -111,8 +111,7 @@ function saveNewAction(btn) {
     fetch("/api/v1/actions", {
         method: "POST",
         headers: {
-            "Content-Type": "application/json",
-            "X-USER": "test-user@aiot.com"
+            "Content-Type": "application/json"
         },
         body: JSON.stringify(payload)
     }).then(res => {
@@ -221,8 +220,7 @@ function saveNewCondition(btn) {
     fetch("/api/v1/conditions", {
         method: "POST",
         headers: {
-            "Content-Type": "application/json",
-            "X-USER": "test-user@aiot.com"
+            "Content-Type": "application/json"
         },
         body: JSON.stringify(payload)
     }).then(res => {
@@ -262,8 +260,7 @@ function saveEditCondition(id, btn) {
     fetch(`/api/v1/conditions/${id}`, {
         method: "PUT",
         headers: {
-            "Content-Type": "application/json",
-            "X-USER": "test-user@aiot.com"
+            "Content-Type": "application/json"
         },
         body: JSON.stringify(payload)
     }).then(res => {
@@ -304,8 +301,7 @@ function confirmCancel() {
 
 function deleteActionFinal(id) {
     fetch(`/api/v1/actions/${id}`, {
-        method: "DELETE",
-        headers: { "X-USER": "test-user@aiot.com" }
+        method: "DELETE"
     }).then(res => {
         if (res.ok) {
             showCustomAlert("삭제 성공", [`DELETE /actions/${id}`]);
@@ -318,8 +314,7 @@ function deleteActionFinal(id) {
 
 function deleteConditionFinal(id) {
     fetch(`/api/v1/conditions/${id}`, {
-        method: "DELETE",
-        headers: { "X-USER": "test-user@aiot.com" }
+        method: "DELETE"
     }).then(res => {
         if (res.ok) {
             showCustomAlert("삭제 성공", [`DELETE /conditions/${id}`]);

@@ -14,4 +14,5 @@ public class SensorResult {
     String sensorName;
     String location;
     String status; // "ON" 또는 "OFF"
+    List<RuleEvaluationResult> ruleResults;
 }
