@@ -110,8 +110,10 @@ document.addEventListener('DOMContentLoaded', function () {
         console.error("❗ 필수 요소가 누락되었습니다. HTML 구조를 다시 확인하세요.");
         return;
     }
-
-    fetch('https://aiot2.live/api/v1/members?page=0&size=100', { credentials: 'include' })
+    /*
+    member-service API 호출하여 드롭다운으로 맴버번호와 이름으로 직관적으로 찾을 수 있음
+     */
+    fetch('https://aiot2.live/api/v1/members?page=0&size=100', {credentials: 'include'})
         .then(res => res.json())
         .then(data => {
             if (!data.content || data.content.length === 0) {
@@ -262,7 +264,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function saveMessage(threadId, role, content) {
         if (!threadId) return Promise.resolve();
-        return postWithAuth('https://aiot2.live/api/v1/analysis/histories', { threadId, role, content });
+        return postWithAuth('https://aiot2.live/api/v1/analysis/histories', {threadId, role, content});
+
     }
 
     function loadThreads(memberNo) {
@@ -356,7 +359,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!threadId) return;
         chatBox.innerHTML = '';
         chartArea.innerHTML = '';
-        fetch(`https://aiot2.live/api/v1/analysis/histories/${threadId}`, { credentials: 'include' })
+        fetch(`https://aiot2.live/api/v1/analysis/histories/${threadId}`, {credentials: 'include'})
             .then(res => res.json())
             .then(history => {
                 history.reverse().forEach(m => appendChatMessage(m.role, m.content));
@@ -377,7 +380,7 @@ document.addEventListener('DOMContentLoaded', function () {
         promptInput.value = '';
         appendChatMessage('ai', '', { type: 'thinking' });
 
-        fetch(`https://aiot2.live/api/v1/attendances/${memberNo}/summary/recent`, { credentials: 'include' })
+        fetch(`https://aiot2.live/api/v1/attendances/${memberNo}/summary/recent`, {credentials: 'include'})
             .then(res => res.json())
             .then(summaryData => {
                 const records = summaryData.content.map(r => ({
@@ -455,8 +458,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         const title = prompt('새 대화 제목을 입력하세요');
         if (!title?.trim()) return;
-
-        postWithAuth('https://aiot2.live/api/v1/analysis/threads', { mbNo, title: title.trim() })
+      
+        postWithAuth('https://aiot2.live/api/v1/analysis/threads', {mbNo, title: title.trim()})
             .then(res => res.json())
             .then(thread => {
                 currentThreadId = thread.threadId;
