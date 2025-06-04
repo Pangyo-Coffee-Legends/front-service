@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="@{/layout/index/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title>오피스 제어 대시보드</title>
+    <style>
+        body {
+            background-color: #2b2c32;
+            color: #ffffff;
+            font-family: 'Segoe UI', sans-serif;
+            user-select: none;
+        }
+
+        #floor-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        #floor-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            border: 1px solid #444;
+            border-radius: 10px;
+            pointer-events: none;
+            -webkit-user-drag: none;
+            user-drag: none;
+        }
+
+        .info-box {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            background-color: #2e3038;
+            color: white;
+            border-radius: 10px;
+            padding: 1em;
+            font-size: clamp(11px, 1vw, 15px);
+            width: 140px;
+            text-align: center;
+            box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+            border: 1px solid #3c3c3c;
+            transition: transform 0.2s ease;
+        }
+
+        .info-box:hover {
+            transform: translate(-50%, -50%) scale(1.05);
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
+        }
+
+        .info-box .label {
+            font-weight: bold;
+            font-size: 1em;
+        }
+
+        .info-box .divider {
+            border: 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            margin: 6px 0;
+        }
+
+        .info-box .grade {
+            font-size: 0.95em;
+            font-weight: bold;
+        }
+
+        .grade.pleasant::before { content: "🟢 "; color: #00ffa2; }
+        .grade.normal::before { content: "🟡 "; color: #ffd700; }
+        .grade.unpleasant::before { content: "🔴 "; color: #ff6b6b; }
+
+        .popup-panel {
+            position: absolute;
+            width: 380px;
+            background: #2e3038;
+            color: white;
+            border: 1px solid #3c3c3c;
+            border-radius: 10px;
+            padding: 20px;
+            z-index: 9999;
+            box-shadow: 0 0 10px #000;
+            display: none;
+        }
+
+        .popup-panel.left { transform: translate(-100%, -50%); }
+        .popup-panel.right { transform: translate(0%, -50%); }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 14px;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .popup-table table {
+            font-size: 14px;
+            width: 100%;
+            background-color: #2e3038;
+            color: white;
+            border: 1px solid #444;
+            border-collapse: collapse;
+        }
+
+        .popup-table th,
+        .popup-table td {
+            border: 1px solid #444;
+            padding: 6px 8px;
+        }
+
+        .device-status {
+            margin-top: 1rem;
+        }
+
+        .device-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        .device-row span:last-child {
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+
+        .on {
+            background-color: #00e67620;
+            color: #00e676;
+        }
+
+        .off {
+            background-color: #ff525220;
+            color: #ff5252;
+        }
+
+        @media (max-width: 600px) {
+            .info-box {
+                width: 100px;
+                font-size: 12px;
+            }
+
+            .popup-panel {
+                width: 90%;
+                left: 5% !important;
+                transform: translate(0, -50%) !important;
+            }
+        }
+    </style>
+</head>
+<body oncontextmenu="return false">
+<div layout:fragment="content">
+    <div class="container-fluid mt-4">
+        <h2 class="mb-4 text-center" style="font-weight: bold; color: #ffffff;">오피스 제어 대시보드</h2>
+
+        <div id="floor-wrapper">
+            <img id="floor-image" src="/images/academy.png" alt="오피스 도면" draggable="false">
+
+            <div class="info-box" style="top: 55%; left: 17%;" onclick="showPopup('deptA', this)">
+                <div class="label">사무실 A</div><hr class="divider">
+                <div class="grade" id="grade-deptA">-</div>
+            </div>
+
+            <div class="info-box" style="top: 18%; left: 17%;" onclick="showPopup('deptB', this)">
+                <div class="label">사무실 B</div><hr class="divider">
+                <div class="grade" id="grade-deptB">-</div>
+            </div>
+
+            <div class="info-box" style="top: 18%; left: 80%;" onclick="showPopup('meetingA', this)">
+                <div class="label">회의실 A</div><hr class="divider">
+                <div class="grade" id="grade-meetingA">-</div>
+            </div>
+
+            <div class="info-box" style="top: 55%; left: 57%;" onclick="showPopup('meetingB', this)">
+                <div class="label">회의실 B</div><hr class="divider">
+                <div class="grade" id="grade-meetingB">-</div>
+            </div>
+
+            <div id="popup-panel" class="popup-panel">
+                <span class="close-btn" onclick="closePopup()">×</span>
+                <h5 id="popup-title" class="text-white">📍 공간명</h5>
+                <hr style="border-top: 1px solid #555;">
+                <canvas id="popupChart" height="180"></canvas>
+                <div id="popup-table" class="popup-table mt-3"></div>
+                <div id="device-status" class="device-status"></div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/js/comfort-dashboard.js" defer></script>
+</div>
+</body>
+</html>

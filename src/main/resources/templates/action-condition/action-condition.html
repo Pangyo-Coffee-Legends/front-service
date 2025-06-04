@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="~{/layout/index/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8" />
+    <title>Action - Condition 목록</title>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #2b2c32;
+            color: #ffffff !important;
+        }
+
+        input[type="text"], input[type="number"] {
+            color: #000 !important;
+            background-color: #fff;
+            border-radius: 4px;
+            padding: 4px;
+            border: 1px solid #999;
+        }
+
+        td { vertical-align: middle !important; }
+
+        .page-nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-bottom: 2px solid #3c3c3c;
+            margin-bottom: 1rem;
+            padding-bottom: 2px;
+        }
+
+        .page-nav {
+            display: flex;
+            gap: 20px;
+            font-size: 15px;
+        }
+
+        .nav-item {
+            padding: 8px 14px;
+            color: #ffffff !important;
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .nav-item.active {
+            font-weight: bold;
+            background-color: #363840;
+            border-bottom: 2px solid #569cd6;
+            border-radius: 4px 4px 0 0;
+        }
+
+        .flex-column {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .card {
+            background-color: #2e3038;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            padding: 1.5rem;
+            border: 1px solid #3c3c3c;
+            color: #ffffff !important;
+        }
+
+        table.dataTable {
+            background-color: #2e3038;
+            color: #ffffff !important;
+            width: 100%;
+            border-color: #3c3c3c;
+        }
+
+        table.dataTable thead th {
+            background-color: #393c44;
+            color: #ffffff !important;
+        }
+
+        .btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            margin-top: 1rem;
+            cursor: pointer;
+        }
+
+        .btn-add {
+            background-color: #363840;
+            color: #ffffff;
+            border: 1px solid #569cd6;
+        }
+
+        .btn-add:hover {
+            background-color: #569cd6;
+        }
+
+        .btn-outline-secondary {
+            color: #ffffff !important;
+            border: 1px solid transparent;
+            background-color: transparent;
+        }
+
+        .btn-outline-secondary:hover {
+            background-color: #6c757d;
+        }
+
+        .btn-view, .btn-edit, .btn-delete {
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 10px;
+            font-weight: bold;
+        }
+
+        .btn-view { background-color: #4e88ff; }
+        .btn-edit { background-color: #3cc8ae; }
+        .btn-delete { background-color: #ff4d6d; }
+
+        .action-buttons {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+            flex-wrap: nowrap;
+            flex-shrink: 1;
+            overflow-x: auto;
+        }
+
+        table.dataTable input[type="text"],
+        table.dataTable input[type="number"] {
+            min-width: 80px;
+            width: 100%;
+        }
+
+        .dataTables_wrapper select,
+        .dataTables_wrapper .dataTables_filter input {
+            background-color: #363840;
+            border: 1px solid #555;
+            border-radius: 4px;
+            color: #ffffff !important;
+        }
+
+        .dataTables_wrapper,
+        .dataTables_wrapper * {
+            color: #ffffff !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            background-color: #569cd6;
+            color: #ffffff !important;
+            border-radius: 4px;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            background-color: #444 !important;
+            color: #ffffff !important;
+        }
+
+        .loading-card {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #2b2e33;
+            padding: 2rem;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+            z-index: 9999;
+        }
+
+        .loading-card img {
+            width: 100px;
+            margin-bottom: 1rem;
+        }
+
+        .loader {
+            width: fit-content;
+            font-weight: bold;
+            font-family: monospace;
+            font-size: 22px;
+            clip-path: inset(0 100% 0 0);
+            animation: l5 2s steps(35) infinite;
+            color: #ffffff;
+        }
+
+        .loader:before {
+            content: "System.out.println(\"Hello, World!\");";
+        }
+
+        @keyframes l5 {
+            to { clip-path: inset(0 -1ch 0 0); }
+        }
+
+        .custom-alert-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .custom-alert-box {
+            background-color: #2e2e2e;
+            color: #ffffff;
+            padding: 5.5rem 2.5rem 2rem;
+            border-radius: 12px;
+            width: 500px;
+            max-width: 90%;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+            font-family: 'Segoe UI', sans-serif;
+            animation: fadeIn 0.2s ease-out;
+            position: relative;
+        }
+
+        .popup-coffee {
+            display: block;
+            margin: -6rem auto 0.5rem auto;
+            width: 300px;
+            height: auto;
+            filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.25));
+            opacity: 0.9;
+        }
+
+        .log-console {
+            background: #1e1e1e;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            white-space: pre-wrap;
+            color: #00ff88;
+            box-shadow: inset 0 0 6px rgba(0,255,136,0.2);
+            max-height: 180px;
+            overflow-y: auto;
+            margin-bottom: 1.5rem;
+        }
+
+        .custom-alert-header {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .custom-alert-body {
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .custom-alert-footer {
+            text-align: center;
+        }
+
+        .custom-alert-footer button {
+            background-color: #4e88ff;
+            color: #fff;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s ease;
+        }
+
+        .custom-alert-footer button:hover {
+            background-color: #3a70cc;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <div class="loading-card" id="loadingCard">
+        <img src="/images/coffephoto.png" alt="coffee cup" />
+        <div class="loader"></div>
+    </div>
+
+    <h2 style="margin-bottom: 1rem;">Action - Condition 관리</h2>
+
+    <div class="page-nav-bar">
+        <div class="page-nav">
+            <a href="/rule-group" class="nav-item">RuleGroup 목록</a>
+            <a href="/rule" class="nav-item">Rule 목록</a>
+            <span class="nav-item active">Action - Condition 관리</span>
+        </div>
+        <button class="btn btn-outline-secondary btn-sm" onclick="history.back()">⬅️ 이전 화면</button>
+    </div>
+
+    <div class="flex-column">
+        <div class="card">
+            <h4>📊 Condition 목록</h4>
+            <table id="conditionTable" class="display" style="width:100%">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Rule</th>
+                    <th>Type</th>
+                    <th>Field</th>
+                    <th>Value</th>
+                    <th>Priority</th>
+                    <th>동작</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <button class="btn btn-add" onclick="addNewConditionRow()">＋ 새 Condition 추가</button>
+        </div>
+
+        <div class="card">
+            <h4>🛠 Action 목록</h4>
+            <table id="actionTable" class="display" style="width:100%">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Rule</th>
+                    <th>Type</th>
+                    <th>Priority</th>
+                    <th>동작</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <button class="btn btn-add" onclick="addNewActionRow()">＋ 새 Action 추가</button>
+        </div>
+    </div>
+
+    <!-- 삭제 확인 및 알림 모달 -->
+    <div id="customConfirm" class="custom-alert-overlay" style="display: none;">
+        <div class="custom-alert-box">
+            <div class="custom-alert-header">삭제 확인</div>
+            <div class="custom-alert-body" id="confirmMessage">정말 삭제하시겠습니까?</div>
+            <div class="custom-alert-footer" style="display: flex; justify-content: flex-end; gap: 12px;">
+                <button onclick="confirmCancel()">취소</button>
+                <button onclick="confirmOk()">삭제</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="customAlert" class="custom-alert-overlay" style="display: none;">
+        <div class="custom-alert-box">
+            <img src="/images/coffephoto.png" alt="커피잔" class="popup-coffee" />
+            <div class="custom-alert-header">로그 출력</div>
+            <pre id="logConsole" class="log-console"></pre>
+            <div class="custom-alert-body">작업 결과 메시지가 여기에 들어옵니다.</div>
+            <div class="custom-alert-footer">
+                <button onclick="closeCustomAlert()">확인</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="/js/action-condition.js" defer></script>
+</div>
+</body>
+</html>

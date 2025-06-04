@@ -85,7 +85,7 @@ public class FrontController {
         return "index/booking/admin/history";
     }
 
-    @GetMapping( "/charts")
+    @GetMapping("/charts")
     public String charts() { return "index/charts";}
 
     @GetMapping("/users")
@@ -165,7 +165,29 @@ public class FrontController {
 
         return "index/meeting-room/in-meeting";
     }
-
+  
     @GetMapping("/analysis")//근태 gemini 사용
     public String analysis(){return "index/work-entry/analysis";}
+
+    @GetMapping("/comfort-dashboard")
+    public String comfortDashboard() {return "index/comfort-dashboard";}
+
+    @GetMapping("/rule-group")
+    public String ruleGroup() {return "rule-group/rule-group";}
+
+    @GetMapping("/rule")
+    public String rule() {return "rule/rule";}
+
+    @GetMapping("/action-condition")
+    public String actionCondition() {return "action-condition/action-condition";}
+
+    @GetMapping("/sensor")
+    public String sensor() {return "sensor/sensor";}
+
+    @GetMapping("/my-info")
+    public String myInfo() {return "my-info/my-info";}
+
+    @GetMapping("/my-info-change")
+    public String myInfoChange() {return "my-info/my-info-change";}
+
 }
