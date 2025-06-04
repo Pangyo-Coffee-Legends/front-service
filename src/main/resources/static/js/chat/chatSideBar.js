@@ -1,5 +1,5 @@
 // API 기본 URL (실제 환경에 맞게 수정 필요)
-const API_BASE_URL = 'http://localhost:10251'; // 실제 API 서버 주소로 변경해주세요.
+const API_BASE_URL = 'https://aiot2.live'; // 실제 API 서버 주소로 변경해주세요.
 const SOCKJS_ENDPOINT = `${API_BASE_URL}/ws/chat/connect`; // 예: '/ws-stomp' 또는 서버에서 설정한 엔드포인트
 const UNREAD_COUNT_TOPIC = '/topic/unread-count-updates'; // 백엔드에서 지정한 사용자 구독 경로
 

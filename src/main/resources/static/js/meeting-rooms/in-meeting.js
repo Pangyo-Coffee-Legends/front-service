@@ -1,4 +1,4 @@
-const SERVER_URL = "http://localhost:10251";
+const SERVER_URL = "https://aiot2.live";
 const BOOKING_API_URL = `${SERVER_URL}/api/v1/bookings`;
 
 document.addEventListener("DOMContentLoaded", async () => {

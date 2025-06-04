@@ -1,4 +1,4 @@
-const COMFORT_API = "http://localhost:10251/api/v1/comfort/scheduled-result";
+const COMFORT_API = "https://aiot2.live/api/v1/comfort/scheduled-result";
 const USER_HEADER = { "X-USER": "admin@aiot.com" };
 
 const FETCH_CONFIG = {
