@@ -40,9 +40,8 @@ async function fetchRulesWithGroupNames() {
         ]);
 
         const ruleGroups = await ruleGroupsRes.json();
-        const rules = await rulesRes.json();
+        globalRules = await rulesRes.json();
 
-        globalRules = rules;
         globalGroupMap = Object.fromEntries(
             ruleGroups.map(group => [group.ruleGroupNo, group.ruleGroupName])
         );
@@ -59,7 +58,7 @@ async function fetchRulesWithGroupNames() {
 function renderRuleTable() {
     const selectedGroupId = getQueryParam("groupId");
     const filteredRules = selectedGroupId
-        ? globalRules.filter(rule => rule.ruleGroupNo == selectedGroupId)
+        ? globalRules.filter(rule => rule.ruleGroupNo === selectedGroupId)
         : globalRules;
 
     if (dataTable) dataTable.destroy();
