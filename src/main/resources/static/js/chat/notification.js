@@ -26,7 +26,7 @@ function connect() {
     getHistoryNotification();
 
     // 1. SockJS 클라이언트 생성
-    stompClient = new SockJS(`${API_BASE_URL}/ws/notification/connect`);
+    stompClient = new SockJS(`${SOCKET_BASE_URL}/ws/notification/connect`);
 
     // 2. SockJS 클라이언트를 통해 STOMP 클라이언트 생성
     stompClient = Stomp.over(stompClient);

@@ -1,6 +1,7 @@
 // API 기본 URL (실제 환경에 맞게 수정 필요)
 const API_BASE_URL = 'https://aiot2.live'; // 실제 API 서버 주소로 변경해주세요.
-const SOCKJS_ENDPOINT = `${API_BASE_URL}/ws/chat/connect`; // 예: '/ws-stomp' 또는 서버에서 설정한 엔드포인트
+const SOCKET_BASE_URL = 'wss://aiot2.live'
+const SOCKJS_ENDPOINT = `${SOCKET_BASE_URL}/ws/chat/connect`; // 예: '/ws-stomp' 또는 서버에서 설정한 엔드포인트
 const UNREAD_COUNT_TOPIC = '/topic/unread-count-updates'; // 백엔드에서 지정한 사용자 구독 경로
 
 const UNREAD_NOTIFICATION_COUNT_TOPIC = `/notification/unread-notification-count-updates/${userEmail}`; // 백엔드에서 지정한 사용자 구독 경로
@@ -22,7 +23,7 @@ function connectSidebarStomp() {
 }
 
 function connectNotificationStomp() {
-    notificationStompClient = new SockJS(`${API_BASE_URL}/ws/notification/connect`);
+    notificationStompClient = new SockJS(`${SOCKET_BASE_URL}/ws/notification/connect`);
     notificationStompClient = Stomp.over(notificationStompClient);
     notificationStompClient.connect({
         'X-USER': userEmail,
