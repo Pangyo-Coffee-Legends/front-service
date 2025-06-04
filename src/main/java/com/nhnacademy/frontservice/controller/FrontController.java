@@ -160,9 +160,6 @@ public class FrontController {
     @GetMapping(value = "/meeting-room/{room-no}/{booking-no}/in-meeting")
     public String inMeeting(@PathVariable("room-no") Long roomNo, @PathVariable("booking-no") Long bookingNo, Model model) {
 
-        model.addAttribute("roomNo", roomNo);
-        model.addAttribute("bookingNo", bookingNo);
-
         return "index/meeting-room/in-meeting";
     }
 
