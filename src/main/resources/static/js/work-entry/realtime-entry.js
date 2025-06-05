@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function () {
      */
     async function fetchAndUpdate() {
         try {
-            const response = await fetchWithAuth('http://localhost:10251/api/v1/entries/realtime');
+            const response = await fetchWithAuth('https://localhost:10256/api/v1/entries/realtime');
             if (response.ok) {
                 const data = await response.json();
                 if (data.time && typeof data.count === 'number') {

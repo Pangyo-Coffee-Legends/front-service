@@ -261,13 +261,12 @@ document.addEventListener('DOMContentLoaded', function () {
         attendanceTableContainer.appendChild(table);
     }
 
+
     /**
      * 회원 목록 테이블을 조회 및 표시합니다.
      * 클릭 시 해당 회원의 근무 데이터를 조회 가능하게 합니다.
-     * 1페이지에 10명의 회원 조회가능
      */
     const defaultPageSize = 10;
-
     function loadMemberList(page = 0, size = defaultPageSize) {
         fetch(`http://localhost:10251/api/v1/members?page=${page}&size=${size}`, { credentials: 'include' })
             .then(res => res.json())
@@ -286,10 +285,10 @@ document.addEventListener('DOMContentLoaded', function () {
                         tbody.querySelectorAll('tr').forEach(row => row.classList.remove('selected-member'));
                         tr.classList.add('selected-member');
                         document.getElementById('attendance-chart-container').innerHTML = `
-                        <div class="alert alert-info d-flex justify-content-between align-items-center">
-                            <span>조회할 연도와 월을 선택하세요.</span>
-                            <span class="fw-bold">선택한 사원: ${currentMemberName}</span>
-                        </div>`;
+                    <div class="alert alert-info d-flex justify-content-between align-items-center">
+                        <span>조회할 연도와 월을 선택하세요.</span>
+                        <span class="fw-bold">선택한 사원: ${currentMemberName}</span>
+                    </div>`;
                     };
                     tbody.appendChild(tr);
                 });
@@ -298,13 +297,16 @@ document.addEventListener('DOMContentLoaded', function () {
                 container.innerHTML = '';
                 container.appendChild(table);
 
-                // 페이지네이션 정보 업데이트
+                // ✅ 페이지네이션 계산
+                const totalElements = json.totalElements;
+                const totalPages = Math.ceil(totalElements / size);
+
                 document.getElementById('currentPageText').textContent = `페이지 ${page + 1}`;
                 const prevBtn = document.getElementById('prevPageBtn');
                 const nextBtn = document.getElementById('nextPageBtn');
 
-                prevBtn.disabled = page === 0;
-                nextBtn.disabled = json.last;
+                prevBtn.disabled = page <= 0;
+                nextBtn.disabled = page + 1 >= totalPages;
 
                 prevBtn.onclick = () => {
                     if (page > 0) {
@@ -314,7 +316,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 };
 
                 nextBtn.onclick = () => {
-                    if (!json.last) {
+                    if (page + 1 < totalPages) {
                         currentPage++;
                         loadMemberList(currentPage, size);
                     }
@@ -336,6 +338,7 @@ document.addEventListener('DOMContentLoaded', function () {
             alert('연도와 월을 모두 선택해주세요.');
             return;
         }
+
 
         fetchWithAuth(`http://localhost:10251/api/v1/attendances/${currentMemberNo}/summary/recent`)
             .then(res => res.json())

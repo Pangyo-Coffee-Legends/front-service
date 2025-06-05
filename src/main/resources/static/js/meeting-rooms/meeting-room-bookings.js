@@ -4,17 +4,18 @@ const MEETING_ROOM_API_URL = `${SERVER_URL}/api/v1/meeting-rooms`;
 const EARLY_ENTRY_MESSAGE = "예약 시간 10분 전부터 입장 가능합니다.";
 const LATE_ENTRY_MESSAGE = "예약시간 10분 후까지만 입실 가능합니다.";
 
+const pathSegments = window.location.pathname.split("/");
+const meetingRoomNo = pathSegments[2];
+
 document.addEventListener("DOMContentLoaded", async () => {
     console.log("예약페이지 로딩 완료.");
 
-    const pathSegments = window.location.pathname.split("/");
-    const meetingRoomNo = pathSegments[2];
-
     // Java의 LocalDateTime 형식에 맞는 현재 날짜, 시간 정보 string
     const dateTimeString = getLocalDateTimeString();
-    const dateTime = dateTimeString.split("T")[0];
+    const entryDate = dateTimeString.split("T")[0];
+    const entryTime = dateTimeString.split("T")[1];
 
-    await getBookings(meetingRoomNo, dateTime);
+    await getBookings(meetingRoomNo, entryDate, entryTime);
 
     bindButtonHandler();
 
@@ -24,7 +25,22 @@ function bindButtonHandler() {
     document.querySelectorAll(".enter-code").forEach(e => e.addEventListener("click", onEnterCode));
     document.getElementById("modal-close").addEventListener("click", onModalClose);
     document.getElementById("modal-submit").addEventListener("click", onModalSubmit);
+
+    document.getElementById("booking-code-input").addEventListener("keydown", e => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            document.getElementById("modal-submit").click();
+        }
+    })
 }
+
+document.addEventListener("keydown", e => {
+    const modal = document.getElementById("modal");
+
+    if (e.key === "Escape" && !modal.classList.contains("hidden")) {
+        onModalClose();
+    }
+})
 
 function onEnterCode(e) {
     let selectedMeetingRoomNo = e.target.dataset.meetingRoomNo;
@@ -82,6 +98,10 @@ async function verifyBookingCode(meetingRoomNo, selectedBookingNo, inputCode, en
 
     if (result.statusCode === 200) {
         showMessage("success", result.message);
+
+        setTimeout(() => {
+            window.location.href = `/meeting-room/${meetingRoomNo}/${selectedBookingNo}/in-meeting`;
+        }, 2000);
     } else if (result.statusCode === 404) {
         showMessage("not_found", result.message)
     } else if (result.statusCode === 400) {
@@ -111,9 +131,9 @@ function getLocalDateTimeString() {
     return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
 }
 
-async function getBookings(meetingRoomNo, date) {
+async function getBookings(meetingRoomNo, entryDate, entryTime) {
     try {
-        const response = await fetch(`${BOOKING_API_URL}/meeting-rooms/${meetingRoomNo}/date/${date}`, {
+        const response = await fetch(`${BOOKING_API_URL}/meeting-rooms/${meetingRoomNo}/date/${entryDate}`, {
             method: "GET",
             headers: {
                 Accept: "application/json"
@@ -129,8 +149,7 @@ async function getBookings(meetingRoomNo, date) {
 
         const th = document.querySelector("thead");
 
-        bookings.forEach(booking => {
-
+        for (const booking of bookings) {
             const tr = document.createElement("tr");
             const td1 = document.createElement("td");
             td1.innerText = booking.no;
@@ -145,8 +164,8 @@ async function getBookings(meetingRoomNo, date) {
 
             const startDate = booking.startsAt.split("T")[0];
             const startTime = booking.startsAt.split("T")[1];
-
-            td4.innerText = startDate.concat(" ", startTime);
+            const startDateTime = startDate.concat(" ", startTime);
+            td4.innerText = startDateTime;
 
             const td5 = document.createElement("td");
 
@@ -160,15 +179,55 @@ async function getBookings(meetingRoomNo, date) {
 
             enterBtn.setAttribute("data-meeting-room-no", `${meetingRoomNo}`);
             enterBtn.setAttribute("data-booking-no", `${booking.no}`);
-            enterBtn.setAttribute("class", "enter-code")
-            enterBtn.innerText = "입실";
+            enterBtn.setAttribute("class", "enter-code");
+
+            const entryDateTime = entryDate.concat(" ", entryTime);
+
+            // 예약 내역 조회 시 입실시간 10분을 초과한 예약은 자동 종료 처리
+            const timeDiffMin = (new Date(entryDateTime) - new Date(startDateTime)) / (1000 * 60);
+
+            if (timeDiffMin > 10 && booking.bookingChangeName !== "사용중") {
+                try {
+                    const response2 = await fetch(`${BOOKING_API_URL}/${booking.no}/finish`,
+                        {
+                            method: "PUT",
+                            headers: {
+                                Accept: "application/json"
+                            },
+                            credentials: "include"
+                        });
+
+                    enterBtn.innerText = "종료";
+                    enterBtn.setAttribute("disabled", "true");
+
+                    if (!response2.ok) {
+                        showToast("자동 종료에 실패했습니다.", "error");
+                    }
+
+                } catch (error) {
+                    throw new Error("예약 내역 조회 실패");
+                }
+            } else {
+                if ([null, "연장", "변경"].includes(booking.bookingChangeName)) {
+                    enterBtn.innerText = "입실";
+                } else if (booking.bookingChangeName === "사용중") {
+                    enterBtn.innerText = "사용중";
+                    enterBtn.setAttribute("disabled", "true");
+                    enterBtn.classList.add("in-use");
+                } else if (booking.bookingChangeName === "종료") {
+                    enterBtn.innerText = "종료";
+                    enterBtn.setAttribute("disabled", "true");
+                }
+            }
 
             td6.append(enterBtn);
 
             tr.append(td1, td2, td3, td4, td5, td6);
 
             th.append(tr);
-        })
+
+            console.log("booking", booking);
+        }
     } catch (error) {
         console.log("예약정보 불러오기 실패: ", error);
     }

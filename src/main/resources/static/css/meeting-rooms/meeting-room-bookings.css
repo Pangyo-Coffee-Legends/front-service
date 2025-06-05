@@ -12,6 +12,7 @@ table {
     box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     border-radius: 10px;
     overflow: hidden;
+    margin: 0 auto;
 }
 
 th, td {
@@ -44,12 +45,12 @@ tr:hover {
 }
 
 .edit-btn {
-    background-color: #4caf50; /* 초록 */
+    background-color: #4caf50;
     color: white;
 }
 
 .cancel-btn {
-    background-color: #f44336; /* 빨강 */
+    background-color: #f44336;
     color: white;
 }
 
@@ -57,6 +58,7 @@ tr:hover {
     margin-top: 20px;
     text-align: center;
 }
+
 .page-btn {
     margin: 0 4px;
     padding: 6px 12px;
@@ -64,10 +66,12 @@ tr:hover {
     background-color: white;
     cursor: pointer;
 }
+
 .page-btn.active {
     background-color: #4a90e2;
     color: white;
 }
+
 .page-btn:disabled {
     color: #aaa;
     cursor: not-allowed;
@@ -96,50 +100,145 @@ tr:hover {
     border: 1px solid #ccc;
 }
 
+.enter-code {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 15px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.enter-code:hover {
+    background-color: #0056b3;
+}
+
+.enter-code:disabled {
+    background-color: #cccccc;
+    color: #666666;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+.enter-code:disabled:hover {
+    background-color: #cccccc;
+    transform: none;
+}
+
+.enter-code.in-use:disabled {
+    background-color: #5C6BC0 !important;
+    color: white !important;
+    cursor: default;
+    box-shadow: none;
+    transform: none;
+    font-weight: bold;
+    border: 1px solid #3F51B5;
+}
+
+.enter-code.in-use:hover {
+    background-color: #5C6BC0 !important;
+    color: white !important;
+    transform: none;
+}
+
 .modal {
-    position: fixed;
+    position: absolute;
     top: 0;
-    left: 0;
-    width: 100%;
+    left: 250px;
+    width: calc(100% - 250px);
     height: 100%;
-    background: rgba(0,0,0,0.5);
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1000;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1050;
+    pointer-events: none;
+}
+
+.modal-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    width: 340px;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    pointer-events: auto;
+    z-index: 1060;
 }
 
 .modal.hidden {
     display: none;
 }
 
-.modal-content {
-    background: white;
-    padding: 2rem;
+.modal-content h2 {
+    margin-bottom: 20px;
+    font-size: 20px;
+    color: #333;
+}
+
+.modal-content input[type="text"] {
+    width: 100%;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    font-size: 16px;
+    border: 1px solid #ccc;
     border-radius: 8px;
-    width: 300px;
-    text-align: center;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.modal-content input[type="text"]:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+}
+
+#modal-submit {
+    width: 100%;
+    padding: 12px 20px;
+    background-color: #007bff;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#modal-submit:hover {
+    background-color: #0056b3;
 }
 
 .modal-close {
     position: absolute;
-    top: 1rem;
-    right: 1.5rem;
+    top: 0.8rem;
+    right: 1rem;
     font-size: 1.5rem;
     cursor: pointer;
+    color: #888;
+    transition: color 0.2s ease;
+}
+
+.modal-close:hover {
+    color: #333;
 }
 
 .message-box {
-    position: fixed;
-    top: 10%;
-    left: 50%;
+    position: absolute;
+    left: calc(50% + 126px);
+    top: calc(50% - 230px);
     transform: translateX(-50%);
     background: #f0f0f0;
     padding: 1rem 2rem;
     border-radius: 6px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    box-shadow: 0 0 10px rgba(0,0,0,0.25);
     font-weight: bold;
-    z-index: 1100;
+    z-index: 2001;
 }
 
 .message-box.success {
@@ -155,6 +254,11 @@ tr:hover {
 .message-box.bad_request {
     background-color: #f8d7da;
     color: #721c24;
+}
+
+.message-box.end {
+    background-color: #607d8b;
+    color: white;
 }
 
 .message-box.hidden {

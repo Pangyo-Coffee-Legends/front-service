@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
@@ -46,50 +47,45 @@ public class FrontController {
 
     @GetMapping("/booking")
     public String book(){
-        return "booking/index";
+        return "index/booking/index";
     }
 
     @GetMapping("/booking/update")
     public String updateBooking(){
-        return "booking/index";
+        return "index/booking/index";
     }
 
     @GetMapping("/booking/success")
     public String success(){
-        return "booking/success";
+        return "index/booking/success";
     }
 
     @GetMapping("/booking/failed")
     public String failed(){
-        return "booking/failed";
+        return "index/booking/failed";
     }
 
     @GetMapping("/booking/history")
     public String bookings(){
-        return "booking/my/history";
+        return "index/booking/my/history";
     }
 
     @GetMapping("/booking/statistics")
     public String bookingStatistics() {
-        return "booking/my/statistics";
+        return "index/booking/my/statistics";
     }
 
     @GetMapping("/admin/booking/statistics")
     public String adminBookingStatistics() {
-        return "booking/admin/statistics";
-    }
-
-    @GetMapping("/meeting/alert")
-    public String meetingAlert(){
-        return "meeting/extend-end";
+        return "index/booking/admin/statistics";
     }
 
     @GetMapping("/admin/booking")
     public String bookAdmin(){
-        return "booking/admin/history";
+        return "index/booking/admin/history";
     }
 
-    @GetMapping( "/charts")
+    @GetMapping("/charts")
     public String charts() { return "index/charts";}
 
     @GetMapping("/users")
@@ -161,6 +157,34 @@ public class FrontController {
 
     }
 
+    @GetMapping(value = "/meeting-room/{room-no}/{booking-no}/in-meeting")
+    public String inMeeting(@PathVariable("room-no") Long roomNo, @PathVariable("booking-no") Long bookingNo, Model model) {
+
+        return "index/meeting-room/in-meeting";
+    }
+  
     @GetMapping("/analysis")//근태 gemini 사용
     public String analysis(){return "index/work-entry/analysis";}
+
+    @GetMapping("/comfort-dashboard")
+    public String comfortDashboard() {return "index/comfort-dashboard";}
+
+    @GetMapping("/rule-group")
+    public String ruleGroup() {return "rule-group/rule-group";}
+
+    @GetMapping("/rule")
+    public String rule() {return "rule/rule";}
+
+    @GetMapping("/action-condition")
+    public String actionCondition() {return "action-condition/action-condition";}
+
+    @GetMapping("/sensor")
+    public String sensor() {return "sensor/sensor";}
+
+    @GetMapping("/my-info")
+    public String myInfo() {return "my-info/my-info";}
+
+    @GetMapping("/my-info-change")
+    public String myInfoChange() {return "my-info/my-info-change";}
+
 }
