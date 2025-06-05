@@ -9,9 +9,45 @@ const FETCH_CONFIG = {
     credentials: "include"
 };
 
+function fillLocationSelects(locations) {
+    // 조회용 드롭다운
+    const filterSelect = document.getElementById("filterLocationSelect");
+    filterSelect.innerHTML = "";
+    locations.forEach(loc => {
+        const option = document.createElement("option");
+        option.value = loc;
+        option.textContent = loc;
+        filterSelect.appendChild(option);
+    });
+
+    // 모달 내 장소 드롭다운
+    const modalSelect = document.getElementById("modalLocationSelect");
+    modalSelect.innerHTML = "";
+    locations.forEach(loc => {
+        const option = document.createElement("option");
+        option.value = loc;
+        option.textContent = loc;
+        modalSelect.appendChild(option);
+    });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
-    const selected = document.getElementById("filterLocationSelect").value;
-    loadSensorsByLocation(selected);
+    fetch("http://localhost:10251/api/v1/sensors/places", FETCH_CONFIG)
+        .then(res => res.ok ? res.json() : Promise.reject("장소 목록 불러오기 실패"))
+        .then(locations => {
+            // ✅ 드롭다운에 데이터 채우기
+            fillLocationSelects(locations);
+
+            // ✅ 첫 번째 장소로 센서 목록 로딩
+            if (locations.length > 0) {
+                loadSensorsByLocation(locations[0]);
+                document.getElementById("filterLocationSelect").value = locations[0];
+            }
+        })
+        .catch(err => {
+            alert("장소 목록을 불러오는 데 실패했습니다.");
+            console.error(err);
+        });
 
     document.getElementById("addDeviceBtn").addEventListener("click", () => {
         document.getElementById("addDeviceModal").style.display = "block";

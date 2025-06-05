@@ -33,6 +33,12 @@ public class SensorController {
         return sensorAdaptor.getSensor(sensorNo);
     }
 
+    @GetMapping("/places")
+    public ResponseEntity<List<String>> getAllSensors() {
+        log.debug("[Front] 센서 장소 전체 조회");
+        return sensorAdaptor.getLocations();
+    }
+
     @GetMapping("/place/{sensorPlace}")
     public ResponseEntity<List<SensorResponse>> getSensorsByPlace(@PathVariable("sensorPlace") String sensorPlace) {
         log.debug("[Front] 센서 장소 기준 조회: {}", sensorPlace);
