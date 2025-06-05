@@ -27,38 +27,74 @@
 <section class="project-section">
   <div class="container text-center">
     <h2>프로젝트 소개</h2>
-    <p class="lead">이 프로젝트는 AI와 IoT 기술을 활용하여 혁신적인 서비스를 제공합니다.</p>
+    <p class="lead">이 프로젝트는 AI와 IoT 기술을 활용하여 스마트 출입, 에너지, 환경, 예약, 보안, 사용자 경험을 혁신합니다.</p>
+
     <div class="row mt-4">
-      <!-- 첫 번째 카드 -->
-      <div class="col-md-4">
-        <div class="card">
+      <!-- 1. 센서 & 데이터 저장 -->
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
           <div class="card-body">
-            <h5 class="card-title">AI</h5>
-            <p class="card-text">테스트 1 text</p>
+            <h5 class="card-title">센서 데이터 수집 & 저장</h5>
+            <p class="card-text">MQTT/Modbus로 실시간 센서 데이터를 수집하고 InfluxDB에 저장하여 환경 상태를 관리합니다.</p>
           </div>
         </div>
       </div>
-      <!-- 두 번째 카드 -->
-      <div class="col-md-4">
-        <div class="card">
+
+      <!-- 2. AI 분석 & 예측 -->
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
           <div class="card-body">
-            <h5 class="card-title">IoT 플랫폼</h5>
-            <p class="card-text">IoT 디바이스를 연결하여 실시간 데이터를 수집하고 관리합니다.</p>
+            <h5 class="card-title">AI 기반 쾌적도 분석</h5>
+            <p class="card-text">수집 데이터를 기반으로 AI 모델을 학습하고, 쾌적도 예측 및 이상 상황을 판단합니다.</p>
           </div>
         </div>
       </div>
-      <!-- 세 번째 카드 -->
-      <div class="col-md-4">
-        <div class="card">
+
+      <!-- 3. 출입 통제 & 근태 관리 -->
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
           <div class="card-body">
-            <h5 class="card-title">테스트 3</h5>
-            <p class="card-text">테스트 3 text</p>
+            <h5 class="card-title">출입 통제 & 근태 분석</h5>
+            <p class="card-text">출입 로그 기반 근무 시간 계산, 이상 출입 탐지, Gemini 분석 리포트를 제공합니다.</p>
           </div>
         </div>
       </div>
+
+      <!-- 4. 대시보드 & 로그 시스템 -->
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">로그 수집 & 시각화</h5>
+            <p class="card-text">Elastic 기반 로그 파이프라인과 Kibana 대시보드로 시스템 상태를 모니터링합니다.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. 회의실 예약 시스템 -->
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">회의실 예약 관리</h5>
+            <p class="card-text">예약, 입장 확인, 연장, 노쇼 처리 등 회의실 관련 기능을 통합 제공합니다.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. 채팅 & 실시간 알림 -->
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">채팅 시스템 & 알림</h5>
+            <p class="card-text">WebSocket 기반 실시간 채팅과 시스템 알림을 통해 사용자 간 원활한 소통을 지원합니다.</p>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
+
+
 
 
 <section class="team-section">
@@ -169,12 +205,17 @@
     </div>
   </div>
 </section>
+
 <section class="wiki-section">
   <div class="container text-center">
-    <h2>Team Notion</h2>
-    <p class="lead">우리 프로젝트의 상세한 문서를 확인하세요!</p>
-    <iframe src="https://v2-embednotion.com/1ce536e0b61d805baf57c05d38ce167d" style="width: 100%; height: 1200px; border: 2px solid #ccc; border-radius: 10px; padding: none;"></iframe>
+    <h2>Team GitHub</h2>
+    <p class="lead">우리 프로젝트의 전체 코드와 문서를 GitHub에서 확인하세요!</p>
+    <a href="https://github.com/Pangyo-Coffee-Legends" class="btn btn-dark btn-lg mt-3" target="_blank">
+      👉 GitHub Repository 바로가기
+    </a>
   </div>
 </section>
+
+
 </body>
 </html>
