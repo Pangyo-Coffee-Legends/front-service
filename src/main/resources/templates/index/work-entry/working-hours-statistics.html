@@ -34,16 +34,30 @@
                 <label for="monthSelector" class="form-label">월</label>
                 <select id="monthSelector" class="form-select">
                     <option value="">전체</option>
-                    <option value="1">1월</option><option value="2">2월</option><option value="3">3월</option>
-                    <option value="4">4월</option><option value="5">5월</option><option value="6">6월</option>
-                    <option value="7">7월</option><option value="8">8월</option><option value="9">9월</option>
-                    <option value="10">10월</option><option value="11">11월</option><option value="12">12월</option>
+                    <option value="1">1월</option>
+                    <option value="2">2월</option>
+                    <option value="3">3월</option>
+                    <option value="4">4월</option>
+                    <option value="5">5월</option>
+                    <option value="6">6월</option>
+                    <option value="7">7월</option>
+                    <option value="8">8월</option>
+                    <option value="9">9월</option>
+                    <option value="10">10월</option>
+                    <option value="11">11월</option>
+                    <option value="12">12월</option>
                 </select>
+
             </div>
             <div class="col-md-2">
-                <label for="daySelector" class="form-label">일</label>
-                <select id="daySelector" class="form-select">
+                <label for="weekSelector" class="form-label">주차</label>
+                <select id="weekSelector" class="form-select">
                     <option value="">전체</option>
+                    <option value="1">1주차</option>
+                    <option value="2">2주차</option>
+                    <option value="3">3주차</option>
+                    <option value="4">4주차</option>
+                    <option value="5">5주차</option>
                 </select>
             </div>
             <div class="col-md-1">
@@ -51,8 +65,10 @@
             </div>
         </div>
 
+
+
         <!-- ✅ 근태 상태 필터링 체크박스 그룹 -->
-        <div class="row mb-2">
+        <div class="row mb-3">
             <div class="col-md-12 d-flex flex-wrap gap-2 align-items-center" id="status-checkbox-group">
                 <label><input type="checkbox" value="2"> <span class="legend-box status-warning"></span> 지각</label>
                 <label><input type="checkbox" value="3"> <span class="legend-box status-danger"></span> 결근</label>
@@ -67,16 +83,12 @@
         </div>
 
         <!-- 📊 통계 차트 및 표 영역 -->
-        <div class="row">
-            <div class="col-md-7">
-                <div id="attendance-chart-container"></div>
-            </div>
-            <div class="col-md-5">
-                <div id="attendance-table-container"></div>
-            </div>
+        <div class="row" id="attendance-row">
+            <div id="attendance-chart-container" class="col-md-12"></div>
+            <div id="attendance-table-container" class="col-md-5 d-none"></div>
         </div>
     </div>
-</div>
+    </div>
 
 </body>
 </html>
