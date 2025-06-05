@@ -174,3 +174,13 @@
 #reserveBtn:hover, .room-button:hover {
     background-color: #357ac8;
 }
+
+.selected-time {
+    background-color: #e6f0ff;
+    color: black;
+    font-weight: bold;
+}
+
+.in-range {
+    background-color: #e6f0ff;
+}
