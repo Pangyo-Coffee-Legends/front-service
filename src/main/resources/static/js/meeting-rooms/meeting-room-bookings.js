@@ -1,4 +1,4 @@
-const SERVER_URL = "https://aiot2.live";
+const SERVER_URL = "http://localhost:10251";
 const BOOKING_API_URL = `${SERVER_URL}/api/v1/bookings`;
 const MEETING_ROOM_API_URL = `${SERVER_URL}/api/v1/meeting-rooms`;
 const EARLY_ENTRY_MESSAGE = "예약 시간 10분 전부터 입장 가능합니다.";

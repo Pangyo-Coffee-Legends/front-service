@@ -11,7 +11,7 @@ import java.util.List;
 
 @FeignClient(
         name = "condition-service",
-        url = "${rule-service.url}",
+        url = "http://localhost:10263",
         path = "/api/v1/conditions"
 )
 public interface ConditionAdaptor {
