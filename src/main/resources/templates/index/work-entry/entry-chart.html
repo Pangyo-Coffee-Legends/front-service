@@ -3,6 +3,8 @@
 
 <html lang="ko" layout:decorate="~{layout/index/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
+    <script src="/js/work-entry/realtime-entry.js" defer></script> <!-- 실시간 출입 통계 관련 JS-->
+    <script src="/js/work-entry/strange-access.js" defer></script> <!-- 이상 출입 알림 관련 JS-->
     <script src="/js/work-entry/weekly-entry-chart.js" defer></script> <!-- 주간 출입 관련 JS -->
     <script src="/js/logprint.js" defer></script> <!--로그 화면 출력 관련 JS-->
     <title>주간 출입 통계</title>
@@ -14,7 +16,7 @@
     <div id="chart-container">
         <div class="container mt-5">
             <div class="row">
-                <!-- 차트 영역 -->
+                <!-- 주간 출입 차트 영역 -->
                 <div id="chart-col" class="col-md-8 mb-4">
                     <div class="card shadow-sm">
                         <div class="card-body">
@@ -25,7 +27,7 @@
                     </div>
                 </div>
 
-                <!-- 요약 테이블 -->
+                <!-- 주간 출입 요약 테이블 -->
                 <div class="col-md-4">
                     <h5 class="mb-3">📌 일별 출입 요약</h5>
                     <table class="table table-bordered table-sm" id="summary-table">
@@ -37,6 +39,28 @@
                         </thead>
                         <tbody id="summaryTableBody">
                         <!-- JavaScript로 채워짐 -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 실시간 차트 -->
+                <div class="col-md-7">
+                    <div id="clock" class="text-center text-primary mb-3"></div>
+                    <div class="scrollable-chart">
+                        <canvas id="realtimeEntryChart" style="width: 100%; height: 400px;></canvas>
+                    </div>
+                </div>
+
+                <!-- 실시간 요약 -->
+                <div class="col-md-5">
+                    <h5 class="mb-3">📋 실시간 출입 요약</h5>
+                    <table class="table table-bordered">
+                        <tbody>
+                        <tr><th>최신 측정 시각</th><td id="latest-time">-</td></tr>
+                        <tr><th>현재 출입 횟수</th><td id="latest-count">-</td></tr>
+                        <tr><th>누적 평균</th><td id="average-count">-</td></tr>
+                        <tr><th>최대 출입</th><td id="max-count">-</td></tr>
+                        <tr><th>측정 횟수</th><td id="entry-count">-</td></tr>
                         </tbody>
                     </table>
                 </div>
