@@ -155,8 +155,24 @@
     <div class="container-fluid mt-4">
         <h2 class="mb-4 text-center" style="font-weight: bold; color: #ffffff;">오피스 제어 대시보드</h2>
 
+        <form id="place-form" enctype="multipart/form-data">
+            <input type="text" name="placeName" placeholder="장소명" required>
+            <input type="file" name="file" accept="image/*" required>
+            <button type="submit">장소 등록</button>
+        </form>
+
         <div id="floor-wrapper">
-            <img id="floor-image" src="/images/academy.png" alt="오피스 도면" draggable="false">
+            <select id="place-select"></select>
+            <img id="floor-image" src="" alt="오피스 도면" draggable="false">
+
+            <form id="place-edit-form" enctype="multipart/form-data">
+                <input type="hidden" name="placeNo" value="14"> <!-- 수정할 장소 번호 -->
+                <input type="text" name="placeName" value="수정 할 장소명" required> <!-- 사용자가 수정 -->
+                <input type="file" name="file" accept="image/*">
+                <button type="submit">장소 수정</button>
+            </form>
+
+            <button id="delete-place-btn">삭제</button>
 
             <div class="info-box" style="top: 55%; left: 17%;" onclick="showPopup('deptA', this)">
                 <div class="label">사무실 A</div><hr class="divider">
@@ -190,6 +206,7 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="/js/comfort-dashboard.js" defer></script>
+    <script src="/js/place/place-selector.js" defer></script>
 </div>
 </body>
 </html>
