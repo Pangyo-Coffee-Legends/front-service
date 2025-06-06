@@ -178,6 +178,8 @@ const selectTime = function (button){
     if (!selectedStartTime) {
         selectedStartTime = clickedTime;
         button.classList.add('selected-time');
+        highlightTimeRange();
+
     } else if (!selectedEndTime) {
         selectedEndTime = clickedTime;
 
@@ -214,26 +216,49 @@ function highlightTimeRange() {
     const timeSlots = document.querySelectorAll('.time-slot');
     selectedRange = [];
 
-    let inRange = false;
-
+    // 시간 영역 초기화
     timeSlots.forEach(slot => {
-        const time = slot.textContent.trim();
+        slot.classList.remove('selected-time', 'in-range');
+    })
 
-        if (time === selectedStartTime || time === selectedEndTime) {
-            inRange = !inRange || selectedStartTime === selectedEndTime;
-            slot.classList.add('selected-time');
-            selectedRange.push(time);
-        } else if (inRange) {
-            slot.classList.add('in-range');
-            selectedRange.push(time);
-        } else {
-            slot.classList.remove('selected-time', 'in-range');
+    console.log(selectedStartTime);
+
+    if (selectedStartTime) {
+        let tempEndTime = selectedEndTime;
+
+        if (!tempEndTime) {
+            const startDate = format.timeAsDate(selectedStartTime);
+            startDate.setHours(startDate.getHours() + 1);
+            tempEndTime = format.dateExtractTime(startDate);
         }
-    });
 
-    document.getElementById("startTimeDisplay").textContent = selectedStartTime || '-';
-    document.getElementById("endTimeDisplay").textContent = selectedEndTime || '-';
+        timeSlots.forEach(slot => {
+            const time = slot.textContent.trim();
+
+            if (time === selectedStartTime || time === tempEndTime) {
+                slot.classList.add('selected-time');
+                selectedRange.push(time);
+            } else {
+                const current = format.timeAsDate(time);
+                const start = format.timeAsDate(selectedStartTime);
+                const end = format.timeAsDate(tempEndTime);
+
+                if (start && end && current > start && current < end) {
+                    slot.classList.add('in-range');
+                    selectedRange.push(time);
+                }
+            }
+        });
+
+        // 시간 표시
+        document.getElementById("startTimeDisplay").textContent = selectedStartTime;
+        document.getElementById("endTimeDisplay").textContent = tempEndTime;
+    } else {
+        document.getElementById("startTimeDisplay").textContent = '-';
+        document.getElementById("endTimeDisplay").textContent = '-';
+    }
 }
+
 
 // 예약 버튼 이벤트
 function getAlert(){
@@ -242,7 +267,7 @@ function getAlert(){
     reserveBtn.addEventListener('click', () => {
         let attendees = document.getElementById("attendees").value;
 
-        if(selectedDate && selectedStartTime && selectedEndTime && attendees && selectedRoom){
+        if(selectedDate && selectedStartTime && attendees && selectedRoom){
             Swal.fire({
                 title: "예약 사용 설명",
                 icon: "info",
@@ -289,7 +314,7 @@ function getAlert(){
 
             if (!selectedRoom) missingFields.push("회의실");
             if (!selectedDate) missingFields.push("날짜");
-            if (!selectedStartTime || !selectedEndTime) missingFields.push("시간");
+            if (!selectedStartTime) missingFields.push("시간");
             if (!attendees) missingFields.push("인원 수");
 
             Swal.fire({
