@@ -1,3 +1,5 @@
+import GraphemeSplitter from "grapheme-splitter";
+
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('analysisForm');
     const promptInput = document.getElementById('promptText');
