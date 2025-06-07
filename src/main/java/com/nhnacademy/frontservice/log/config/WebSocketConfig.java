@@ -56,9 +56,10 @@ public class WebSocketConfig implements WebSocketConfigurer {
      */
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(logWebSocketHandler, "/ws/logs", "/ws/stranger")
+        registry.addHandler(logWebSocketHandler, "/ws/logs", "/ws/stranger", "/ws/sensor")
                 .setAllowedOrigins("*");  // CORS: 모든 도메인 허용
         log.info("[WebSocketConfig] WebSocket 경로 등록 완료: /ws/logs");
         log.info("[WebSocketConfig] WebSocket 경로 등록 완료: /ws/stranger");
+        log.info("[WebSocketConfig] WebSocket 경로 등록 완료: /ws/sensor");
     }
 }

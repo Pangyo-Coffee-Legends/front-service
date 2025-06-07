@@ -1,6 +1,13 @@
 const COMFORT_API = "http://localhost:10251/api/v1/comfort/scheduled-result";
-const USER_HEADER = { "X-USER": "admin@aiot.com" };
+const WEATHER_API = "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst";
+const SERVICE_KEY = "%2Be2VrgCSeuZBQLw%2Fh7%2BHTNOR6VRLMm3UNzeh%2Fp2YITaCzXl11XX5sYxUMIN4JNpl5pVtB5hhDR%2BpM%2FrDAEKkqA%3D%3D";
+const KAKAO_REST_KEY = "bda024433062fa6d4ddf9046e523d4c0";
 
+let currentRoom = null;
+let currentCoords = null;
+let currentAddress = null;
+
+const USER_HEADER = { "X-USER": "admin@aiot.com" };
 const FETCH_CONFIG = {
     headers: {
         "Content-Type": "application/json",
@@ -8,9 +15,6 @@ const FETCH_CONFIG = {
     },
     credentials: "include"
 };
-
-let currentChart = null;
-let currentRoom = null;
 
 const roomToLocationMap = {
     deptA: '보드',
@@ -26,41 +30,62 @@ const roomLabelMap = {
     meetingB: '회의실B'
 };
 
-window.showPopup = async function (roomName, el) {
+window.showPopup = async function (roomName) {
     currentRoom = roomName;
     const location = roomToLocationMap[roomName];
     const label = roomLabelMap[roomName];
     if (!location) return;
 
-    positionPopup(el, label);
+    // info-box 선택 테두리 처리
+    document.querySelectorAll('.info-box').forEach(box => box.classList.remove('selected'));
+    const selectedBox = document.querySelector(`[onclick*="${roomName}"]`);
+    if (selectedBox) selectedBox.classList.add('selected');
+
+    document.getElementById("popup-title").innerText = label;
 
     try {
         const res = await fetch(COMFORT_API, FETCH_CONFIG);
-        if (!res.ok) throw new Error(`룰 엔진 API 실패 (${res.status})`);
-
         const text = await res.text();
         const ruleResults = text ? JSON.parse(text) : [];
 
-        console.log("[디버그] 전체 ruleResults:", ruleResults);
-
         const comfortData = extractComfortInfo(ruleResults, location);
-        console.log('comfortData', comfortData);
         if (!comfortData) throw new Error("comfortInfo 없음");
 
         updateGradeDisplay(roomName, comfortData.comfortIndex);
-        renderChart(comfortData);
         renderComfortTable(comfortData);
         renderSensorStatus(comfortData.deviceCommands);
-
     } catch (err) {
         console.error(err);
-        document.getElementById('popup-table').innerHTML = "<p>❌ 환경 데이터 오류</p>";
-        document.getElementById('device-status').innerHTML = "<p>❌ 상태 불러오기 실패</p>";
+        ["env-temp", "env-humi", "env-co2", "env-index", "env-comment"].forEach(id => {
+            document.getElementById(id).innerText = "-";
+        });
+        document.getElementById("device-status").innerHTML = `
+            <h5>작동 상태</h5>
+            <p>❌ 상태 불러오기 실패</p>
+        `;
     }
-};
+}
+
+
+async function fetchComfortData(roomName) {
+    const location = roomToLocationMap[roomName];
+    if (!location) return;
+
+    try {
+        const res = await fetch(COMFORT_API, FETCH_CONFIG);
+        const text = await res.text();
+        const ruleResults = text ? JSON.parse(text) : [];
+
+        const comfortData = extractComfortInfo(ruleResults, location);
+        if (!comfortData) return;
+
+        updateGradeDisplay(roomName, comfortData.comfortIndex);
+    } catch (err) {
+        console.error(`[${roomName}] comfort 로딩 실패`, err);
+    }
+}
 
 function extractComfortInfo(results, location) {
-    console.log('results', results);
     for (const rule of results) {
         for (const action of rule.executedActions || []) {
             const output = action.output;
@@ -84,73 +109,45 @@ function extractComfortInfo(results, location) {
             }
         }
     }
-    console.warn(`[디버그] 매칭되는 output 없음 for location: ${location}`);
     return null;
-}
-
-function positionPopup(el, label) {
-    const popup = document.getElementById('popup-panel');
-    const wrapper = document.getElementById('floor-wrapper');
-    const boxRect = el.getBoundingClientRect();
-    const wrapperRect = wrapper.getBoundingClientRect();
-    const boxCenterY = boxRect.top - wrapperRect.top + boxRect.height / 2;
-    const boxX = boxRect.left - wrapperRect.left;
-    const isLeft = boxX < wrapperRect.width / 2;
-
-    popup.classList.remove("left", "right");
-    popup.classList.add(isLeft ? "left" : "right");
-    popup.style.top = `${boxCenterY}px`;
-    popup.style.left = `${boxX + (isLeft ? -20 : el.offsetWidth + 20)}px`;
-    popup.style.display = 'block';
-    document.getElementById("popup-title").innerText = `📍 ${label}`;
 }
 
 function updateGradeDisplay(roomName, comfortIndex) {
     const gradeEl = document.getElementById(`grade-${roomName}`);
-    if (gradeEl) {
-        gradeEl.className = 'grade';
-        gradeEl.innerText = comfortIndex;
+    const boxEl = document.querySelector(`[onclick*="${roomName}"]`);
+    const popupPanel = document.getElementById("popup-panel");
+
+    if (!gradeEl || !boxEl || !popupPanel) return;
+
+    gradeEl.className = 'grade';
+    boxEl.classList.remove("green", "red", "blue", "gray");
+    popupPanel.classList.remove("green", "red", "blue", "gray");
+
+    if (comfortIndex.includes("최적")) {
+        gradeEl.innerText = "🟢";
+        boxEl.classList.add("green");
+        popupPanel.classList.add("green");
+    } else if (comfortIndex.includes("덥고")) {
+        gradeEl.innerText = "🔴";
+        boxEl.classList.add("red");
+        popupPanel.classList.add("red");
+    } else if (comfortIndex.includes("춥고")) {
+        gradeEl.innerText = "🔵";
+        boxEl.classList.add("blue");
+        popupPanel.classList.add("blue");
+    } else {
+        gradeEl.innerText = "-";
+        boxEl.classList.add("gray");
+        popupPanel.classList.add("gray");
     }
 }
 
-function renderChart({ temperature, humidity, co2 }) {
-    const ctx = document.getElementById("popupChart");
-    if (currentChart) currentChart.destroy();
-
-    currentChart = new Chart(ctx, {
-        type: "bar",
-        data: {
-            labels: ["온도 (℃)", "습도 (%)", "CO₂ (ppm)"],
-            datasets: [{
-                data: [temperature, humidity, co2],
-                backgroundColor: ["#ff6384", "#36a2eb", "#4bc0c0"]
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: { display: false },
-                tooltip: {
-                    callbacks: {
-                        label: ctx => `${ctx.parsed.y} ${getUnit(ctx.dataIndex)}`
-                    }
-                }
-            },
-            scales: { y: { beginAtZero: true } }
-        }
-    });
-}
-
 function renderComfortTable({ temperature, humidity, co2, comfortIndex, co2Comment }) {
-    document.getElementById("popup-table").innerHTML = `
-        <table>
-            <tr><th>온도</th><td>${temperature.toFixed(1)} ℃</td></tr>
-            <tr><th>습도</th><td>${humidity.toFixed(1)} %</td></tr>
-            <tr><th>CO₂</th><td>${co2} ppm</td></tr>
-            <tr><th>쾌적도</th><td>${comfortIndex}</td></tr>
-            <tr><th>CO₂ 상태</th><td>${co2Comment}</td></tr>
-        </table>
-    `;
+    document.getElementById("env-temp").innerText = `${temperature.toFixed(1)} ℃`;
+    document.getElementById("env-humi").innerText = `${humidity.toFixed(1)} %`;
+    document.getElementById("env-co2").innerText = `${co2} ppm`;
+    document.getElementById("env-index").innerText = comfortIndex;
+    document.getElementById("env-comment").innerText = co2Comment;
 }
 
 function renderSensorStatus(deviceCommands) {
@@ -161,31 +158,158 @@ function renderSensorStatus(deviceCommands) {
         dehumidifier: "제습기"
     };
     const html = Object.entries(deviceCommands).map(([type, state]) => `
-        <div class="device-row">
+        <div class="data-row">
             <span>${map[type] || type}</span>
-            <span class="${state ? 'on' : 'off'}">
-                ${state ? 'ON' : 'OFF'}
-            </span>
+            <span class="${state ? 'on' : 'off'}">${state ? 'ON' : 'OFF'}</span>
         </div>
     `).join("");
     document.getElementById("device-status").innerHTML = `
-        <h6>작동 상태</h6>
+        <h5>작동 상태</h5>
         ${html}
     `;
 }
 
-function getUnit(index) {
-    return index === 0 ? "℃" : index === 1 ? "%" : "ppm";
+function convertToGrid(lat, lng) {
+    const RE = 6371.00877;
+    const GRID = 5.0;
+    const SLAT1 = 30.0, SLAT2 = 60.0;
+    const OLON = 126.0, OLAT = 38.0;
+    const XO = 43, YO = 136;
+
+    const DEGRAD = Math.PI / 180.0;
+    const re = RE / GRID;
+    const slat1 = SLAT1 * DEGRAD;
+    const slat2 = SLAT2 * DEGRAD;
+    const olon = OLON * DEGRAD;
+    const olat = OLAT * DEGRAD;
+
+    let sn = Math.tan(Math.PI * 0.25 + slat2 * 0.5) / Math.tan(Math.PI * 0.25 + slat1 * 0.5);
+    sn = Math.log(Math.cos(slat1) / Math.cos(slat2)) / Math.log(sn);
+
+    let sf = Math.tan(Math.PI * 0.25 + slat1 * 0.5);
+    sf = Math.pow(sf, sn) * Math.cos(slat1) / sn;
+
+    let ro = Math.tan(Math.PI * 0.25 + olat * 0.5);
+    ro = re * sf / Math.pow(ro, sn);
+
+    let ra = Math.tan(Math.PI * 0.25 + lat * DEGRAD * 0.5);
+    ra = re * sf / Math.pow(ra, sn);
+
+    let theta = lng * DEGRAD - olon;
+    if (theta > Math.PI) theta -= 2.0 * Math.PI;
+    if (theta < -Math.PI) theta += 2.0 * Math.PI;
+    theta *= sn;
+
+    return {
+        x: Math.floor(ra * Math.sin(theta) + XO + 0.5),
+        y: Math.floor(ro - ra * Math.cos(theta) + YO + 0.5)
+    };
 }
 
-window.addEventListener("resize", () => {
-    if (currentRoom) {
-        const el = document.querySelector(`[onclick*="${currentRoom}"]`);
-        if (el) showPopup(currentRoom, el);
+async function updateCoordsByLocation(locationName) {
+    try {
+        const res = await fetch(`https://dapi.kakao.com/v2/local/search/address.json?query=${encodeURIComponent(locationName)}`, {
+            headers: { Authorization: `KakaoAK ${KAKAO_REST_KEY}` }
+        });
+        const json = await res.json();
+        const doc = json.documents[0];
+        if (!doc) throw new Error("위치 검색 실패");
+
+        currentAddress = doc.address_name;
+        const lat = parseFloat(doc.y);
+        const lng = parseFloat(doc.x);
+        currentCoords = convertToGrid(lat, lng);
+
+        fetchWeather();
+    } catch (e) {
+        console.error("좌표 변환 실패", e);
     }
-});
-
-function closePopup() {
-    document.getElementById('popup-panel').style.display = "none";
-    currentRoom = null;
 }
+
+function getAdjustedBaseDateTime() {
+    const now = new Date();
+    now.setMinutes(now.getMinutes() - 40);
+    const baseDate = now.toISOString().slice(0, 10).replace(/-/g, '');
+    const baseHour = now.getHours().toString().padStart(2, '0') + "30";
+    return { baseDate, baseTime: baseHour };
+}
+
+async function fetchWeather() {
+    const { baseDate, baseTime } = getAdjustedBaseDateTime();
+    const url = `${WEATHER_API}?serviceKey=${SERVICE_KEY}&pageNo=1&numOfRows=1000&dataType=JSON&base_date=${baseDate}&base_time=${baseTime}&nx=${currentCoords.x}&ny=${currentCoords.y}`;
+
+    try {
+        const res = await fetch(url);
+        const json = await res.json();
+        const items = json?.response?.body?.items?.item || [];
+
+        const weatherData = { T1H: "-", REH: "-", WSD: "-", SKY: "-", PTY: "0" };
+        for (const item of items) {
+            if (weatherData.hasOwnProperty(item.category)) {
+                weatherData[item.category] = item.fcstValue;
+            }
+            if (item.category === "PTY") {
+                weatherData.PTY = item.fcstValue;
+            }
+        }
+
+        document.getElementById("weather-location-label").innerText = currentAddress;
+        document.getElementById("weather-temp").innerText = `${weatherData.T1H} ℃`;
+        document.getElementById("weather-humi").innerText = `${weatherData.REH} %`;
+        document.getElementById("weather-wind").innerText = `${weatherData.WSD} m/s`;
+        document.getElementById("weather-desc").innerText = getWeatherIcon(weatherData.SKY, weatherData.PTY);
+    } catch (e) {
+        console.error("날씨 API 오류", e);
+    }
+}
+
+function getWeatherIcon(sky, pty) {
+    if (pty === "1") return "🌧️ 비";
+    if (pty === "2") return "🌨️ 비/눈";
+    if (pty === "3") return "❄️ 눈";
+    if (pty === "4") return "🌦️ 소나기";
+
+    switch (sky) {
+        case "1": return "☀️ 맑음";
+        case "3": return "⛅ 구름많음";
+        case "4": return "☁️ 흐림";
+        default: return "-";
+    }
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+    navigator.geolocation.getCurrentPosition(async (pos) => {
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
+        currentCoords = convertToGrid(lat, lng);
+
+        try {
+            const res = await fetch(`https://dapi.kakao.com/v2/local/geo/coord2address.json?x=${lng}&y=${lat}`, {
+                headers: { Authorization: `KakaoAK ${KAKAO_REST_KEY}` }
+            });
+            const json = await res.json();
+            const doc = json.documents[0];
+            currentAddress = doc?.address?.address_name || "현재 위치";
+        } catch {
+            currentAddress = "현재 위치";
+        }
+
+        fetchWeather();
+    });
+
+    const input = document.getElementById("location-input");
+    if (input) {
+        input.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                const query = input.value.trim();
+                if (query) updateCoordsByLocation(query);
+            }
+        });
+    }
+
+    // 이 부분 추가: 최초 로딩 시 'deptA' 자동 선택
+    showPopup("deptA");
+
+    // 나머지 쾌적도 데이터도 병렬로 로드
+    ["deptA", "deptB", "meetingA", "meetingB"].forEach(fetchComfortData);
+});
