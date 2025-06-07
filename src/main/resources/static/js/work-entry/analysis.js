@@ -177,7 +177,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }, 300);
             // 채팅 추가 후 자동 스크롤
             setTimeout(() => {
-                wrapper.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                wrapper.scrollIntoView({behavior: 'smooth', block: 'end'});
             }, 10);
 
             return;
@@ -185,27 +185,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (options.type === 'typing') {
             contentBox.innerHTML = '';
-            let index = 0;
             const tempEl = document.createElement('div');
             tempEl.innerHTML = renderedHtml;
             const fullHtml = tempEl.textContent || tempEl.innerText || '';
+
+            // 🔥 여기서 GraphemeSplitter를 사용하여 한 글자 단위 정확히 분리
+            const splitter = new GraphemeSplitter();
+            const splitText = splitter.splitGraphemes(fullHtml);
+            let index = 0;
+
             const interval = setInterval(() => {
-                if (index < fullHtml.length) {
-                    contentBox.textContent += fullHtml.charAt(index++);
+                if (index < splitText.length) {
+                    contentBox.textContent += splitText[index++];
                     chatBox.scrollTop = chatBox.scrollHeight;
                 } else {
                     clearInterval(interval);
                     contentBox.innerHTML = renderedHtml;
                     if (role === 'ai') appendCopyButton(bubble, content);
                 }
-            }, 0);
-        } else {
-            contentBox.innerHTML = renderedHtml;
-            if (role === 'ai') appendCopyButton(bubble, content);
+            }, 20);
         }
     }
 
-    function appendCopyButton(bubble, content) {
+        function appendCopyButton(bubble, content) {
         const copyBtn = document.createElement('button');
         copyBtn.textContent = '📋 복사';
         copyBtn.className = 'btn btn-sm btn-outline-secondary position-absolute top-0 end-0 m-2';
