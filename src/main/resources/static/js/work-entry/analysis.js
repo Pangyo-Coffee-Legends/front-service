@@ -187,9 +187,15 @@ document.addEventListener('DOMContentLoaded', function () {
             contentBox.innerHTML = '';
             const tempEl = document.createElement('div');
             tempEl.innerHTML = renderedHtml;
-            const fullHtml = tempEl.textContent || tempEl.innerText || '';
+            const fullHtml = tempEl.textContent || tempEl.innerText || content || '';
 
-            // 🔥 여기서 GraphemeSplitter를 사용하여 한 글자 단위 정확히 분리
+            // 💡 렌더링 텍스트 비었을 때는 바로 전체 출력
+            if (!fullHtml.trim()) {
+                contentBox.innerHTML = renderedHtml || '(출력 없음)';
+                if (role === 'ai') appendCopyButton(bubble, content);
+                return;
+            }
+
             const splitter = new GraphemeSplitter();
             const splitText = splitter.splitGraphemes(fullHtml);
             let index = 0;
