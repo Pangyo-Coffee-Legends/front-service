@@ -1,5 +1,3 @@
-import GraphemeSplitter from "grapheme-splitter";
-
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('analysisForm');
     const promptInput = document.getElementById('promptText');
@@ -179,7 +177,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }, 300);
             // 채팅 추가 후 자동 스크롤
             setTimeout(() => {
-                wrapper.scrollIntoView({behavior: 'smooth', block: 'end'});
+                wrapper.scrollIntoView({ behavior: 'smooth', block: 'end' });
             }, 10);
 
             return;
@@ -187,40 +185,27 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (options.type === 'typing') {
             contentBox.innerHTML = '';
+            let index = 0;
             const tempEl = document.createElement('div');
             tempEl.innerHTML = renderedHtml;
-            const fullHtml = tempEl.textContent || tempEl.innerText || content || '';
-
-            const splitter = new GraphemeSplitter();
-            const splitText = splitter.splitGraphemes(fullHtml);
-            console.log("응답:", content);
-            console.log("파싱된 fullHtml:", fullHtml);
-            console.log("분할된 글자 수:", splitText.length);
-
-            // 👉 안전장치 추가 (비었을 경우 강제 출력)
-            if (!fullHtml.trim() || splitText.length === 0) {
-                contentBox.innerHTML = renderedHtml || '(출력 없음)';
-                if (role === 'ai') appendCopyButton(bubble, content);
-                return;
-            }
-
-            let index = 0;
+            const fullHtml = tempEl.textContent || tempEl.innerText || '';
             const interval = setInterval(() => {
-                if (index < splitText.length) {
-                    contentBox.textContent += splitText[index++];
+                if (index < fullHtml.length) {
+                    contentBox.textContent += fullHtml.charAt(index++);
                     chatBox.scrollTop = chatBox.scrollHeight;
                 } else {
                     clearInterval(interval);
                     contentBox.innerHTML = renderedHtml;
                     if (role === 'ai') appendCopyButton(bubble, content);
                 }
-            }, 20);
+            }, 0);
+        } else {
+            contentBox.innerHTML = renderedHtml;
+            if (role === 'ai') appendCopyButton(bubble, content);
         }
-
-
     }
 
-        function appendCopyButton(bubble, content) {
+    function appendCopyButton(bubble, content) {
         const copyBtn = document.createElement('button');
         copyBtn.textContent = '📋 복사';
         copyBtn.className = 'btn btn-sm btn-outline-secondary position-absolute top-0 end-0 m-2';
