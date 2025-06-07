@@ -2,6 +2,7 @@ package com.nhnacademy.frontservice.adaptor;
 
 import com.nhnacademy.frontservice.dto.sensor.SensorRegisterRequest;
 import com.nhnacademy.frontservice.dto.sensor.SensorResponse;
+import com.nhnacademy.frontservice.dto.sensor.SensorResult;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,9 @@ public interface SensorAdaptor {
 
     @PostMapping
     ResponseEntity<SensorResponse> registerSensor(@RequestBody SensorRegisterRequest request);
+
+    @PostMapping("/send")
+    void sendSensorResult(@RequestBody SensorResult result);
 
     @GetMapping("/{sensorNo}")
     ResponseEntity<SensorResponse> getSensor(@PathVariable("sensorNo") Long sensorNo);

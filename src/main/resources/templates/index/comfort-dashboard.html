@@ -2,19 +2,90 @@
 <html lang="ko" layout:decorate="@{/layout/index/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <title>오피스 제어 대시보드</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard&display=swap" rel="stylesheet">
     <style>
         body {
+            margin: 0;
             background-color: #2b2c32;
             color: #ffffff;
-            font-family: 'Segoe UI', sans-serif;
-            user-select: none;
+            font-family: 'Pretendard', 'Segoe UI', sans-serif;
+        }
+
+        .dashboard-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px 20px;
+            gap: 40px;
+        }
+
+        .popup-panel {
+            width: 380px;
+            background: rgba(43, 44, 50, 0.75);
+            color: white;
+            border: 1px solid #444;
+            border-radius: 16px;
+            padding: 24px;
+            backdrop-filter: blur(4px);
+            flex-shrink: 0;
+            height: auto;
+            transition: box-shadow 0.3s ease;
+        }
+
+        /* 상태별 box-shadow */
+
+        .popup-panel .card-box + .card-box {
+            margin-top: 20px;
+        }
+
+        .card-box {
+            background-color: #2f3139;
+            border: 1px solid #444;
+            border-radius: 12px;
+            padding: 16px 18px;
+            box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+        }
+
+        .card-box h5 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #ffffff;
+        }
+
+        .data-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            font-weight: 500;
+        }
+
+        .data-row span:last-child {
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        .on {
+            background-color: rgba(152, 255, 111, 0.79);
+            color: #00e676;
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .off {
+            background-color: rgba(252, 60, 60, 0.85);
+            color: #ff5252;
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: bold;
         }
 
         #floor-wrapper {
             position: relative;
-            width: 100%;
             max-width: 1200px;
-            margin: 0 auto;
         }
 
         #floor-image {
@@ -24,30 +95,30 @@
             border: 1px solid #444;
             border-radius: 10px;
             pointer-events: none;
-            -webkit-user-drag: none;
             user-drag: none;
         }
 
         .info-box {
             position: absolute;
             transform: translate(-50%, -50%);
-            background-color: #2e3038;
+            background: linear-gradient(145deg, #31333b, #26272d);
             color: white;
-            border-radius: 10px;
-            padding: 1em;
+            border-radius: 12px;
+            padding: 1em 0.8em;
             font-size: clamp(11px, 1vw, 15px);
             width: 140px;
             text-align: center;
-            box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
+            box-shadow: none;
             cursor: pointer;
             border: 1px solid #3c3c3c;
-            transition: transform 0.2s ease;
+            transition: transform 0.2s ease, box-shadow 0.3s ease, border-color 0.3s ease;
         }
 
         .info-box:hover {
             transform: translate(-50%, -50%) scale(1.05);
-            box-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 16px rgba(108, 108, 108, 0.25);
         }
+
 
         .info-box .label {
             font-weight: bold;
@@ -60,103 +131,78 @@
             margin: 6px 0;
         }
 
+        .info-box.selected {
+            transform: translate(-50%, -50%) scale(1.15);
+            transition: transform 0.2s ease;
+            background: #505050;
+            z-index: 2;
+        }
+
+
         .info-box .grade {
             font-size: 0.95em;
             font-weight: bold;
         }
 
-        .grade.pleasant::before { content: "🟢 "; color: #00ffa2; }
-        .grade.normal::before { content: "🟡 "; color: #ffd700; }
-        .grade.unpleasant::before { content: "🔴 "; color: #ff6b6b; }
-
-        .popup-panel {
-            position: absolute;
-            width: 380px;
-            background: #2e3038;
-            color: white;
-            border: 1px solid #3c3c3c;
-            border-radius: 10px;
-            padding: 20px;
-            z-index: 9999;
-            box-shadow: 0 0 10px #000;
-            display: none;
-        }
-
-        .popup-panel.left { transform: translate(-100%, -50%); }
-        .popup-panel.right { transform: translate(0%, -50%); }
-
-        .close-btn {
-            position: absolute;
-            top: 10px;
-            right: 14px;
-            color: white;
-            font-size: 20px;
-            cursor: pointer;
-        }
-
-        .popup-table table {
-            font-size: 14px;
-            width: 100%;
-            background-color: #2e3038;
-            color: white;
-            border: 1px solid #444;
-            border-collapse: collapse;
-        }
-
-        .popup-table th,
-        .popup-table td {
-            border: 1px solid #444;
-            padding: 6px 8px;
-        }
-
-        .device-status {
-            margin-top: 1rem;
-        }
-
-        .device-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 6px;
-            font-weight: bold;
-        }
-
-        .device-row span:last-child {
-            padding: 2px 8px;
-            border-radius: 6px;
-            font-size: 13px;
-        }
-
-        .on {
-            background-color: #00e67620;
-            color: #00e676;
-        }
-
-        .off {
-            background-color: #ff525220;
-            color: #ff5252;
-        }
-
-        @media (max-width: 600px) {
-            .info-box {
-                width: 100px;
-                font-size: 12px;
-            }
-
-            .popup-panel {
-                width: 90%;
-                left: 5% !important;
-                transform: translate(0, -50%) !important;
-            }
+        .card-box .data-row + .data-row {
+            margin-top: 2px;
         }
     </style>
 </head>
 <body oncontextmenu="return false">
 <div layout:fragment="content">
-    <div class="container-fluid mt-4">
-        <h2 class="mb-4 text-center" style="font-weight: bold; color: #ffffff;">오피스 제어 대시보드</h2>
+    <h2 class="text-center" style="text-align: center; margin-top: 30px; font-size: 24px;">오피스 제어 대시보드</h2>
+    <div class="dashboard-container">
 
+        <!-- 왼쪽 고정 패널 -->
+        <div id="popup-panel" class="popup-panel">
+
+            <form id="place-form" enctype="multipart/form-data">
+                <input type="text" name="placeName" placeholder="장소명" required>
+                <input type="file" name="file" accept="image/*" required>
+                <button type="submit">장소 등록</button>
+            </form>
+
+            <!-- 환경 정보 카드 -->
+            <div id="env-info-card" class="card-box">
+                <h5 id="popup-title">공간명</h5>
+                <div class="data-row"><span>내부 온도</span><span id="env-temp">-</span></div>
+                <div class="data-row"><span>내부 습도</span><span id="env-humi">-</span></div>
+                <div class="data-row"><span>CO₂</span><span id="env-co2">-</span></div>
+                <div class="data-row"><span>쾌적도</span><span id="env-index">-</span></div>
+                <div class="data-row"><span>상태</span><span id="env-comment">-</span></div>
+            </div>
+
+            <!-- 지역 설정 + 날씨 정보 -->
+            <div class="card-box">
+                <h5>외부 날씨</h5>
+                <div class="data-row"><span>현재 위치</span><span id="weather-location-label">-</span></div>
+                <div class="data-row"><span>외부 기온</span><span id="weather-temp">-</span></div>
+                <div class="data-row"><span>외부 습도</span><span id="weather-humi">-</span></div>
+                <div class="data-row"><span>풍속</span><span id="weather-wind">-</span></div>
+                <div class="data-row"><span>상태</span><span id="weather-desc">-</span></div>
+            </div>
+
+
+            <!-- 장비 상태 -->
+            <div id="device-status" class="card-box">
+                <h5>작동 상태</h5>
+            </div>
+        </div>
+
+        <!-- 도면 우측 -->
         <div id="floor-wrapper">
-            <img id="floor-image" src="/images/academy.png" alt="오피스 도면" draggable="false">
+            <select id="place-select"></select>
+            <img id="floor-image" src="" alt="오피스 도면" draggable="false">
+
+            <form id="place-edit-form" enctype="multipart/form-data">
+                <input type="hidden" name="placeNo" value="14"> <!-- 수정할 장소 번호 -->
+                <input type="text" name="placeName" value="수정 할 장소명" required> <!-- 사용자가 수정 -->
+                <input type="file" name="file" accept="image/*">
+                <button type="submit">장소 수정</button>
+            </form>
+
+            <button id="delete-place-btn">삭제</button>
 
             <div class="info-box" style="top: 55%; left: 17%;" onclick="showPopup('deptA', this)">
                 <div class="label">사무실 A</div><hr class="divider">
@@ -177,19 +223,10 @@
                 <div class="label">회의실 B</div><hr class="divider">
                 <div class="grade" id="grade-meetingB">-</div>
             </div>
-
-            <div id="popup-panel" class="popup-panel">
-                <span class="close-btn" onclick="closePopup()">×</span>
-                <h5 id="popup-title" class="text-white">📍 공간명</h5>
-                <hr style="border-top: 1px solid #555;">
-                <canvas id="popupChart" height="180"></canvas>
-                <div id="popup-table" class="popup-table mt-3"></div>
-                <div id="device-status" class="device-status"></div>
-            </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="/js/comfort-dashboard.js" defer></script>
+    <script src="/js/place/place-selector.js" defer></script>
 </div>
 </body>
 </html>

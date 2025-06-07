@@ -1,5 +1,6 @@
 const SENSOR_API = "http://localhost:10251/api/v1/sensors";
-const USER_HEADER = { "X-USER": "test-user@aiot.com" };
+const USER_HEADER = { "X-USER": "test-user@aiot.com" }; // ✅ 추가
+
 const FETCH_CONFIG = {
     headers: {
         "Content-Type": "application/json",
@@ -8,12 +9,45 @@ const FETCH_CONFIG = {
     credentials: "include"
 };
 
-document.addEventListener("DOMContentLoaded", () => {
-    const selected = document.getElementById("filterLocationSelect").value;
-    loadSensorsByLocation(selected); // ✅ 드롭다운 선택값 기준 초기 로딩
+function fillLocationSelects(locations) {
+    // 조회용 드롭다운
+    const filterSelect = document.getElementById("filterLocationSelect");
+    filterSelect.innerHTML = "";
+    locations.forEach(loc => {
+        const option = document.createElement("option");
+        option.value = loc;
+        option.textContent = loc;
+        filterSelect.appendChild(option);
+    });
 
-    // 🔧 오류 방지: WebSocket 연결 필요 없으면 아래 줄 삭제해도 됩니다
-    // connectSensorSocket(); // ❌ 주석 처리 또는 삭제
+    // 모달 내 장소 드롭다운
+    const modalSelect = document.getElementById("modalLocationSelect");
+    modalSelect.innerHTML = "";
+    locations.forEach(loc => {
+        const option = document.createElement("option");
+        option.value = loc;
+        option.textContent = loc;
+        modalSelect.appendChild(option);
+    });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    fetch("http://localhost:10251/api/v1/sensors/places", FETCH_CONFIG)
+        .then(res => res.ok ? res.json() : Promise.reject("장소 목록 불러오기 실패"))
+        .then(locations => {
+            // ✅ 드롭다운에 데이터 채우기
+            fillLocationSelects(locations);
+
+            // ✅ 첫 번째 장소로 센서 목록 로딩
+            if (locations.length > 0) {
+                loadSensorsByLocation(locations[0]);
+                document.getElementById("filterLocationSelect").value = locations[0];
+            }
+        })
+        .catch(err => {
+            alert("장소 목록을 불러오는 데 실패했습니다.");
+            console.error(err);
+        });
 
     document.getElementById("addDeviceBtn").addEventListener("click", () => {
         document.getElementById("addDeviceModal").style.display = "block";
@@ -23,11 +57,17 @@ document.addEventListener("DOMContentLoaded", () => {
         event.preventDefault();
         const formData = new FormData(event.target);
 
+        const sensorType = formData.get("sensorType");
+        if (!sensorType) {
+            alert("센서 타입을 선택해주세요.");
+            return;
+        }
+
         const newSensor = {
             sensorName: formData.get("sensorName"),
-            sensorType: formData.get("sensorType").toUpperCase(),
+            sensorType: sensorType, // 그대로 전송
             location: formData.get("location"),
-            sensorStatus: false // 기본 OFF
+            sensorStatus: false
         };
 
         fetch(SENSOR_API, {
@@ -39,8 +79,11 @@ document.addEventListener("DOMContentLoaded", () => {
             .then(() => {
                 alert("기기 등록 완료");
                 closeAddDeviceModal();
-                loadSensorsByLocation(newSensor.location);
-                document.getElementById("filterLocationSelect").value = newSensor.location;
+
+                // 드롭다운 선택 반영 + 로딩
+                const dropdown = document.getElementById("filterLocationSelect");
+                dropdown.value = newSensor.location;
+                dropdown.dispatchEvent(new Event("change"));
             })
             .catch(err => {
                 console.error("기기 등록 실패:", err);
@@ -82,7 +125,7 @@ function renderSensorTable(sensorList) {
     const tableEl = $('#sensorResultTable');
 
     if ($.fn.DataTable.isDataTable('#sensorResultTable')) {
-        tableEl.DataTable().clear().destroy(); // ✅ 헤더는 그대로 유지하면서 초기화
+        tableEl.DataTable().clear().destroy();
     }
 
     tableEl.DataTable({
@@ -92,7 +135,6 @@ function renderSensorTable(sensorList) {
             { data: 'sensorType', title: '센서 타입' },
             { data: 'status', title: '센서 상태' },
             { data: 'location', title: '센서 장소' },
-            // { data: 'ruleResults', title: '룰 결과' }
         ],
         destroy: true,
         responsive: true
@@ -103,11 +145,24 @@ function formatSensor(sensor) {
     return {
         sensorNo: sensor.sensorNo,
         sensorName: sensor.sensorName,
-        sensorType: sensor.sensorType,
-        status: sensor.sensorStatus
+        sensorType: normalizeType(sensor.sensorType),
+        status: Boolean(sensor.sensorStatus)
             ? `<span style="color:lightgreen;font-weight:bold">ON</span>`
             : `<span style="color:gray;font-weight:bold">OFF</span>`,
         location: sensor.location,
         ruleResults: "-"
     };
+}
+
+function normalizeType(type) {
+    if (!type) return "";
+    const lower = type.toLowerCase();
+    switch (lower) {
+        case "aircon": return "Aircon";
+        case "heater": return "Heater";
+        case "humidifier": return "Humidifier";
+        case "dehumidifier": return "Dehumidifier";
+        case "ventilator": return "Ventilator";
+        default: return type.charAt(0).toUpperCase() + type.slice(1).toLowerCase();
+    }
 }
