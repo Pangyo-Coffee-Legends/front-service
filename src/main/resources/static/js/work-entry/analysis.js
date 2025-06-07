@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let currentThreadId = null;
     let thinkingInterval = null;
+    let isSubmitting = false;
 
     if (reportYear) {
         for (let y = 2000; y <= 2100; y++) {
@@ -134,6 +135,9 @@ document.addEventListener('DOMContentLoaded', function () {
     promptInput.addEventListener('keydown', function (e) {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
+
+            if(isSubmitting) return;
+
             form.dispatchEvent(new Event('submit'));
         }
     });
@@ -373,10 +377,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
     form.addEventListener('submit', function (e) {
         e.preventDefault();
+
+        // 중복 제출 방지
+        if (isSubmitting) return;
+        isSubmitting = true;
+
         const memberNo = memberInput.value.trim();
         const prompt = promptInput.value.trim();
         if (!memberNo || !prompt || !currentThreadId) {
             alert('사원번호, 질문, 대화 선택을 모두 완료하세요.');
+            isSubmitting = false;
             return;
         }
 
@@ -452,6 +462,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 chatBox.lastChild.remove();
                 console.error('❌ 분석 흐름 오류:', err);
                 appendChatMessage('ai', `❗ 오류: ${err.message}`);
+            })
+            .finally(() => {
+                isSubmitting = false;
             });
     });
 
