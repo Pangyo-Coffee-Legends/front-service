@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const socket = new WebSocket("wss://localhost:10256/ws/stranger");
+    const socket = new WebSocket("ws://localhost:10256/ws/stranger");
 
     socket.onmessage = function (event) {
         if (event.data === "ping") return; // ping은 무시

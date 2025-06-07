@@ -106,8 +106,8 @@ public class FrontController {
         return "chat/notification";
     }
 
-    @GetMapping("/entry-charts") //월간 출입 차트 조회
-    public String monthlyEntryCharts(){
+    @GetMapping("/entry-charts") //주간 출입 차트 조회
+    public String entryCharts(){
         return "index/work-entry/entry-chart";
     }
 

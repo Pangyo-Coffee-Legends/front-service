@@ -3,11 +3,12 @@
 
 <html lang="ko" layout:decorate="~{layout/index/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
+    <link rel="stylesheet" href="/css/work-entry/log.css">
     <script src="/js/work-entry/realtime-entry.js" defer></script> <!-- 실시간 출입 통계 관련 JS-->
     <script src="/js/work-entry/strange-access.js" defer></script> <!-- 이상 출입 알림 관련 JS-->
     <script src="/js/work-entry/weekly-entry-chart.js" defer></script> <!-- 주간 출입 관련 JS -->
     <script src="/js/logprint.js" defer></script> <!--로그 화면 출력 관련 JS-->
-    <title>주간 출입 통계</title>
+    <title>출입 통계</title>
 </head>
 <body>
 <div layout:fragment="content">
@@ -22,7 +23,7 @@
                         <div class="card-body">
                             <h5 class="card-title">📊 주간
                                 출입 통계</h5>
-                            <canvas id="entryChart" style="width: 100%; height: 400px;"></canvas>
+                            <canvas id="entryChart" width="1200" height="400"></canvas>
                         </div>
                     </div>
                 </div>
@@ -46,8 +47,8 @@
                 <!-- 실시간 차트 -->
                 <div class="col-md-7">
                     <div id="clock" class="text-center text-primary mb-3"></div>
-                    <div class="scrollable-chart">
-                        <canvas id="realtimeEntryChart" style="width: 100%; height: 400px;></canvas>
+                    <div class="scrollable-chart" style="overflow-x: auto; white-space: nowrap;">
+                        <canvas id="realtimeEntryChart" width="1200" height="400"></canvas>
                     </div>
                 </div>
 
@@ -71,9 +72,7 @@
     <!-- 로그 출력 섹션 -->
     <div class="container mt-5">
         <h3 class="mb-3">📄 실시간 로그</h3>
-        <div id="log-viewer"
-             style="white-space: pre-wrap; font-family: monospace; background: #111; color: #ffffff; padding: 1em; height: 500px; overflow-y: scroll;">
-        </div>
+        <div id="realtime-log" class="realtime-log"></div>
     </div>
 
 </div>
