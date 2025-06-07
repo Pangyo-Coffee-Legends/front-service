@@ -7,6 +7,7 @@ let currentRoom = null;
 let currentCoords = null;
 let currentAddress = null;
 
+
 const USER_HEADER = { "X-USER": "admin@aiot.com" };
 const FETCH_CONFIG = {
     headers: {

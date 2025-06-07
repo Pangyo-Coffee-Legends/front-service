@@ -1,4 +1,4 @@
-// const API_BASE_URL = 'http://localhost:10251';
+// const API_BASE_URL = 'https://aiot2.live';
 
 // SockJS 및 STOMP 서버 엔드포인트 (실제 환경에 맞게 수정 필요)
 // 주의: SockJS 엔드포인트는 http:// 또는 https:// 프로토콜을 사용합니다.
