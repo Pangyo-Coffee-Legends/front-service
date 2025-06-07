@@ -2,166 +2,56 @@
 <html lang="ko" layout:decorate="@{/layout/index/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <title>오피스 제어 대시보드</title>
-    <link href="https://fonts.googleapis.com/css2?family=Pretendard&display=swap" rel="stylesheet">
-    <style>
-        body {
-            margin: 0;
-            background-color: #2b2c32;
-            color: #ffffff;
-            font-family: 'Pretendard', 'Segoe UI', sans-serif;
-        }
-
-        .dashboard-container {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 40px 20px;
-            gap: 40px;
-        }
-
-        .popup-panel {
-            width: 380px;
-            background: rgba(43, 44, 50, 0.75);
-            color: white;
-            border: 1px solid #444;
-            border-radius: 16px;
-            padding: 24px;
-            backdrop-filter: blur(4px);
-            flex-shrink: 0;
-            height: auto;
-            transition: box-shadow 0.3s ease;
-        }
-
-        /* 상태별 box-shadow */
-
-        .popup-panel .card-box + .card-box {
-            margin-top: 20px;
-        }
-
-        .card-box {
-            background-color: #2f3139;
-            border: 1px solid #444;
-            border-radius: 12px;
-            padding: 16px 18px;
-            box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
-        }
-
-        .card-box h5 {
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            color: #ffffff;
-        }
-
-        .data-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 6px 0;
-            font-weight: 500;
-        }
-
-        .data-row span:last-child {
-            font-weight: bold;
-            color: #ffffff;
-        }
-
-        .on {
-            background-color: rgba(152, 255, 111, 0.79);
-            color: #00e676;
-            padding: 4px 12px;
-            border-radius: 999px;
-            font-size: 13px;
-            font-weight: bold;
-        }
-
-        .off {
-            background-color: rgba(252, 60, 60, 0.85);
-            color: #ff5252;
-            padding: 4px 12px;
-            border-radius: 999px;
-            font-size: 13px;
-            font-weight: bold;
-        }
-
-        #floor-wrapper {
-            position: relative;
-            max-width: 1200px;
-        }
-
-        #floor-image {
-            width: 100%;
-            height: auto;
-            display: block;
-            border: 1px solid #444;
-            border-radius: 10px;
-            pointer-events: none;
-            user-drag: none;
-        }
-
-        .info-box {
-            position: absolute;
-            transform: translate(-50%, -50%);
-            background: linear-gradient(145deg, #31333b, #26272d);
-            color: white;
-            border-radius: 12px;
-            padding: 1em 0.8em;
-            font-size: clamp(11px, 1vw, 15px);
-            width: 140px;
-            text-align: center;
-            box-shadow: none;
-            cursor: pointer;
-            border: 1px solid #3c3c3c;
-            transition: transform 0.2s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-        }
-
-        .info-box:hover {
-            transform: translate(-50%, -50%) scale(1.05);
-            box-shadow: 0 0 16px rgba(108, 108, 108, 0.25);
-        }
-
-
-        .info-box .label {
-            font-weight: bold;
-            font-size: 1em;
-        }
-
-        .info-box .divider {
-            border: 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.3);
-            margin: 6px 0;
-        }
-
-        .info-box.selected {
-            transform: translate(-50%, -50%) scale(1.15);
-            transition: transform 0.2s ease;
-            background: #505050;
-            z-index: 2;
-        }
-
-
-        .info-box .grade {
-            font-size: 0.95em;
-            font-weight: bold;
-        }
-
-        .card-box .data-row + .data-row {
-            margin-top: 2px;
-        }
-    </style>
+    <!-- Pretendard 폰트 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+    <!-- ✅ 외부 CSS 링크 -->
+    <link rel="stylesheet" href="/css/comfort-dashboard/comfort-dashboard.css">
 </head>
 <body oncontextmenu="return false">
 <div layout:fragment="content">
-    <h2 class="text-center" style="text-align: center; margin-top: 30px; font-size: 24px;">오피스 제어 대시보드</h2>
+    <h2 style="text-align: center; margin-top: 30px; font-size: 24px;">오피스 제어 대시보드</h2>
     <div class="dashboard-container">
-
-        <!-- 왼쪽 고정 패널 -->
+        <!-- 왼쪽 패널 -->
         <div id="popup-panel" class="popup-panel">
+            <!-- 장소 등록 -->
+            <div class="collapsible">
+                <div class="collapsible-header">장소 등록</div>
+                <div class="collapsible-body">
+                    <form id="place-form" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="placeName">장소명</label>
+                            <input type="text" id="placeName" name="placeName" placeholder="예: 회의실 A" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="placeImage">도면 이미지</label>
+                            <input type="file" id="placeImage" name="file" accept="image/*" required>
+                        </div>
+                        <button type="submit">등록하기</button>
+                    </form>
+                </div>
+            </div>
 
-        <form id="place-form" enctype="multipart/form-data">
-            <input type="text" name="placeName" placeholder="장소명" required>
-            <input type="file" name="file" accept="image/*" required>
-            <button type="submit">장소 등록</button>
-        </form>
+            <!-- 장소 수정 -->
+            <div class="collapsible">
+                <div class="collapsible-header">장소 수정</div>
+                <div class="collapsible-body">
+                    <form id="place-edit-form" enctype="multipart/form-data">
+                        <input type="hidden" name="placeNo" value="14">
+                        <div class="form-group">
+                            <label for="editPlaceName">수정할 장소명</label>
+                            <input type="text" id="editPlaceName" name="placeName" value="수정 할 장소명" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editPlaceFile">도면 이미지 변경 (선택)</label>
+                            <input type="file" id="editPlaceFile" name="file" accept="image/*">
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit">수정하기</button>
+                            <button type="button" id="delete-place-btn">장소 삭제</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
 
             <!-- 환경 정보 카드 -->
             <div id="env-info-card" class="card-box">
@@ -173,7 +63,7 @@
                 <div class="data-row"><span>상태</span><span id="env-comment">-</span></div>
             </div>
 
-            <!-- 지역 설정 + 날씨 정보 -->
+            <!-- 날씨 정보 카드 -->
             <div class="card-box">
                 <h5>외부 날씨</h5>
                 <div class="data-row"><span>현재 위치</span><span id="weather-location-label">-</span></div>
@@ -183,50 +73,56 @@
                 <div class="data-row"><span>상태</span><span id="weather-desc">-</span></div>
             </div>
 
-
             <!-- 장비 상태 -->
             <div id="device-status" class="card-box">
                 <h5>작동 상태</h5>
             </div>
         </div>
 
-        <!-- 도면 우측 -->
+        <!-- 도면 영역 -->
         <div id="floor-wrapper">
             <select id="place-select"></select>
             <img id="floor-image" src="" alt="오피스 도면" draggable="false">
 
-            <form id="place-edit-form" enctype="multipart/form-data">
-                <input type="hidden" name="placeNo" value="14"> <!-- 수정할 장소 번호 -->
-                <input type="text" name="placeName" value="수정 할 장소명" required> <!-- 사용자가 수정 -->
-                <input type="file" name="file" accept="image/*">
-                <button type="submit">장소 수정</button>
-            </form>
-
-            <button id="delete-place-btn">삭제</button>
-
+            <!-- 위치별 인포박스 -->
             <div class="info-box" style="top: 55%; left: 17%;" onclick="showPopup('deptA', this)">
-                <div class="label">사무실 A</div><hr class="divider">
+                <div class="label">사무실 A</div>
+                <hr class="divider">
                 <div class="grade" id="grade-deptA">-</div>
             </div>
 
             <div class="info-box" style="top: 18%; left: 17%;" onclick="showPopup('deptB', this)">
-                <div class="label">사무실 B</div><hr class="divider">
+                <div class="label">사무실 B</div>
+                <hr class="divider">
                 <div class="grade" id="grade-deptB">-</div>
             </div>
 
             <div class="info-box" style="top: 18%; left: 80%;" onclick="showPopup('meetingA', this)">
-                <div class="label">회의실 A</div><hr class="divider">
+                <div class="label">회의실 A</div>
+                <hr class="divider">
                 <div class="grade" id="grade-meetingA">-</div>
             </div>
 
             <div class="info-box" style="top: 55%; left: 57%;" onclick="showPopup('meetingB', this)">
-                <div class="label">회의실 B</div><hr class="divider">
+                <div class="label">회의실 B</div>
+                <hr class="divider">
                 <div class="grade" id="grade-meetingB">-</div>
             </div>
         </div>
     </div>
+
+    <!-- JavaScript -->
     <script src="/js/comfort-dashboard.js" defer></script>
     <script src="/js/place/place-selector.js" defer></script>
+    <script>
+        // Collapsible toggle
+        document.querySelectorAll('.collapsible-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const wrapper = header.closest('.collapsible');
+                wrapper.classList.toggle('open');
+            });
+        });
+    </script>
 </div>
 </body>
 </html>
