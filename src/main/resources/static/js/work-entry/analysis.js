@@ -189,17 +189,20 @@ document.addEventListener('DOMContentLoaded', function () {
             tempEl.innerHTML = renderedHtml;
             const fullHtml = tempEl.textContent || tempEl.innerText || content || '';
 
-            // 💡 렌더링 텍스트 비었을 때는 바로 전체 출력
-            if (!fullHtml.trim()) {
+            const splitter = new GraphemeSplitter();
+            const splitText = splitter.splitGraphemes(fullHtml);
+            console.log("응답:", content);
+            console.log("파싱된 fullHtml:", fullHtml);
+            console.log("분할된 글자 수:", splitText.length);
+
+            // 👉 안전장치 추가 (비었을 경우 강제 출력)
+            if (!fullHtml.trim() || splitText.length === 0) {
                 contentBox.innerHTML = renderedHtml || '(출력 없음)';
                 if (role === 'ai') appendCopyButton(bubble, content);
                 return;
             }
 
-            const splitter = new GraphemeSplitter();
-            const splitText = splitter.splitGraphemes(fullHtml);
             let index = 0;
-
             const interval = setInterval(() => {
                 if (index < splitText.length) {
                     contentBox.textContent += splitText[index++];
@@ -211,6 +214,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }, 20);
         }
+
+
     }
 
         function appendCopyButton(bubble, content) {
