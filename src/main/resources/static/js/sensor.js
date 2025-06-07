@@ -1,4 +1,4 @@
-const SENSOR_API = "http://localhost:10251/api/v1/sensors";
+const SENSOR_API = "https://aiot2.live/api/v1/sensors";
 const USER_HEADER = { "X-USER": "test-user@aiot.com" }; // ✅ 추가
 
 const FETCH_CONFIG = {

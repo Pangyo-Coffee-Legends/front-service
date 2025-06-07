@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko"
-      layout:decorate="~{/layout/index/layout.html}"
+      layout:decorate="~{layout/index/layout.html}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <title>AI 기반 근태 분석</title>
@@ -38,23 +38,23 @@
 
             <!-- 🔽 분석 폼 -->
             <form id="analysisForm" class="border rounded p-3 bg-white">
-                <div class="row g-2 align-items-end">
+                <div class="row g-2 align-items-center">
                     <div class="col-md-3">
-                        <select id="memberSelect" class="form-select form-select-sm" required>
+                        <select id="memberSelect" class="form-select form-select-sm h-100" required>
                             <option value="">사원을 선택하세요</option>
                         </select>
                     </div>
                     <div class="col-md-7">
-                        <textarea id="promptText" class="form-control form-control-sm" rows="2"
-                                  placeholder="질문을 입력하세요" required></textarea>
+                        <textarea id="promptText" class="form-control form-control-sm" style="height: 38px;" placeholder="질문을 입력하세요" required></textarea>
                     </div>
                     <div class="col-md-2 d-grid">
-                        <button type="submit" class="btn btn-sm btn-primary">
+                        <button type="submit" class="btn btn-sm btn-primary h-100">
                             <i class="bi bi-send me-1"></i> 보내기
                         </button>
                     </div>
                 </div>
             </form>
+
 
             <!-- 📄 리포트 생성 및 PDF 저장 -->
             <div class="border rounded p-3 mt-3 bg-white">

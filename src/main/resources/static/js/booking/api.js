@@ -1,10 +1,10 @@
 function apiStore(){
-    const SERVER_URL="http://localhost:10251/api/v1";
+    const SERVER_URL="https://aiot2.live/api/v1";
     const GET_OPTIONS = {
         method:'GET',
         credentials: 'include',
         headers: {
-            accepts: 'application/json',
+            Accept: 'application/json',
         }
     }
 
@@ -15,7 +15,7 @@ function apiStore(){
             method:'POST',
             credentials: 'include',
             headers: {
-                accepts: 'application/json',
+                Accept: 'application/json',
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(data)
@@ -55,7 +55,7 @@ function apiStore(){
             method:'POST',
             credentials: 'include',
             headers: {
-                accepts: 'application/json',
+                Accept: 'application/json',
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(data)
@@ -140,7 +140,7 @@ function apiStore(){
             method: 'PUT',
             credentials: 'include',
             headers: {
-                accepts: 'application/json',
+                Accept: 'application/json',
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(data)
@@ -162,7 +162,7 @@ function apiStore(){
             method: 'PUT',
             credentials: 'include',
             headers: {
-                accepts: 'application/json',
+                Accept: 'application/json',
                 'Content-Type': 'application/json',
             }
         };
@@ -183,7 +183,7 @@ function apiStore(){
             method: 'PUT',
             credentials: 'include',
             headers: {
-                accepts: 'application/json',
+                Accept: 'application/json',
                 'Content-Type': 'application/json',
             }
         };
