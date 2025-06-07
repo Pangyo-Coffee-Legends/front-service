@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     const realtimeChart = new Chart(ctx, {
-        type: 'bar',
+        type: 'line',
         data: {
             labels: [],
             datasets: [{
@@ -51,6 +51,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     title: {
                         display: true,
                         text: '출입 횟수'
+                    },
+                    ticks: {
+                        stepSize: 1,
+                        callback: function (value) {
+                            return Number.isInteger(value) ? value : null;
+                        }
                     }
                 }
             },
@@ -67,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
      */
     async function fetchAndUpdate() {
         try {
-            const response = await fetchWithAuth('https://aiot2.live/api/v1/entries/realtime');
+            const response = await fetchWithAuth('http://localhost:10251/api/v1/entries/realtime');
             if (response.ok) {
                 const data = await response.json();
                 if (data.time && typeof data.count === 'number') {
@@ -77,12 +83,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     lastProcessedTime = data.time;
 
                     const kstDate = new Date(data.time);
-                    const timeLabel = new Intl.DateTimeFormat('ko-KR', {
-                        timeZone: 'Asia/Seoul',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        hour12: false,
-                    }).format(kstDate);
+                    const timeLabel = kstDate.getFullYear() + '-' +
+                        String(kstDate.getMonth() + 1).padStart(2, '0') + '-' +
+                        String(kstDate.getDate()).padStart(2, '0') + ' ' +
+                        String(kstDate.getHours()).padStart(2, '0') + ':' +
+                        String(kstDate.getMinutes()).padStart(2, '0');
+
 
                     if (!realtimeChart.data.labels.includes(timeLabel)) {
                         realtimeChart.data.labels.push(timeLabel);

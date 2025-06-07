@@ -1,4 +1,4 @@
-const logViewer = document.getElementById('log-viewer');
+const logViewer = document.getElementById('realtime-log');
 const socket = new WebSocket("wss://aiot2.live/ws/logs");
 
 socket.onopen = function () {

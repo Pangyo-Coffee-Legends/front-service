@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 x: {
                     title: {
                         display: true,
-                        text: '날짜(YYYY-MM-DD)'
+                        text: '날짜'
                     },
                     ticks: {
                         autoSkip: true,
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function () {
      * 서버에서 출입 통계 데이터 불러오기
      */
     function loadEntryChart() {
-        fetchWithAuth('https://aiot2.live/api/v1/entries/weekly')
+        fetchWithAuth('http://localhost:10251/api/v1/entries/weekly')
             .then(res => {
                 if (!res.ok) throw new Error("응답 실패");
                 return res.json();
