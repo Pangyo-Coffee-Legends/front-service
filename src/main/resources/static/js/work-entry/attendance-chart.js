@@ -239,24 +239,26 @@ document.addEventListener('DOMContentLoaded', function () {
         }[code] || '#ccc';
     }
 
-    function loadMemberList() {
-        fetch(`https://aiot2.live/api/v1/members`, { credentials: 'include' })
+    const defaultPageSize = 10;
+    let currentPage=0;
+    function loadMemberList(page = 0, size = defaultPageSize) {
+        fetch(`https://aiot2.live/api/v1/members?page=${page}&size=${size}`, { credentials: 'include' })
             .then(res => res.json())
             .then(json => {
                 const table = document.createElement('table');
                 table.className = 'table table-bordered table-hover';
-                table.innerHTML = '<thead><tr><th>회원 번호</th><th>이름</th><th>이메일</th><th>전화번호</th></tr></thead><tbody></tbody>';
+                table.innerHTML = '<thead><tr><th style="width: 20%;">회원 번호</th><th style="width: 80%;">이름</th></tr></thead><tbody></tbody>';
                 const tbody = table.querySelector('tbody');
 
                 json.content.forEach(mem => {
                     const tr = document.createElement('tr');
-                    tr.innerHTML = `<td>${mem.no}</td><td>${mem.name}</td><td>${mem.email}</td><td>${mem.phoneNumber}</td>`;
+                    tr.innerHTML = `<td>${mem.no}</td><td>${mem.name}</td>`;
                     tr.onclick = () => {
                         currentMemberNo = mem.no;
                         currentMemberName = mem.name;
                         tbody.querySelectorAll('tr').forEach(row => row.classList.remove('selected-member'));
                         tr.classList.add('selected-member');
-                        attendanceChartContainer.innerHTML = `
+                        document.getElementById('attendance-chart-container').innerHTML = `
                         <div class="alert alert-info d-flex justify-content-between align-items-center">
                             <span>조회할 연도와 월을 선택하세요.</span>
                             <span class="fw-bold">선택한 사원: ${currentMemberName}</span>
@@ -265,8 +267,31 @@ document.addEventListener('DOMContentLoaded', function () {
                     tbody.appendChild(tr);
                 });
 
-                memberTableContainer.innerHTML = '';
-                memberTableContainer.appendChild(table);
+                const container = document.getElementById('member-table-container');
+                container.innerHTML = '';
+                container.appendChild(table);
+
+                // 페이지네이션 정보 업데이트
+                document.getElementById('currentPageText').textContent = `페이지 ${page + 1}`;
+                const prevBtn = document.getElementById('prevPageBtn');
+                const nextBtn = document.getElementById('nextPageBtn');
+
+                prevBtn.disabled = page === 0;
+                nextBtn.disabled = json.last;
+
+                prevBtn.onclick = () => {
+                    if (page > 0) {
+                        currentPage--;
+                        loadMemberList(currentPage, size);
+                    }
+                };
+
+                nextBtn.onclick = () => {
+                    if (!json.last) {
+                        currentPage++;
+                        loadMemberList(currentPage, size);
+                    }
+                };
             });
     }
 
