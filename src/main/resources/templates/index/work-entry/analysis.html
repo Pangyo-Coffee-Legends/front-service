@@ -20,6 +20,16 @@
 </head>
 
 <body>
+<!-- ✅ 분석 로딩 오버레이 -->
+<div id="reportLoadingOverlay"
+     style="display: none;"
+     class="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-flex justify-content-center align-items-center">
+    <div class="text-center text-white">
+        <div class="loader mx-auto mb-3"></div>
+        <strong>로딩 중<br>잠시만 기다려주세요...</strong>
+    </div>
+</div>
+
 <div layout:fragment="content">
     <div class="page-title">
         <span class="emoji">🧠📊</span>

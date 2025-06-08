@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const reportBtn = document.getElementById('generateReportBtn');
     const reportMonth = document.getElementById('reportMonth');
     const reportYear = document.getElementById('reportYear');
-
+    const overlay = document.getElementById('reportLoadingOverlay');
     let currentThreadId = null;
     let thinkingInterval = null;
     let isSubmitting = false;
@@ -32,7 +32,6 @@ document.addEventListener('DOMContentLoaded', function () {
             const month = parseInt(reportMonth.value, 10);
             const year = parseInt(reportYear.value, 10);
 
-            // ✅ 수정됨: 대화 선택 확인 추가
             if (!mbNo || isNaN(month) || isNaN(year) || !currentThreadId) {
                 alert("사원, 연도, 월, 대화 목록을 모두 선택해주세요.");
                 return;
@@ -42,8 +41,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 "출근": 1, "지각": 2, "결근": 3, "외근": 4,
                 "연차": 5, "병가": 6, "반차": 7, "경조사휴가": 8
             };
-
             const statusCodes = Object.values(keywordMap).map(String);
+
+            overlay.style.display = 'flex'; // ✅ 로딩 오버레이 표시
 
             postWithAuth("https://aiot2.live/api/v1/analysis/reports", {
                 mbNo: parseInt(mbNo),
@@ -65,6 +65,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 .catch(err => {
                     console.error("❌ 리포트 생성 실패:", err);
                     alert("리포트 생성에 실패했습니다.");
+                })
+                .finally(() => {
+                    overlay.style.display = 'none'; // ✅ 로딩 오버레이 해제
                 });
         });
     }
