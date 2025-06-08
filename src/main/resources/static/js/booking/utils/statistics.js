@@ -125,6 +125,9 @@ function drawMonthlyCountChart(bookings, rooms) {
                     text: '월'
                 }
             }
+        },
+        ticks: {
+            stepSize: 1
         }
     };
 
@@ -188,6 +191,9 @@ function drawTimeCountChart(bookings, rooms) {
                     text: '예약 횟수'
                 }
             }
+        },
+        ticks: {
+            stepSize: 1
         }
     };
 
@@ -217,6 +223,9 @@ function drawWeekCountChart(bookings, rooms) {
                         text: '예약 수'
                     }
                 }
+            },
+            ticks: {
+                stepSize: 1
             }
         },
         true
