@@ -105,7 +105,14 @@ function displayMessage(message) {
     // 말풍선 본체
     const bubble = document.createElement('div');
     bubble.classList.add('bubble');
-    bubble.innerHTML = escapeHtml(message.content);
+
+    // HTML 형태로 받은 메시지를 innerHTML로 설정
+    bubble.innerHTML = message.content;
+
+    // 기본 스타일 적용
+    bubble.style.whiteSpace = 'pre-line';
+    bubble.style.fontFamily = 'Segoe UI, sans-serif';
+    bubble.style.lineHeight = '1.6';
 
     // 말풍선 하단 메타 정보
     const bubbleMeta = document.createElement('div');
@@ -169,7 +176,14 @@ function displayRawMessage(msgText) {
     // 말풍선 본체
     const bubble = document.createElement('div');
     bubble.classList.add('bubble');
-    bubble.innerHTML = escapeHtml(msgText);
+
+    // HTML 형태로 받은 메시지를 innerHTML로 설정
+    bubble.innerHTML = msgText;
+
+    // 기본 스타일 적용
+    bubble.style.whiteSpace = 'pre-line';
+    bubble.style.fontFamily = 'Segoe UI, sans-serif';
+    bubble.style.lineHeight = '1.6';
 
     // 말풍선 하단 메타 정보
     const bubbleMeta = document.createElement('div');

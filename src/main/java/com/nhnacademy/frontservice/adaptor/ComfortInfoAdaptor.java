@@ -9,7 +9,7 @@ import java.util.List;
 
 @FeignClient(
         name = "comfort-info-service",
-        url = "${rule-service.url}",
+        url = "http://localhost:10263",
         path = "/api/v1/comfort"
 )
 public interface ComfortInfoAdaptor {

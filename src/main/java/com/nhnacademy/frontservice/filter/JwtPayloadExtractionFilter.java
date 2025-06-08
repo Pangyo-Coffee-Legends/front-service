@@ -25,24 +25,29 @@ import java.util.Base64;
 import java.util.List;
 
 /**
- * JWT 토큰 기반 인증을 처리하는 Spring Security 필터입니다.
+ * JWT 토큰의 Payload 정보를 추출하여 Security Context에 권한 정보를 설정하는 필터입니다.
  * <p>
- * HTTP 요청의 쿠키에서 accessToken을 추출하여,
- * JWT의 Payload를 디코딩하고 사용자 정보 및 권한을 SecurityContext에 설정합니다.
+ * HTTP 요청의 쿠키에서 JWT 토큰을 추출한 후,
+ * Payload 영역을 디코딩하여 사용자 이메일과 권한 정보를 Security Context에 주입합니다.
+ *
  */
 @Slf4j
 @Component
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
+public class JwtPayloadExtractionFilter extends OncePerRequestFilter {
 
     /**
-     * HTTP 요청마다 한 번만 실행되는 필터 메서드입니다.
-     * 쿠키에서 JWT 토큰을 추출하고 유효성을 검증하여 인증 정보를 설정합니다.
+     * HTTP 요청마다 실행되는 필터 메서드입니다.
+     * <p>
+     * 1. 쿠키에서 JWT 토큰 추출
+     * 2. 토큰 분해 후 Payload 디코딩
+     * 3. JSON 파싱을 통한 사용자 정보 추출
+     * 4. Security Context에 권한 정보 설정
      *
-     * @param request     HTTP 요청
-     * @param response    HTTP 응답
-     * @param filterChain 필터 체인
-     * @throws ServletException 필터 처리 중 예외 발생 시
-     * @throws IOException      입출력 처리 중 예외 발생 시
+     * @param request     HTTP 요청 객체
+     * @param response    HTTP 응답 객체
+     * @param filterChain 다음 필터 체인
+     * @throws ServletException 서블릿 예외 발생 시
+     * @throws IOException      입출력 예외 발생 시
      */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -104,11 +109,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     /**
-     * 쿠키에서 특정 이름의 JWT 토큰 값을 추출합니다.
+     * 지정된 이름의 쿠키에서 JWT 토큰 값을 추출합니다.
      *
      * @param request    HTTP 요청 객체
-     * @param cookieName 추출할 쿠키의 이름
-     * @return JWT 토큰 문자열, 없으면 null 반환
+     * @param cookieName 추출 대상 쿠키 이름 (기본값: "accessToken")
+     * @return 추출된 JWT 토큰 문자열, 없을 경우 null 반환
      */
     private String extractTokenFromCookie(HttpServletRequest request, String cookieName) {
         Cookie[] cookies = request.getCookies();
