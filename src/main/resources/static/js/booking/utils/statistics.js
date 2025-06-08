@@ -59,10 +59,11 @@ function addChart(chartId, chartType, chartData, chartOptions, useFilter = false
     return { chart, filterElements };
 }
 
-function drawMonthlyCountChart (bookings) {
+function drawMonthlyCountChart(bookings, rooms) {
+    const allRooms = rooms.map(r => r.meetingRoomName);
 
-    const countMap = {}; // { roomName: { '2025-05': count, ... } }
-    const monthSet = new Set(); // 모든 월을 수집해서 x축으로 사용
+    const countMap = {}; // { roomName: { '2025-05': count } }
+    const monthSet = new Set();
 
     bookings.forEach(booking => {
         const room = booking.room.name;
@@ -78,14 +79,17 @@ function drawMonthlyCountChart (bookings) {
 
     const sortedMonths = Array.from(monthSet).sort();
 
-    const datasets = Object.entries(countMap).map(([room, monthlyCounts], idx) => ({
-        label: room,
-        data: sortedMonths.map(month => monthlyCounts[month] || 0),
-        borderColor: `hsl(${(idx * 60) % 360}, 70%, 50%)`,
-        backgroundColor: `hsla(${(idx * 60) % 360}, 70%, 50%, 0.2)`,
-        fill: false,
-        tension: 0.3
-    }));
+    const datasets = allRooms.map((room, idx) => {
+        const monthlyCounts = countMap[room] || {};
+        return {
+            label: room,
+            data: sortedMonths.map(month => monthlyCounts[month] || 0),
+            borderColor: `hsl(${(idx * 60) % 360}, 70%, 50%)`,
+            backgroundColor: `hsla(${(idx * 60) % 360}, 70%, 50%, 0.2)`,
+            fill: false,
+            tension: 0.3
+        };
+    });
 
     const chartData = {
         labels: sortedMonths,
@@ -128,26 +132,13 @@ function drawMonthlyCountChart (bookings) {
 }
 
 
-function drawTimeCountChart (bookings){
+
+function drawTimeCountChart(bookings, rooms) {
+    const allRooms = rooms.map(r => r.meetingRoomName);
+
     const timeSlots = [
-        "09:00",
-        // "09:30",
-        "10:00",
-        // "10:30",
-        "11:00",
-        // "11:30",
-        "12:00",
-        // "12:30",
-        "13:00",
-        // "13:30",
-        "14:00",
-        // "14:30",
-        "15:00",
-        // "15:30",
-        "16:00",
-        // "16:30",
-        "17:00",
-        // "17:30"
+        "09:00", "10:00", "11:00", "12:00",
+        "13:00", "14:00", "15:00", "16:00", "17:00"
     ];
 
     const countMap = {};
@@ -167,18 +158,19 @@ function drawTimeCountChart (bookings){
         countMap[room][startTime]++;
     });
 
-    const datasets = Object.entries(countMap).map(([roomName, timeCount], idx) => ({
-        label: roomName,
-        data: timeSlots.map(time => timeCount[time] || 0),
-        // backgroundColor: roomColorMap[roomName],
-        // fill: false,
-        // tension: 0.3
-    }));
+    const datasets = allRooms.map((room, idx) => {
+        const timeCounts = countMap[room] || {};
+        return {
+            label: room,
+            data: timeSlots.map(time => timeCounts[time] || 0),
+            backgroundColor: `hsla(${(idx * 60) % 360}, 70%, 50%, 0.6)`
+        };
+    });
 
     const chartData = {
         labels: timeSlots,
         datasets: datasets
-    }
+    };
 
     const chartOption = {
         plugins: {
@@ -198,10 +190,13 @@ function drawTimeCountChart (bookings){
             }
         }
     };
-    addChart('시간별 회의실 예약 수', 'bar', chartData, chartOption)
+
+    addChart('시간별 회의실 예약 수', 'bar', chartData, chartOption);
 }
 
-function drawWeekCountChart(bookings) {
+function drawWeekCountChart(bookings, rooms) {
+    const allRooms = rooms.map(r => r.meetingRoomName);
+
     const { chart, filterElements } = addChart(
         '요일별 회의실 예약 수',
         'bar',
@@ -233,13 +228,11 @@ function drawWeekCountChart(bookings) {
 
     const allDates = bookings.map(b => new Date(b.startsAt));
     const uniqueYears = [...new Set(allDates.map(d => d.getFullYear()))].sort();
-    // const uniqueMonths = [...new Set(allDates.map(d => d.getMonth() + 1))].sort((a, b) => a - b);
-
     const today = new Date();
     const currentYear = today.getFullYear();
     const currentMonth = today.getMonth() + 1;
 
-    yearSelector.innerHTML = Array.from(y =>
+    yearSelector.innerHTML = uniqueYears.map(y =>
         `<option value="${y}" ${y === currentYear ? 'selected' : ''}>${y}년</option>`
     ).join('');
 
@@ -248,17 +241,15 @@ function drawWeekCountChart(bookings) {
         return `<option value="${month}" ${month === currentMonth ? 'selected' : ''}>${month}월</option>`;
     }).join('');
 
-    // 주차 옵션 생성 후 오늘 날짜 기준으로 선택
     function updateWeekOptions() {
         const year = parseInt(yearSelector.value);
-        const month = parseInt(monthSelector.value) - 1; // 0-indexed
+        const month = parseInt(monthSelector.value) - 1;
         const weeks = getWeeksInMonth(year, month);
 
         weekSelector.innerHTML = weeks.map((w, i) =>
             `<option value="${i}">${i + 1}주차 (${w.start.toLocaleDateString()} ~ ${w.end.toLocaleDateString()})</option>`
         ).join('');
 
-        // 오늘 날짜가 포함된 주차를 선택
         const today = new Date();
         const todayWeekIndex = weeks.findIndex(w => today >= w.start && today <= w.end);
         if (todayWeekIndex !== -1) {
@@ -279,7 +270,7 @@ function drawWeekCountChart(bookings) {
 
         const roomWeekdayMap = {};
         filtered.forEach(booking => {
-            const room = booking.room.name.trim();
+            const room = booking.room.name;
             const weekday = getWeekdayIndex(booking.startsAt);
             if (!roomWeekdayMap[room]) {
                 roomWeekdayMap[room] = Array(7).fill(0);
@@ -288,15 +279,15 @@ function drawWeekCountChart(bookings) {
         });
 
         chart.data.labels = ['월', '화', '수', '목', '금', '토', '일'];
-        chart.data.datasets = Object.entries(roomWeekdayMap).map(([roomName, counts]) => ({
-            label: roomName,
-            data: counts
+        chart.data.datasets = allRooms.map((room, idx) => ({
+            label: room,
+            data: roomWeekdayMap[room] || Array(7).fill(0),
+            backgroundColor: `hsla(${(idx * 60) % 360}, 70%, 50%, 0.6)`
         }));
 
         chart.update();
     }
 
-    // 필터 변경 시 차트 갱신
     yearSelector.addEventListener('change', () => {
         updateWeekOptions();
         updateChart();
@@ -307,8 +298,7 @@ function drawWeekCountChart(bookings) {
     });
     weekSelector.addEventListener('change', updateChart);
 
-    // 초기 렌더링
-    updateWeekOptions(); // 주차 생성 및 선택
+    updateWeekOptions();
     updateChart();
 }
 
