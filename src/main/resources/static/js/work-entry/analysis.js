@@ -9,9 +9,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const reportBtn = document.getElementById('generateReportBtn');
     const reportMonth = document.getElementById('reportMonth');
     const reportYear = document.getElementById('reportYear');
-
     let currentThreadId = null;
     let thinkingInterval = null;
+    let isSubmitting = false;
 
     if (reportYear) {
         for (let y = 2000; y <= 2100; y++) {
@@ -30,18 +30,21 @@ document.addEventListener('DOMContentLoaded', function () {
             const mbNo = memberInput.value.trim();
             const month = parseInt(reportMonth.value, 10);
             const year = parseInt(reportYear.value, 10);
+            const overlay = document.getElementById('reportLoadingOverlay');
 
-            // ✅ 수정됨: 대화 선택 확인 추가
+            // 유효성 검사
             if (!mbNo || isNaN(month) || isNaN(year) || !currentThreadId) {
                 alert("사원, 연도, 월, 대화 목록을 모두 선택해주세요.");
                 return;
             }
 
+            // ✅ 로딩 표시
+            if (overlay) overlay.style.display = 'flex';
+
             const keywordMap = {
                 "출근": 1, "지각": 2, "결근": 3, "외근": 4,
-                "연차": 5, "질병": 6, "반차": 7, "상": 8
+                "연차": 5, "병가": 6, "반차": 7, "경조사휴가": 8
             };
-
             const statusCodes = Object.values(keywordMap).map(String);
 
             postWithAuth("http://localhost:10251/api/v1/analysis/reports", {
@@ -64,9 +67,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 .catch(err => {
                     console.error("❌ 리포트 생성 실패:", err);
                     alert("리포트 생성에 실패했습니다.");
+                })
+                .finally(() => {
+                    // ✅ 로딩 숨기기
+                    if (overlay) overlay.style.display = 'none';
                 });
         });
     }
+
 
     document.getElementById('downloadPdfBtn').addEventListener('click', function () {
         const mbNo = memberInput.value;
@@ -134,6 +142,9 @@ document.addEventListener('DOMContentLoaded', function () {
     promptInput.addEventListener('keydown', function (e) {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
+
+            if(isSubmitting) return;
+
             form.dispatchEvent(new Event('submit'));
         }
     });
@@ -171,6 +182,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 dotCount = (dotCount + 1) % 4;
                 contentBox.textContent = 'AI가 생각중입니다' + '.'.repeat(dotCount);
             }, 300);
+            // 채팅 추가 후 자동 스크롤
+            setTimeout(() => {
+                wrapper.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            }, 10);
+
             return;
         }
 
@@ -368,10 +384,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
     form.addEventListener('submit', function (e) {
         e.preventDefault();
+
+        // 중복 제출 방지
+        if (isSubmitting) return;
+        isSubmitting = true;
+
         const memberNo = memberInput.value.trim();
         const prompt = promptInput.value.trim();
         if (!memberNo || !prompt || !currentThreadId) {
             alert('사원번호, 질문, 대화 선택을 모두 완료하세요.');
+            isSubmitting = false;
             return;
         }
 
@@ -393,7 +415,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 const keywordMap = {
                     "출근": 1, "지각": 2, "결근": 3, "외근": 4,
-                    "연차": 5, "질병": 6, "반차": 7, "상": 8
+                    "연차": 5, "병가": 6, "반차": 7, "경조사휴가": 8
                 };
 
                 const matchedLabels = [];
@@ -447,6 +469,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 chatBox.lastChild.remove();
                 console.error('❌ 분석 흐름 오류:', err);
                 appendChatMessage('ai', `❗ 오류: ${err.message}`);
+            })
+            .finally(() => {
+                isSubmitting = false;
             });
     });
 
@@ -458,8 +483,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         const title = prompt('새 대화 제목을 입력하세요');
         if (!title?.trim()) return;
-      
+
         postWithAuth('http://localhost:10251/api/v1/analysis/threads', {mbNo, title: title.trim()})
+
             .then(res => res.json())
             .then(thread => {
                 currentThreadId = thread.threadId;

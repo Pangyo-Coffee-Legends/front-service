@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 x: {
                     title: {
                         display: true,
-                        text: '날짜(YYYY-MM-DD)'
+                        text: '날짜'
                     },
                     ticks: {
                         autoSkip: true,

@@ -9,7 +9,7 @@
       background-color: #2b2c32;
       color: white;
       font-family: 'Segoe UI', sans-serif;
-      padding: 2rem;
+      /*padding: 2rem;*/
     }
 
     table.dataTable {
@@ -111,10 +111,7 @@
 
   <!-- ✅ 조회용 장소 선택 드롭다운 -->
   <label for="filterLocationSelect">장소별 보기:</label>
-  <select id="filterLocationSelect">
-    <option value="회의실">회의실</option>
-    <option value="사무실">사무실</option>
-  </select>
+  <select id="filterLocationSelect"></select>
 
   <!-- ✅ 센서 출력 테이블 -->
   <table id="sensorResultTable" class="display" style="width:100%">
@@ -124,7 +121,6 @@
       <th>센서 타입</th>
       <th>센서 상태</th>
       <th>센서 장소</th>
-      <th>동작</th>
     </tr>
     </thead>
     <tbody></tbody>
@@ -155,10 +151,7 @@
       </label><br><br>
 
       <label>장소:
-        <select name="location" required>
-          <option value="회의실">회의실</option>
-          <option value="사무실">사무실</option>
-        </select>
+        <select name="location" id="modalLocationSelect" required></select>
       </label><br><br>
 
       <button type="submit">등록</button>

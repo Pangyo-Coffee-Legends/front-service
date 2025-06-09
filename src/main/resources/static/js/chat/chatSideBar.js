@@ -1,5 +1,6 @@
 // API 기본 URL (실제 환경에 맞게 수정 필요)
-const API_BASE_URL = 'http://localhost:10251'; // 실제 API 서버 주소로 변경해주세요.
+const API_BASE_URL = 'https://aiot2.live'; // 실제 API 서버 주소로 변경해주세요.
+const SOCKET_BASE_URL = 'wss://aiot2.live'
 const SOCKJS_ENDPOINT = `${API_BASE_URL}/ws/chat/connect`; // 예: '/ws-stomp' 또는 서버에서 설정한 엔드포인트
 const UNREAD_COUNT_TOPIC = '/topic/unread-count-updates'; // 백엔드에서 지정한 사용자 구독 경로
 
@@ -69,7 +70,6 @@ function handleUnreadCountUpdate(message) {
 
 // ---  STOMP 메시지 수신 시 콜백 함수 ---
 function handleUnreadNotificationCountUpdate(message) {
-    console.log("사이드 바 안 읽은 메시지 테스트 :", message);
     try {
         const payload  = message.body;
 
@@ -180,7 +180,6 @@ async function fetchInitialUnreadCount() {
 async function checkRoleAndRenderMenu() {
     try {
         const roleData = await fetchInitialFindRole();
-        console.log('Role data:', roleData); // 객체 전체 확인
         if (roleData && roleData.roleName === 'ROLE_ADMIN') { // roleName으로 접근
             document.getElementById('notification-menu').style.display = 'block';
         } else {

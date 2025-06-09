@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<!--레이아웃 설정 시 work-entry 패키지 안 html 설정 시 template 하위 경로부터 작성-->
+
+<html lang="ko" layout:decorate="~{layout/index/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <link rel="stylesheet" href="/css/work-entry/log.css">
+    <link rel="stylesheet" href="/css/work-entry/attendance-chart.css">
+    <script src="/js/work-entry/realtime-entry.js" defer></script> <!-- 실시간 출입 통계 관련 JS-->
+    <script src="/js/work-entry/strange-access.js" defer></script> <!-- 이상 출입 알림 관련 JS-->
+    <script src="/js/work-entry/weekly-entry-chart.js" defer></script> <!-- 주간 출입 관련 JS -->
+    <script src="/js/logprint.js" defer></script> <!--로그 화면 출력 관련 JS-->
+    <title>출입 통계</title>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <!-- 그래프 + 요약 테이블 섹션 -->
+    <div id="chart-container">
+        <div class="container mt-5">
+            <div class="row">
+                <!-- 주간 출입 차트 영역 -->
+                <div id="chart-col" class="col-md-8 mb-4">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">📊 주간 출입 통계</h5>
+                            <canvas id="entryChart" width="1200" height="400"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 주간 출입 요약 테이블 -->
+                <div class="col-md-4">
+                    <h5 class="mb-3">📌 일별 출입 요약</h5>
+                    <table class="table table-bordered table-sm">
+                        <thead class="table-light">
+                        <tr>
+                            <th scope="col">날짜</th>
+                            <th scope="col">출입 횟수</th>
+                        </tr>
+                        </thead>
+                        <tbody id="summaryTableBody">
+                        <!-- JavaScript로 채워짐 -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 실시간 차트 -->
+                <div class="col-md-8 mb-4">
+                    <div class="scrollable-chart" style="overflow-x: auto; white-space: nowrap;">
+                        <canvas id="realtimeEntryChart" width="1200" height="400"></canvas>
+                    </div>
+                </div>
+
+                <!-- 실시간 요약 -->
+                <div class="col-md-4">
+                    <h5 class="mb-3">📋 실시간 출입 요약</h5>
+                    <table class="table table-bordered">
+                        <tbody>
+                        <tr><th>최신 측정 시각</th><td id="latest-time">-</td></tr>
+                        <tr><th>현재 출입 횟수</th><td id="latest-count">-</td></tr>
+                        <tr><th>누적 평균</th><td id="average-count">-</td></tr>
+                        <tr><th>최대 출입</th><td id="max-count">-</td></tr>
+                        <tr><th>측정 횟수</th><td id="entry-count">-</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 로그 출력 섹션 -->
+    <div class="container mt-5">
+        <h3 class="mb-3">📄 실시간 로그</h3>
+        <div id="realtime-log" class="realtime-log"></div>
+    </div>
+
+</div>
+
+
+</body>
+</html>
