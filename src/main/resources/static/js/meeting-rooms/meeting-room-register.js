@@ -1,4 +1,4 @@
-const SERVER_URL = "http://localhost:10251";
+const SERVER_URL = "https://aiot2.live";
 const MEETING_ROOM_API = `${SERVER_URL}/api/v1/meeting-rooms`
 const MEETING_ROOM_EQUIPMENT_API = `${SERVER_URL}/api/v1/meeting-rooms/equipments`;
 

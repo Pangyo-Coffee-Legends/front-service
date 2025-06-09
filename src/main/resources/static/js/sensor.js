@@ -1,4 +1,4 @@
-const SENSOR_API = "http://localhost:10251/api/v1/sensors";
+const SENSOR_API = "https://aiot2.live/api/v1/sensors";
 const USER_HEADER = { "X-USER": "test-user@aiot.com" }; // ✅ 추가
 
 const FETCH_CONFIG = {
@@ -32,7 +32,7 @@ function fillLocationSelects(locations) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    fetch("http://localhost:10251/api/v1/sensors/places", FETCH_CONFIG)
+    fetch("https://aiot2.live/api/v1/sensors/places", FETCH_CONFIG)
         .then(res => res.ok ? res.json() : Promise.reject("장소 목록 불러오기 실패"))
         .then(locations => {
             // ✅ 드롭다운에 데이터 채우기
