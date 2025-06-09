@@ -115,23 +115,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    /**
-     * 시계 출력 함수 (초 단위 표시)
-     */
-    function updateClock() {
-        const now = new Date();
-        const hours = String(now.getHours()).padStart(2, '0');
-        const minutes = String(now.getMinutes()).padStart(2, '0');
-        const seconds = String(now.getSeconds()).padStart(2, '0');
-        const timeStr = `${hours}:${minutes}:${seconds}`;
-        document.getElementById('clock').textContent = `현재 시각: ${timeStr}`;
-    }
-
     // 초기 실행
     fetchAndUpdate().catch(console.error);
-    updateClock();
 
-    // 반복 실행 (데이터: 10초, 시계: 1초)
+    // 반복 실행 (데이터: 10초)
     setInterval(fetchAndUpdate,60 * 1000);
-    setInterval(updateClock, 1000);
 });
