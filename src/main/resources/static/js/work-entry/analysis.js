@@ -484,7 +484,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const title = prompt('새 대화 제목을 입력하세요');
         if (!title?.trim()) return;
 
-        postWithAuth('https://aiot2.live/api/v1/analysis/threads', {mbNo, title: title.trim()})
+        postWithAuth('http://localhost:10251/api/v1/analysis/threads', {mbNo, title: title.trim()})
 
             .then(res => res.json())
             .then(thread => {

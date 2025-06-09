@@ -66,12 +66,12 @@ public class FrontController {
         return "index/booking/my/history";
     }
 
-    @GetMapping("/booking/statistics")
-    public String bookingStatistics() {
-        return "index/booking/my/statistics";
-    }
+//    @GetMapping("/booking/statistics")
+//    public String bookingStatistics() {
+//        return "index/booking/my/statistics";
+//    }
 
-    @GetMapping("/admin/booking/statistics")
+    @GetMapping("/booking/statistics")
     public String adminBookingStatistics() {
         return "index/booking/admin/statistics";
     }

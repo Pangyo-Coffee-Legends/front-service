@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        fetchWithAuth(`https://aiot2.live/api/v1/attendances/${currentMemberNo}/summary/recent`)
+        fetchWithAuth(`http://localhost:10251/api/v1/attendances/${currentMemberNo}/summary/recent`)
             .then(res => res.json())
             .then(json => {
                 currentData = json.content.filter(it => it.year === y && it.monthValue === m);
