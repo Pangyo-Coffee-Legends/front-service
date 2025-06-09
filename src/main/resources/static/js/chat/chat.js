@@ -28,7 +28,6 @@ let username = null;
  */
 function connect() {
     if (stompClient && stompClient.connected) {
-        console.log("STOMP가 이미 연결되어 있습니다.");
         return;
     }
 
@@ -64,7 +63,6 @@ function connect() {
  * STOMP 연결 성공 시 콜백 함수
  */
 function onConnected() {
-    console.log("STOMP 연결 성공!");
     displaySystemMessage("서버에 연결되었습니다.");
 
     // 현재 활성화된 채팅방 ID를 localStorage에 저장
@@ -105,7 +103,6 @@ function onConnected() {
  * STOMP 연결 오류 시 콜백 함수
  */
 function onError(error) {
-    console.error("STOMP 연결 실패:", error);
     displaySystemMessage("서버 연결에 실패했습니다. 잠시 후 다시 시도해주세요.");
     // 필요 시 재연결 로직 추가 가능
 }
@@ -116,7 +113,6 @@ function onError(error) {
  */
 async function onMessageReceived(payload) {
     if(payload.body.userEmail === username){
-        console.log("STOMP 메시지 수신:", payload);
     }
 
     try {
@@ -131,7 +127,6 @@ async function onMessageReceived(payload) {
         })
 
     } catch (e) {
-        console.error("수신 메시지 파싱 오류:", e);
         displayRawMessage(payload.body); // 파싱 실패 시 원본 텍스트 표시
     }
 }
@@ -156,7 +151,6 @@ function sendMessage() {
             stompClient.send(`${STOMP_SEND_DESTINATION}/${roomId}`, {}, JSON.stringify(chatMessage));
             messageInput.value = ''; // 입력 필드 초기화
         } catch (error) {
-            console.error("메시지 전송 오류:", error);
             displaySystemMessage("메시지 전송에 실패했습니다.");
         }
     } else if (!messageContent) {
@@ -240,7 +234,6 @@ function displayOwnMessage(message) {
  * 자신이 받은 메시지를 화면에 표시하는 함수
  */
 function displayReceivedMessage(message) {
-    console.log(message);
     const messageElement = document.createElement('div');
     messageElement.classList.add('chat-message', 'received');
     messageElement.dataset.messageId = message.id; // 메시지 ID 저장
@@ -302,7 +295,6 @@ async function getHistoryMessages() {
             displaySystemMessage("메시지를 가져오는 데 실패했습니다.");
         }
     } catch (error) {
-        console.error("메시지 로드 오류:", error);
         displaySystemMessage("메시지를 가져오는 데 실패했습니다.");
     }
 }
@@ -337,7 +329,7 @@ async function markMessagesAsRead() {
             credentials: 'include'
         });
     } catch (error) {
-        console.error('메시지 읽음 처리 실패:', error);
+        console.error(error);
     }
 }
 
@@ -354,7 +346,6 @@ async function openInviteModal() {
 
         const members = await response.json();
         const memberList = document.getElementById('memberList');
-        console.log(members);
         memberList.innerHTML = '';
 
         members.forEach(member => {
@@ -508,7 +499,6 @@ function disconnect() {
             JSON.stringify({ sender: username})
         );
         stompClient.disconnect(() => {
-            console.log("STOMP 연결 해제됨");
             displaySystemMessage("서버와의 연결이 종료되었습니다.");
             stompClient = null;
         });

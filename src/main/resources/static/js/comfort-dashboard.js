@@ -1,4 +1,4 @@
-const COMFORT_API = "http://localhost:10251/api/v1/comfort/scheduled-result";
+const COMFORT_API = "https://aiot2.live/api/v1/comfort/scheduled-result";
 const WEATHER_API = "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst";
 const SERVICE_KEY = "%2Be2VrgCSeuZBQLw%2Fh7%2BHTNOR6VRLMm3UNzeh%2Fp2YITaCzXl11XX5sYxUMIN4JNpl5pVtB5hhDR%2BpM%2FrDAEKkqA%3D%3D";
 const KAKAO_REST_KEY = "bda024433062fa6d4ddf9046e523d4c0";

@@ -13,7 +13,6 @@ let username = null;
  */
 function connect() {
     if (stompClient && stompClient.connected) {
-        console.log("STOMP가 이미 연결되어 있습니다.");
         return;
     }
 
@@ -48,7 +47,6 @@ function connect() {
  * STOMP 연결 성공 시 콜백 함수
  */
 function onConnected() {
-    console.log("STOMP 연결 성공! notification");
     displaySystemMessage("서버에 연결되었습니다.");
 
     // 4. 특정 토픽 구독 시작
@@ -135,18 +133,146 @@ function displayMessage(message) {
     scrollToBottom();
 }
 
-// === 저장된 알림 내역 조회 ===
-async function getHistoryNotification() {
+// 실제 알림 데이터에서 년도 추출하여 드롭다운 생성
+async function initializeYearFilterFromData() {
     try {
         const response = await fetch(`${API_BASE_URL}/api/v1/notification/history`, {
-            method: 'GET', // 또는 백엔드가 요구하는 메소드 (GET, POST 등)
-            credentials: 'include' // 인증 쿠키 전송
+            method: 'GET',
+            credentials: 'include'
         });
 
         if (response.ok) {
             const messages = await response.json();
+            const yearSelect = document.getElementById('year-filter');
+            const availableYears = new Set();
+
+            // 실제 알림 데이터에서 년도 추출
+            messages.forEach(message => {
+                if (message.createdAt) {
+                    const year = new Date(message.createdAt).getFullYear();
+                    availableYears.add(year);
+                }
+            });
+
+            // 년도를 내림차순으로 정렬 (최신년도가 위에)
+            const sortedYears = Array.from(availableYears).sort((a, b) => b - a);
+
+            // 기존 옵션 제거 (전체 옵션 제외)
+            while (yearSelect.children.length > 1) {
+                yearSelect.removeChild(yearSelect.lastChild);
+            }
+
+            // 실제 데이터가 있는 년도만 추가
+            sortedYears.forEach(year => {
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = year + '년';
+                yearSelect.appendChild(option);
+            });
+
+        } else {
+            console.error("알림 데이터를 가져오는데 실패했습니다.");
+            // 실패시 기본 년도 범위 사용
+            initializeDefaultYearFilter();
+        }
+    } catch (error) {
+        console.error("년도 필터 초기화 오류:", error);
+        // 에러시 기본 년도 범위 사용
+        initializeDefaultYearFilter();
+    }
+}
+
+// 기본 년도 필터 (백업용)
+function initializeDefaultYearFilter() {
+    const yearSelect = document.getElementById('year-filter');
+    const currentYear = new Date().getFullYear();
+
+    // 현재 년도부터 과거 5년까지만
+    for (let i = 0; i <= 5; i++) {
+        const option = document.createElement('option');
+        const year = currentYear - i;
+        option.value = year;
+        option.textContent = year + '년';
+        yearSelect.appendChild(option);
+    }
+}
+
+// 일 드롭다운 초기화
+function initializeDayFilter() {
+    const daySelect = document.getElementById('day-filter');
+
+    for (let i = 1; i <= 31; i++) {
+        const option = document.createElement('option');
+        option.value = i;
+        option.textContent = i + '일';
+        daySelect.appendChild(option);
+    }
+}
+
+// 선택된 년/월에 따라 일 옵션 업데이트
+function updateDayOptions() {
+    const yearSelect = document.getElementById('year-filter');
+    const monthSelect = document.getElementById('month-filter');
+    const daySelect = document.getElementById('day-filter');
+
+    const selectedYear = yearSelect.value;
+    const selectedMonth = monthSelect.value;
+
+    if (selectedYear && selectedMonth) {
+        const daysInMonth = new Date(selectedYear, selectedMonth, 0).getDate();
+
+        // 기존 일 옵션 제거 (전체 옵션 제외)
+        while (daySelect.children.length > 1) {
+            daySelect.removeChild(daySelect.lastChild);
+        }
+
+        // 해당 월의 일수만큼 옵션 추가
+        for (let i = 1; i <= daysInMonth; i++) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.textContent = i + '일';
+            daySelect.appendChild(option);
+        }
+    }
+}
+
+// 필터링된 알림 내역 조회
+async function getFilteredNotificationHistory() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/v1/notification/history`, {
+            method: 'GET',
+            credentials: 'include'
+        });
+
+        if (response.ok) {
+            const messages = await response.json();
+
+            const yearFilter = document.getElementById('year-filter').value;
+            const monthFilter = document.getElementById('month-filter').value;
+            const dayFilter = document.getElementById('day-filter').value;
+
             for (const message of messages) {
-                displayMessage(message);
+                const messageDate = new Date(message.createdAt);
+                const messageYear = messageDate.getFullYear().toString();
+                const messageMonth = (messageDate.getMonth() + 1).toString();
+                const messageDay = messageDate.getDate().toString();
+
+                // 필터 조건 확인
+                let shouldDisplay = true;
+
+                if (yearFilter && messageYear !== yearFilter) {
+                    shouldDisplay = false;
+                }
+                if (monthFilter && messageMonth !== monthFilter) {
+                    shouldDisplay = false;
+                }
+                if (dayFilter && messageDay !== dayFilter) {
+                    shouldDisplay = false;
+                }
+
+                if (shouldDisplay) {
+                    displayMessage(message);
+                }
             }
         } else {
             displaySystemMessage("메시지를 가져오는 데 실패했습니다.");
@@ -155,6 +281,11 @@ async function getHistoryNotification() {
         console.error("메시지 로드 오류:", error);
         displaySystemMessage("메시지를 가져오는 데 실패했습니다.");
     }
+}
+
+// 기존 getHistoryNotification 함수를 getFilteredNotificationHistory로 대체
+async function getHistoryNotification() {
+    await getFilteredNotificationHistory();
 }
 
 /**
@@ -213,7 +344,6 @@ function displayRawMessage(msgText) {
  * 시스템 메시지를 화면에 표시하는 함수
  */
 function displaySystemMessage(text) {
-    console.log(text+"system");
     const messageElement = document.createElement('div');
     messageElement.classList.add('chat-message', 'system');
     messageElement.textContent = escapeHtml(text);
@@ -236,7 +366,6 @@ function scrollToBottom() {
 function disconnect() {
     if (stompClient && stompClient.connected) {
         stompClient.disconnect(() => {
-            console.log("STOMP 연결 해제됨");
             displaySystemMessage("서버와의 연결이 종료되었습니다.");
             stompClient = null;
         });
@@ -261,6 +390,31 @@ function formatTimestamp(timestamp) {
 }
 
 // --- 이벤트 리스너 설정 ---
-document.addEventListener('DOMContentLoaded', connect); // 페이지 로드 시 연결 시도
+// document.addEventListener('DOMContentLoaded', connect); // 페이지 로드 시 연결 시도
+
+// 이벤트 리스너 수정
+document.addEventListener('DOMContentLoaded', () => {
+    initializeYearFilterFromData(); // 실제 데이터 기반 년도 초기화
+    initializeDayFilter();
+    connect();
+});
+
+// 필터 변경 이벤트 리스너
+document.getElementById('year-filter').addEventListener('change', () => {
+    updateDayOptions();
+    chatBox.innerHTML = '';
+    getFilteredNotificationHistory();
+});
+
+document.getElementById('month-filter').addEventListener('change', () => {
+    updateDayOptions();
+    chatBox.innerHTML = '';
+    getFilteredNotificationHistory();
+});
+
+document.getElementById('day-filter').addEventListener('change', () => {
+    chatBox.innerHTML = '';
+    getFilteredNotificationHistory();
+});
 
 window.addEventListener('beforeunload', disconnect); // 페이지 이탈 전 연결 해제
