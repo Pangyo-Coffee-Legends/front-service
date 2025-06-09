@@ -5,6 +5,7 @@ import com.nhnacademy.frontservice.dto.meetingroom.MeetingRoomResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -158,7 +159,27 @@ public class FrontController {
 
         return "index/meeting-room/in-meeting";
     }
-  
+
+    @GetMapping(value = "/admin/meeting-room/list")
+    public String meetingRoomList() {
+        return "index/meeting-room/meeting-room-list";
+    }
+
+    @GetMapping(value = "/admin/meeting-room/register")
+    public String registerMeetingRoom() {
+        return "index/meeting-room/meeting-room-register";
+    }
+
+    @GetMapping(value = "/admin/meeting-room/manage")
+    public String manageMeetingRoom() {
+        return "index/meeting-room/meeting-room-manage";
+    }
+
+    @GetMapping(value = "/admin/meeting-room/edit")
+    public String editMeetingRoom(@RequestParam("roomNo") Long roomNo) {
+        return "index/meeting-room/meeting-room-edit";
+    }
+
     @GetMapping("/analysis")//근태 gemini 사용
     public String analysis(){return "index/work-entry/analysis";}
 

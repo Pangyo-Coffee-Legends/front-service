@@ -23,6 +23,45 @@
                 <li><a href="/analysis" class="nav-link text-white">AI 기반 근태 관리</a></li>
             </ul>
         </li>
+
+<!--        근태 관리 사이드바 추가-->
+
+        <!--   회의실 메뉴   -->
+        <li class="nav-item">
+            <a
+                class="nav-link dropdown-toggle text-white"
+                href="#"
+                id="meetingRoom"
+                role="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#meetingRoomMenu"
+                aria-expanded="false"
+            >
+                회의실
+            </a>
+            <ul class="collapse list-unstyled ps-3" id="meetingRoomMenu">
+                <li><a href="/meeting-rooms" class="nav-link text-white">예약 • 입실</a></li>
+                <!-- 회의실 관리 하위 메뉴 -->
+                <li>
+                    <a
+                            class="nav-link dropdown-toggle text-white"
+                            href="#"
+                            id="meetingRoomManage"
+                            role="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#meetingRoomManageMenu"
+                            aria-expanded="false"
+                    >
+                        회의실 관리
+                    </a>
+                    <ul class="collapse list-unstyled ps-3" id="meetingRoomManageMenu">
+                        <li><a href="/admin/meeting-room/list" class="nav-link text-white">조회</a></li>
+                        <li><a href="/admin/meeting-room/register" class="nav-link text-white">등록</a></li>
+                        <li><a href="/admin/meeting-room/manage" class="nav-link text-white">변경 • 삭제</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
         <!--        근태 관리 사이드바 추가-->
 
         <li class="nav-item">

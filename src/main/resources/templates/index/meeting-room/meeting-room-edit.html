@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="~{layout/index/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>회의실 변경</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/meeting-rooms/meeting-room-edit.css}">
+    <script type="module" th:src="@{/js/meeting-rooms/meeting-room-edit.js}" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container my-5">
+        <h2 class="text-center mb-4">회의실 변경</h2>
+
+        <form id="edit-form" class="p-4 bg-white shadow rounded" style="max-width: 600px; margin: 0 auto;">
+            <!-- 이름 -->
+            <div class="mb-3 row">
+                <label for="meeting-room-name" class="col-sm-3 col-form-label fw-bold">이름</label>
+                <div class="col-sm-9">
+                    <input type="text" id="meeting-room-name" name="name" class="form-control" required>
+                </div>
+            </div>
+
+            <!-- 수용인원 -->
+            <div class="mb-3 row">
+                <label for="meeting-room-capacity" class="col-sm-3 col-form-label fw-bold">수용인원</label>
+                <div class="col-sm-9">
+                    <input type="number" id="meeting-room-capacity" name="capacity" class="form-control" required min="1">
+                </div>
+            </div>
+
+            <!-- 기자재 -->
+            <div class="mb-3 row">
+                <label class="col-sm-3 col-form-label fw-bold">기자재</label>
+                <div class="col-sm-9">
+                    <div id="equipment-container" class="form-check"></div>
+                </div>
+            </div>
+
+            <!-- 변경 버튼 -->
+            <div class="text-center mt-4">
+              <button type="button" id="edit-btn" class="btn btn-custom-blue px-5">변경</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
