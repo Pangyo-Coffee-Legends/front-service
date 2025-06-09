@@ -141,23 +141,37 @@ document.addEventListener('DOMContentLoaded', function () {
         const m = parseInt(monthSelector.value);
         const w = parseInt(weekSelector.value);
 
-        if (!currentMemberNo || isNaN(y) || isNaN(m)) {
+        console.log('[조회 버튼 클릭됨]');
+        console.log('currentMemberNo:', currentMemberNo);
+        console.log('year:', y, 'month:', m, 'week:', w);
+
+        if (!currentMemberNo) {
+            alert('먼저 회원을 선택해주세요.');
+            return;
+        }
+
+        if (isNaN(y) || isNaN(m)) {
             alert('연도와 월을 선택해주세요.');
             return;
         }
 
         fetchWithAuth(`https://aiot2.live/api/v1/attendances/${currentMemberNo}/summary/recent`)
-            .then(res => res.json())
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error(`서버 응답 오류: ${res.status}`);
+                }
+                return res.json();
+            })
             .then(json => {
                 currentData = json.content.filter(it => it.year === y && it.monthValue === m);
+
                 if (!currentData.length) {
-                    alert('데이터가 없습니다.');
+                    alert('해당 월에 데이터가 없습니다.');
                     attendanceChartContainer.innerHTML = '';
                     attendanceTableContainer.innerHTML = '';
                     return;
                 }
 
-                const rowEl = document.getElementById('attendance-row');
                 const chartCol = document.getElementById('attendance-chart-container');
                 const tableCol = document.getElementById('attendance-table-container');
 
@@ -167,6 +181,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         alert(`${w}주차 데이터가 없습니다.`);
                         return;
                     }
+
                     chartCol.className = 'col-md-7';
                     tableCol.className = 'col-md-5';
                     renderWeeklyChart(weekData, `${currentMemberName}의 근무시간 (${w}주차)`);
@@ -176,8 +191,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     tableCol.className = 'd-none';
                     renderWeeklyChart(currentData, `${currentMemberName}의 월간 근무시간`);
                 }
+            })
+            .catch(err => {
+                console.error('[fetchAttendance 오류]', err);
+                alert('근무시간 데이터를 불러오는 중 문제가 발생했습니다.');
             });
     }
+
 
     function filterByStatus() {
         const checked = [...statusGroup.querySelectorAll('input[type=checkbox]:checked')]
@@ -296,44 +316,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-
-    /**
-     * 선택된 회원, 연도, 월, 일에 대한 근무 데이터를 불러옵니다.
-     * 조건이 충족되지 않을 경우 경고창을 띄웁니다.
-     */
-    function fetchAttendance() {
-        const y = parseInt(yearInput.value);
-        const m = parseInt(monthSelector.value);
-        const d = parseInt(daySelector.value);
-
-        if (!currentMemberNo || isNaN(y) || isNaN(m)) {
-            alert('연도와 월을 모두 선택해주세요.');
-            return;
-        }
-
-
-        fetchWithAuth(`https://aiot2.live/api/v1/attendances/${currentMemberNo}/summary/recent`)
-            .then(res => res.json())
-            .then(json => {
-
-                currentData = json.content.filter(it => it.year === y && it.monthValue === m);
-                if (!isNaN(d)) currentData = currentData.filter(it => it.dayOfMonth === d);
-                if (!currentData.length) {
-                    alert('해당 기간의 데이터가 없습니다.');
-                    attendanceChartContainer.innerHTML = '';
-                    attendanceTableContainer.innerHTML = '';
-                    return;
-                }
-
-                currentPage = 0;
-                weeklyChunks = [];
-                for (let i = 0; i < currentData.length; i += 7) {
-                    weeklyChunks.push(currentData.slice(i, i + 7));
-                }
-
-                renderWeeklyTable(currentData);
-            });
-    }
 
     // ======= '모두' 체크박스 생성 및 제어 로직 추가 =======
     const allCheckbox = document.createElement('label');
