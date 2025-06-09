@@ -26,3 +26,14 @@
 .legend-box.status-green   { background-color: #d4edda; }
 .legend-box.status-orange  { background-color: #ffe5b4; }
 .legend-box.status-pink    { background-color: #fce4ec; }
+/*회원 목록 선택 시 색 변경 적용*/
+.selected-member td {
+    background-color: #e5e4b7 !important;
+    color: #000000 !important;
+}
+#member-table-container table {
+    font-size: 0.9rem;
+}
+#attendance-table-container table {
+    font-size: 0.9rem;
+}
