@@ -1,4 +1,5 @@
 const COMFORT_API = "https://aiot2.live/api/v1/comfort/scheduled-result";
+
 const WEATHER_API = "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst";
 const SERVICE_KEY = "%2Be2VrgCSeuZBQLw%2Fh7%2BHTNOR6VRLMm3UNzeh%2Fp2YITaCzXl11XX5sYxUMIN4JNpl5pVtB5hhDR%2BpM%2FrDAEKkqA%3D%3D";
 const KAKAO_REST_KEY = "bda024433062fa6d4ddf9046e523d4c0";
@@ -7,11 +8,9 @@ let currentRoom = null;
 let currentCoords = null;
 let currentAddress = null;
 
-const USER_HEADER = { "X-USER": "admin@aiot.com" };
 const FETCH_CONFIG = {
     headers: {
-        "Content-Type": "application/json",
-        ...USER_HEADER
+        "Content-Type": "application/json"
     },
     credentials: "include"
 };
@@ -29,6 +28,22 @@ const roomLabelMap = {
     meetingA: '회의실A',
     meetingB: '회의실B'
 };
+
+
+const placeToggleTitle = document.querySelector(".title-toggle");
+const placeBody = document.getElementById("place-manage-body");
+const icon = document.getElementById("place-manage-icon");
+
+placeToggleTitle.addEventListener("click", () => {
+    const isOpen = placeBody.style.display !== "none";
+    placeBody.style.display = isOpen ? "none" : "block";
+    icon.className = isOpen ? "triangle triangle-down" : "triangle triangle-up";
+});
+
+// ✅ 처음부터 감춰진 상태로 시작
+placeBody.style.display = "none";
+icon.className = "triangle triangle-down";
+
 
 window.showPopup = async function (roomName) {
     currentRoom = roomName;
@@ -65,7 +80,6 @@ window.showPopup = async function (roomName) {
         `;
     }
 }
-
 
 async function fetchComfortData(roomName) {
     const location = roomToLocationMap[roomName];
