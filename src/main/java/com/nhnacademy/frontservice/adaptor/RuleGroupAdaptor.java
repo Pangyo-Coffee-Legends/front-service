@@ -12,7 +12,7 @@ import java.util.List;
 
 @FeignClient(
         name = "rule-group-service",
-        url = "${rule-service.url}",
+        url = "http://localhost:10263",
         path = "/api/v1/rule-groups"
 )
 public interface RuleGroupAdaptor {

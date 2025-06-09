@@ -10,15 +10,22 @@
 
     <!-- 👤 회원 목록 섹션 -->
     <div class="container mt-4">
-        <h4 class="mb-3">👤 회원 목록</h4>
-        <div id="member-table-container"></div>
-        <!-- ✅ 페이지네이션 버튼 영역 추가 -->
-        <div id="pagination-controls" class="d-flex justify-content-center align-items-center gap-3 mt-2">
-            <button id="prevPageBtn" class="btn btn-outline-secondary btn-sm">이전</button>
-            <span id="currentPageText" class="fw-bold small">페이지 1</span>
-            <button id="nextPageBtn" class="btn btn-outline-secondary btn-sm">다음</button>
+        <div class="row justify-content-center">
+            <div class="col-md-6 text-center"> <!-- 🔧 중앙 정렬 + 폭 제한 -->
+                <h4 class="mb-3">👤 회원 목록</h4>
+                <small class="text-muted mt-2 mt-md-0 ms-md-3">
+                    💡 먼저 사원을 선택한 후, 아래 조회하고자 하는 연도와 월을 선택하시면 됩니다.
+                </small><!-- ✅ 제목도 col 내부로 이동 -->
+                <div id="member-table-container"></div>
+                <div id="pagination-controls" class="d-flex justify-content-center align-items-center gap-3 mt-2">
+                    <button id="prevPageBtn" class="btn btn-outline-secondary btn-sm">이전</button>
+                    <span id="currentPageText" class="fw-bold small">페이지 1</span>
+                    <button id="nextPageBtn" class="btn btn-outline-secondary btn-sm">다음</button>
+                </div>
+            </div>
         </div>
     </div>
+
 
     <!-- 📊 근무시간 통계 섹션 -->
     <div class="container mt-5">
@@ -34,16 +41,30 @@
                 <label for="monthSelector" class="form-label">월</label>
                 <select id="monthSelector" class="form-select">
                     <option value="">전체</option>
-                    <option value="1">1월</option><option value="2">2월</option><option value="3">3월</option>
-                    <option value="4">4월</option><option value="5">5월</option><option value="6">6월</option>
-                    <option value="7">7월</option><option value="8">8월</option><option value="9">9월</option>
-                    <option value="10">10월</option><option value="11">11월</option><option value="12">12월</option>
+                    <option value="1">1월</option>
+                    <option value="2">2월</option>
+                    <option value="3">3월</option>
+                    <option value="4">4월</option>
+                    <option value="5">5월</option>
+                    <option value="6">6월</option>
+                    <option value="7">7월</option>
+                    <option value="8">8월</option>
+                    <option value="9">9월</option>
+                    <option value="10">10월</option>
+                    <option value="11">11월</option>
+                    <option value="12">12월</option>
                 </select>
+
             </div>
             <div class="col-md-2">
-                <label for="daySelector" class="form-label">일</label>
-                <select id="daySelector" class="form-select">
+                <label for="weekSelector" class="form-label">주차</label>
+                <select id="weekSelector" class="form-select">
                     <option value="">전체</option>
+                    <option value="1">1주차</option>
+                    <option value="2">2주차</option>
+                    <option value="3">3주차</option>
+                    <option value="4">4주차</option>
+                    <option value="5">5주차</option>
                 </select>
             </div>
             <div class="col-md-1">
@@ -51,32 +72,31 @@
             </div>
         </div>
 
+
+
         <!-- ✅ 근태 상태 필터링 체크박스 그룹 -->
-        <div class="row mb-2">
+        <div class="row mb-3">
             <div class="col-md-12 d-flex flex-wrap gap-2 align-items-center" id="status-checkbox-group">
                 <label><input type="checkbox" value="2"> <span class="legend-box status-warning"></span> 지각</label>
                 <label><input type="checkbox" value="3"> <span class="legend-box status-danger"></span> 결근</label>
                 <label><input type="checkbox" value="4"> <span class="legend-box status-blue"></span> 외근</label>
                 <label><input type="checkbox" value="5"> <span class="legend-box status-purple"></span> 연차</label>
-                <label><input type="checkbox" value="6"> <span class="legend-box status-green"></span> 질병/입원</label>
+                <label><input type="checkbox" value="6"> <span class="legend-box status-green"></span> 병가</label>
                 <label><input type="checkbox" value="7"> <span class="legend-box status-orange"></span> 반차</label>
-                <label><input type="checkbox" value="8"> <span class="legend-box status-pink"></span> 상(喪)</label>
+                <label><input type="checkbox" value="8"> <span class="legend-box status-pink"></span> 경조사휴가</label>
 
                 <button id="statusSearchBtn" class="btn btn-outline-primary btn-sm ms-3">근태 필터 조회</button>
             </div>
         </div>
 
         <!-- 📊 통계 차트 및 표 영역 -->
-        <div class="row">
-            <div class="col-md-7">
-                <div id="attendance-chart-container"></div>
-            </div>
-            <div class="col-md-5">
-                <div id="attendance-table-container"></div>
-            </div>
+        <div class="row" id="attendance-row">
+            <div id="attendance-chart-container" class="col-md-7"></div>
+            <div id="attendance-table-container" class="col-md-5"></div>
         </div>
+
     </div>
-</div>
+    </div>
 
 </body>
 </html>

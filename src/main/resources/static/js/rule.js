@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:10251/api/v1";
+const API_BASE = "https://aiot2.live/api/v1";
 
 let globalGroupMap = {};
 let globalRules = [];
@@ -17,8 +17,7 @@ function getQueryParam(name) {
 
 function fetchWithAuth(url, options = {}) {
     const defaultHeaders = {
-        "Content-Type": "application/json",
-        "X-USER": "test-user@aiot.com"
+        "Content-Type": "application/json"
     };
 
     return fetch(url, {

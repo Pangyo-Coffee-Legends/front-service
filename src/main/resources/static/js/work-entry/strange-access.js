@@ -2,6 +2,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const socket = new WebSocket("ws://localhost:10256/ws/stranger");
 
     socket.onmessage = function (event) {
+        if (event.data === "ping") return; // ping은 무시
+
         const message = event.data;
         console.log("📩 WebSocket 수신 메시지:", message);
 

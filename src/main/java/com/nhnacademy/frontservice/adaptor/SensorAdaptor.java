@@ -12,7 +12,7 @@ import java.util.List;
 
 @FeignClient(
         name = "iot-service",
-        url = "${iot-service.url}",
+        url = "http://localhost:10266",
         path = "/api/v1/sensors"
 )
 public interface SensorAdaptor {
