@@ -157,8 +157,8 @@
         <!-- 왼쪽 고정 패널 -->
         <div id="popup-panel" class="popup-panel">
 
-            <form id="place-form" enctype="multipart/form-data">
-                <input type="text" name="placeName" placeholder="장소명" required>
+            <form id="floor-form" enctype="multipart/form-data">
+                <input type="text" name="floorName" placeholder="장소명" required>
                 <input type="file" name="file" accept="image/*" required>
                 <button type="submit">장소 등록</button>
             </form>
@@ -192,17 +192,17 @@
 
         <!-- 도면 우측 -->
         <div id="floor-wrapper">
-            <select id="place-select"></select>
+            <select id="floor-select"></select>
             <img id="floor-image" src="" alt="오피스 도면" draggable="false">
 
-            <form id="place-edit-form" enctype="multipart/form-data">
-                <input type="hidden" name="placeNo" value="14"> <!-- 수정할 장소 번호 -->
-                <input type="text" name="placeName" value="수정 할 장소명" required> <!-- 사용자가 수정 -->
+            <form id="floor-edit-form" enctype="multipart/form-data">
+                <input type="hidden" name="floorNo" value="14"> <!-- 수정할 장소 번호 -->
+                <input type="text" name="floorName" value="수정 할 장소명" required> <!-- 사용자가 수정 -->
                 <input type="file" name="file" accept="image/*">
                 <button type="submit">장소 수정</button>
             </form>
 
-            <button id="delete-place-btn">삭제</button>
+            <button id="delete-floor-btn">삭제</button>
 
             <div class="info-box" style="top: 55%; left: 17%;" onclick="showPopup('deptA', this)">
                 <div class="label">사무실 A</div><hr class="divider">
@@ -226,7 +226,7 @@
         </div>
     </div>
     <script src="/js/comfort-dashboard.js" defer></script>
-    <script src="/js/place/place-selector.js" defer></script>
+    <script src="/js/place/floor-selector.js" defer></script>
 </div>
 </body>
 </html>
