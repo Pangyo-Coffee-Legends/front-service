@@ -68,7 +68,6 @@ public class JwtPayloadExtractionFilter extends OncePerRequestFilter {
 
                     // 필요한 정보 추출
                     String email = payloadJson.has("email") ? payloadJson.get("email").asText() : null;
-                    String roles = payloadJson.has("roles") ? payloadJson.get("roles").asText() : "";
 
                     // 만료 시간 확인 (선택적)
                     if (payloadJson.has("exp")) {
@@ -83,12 +82,13 @@ public class JwtPayloadExtractionFilter extends OncePerRequestFilter {
                     // 권한 정보 생성
                     List<GrantedAuthority> authorities = new ArrayList<>();
 
-                    if (roles != null && !roles.isEmpty()) {
+                    if (payloadJson.has("roles")) {
+                        String roles = payloadJson.get("roles").asText();
                         String[] roleArray = roles.split(",");
                         for (String role : roleArray) {
-                            SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role.trim());
-                            authorities.add(authority);
+                            authorities.add(new SimpleGrantedAuthority(role.trim()));
                         }
+                        log.debug("추출된 권한: {}", authorities);
                     }
 
                     // 인증 객체 생성
