@@ -256,7 +256,7 @@ function drawWeekCountChart(bookings, rooms) {
         const weeks = getWeeksInMonth(year, month);
 
         weekSelector.innerHTML = weeks.map((w, i) =>
-            `<option value="${i}">${i + 1}주차 (${w.start.toLocaleDateString()} ~ ${w.end.toLocaleDateString()})</option>`
+            `<option value="${i}">${i + 1}주차</option>`
         ).join('');
 
         const today = new Date();
