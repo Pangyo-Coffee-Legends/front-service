@@ -24,7 +24,15 @@ document.addEventListener('DOMContentLoaded', function () {
             reportYear.appendChild(option);
         }
     }
-
+    if (reportMonth) {
+        const currentMonth = new Date().getMonth() + 1;
+        const options = reportMonth.querySelectorAll('option');
+        options.forEach(option => {
+            if (parseInt(option.value) === currentMonth) {
+                option.selected = true;
+            }
+        });
+    }
     if (reportBtn) {
         reportBtn.addEventListener('click', () => {
             const mbNo = memberInput.value.trim();
