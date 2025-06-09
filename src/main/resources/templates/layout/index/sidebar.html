@@ -42,8 +42,14 @@
             </a>
             <ul class="collapse list-unstyled ps-3" id="meetingRoomMenu">
                 <li><a href="/meeting-rooms" class="nav-link text-white">예약 • 입실</a></li>
+                <li><a href="/booking/history" class="nav-link text-white">예약 내역</a></li>
+                <li><a href="/booking/statistics" class="nav-link text-white">전체 통계</a></li>
+                <!--                관리자-->
+                <li sec:authorize="hasRole('ADMIN')">
+                    <a href="/admin/booking" class="nav-link text-white">전체 예약 현황</a>
+                </li>
                 <!-- 회의실 관리 하위 메뉴 -->
-                <li>
+                <li sec:authorize="hasRole('ADMIN')">
                     <a
                             class="nav-link dropdown-toggle text-white"
                             href="#"
@@ -53,7 +59,7 @@
                             data-bs-target="#meetingRoomManageMenu"
                             aria-expanded="false"
                     >
-                        회의실 관리
+                       회의실 관리
                     </a>
                     <ul class="collapse list-unstyled ps-3" id="meetingRoomManageMenu">
                         <li><a href="/admin/meeting-room/list" class="nav-link text-white">조회</a></li>
@@ -84,31 +90,6 @@
             </ul>
         </li>
         <!--        오피스 관리 사이드바 추가-->
-
-        <!--   회의실 메뉴   -->
-        <li class="nav-item">
-            <a
-                    class="nav-link dropdown-toggle text-white"
-                    href="#"
-                    id="meetingRoom"
-                    role="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#meetingRoomMenu"
-                    aria-expanded="false"
-            >
-                회의실
-            </a>
-            <ul class="collapse list-unstyled ps-3" id="meetingRoomMenu">
-                <li><a href="/meeting-rooms" class="nav-link text-white">입실하기</a></li>
-                <li><a href="/booking" class="nav-link text-white">예약하기</a></li>
-                <li><a href="/booking/history" class="nav-link text-white">예약 내역</a></li>
-                <li><a href="/booking/statistics" class="nav-link text-white">전체 통계</a></li>
-                <!--                관리자-->
-                <li sec:authorize="hasRole('ADMIN')">
-                    <a href="/admin/booking" class="nav-link text-white">예약 현황</a>
-                </li>
-            </ul>
-        </li>
         <li class="nav-item">
             <a class="nav-link dropdown-toggle text-white"
                href="#"
