@@ -82,11 +82,10 @@ public class JwtPayloadExtractionFilter extends OncePerRequestFilter {
                     // 권한 정보 생성
                     List<GrantedAuthority> authorities = new ArrayList<>();
 
-                    if (payloadJson.has("roles")) {
-                        String roles = payloadJson.get("roles").asText();
-                        String[] roleArray = roles.split(",");
-                        for (String role : roleArray) {
-                            authorities.add(new SimpleGrantedAuthority(role.trim()));
+                    if (payloadJson.has("roles") && payloadJson.get("roles").isArray()) {
+                        for (JsonNode roleNode : payloadJson.get("roles")) {
+                            String role = roleNode.asText();
+                            authorities.add(new SimpleGrantedAuthority(role));
                         }
                         log.debug("추출된 권한: {}", authorities);
                     }
