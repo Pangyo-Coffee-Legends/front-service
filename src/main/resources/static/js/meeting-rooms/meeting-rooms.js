@@ -1,4 +1,4 @@
-const GATEWAY_BASE_URL = "https://aiot2.live";
+const GATEWAY_BASE_URL = "http://localhost:10251";
 const MEETING_ROOM_API_URL = `${GATEWAY_BASE_URL}/api/v1/meeting-rooms`;
 
 document.addEventListener("DOMContentLoaded", async () => {
