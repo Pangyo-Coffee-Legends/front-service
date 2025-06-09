@@ -1,11 +1,12 @@
-<nav class="sidebar bg-dark text-white flex-shrink-0 p-3" style="width: 250px; min-height: 100vh;">
+<nav class="sidebar bg-dark text-white flex-shrink-0 p-3" style="width: 250px; min-height: 100vh;"
+     xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <a href="/index" style="text-decoration: none; color: white">
         <h4 class="text-center py-3">
             대시보드 메뉴
         </h4>
     </a>
     <ul class="nav flex-column">
-        <li class="nav-item">
+        <li class="nav-item" sec:authorize="hasRole('ADMIN')">
             <a
                     class="nav-link dropdown-toggle text-white"
                     href="#"
@@ -64,7 +65,7 @@
         </li>
         <!--        근태 관리 사이드바 추가-->
 
-        <li class="nav-item">
+        <li class="nav-item" sec:authorize="hasRole('ADMIN')">
             <a
                     class="nav-link dropdown-toggle text-white"
                     href="#"
@@ -102,8 +103,10 @@
                 <li><a href="/booking" class="nav-link text-white">예약하기</a></li>
                 <li><a href="/booking/history" class="nav-link text-white">예약 내역</a></li>
                 <li><a href="/booking/statistics" class="nav-link text-white">전체 통계</a></li>
-<!--                관리자-->
-                <li><a href="/admin/booking" class="nav-link text-white">예약 현황</a></li>
+                <!--                관리자-->
+                <li sec:authorize="hasRole('ADMIN')">
+                    <a href="/admin/booking" class="nav-link text-white">예약 현황</a>
+                </li>
             </ul>
         </li>
         <li class="nav-item">
@@ -115,7 +118,7 @@
                data-bs-target="#chatMenu"
                aria-expanded="false">
                 Chat
-<!--                {/* 안 읽은 메시지 수를 표시할 배지 (초기에는 숨김) */}-->
+                <!--                {/* 안 읽은 메시지 수를 표시할 배지 (초기에는 숨김) */}-->
                 <span class="badge bg-danger ms-1 unread-badge" style="display: none;"></span>
             </a>
             <ul class="collapse list-unstyled ps-3" id="chatMenu">
@@ -123,7 +126,7 @@
                 <li><a href="/users" class="nav-link text-white">회원 목록</a></li>
             </ul>
         </li>
-        <li class="nav-item" id="notification-menu" style="display: none;">
+        <li class="nav-item" sec:authorize="hasRole('ADMIN')" id="notification-menu" style="display: none;">
             <a href="/notification" class="nav-link text-white">
                 notification
                 <span class="badge bg-danger ms-1 notification-unread-badge" style="display: none;"></span>

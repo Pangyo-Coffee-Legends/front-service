@@ -4,6 +4,7 @@ import com.nhnacademy.frontservice.adaptor.GatewayAdaptor;
 import com.nhnacademy.frontservice.common.handler.exceptionhandling.CustomAccessDeniedHandler;
 import com.nhnacademy.frontservice.common.handler.successhandling.JwtLoginSuccessHandler;
 import com.nhnacademy.frontservice.common.handler.successhandling.OAuthSuccessHandler;
+import com.nhnacademy.frontservice.filter.JwtPayloadExtractionFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +15,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity(debug = true)
@@ -22,48 +24,55 @@ public class SecurityConfig {
 
     private final GatewayAdaptor gatewayAdaptor;
     private final OAuthSuccessHandler oauthSuccessHandler;
-//    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final JwtPayloadExtractionFilter jwtPayloadExtractionFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests(auth -> {
-//                    auth.requestMatchers(
-//                                    "/",
-//                                    "/login",
-//                                    "/css/**",
-//                                    "/js/**",
-//                                    "/images/**"
-//                        ).permitAll()
-                        auth.anyRequest().permitAll();
-                })
-//                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .authorizeHttpRequests(auth -> auth
+                        // 누구나 접근 가능한 경로
+                        .requestMatchers("/", "/login", "/signup", "/css/**", "/js/**", "/images/**").permitAll()
+
+                        // 관리자만 접근 가능한 경로
+                        .requestMatchers(
+                                "/admin/**",
+                                "/notification",
+                                "/entry-charts",
+                                "/working-hours-statistics",
+                                "/analysis",
+                                "/comfort-dashboard",
+                                "/rule-group",
+                                "/sensor"
+                        ).hasRole("ADMIN")
+
+                        // 그 외 나머지는 인증 필요
+                        .anyRequest().authenticated()
+                )
+                .addFilterBefore(jwtPayloadExtractionFilter, UsernamePasswordAuthenticationFilter.class) // ✅ 추가
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .formLogin(flc -> flc
-                        .loginPage("/login") // 웹 페이지 반환하는 컨트롤러 매핑 설정
-                        .loginProcessingUrl("/generalLogin") // 로그인 처리 URL (form의 action과 같아야 함) / 얘는 컨트롤러 없어도 됨.
-                        .successHandler(new JwtLoginSuccessHandler(gatewayAdaptor)))
-                .oauth2Login(oauth ->
-                        oauth
-                                .loginPage("/login")
-                                .successHandler(oauthSuccessHandler)
+                        .loginPage("/login")
+                        .loginProcessingUrl("/generalLogin")
+                        .successHandler(new JwtLoginSuccessHandler(gatewayAdaptor))
                 )
-                .logout(logout ->
-                        logout
-                                .logoutUrl("/logout")
-                                .invalidateHttpSession(true)
-                                .clearAuthentication(true)
-                                .deleteCookies("JSESSIONID")
-                                .deleteCookies("accessToken")
-                                .logoutSuccessUrl("/")
+                .oauth2Login(oauth -> oauth
+                        .loginPage("/login")
+                        .successHandler(oauthSuccessHandler)
                 )
-        ;
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .invalidateHttpSession(true)
+                        .clearAuthentication(true)
+                        .deleteCookies("JSESSIONID", "accessToken")
+                        .logoutSuccessUrl("/")
+                );
 
         http.exceptionHandling(ehc -> ehc.accessDeniedHandler(new CustomAccessDeniedHandler()));
 
         return http.build();
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
