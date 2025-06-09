@@ -30,7 +30,6 @@ function encodeId(email) {
  */
 async function loadMemberList() {
     try {
-        console.log(userEmail);
 
         const response = await fetch(`${API_BASE_URL}/api/v1/members/list`, {
             method: 'GET',
@@ -140,7 +139,6 @@ async function handleCreateChatRoom() {
         });
 
         const roomId = await response.json();
-        console.log(roomId);
 
         if (!response.ok) {
             let errorMessage = `채팅방 생성 실패 (코드: ${response.status})`;
