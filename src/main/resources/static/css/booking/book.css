@@ -7,22 +7,23 @@
 }
 
 .info-container{
-    width: 100%;
+    /*width: 100%;*/
+    width: 800px;
 }
 
 .time-container {
     font-family: Arial, sans-serif;
-    padding: 20px;
+    padding: 10px;
 }
 
 .reservation-form {
     font-family: Arial, sans-serif;
-    padding: 20px;
+    padding: 10px;
 }
 
 /* 회의실 */
 .rooms {
-    width: 30%;
+    width: 15%;
     /*background-color: #f4f4f4;*/
     padding: 20px;
     border-right: 1px solid #ccc;
@@ -51,7 +52,7 @@
 /* 캘린더 */
 .calendar {
     flex: 1;
-    padding: 20px;
+    padding: 10px;
 }
 
 .calendar h2 {
@@ -61,6 +62,16 @@
 #calendarContent {
     margin-top: 20px;
 }
+
+/*!* 전체 폰트 크기 축소 *!*/
+/*.fc {*/
+/*    font-size: 0.85rem;*/
+/*}*/
+
+/*!* 셀 내부 여백 축소 *!*/
+/*.fc-daygrid-day-frame {*/
+/*    padding: 2px;*/
+/*}*/
 
 .fc-col-header-cell-cushion, .fc-daygrid-day-number {
     text-decoration: none;
@@ -173,4 +184,14 @@
 
 #reserveBtn:hover, .room-button:hover {
     background-color: #357ac8;
+}
+
+.selected-time {
+    background-color: #e6f0ff;
+    color: black;
+    font-weight: bold;
+}
+
+.in-range {
+    background-color: #e6f0ff;
 }

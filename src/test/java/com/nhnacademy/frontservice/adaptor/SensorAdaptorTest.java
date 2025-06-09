@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @SpringBootTest
 @AutoConfigureWireMock(port = 0)
 @TestPropertySource(properties = {
-        "iot-service.url=http://localhost:${wiremock.server.port}"
+        "iot-service.url=http://localhost:10266"
 })
 class SensorAdaptorTest {
 

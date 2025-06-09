@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
  *   <li>priority: rule_groups 테이블의 priority</li>
  * </ul>
  *
- * @author [작성자]
+ * @author 박형호
  * @since 2025-04-27
  */
 @Data

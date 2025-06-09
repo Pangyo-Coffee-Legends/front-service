@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 /**
- * Gateway를 통해 member-service 및 attendance-service와 통신하는 어댑터입니다.
+ * Gateway를 통해 member-service와 통신하는 어댑터입니다.
  */
 
 @FeignClient(name = "gateway-service", url = "http://localhost:10251", path = "/api/v1")
@@ -69,4 +69,20 @@ public interface GatewayAdaptor {
      */
     @GetMapping("/bookings/{booking-no}")
     ResponseEntity<JwtResponse> getBooking(@PathVariable("booking-no") Long bookingNo, @RequestHeader("Authorization") String authHeader);
+
+    /**
+     *
+     * @param bookingNo 예약 번호
+     * @return 예약 연장 성공 시 새로 연장된 예약 DTO 반환
+     */
+    @PutMapping("/bookings/{booking-no}/extend")
+    ResponseEntity<JwtResponse> extendBooking(@PathVariable("booking-no") Long bookingNo);
+
+    /**
+     *
+     * @param bookingNo 예약 번호
+     * @return 예약 종료 성공 시 Http Status 200 응답 반환
+     */
+    @PutMapping("/bookings/{booking-no}/finish")
+    ResponseEntity<Void> finishBooking(@PathVariable("booking-no") Long bookingNo);
 }

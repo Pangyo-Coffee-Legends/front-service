@@ -1,4 +1,7 @@
-const logViewer = document.getElementById('log-viewer');
+const logViewer = document.getElementById('realtime-log');
+
+const socket = new WebSocket("wss://aiot2.live/ws/logs");
+
 const socket = new WebSocket("ws://localhost:10256/ws/logs");
 
 socket.onopen = function () {
@@ -6,6 +9,8 @@ socket.onopen = function () {
 };
 
 socket.onmessage = function (event) {
+    if (event.data === "ping") return; // ping은 무시
+
     const logLine = event.data + '\n';
     logViewer.textContent += logLine;
     logViewer.scrollTop = logViewer.scrollHeight;

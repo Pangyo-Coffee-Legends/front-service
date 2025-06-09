@@ -1,16 +1,12 @@
 package com.nhnacademy.frontservice.controller;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import com.nhnacademy.frontservice.adaptor.GatewayAdaptor;
 import com.nhnacademy.frontservice.dto.meetingroom.MeetingRoomResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
@@ -85,7 +81,7 @@ public class FrontController {
         return "index/booking/admin/history";
     }
 
-    @GetMapping(value = {"/charts"})
+    @GetMapping("/charts")
     public String charts() { return "index/charts";}
 
     @GetMapping("/users")
@@ -110,9 +106,9 @@ public class FrontController {
         return "chat/notification";
     }
 
-    @GetMapping("/weekly-entry-charts") //월간 출입 차트 조회
-    public String monthlyEntryCharts(){
-        return "index/work-entry/weekly-entry-chart";
+    @GetMapping("/entry-charts") //주간 출입 차트 조회
+    public String entryCharts(){
+        return "index/work-entry/entry-chart";
     }
 
     @GetMapping("/working-hours-statistics")// 근무시간통계
@@ -160,34 +156,31 @@ public class FrontController {
     @GetMapping(value = "/meeting-room/{room-no}/{booking-no}/in-meeting")
     public String inMeeting(@PathVariable("room-no") Long roomNo, @PathVariable("booking-no") Long bookingNo, Model model) {
 
-        model.addAttribute("roomNo", roomNo);
-        model.addAttribute("bookingNo", bookingNo);
-
         return "index/meeting-room/in-meeting";
     }
   
     @GetMapping("/analysis")//근태 gemini 사용
     public String analysis(){return "index/work-entry/analysis";}
 
-    @GetMapping(value = "/comfort-dashboard")
+    @GetMapping("/comfort-dashboard")
     public String comfortDashboard() {return "index/comfort-dashboard";}
 
-    @GetMapping(value = "/rule-group")
+    @GetMapping("/rule-group")
     public String ruleGroup() {return "rule-group/rule-group";}
 
-    @GetMapping(value = "/rule")
+    @GetMapping("/rule")
     public String rule() {return "rule/rule";}
 
-    @GetMapping(value = "/action-condition")
+    @GetMapping("/action-condition")
     public String actionCondition() {return "action-condition/action-condition";}
 
-    @GetMapping(value = "/sensor")
+    @GetMapping("/sensor")
     public String sensor() {return "sensor/sensor";}
 
-    @GetMapping(value = "/my-info")
+    @GetMapping("/my-info")
     public String myInfo() {return "my-info/my-info";}
 
-    @GetMapping(value = "/my-info-change")
+    @GetMapping("/my-info-change")
     public String myInfoChange() {return "my-info/my-info-change";}
 
 }
