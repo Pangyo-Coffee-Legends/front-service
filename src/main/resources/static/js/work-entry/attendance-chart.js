@@ -242,7 +242,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const defaultPageSize = 10;
     let currentPage=0;
     function loadMemberList(page = 0, size = defaultPageSize) {
-        fetch(`http://localhost:10251/api/v1/members?page=${page}&size=${size}`, { credentials: 'include' })
+        fetch(`https://aiot2.live/api/v1/members?page=${page}&size=${size}`, { credentials: 'include' })
             .then(res => res.json())
             .then(json => {
                 const table = document.createElement('table');
@@ -312,7 +312,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
 
-        fetchWithAuth(`http://localhost:10251/api/v1/attendances/${currentMemberNo}/summary/recent`)
+        fetchWithAuth(`https://aiot2.live/api/v1/attendances/${currentMemberNo}/summary/recent`)
             .then(res => res.json())
             .then(json => {
 
