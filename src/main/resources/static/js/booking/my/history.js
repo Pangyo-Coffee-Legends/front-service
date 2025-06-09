@@ -57,7 +57,7 @@ const getBookings = function (bookings, totalElements, currentPage, size) {
                 <td class="booking-finished">${!data.finishesAt ? '-' : format.ampm(data.finishesAt)}</td>
                 <td class="booking-change">${data.changeName == null ? '-' : data.changeName}</td>
                 <td>
-                  ${data.changeName === '취소' || !isFuture ? '' :
+                  ${data.changeName === '취소' || data.changeName === '종료' || !isFuture ? '' :
             `<button class="edit-btn" onclick="window.location.href='/booking/update?id=${data.no}'">수정</button>
                      <button class="cancel-btn" data-value="${data.no}">취소</button>`
         }
