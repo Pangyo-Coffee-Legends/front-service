@@ -40,7 +40,9 @@ public class GlobalModelAttributeAdvice {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getPrincipal())) {
             String userEmail = auth.getName();
+            String role = auth.getAuthorities().iterator().next().getAuthority();
             model.addAttribute("userEmail", userEmail);
+            model.addAttribute("role", role);
         }
     }
 }
