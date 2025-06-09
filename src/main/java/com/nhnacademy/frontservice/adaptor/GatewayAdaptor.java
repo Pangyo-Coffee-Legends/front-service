@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 /**
- * Gateway를 통해 member-service 및 attendance-service와 통신하는 어댑터입니다.
+ * Gateway를 통해 member-service와 통신하는 어댑터입니다.
  */
 
 @FeignClient(name = "gateway-service", url = "http://localhost:10251", path = "/api/v1")

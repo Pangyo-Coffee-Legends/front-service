@@ -9,9 +9,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const reportBtn = document.getElementById('generateReportBtn');
     const reportMonth = document.getElementById('reportMonth');
     const reportYear = document.getElementById('reportYear');
-
     let currentThreadId = null;
     let thinkingInterval = null;
+    let isSubmitting = false;
 
     if (reportYear) {
         for (let y = 2000; y <= 2100; y++) {
@@ -24,27 +24,38 @@ document.addEventListener('DOMContentLoaded', function () {
             reportYear.appendChild(option);
         }
     }
-
+    if (reportMonth) {
+        const currentMonth = new Date().getMonth() + 1;
+        const options = reportMonth.querySelectorAll('option');
+        options.forEach(option => {
+            if (parseInt(option.value) === currentMonth) {
+                option.selected = true;
+            }
+        });
+    }
     if (reportBtn) {
         reportBtn.addEventListener('click', () => {
             const mbNo = memberInput.value.trim();
             const month = parseInt(reportMonth.value, 10);
             const year = parseInt(reportYear.value, 10);
+            const overlay = document.getElementById('reportLoadingOverlay');
 
-            // ✅ 수정됨: 대화 선택 확인 추가
+            // 유효성 검사
             if (!mbNo || isNaN(month) || isNaN(year) || !currentThreadId) {
                 alert("사원, 연도, 월, 대화 목록을 모두 선택해주세요.");
                 return;
             }
 
+            // ✅ 로딩 표시
+            if (overlay) overlay.style.display = 'flex';
+            alert("🔍 리포트 분석 중입니다...");
             const keywordMap = {
                 "출근": 1, "지각": 2, "결근": 3, "외근": 4,
-                "연차": 5, "질병": 6, "반차": 7, "상": 8
+                "연차": 5, "병가": 6, "반차": 7, "경조사휴가": 8
             };
-
             const statusCodes = Object.values(keywordMap).map(String);
 
-            postWithAuth("http://localhost:10251/api/v1/analysis/reports", {
+            postWithAuth("https://aiot2.live/api/v1/analysis/reports", {
                 mbNo: parseInt(mbNo),
                 year,
                 month,
@@ -64,9 +75,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 .catch(err => {
                     console.error("❌ 리포트 생성 실패:", err);
                     alert("리포트 생성에 실패했습니다.");
+                })
+                .finally(() => {
+                    // ✅ 로딩 숨기기
+                    if (overlay) overlay.style.display = 'none';
                 });
         });
     }
+
 
     document.getElementById('downloadPdfBtn').addEventListener('click', function () {
         const mbNo = memberInput.value;
@@ -78,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        fetch(`http://localhost:10251/api/v1/analysis/reports/pdf?mbNo=${mbNo}&year=${year}&month=${month}`, {
+        fetch(`https://aiot2.live/api/v1/analysis/reports/pdf?mbNo=${mbNo}&year=${year}&month=${month}`, {
             method: 'GET',
             credentials: 'include'
         })
@@ -110,8 +126,10 @@ document.addEventListener('DOMContentLoaded', function () {
         console.error("❗ 필수 요소가 누락되었습니다. HTML 구조를 다시 확인하세요.");
         return;
     }
-
-    fetch('http://localhost:10251/api/v1/members?page=0&size=100', { credentials: 'include' })
+    /*
+    member-service API 호출하여 드롭다운으로 맴버번호와 이름으로 직관적으로 찾을 수 있음
+     */
+    fetch('https://aiot2.live/api/v1/members?page=0&size=100', {credentials: 'include'})
         .then(res => res.json())
         .then(data => {
             if (!data.content || data.content.length === 0) {
@@ -132,6 +150,9 @@ document.addEventListener('DOMContentLoaded', function () {
     promptInput.addEventListener('keydown', function (e) {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
+
+            if(isSubmitting) return;
+
             form.dispatchEvent(new Event('submit'));
         }
     });
@@ -169,6 +190,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 dotCount = (dotCount + 1) % 4;
                 contentBox.textContent = 'AI가 생각중입니다' + '.'.repeat(dotCount);
             }, 300);
+            // 채팅 추가 후 자동 스크롤
+            setTimeout(() => {
+                wrapper.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            }, 10);
+
             return;
         }
 
@@ -262,11 +288,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function saveMessage(threadId, role, content) {
         if (!threadId) return Promise.resolve();
-        return postWithAuth('http://localhost:10251/api/v1/analysis/histories', { threadId, role, content });
+        return postWithAuth('https://aiot2.live/api/v1/analysis/histories', {threadId, role, content});
+
     }
 
     function loadThreads(memberNo) {
-        fetch(`http://localhost:10251/api/v1/analysis/members/${memberNo}/threads`, { credentials: 'include' })
+        fetch(`https://aiot2.live/api/v1/analysis/members/${memberNo}/threads`, { credentials: 'include' })
             .then(res => res.json())
             .then(data => {
                 threadList.innerHTML = '';
@@ -300,7 +327,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 continue;
                             }
                             if (confirm(`"${newTitle}"(으)로 수정하시겠습니까?`)) {
-                                fetch(`http://localhost:10251/api/v1/analysis/threads/${thread.threadId}`, {
+                                fetch(`https://aiot2.live/api/v1/analysis/threads/${thread.threadId}`, {
                                     method: 'PUT',
                                     credentials: 'include',
                                     headers: { 'Content-Type': 'application/json' },
@@ -327,7 +354,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     deleteBtn.onclick = (e) => {
                         e.stopPropagation();
                         if (confirm(`"${thread.title}" 대화를 삭제하시겠습니까?`)) {
-                            fetch(`http://localhost:10251/api/v1/analysis/threads/${thread.threadId}`, {
+                            fetch(`https://aiot2.live/api/v1/analysis/threads/${thread.threadId}`, {
                                 method: 'DELETE',
                                 credentials: 'include'
                             }).then(res => {
@@ -356,7 +383,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!threadId) return;
         chatBox.innerHTML = '';
         chartArea.innerHTML = '';
-        fetch(`http://localhost:10251/api/v1/analysis/histories/${threadId}`, { credentials: 'include' })
+        fetch(`https://aiot2.live/api/v1/analysis/histories/${threadId}`, {credentials: 'include'})
             .then(res => res.json())
             .then(history => {
                 history.reverse().forEach(m => appendChatMessage(m.role, m.content));
@@ -365,10 +392,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
     form.addEventListener('submit', function (e) {
         e.preventDefault();
+
+        // 중복 제출 방지
+        if (isSubmitting) return;
+        isSubmitting = true;
+
         const memberNo = memberInput.value.trim();
         const prompt = promptInput.value.trim();
         if (!memberNo || !prompt || !currentThreadId) {
             alert('사원번호, 질문, 대화 선택을 모두 완료하세요.');
+            isSubmitting = false;
             return;
         }
 
@@ -377,7 +410,7 @@ document.addEventListener('DOMContentLoaded', function () {
         promptInput.value = '';
         appendChatMessage('ai', '', { type: 'thinking' });
 
-        fetch(`http://localhost:10251/api/v1/attendances/${memberNo}/summary/recent`, { credentials: 'include' })
+        fetch(`https://aiot2.live/api/v1/attendances/${memberNo}/summary/recent`, {credentials: 'include'})
             .then(res => res.json())
             .then(summaryData => {
                 const records = summaryData.content.map(r => ({
@@ -390,7 +423,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 const keywordMap = {
                     "출근": 1, "지각": 2, "결근": 3, "외근": 4,
-                    "연차": 5, "질병": 6, "반차": 7, "상": 8
+                    "연차": 5, "병가": 6, "반차": 7, "경조사휴가": 8
                 };
 
                 const matchedLabels = [];
@@ -424,7 +457,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     { role: 'user', content: '[근무 기록]\n' + formattedRecords }
                 ];
 
-                return postWithAuth('http://localhost:10251/api/v1/analysis/customs', {
+                return postWithAuth('https://aiot2.live/api/v1/analysis/customs', {
                     memberNo,
                     messages: messagePayload,
                     workRecords: records
@@ -444,6 +477,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 chatBox.lastChild.remove();
                 console.error('❌ 분석 흐름 오류:', err);
                 appendChatMessage('ai', `❗ 오류: ${err.message}`);
+            })
+            .finally(() => {
+                isSubmitting = false;
             });
     });
 
@@ -456,7 +492,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const title = prompt('새 대화 제목을 입력하세요');
         if (!title?.trim()) return;
 
-        postWithAuth('http://localhost:10251/api/v1/analysis/threads', { mbNo, title: title.trim() })
+        postWithAuth('http://localhost:10251/api/v1/analysis/threads', {mbNo, title: title.trim()})
+
             .then(res => res.json())
             .then(thread => {
                 currentThreadId = thread.threadId;

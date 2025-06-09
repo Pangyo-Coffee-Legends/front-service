@@ -1,45 +1,117 @@
-/* 🧠 AI 기반 근태 분석 제목 스타일 */
+/* 🧠 제목 스타일 */
 .page-title {
-    font-family: 'Segoe UI', 'Pretendard', sans-serif; /* 사용 폰트 설정 */
-    font-size: 2rem;            /* 기본 제목 글꼴 크기 */
-    font-weight: 800;           /* 글꼴 두께: 매우 굵게 */
-    color: #1a237e;             /* 글자 색상: 진한 남색 */
-    padding: 1.5rem 2rem 1rem 2rem; /* 위, 오른쪽, 아래, 왼쪽 패딩 */
-    border-bottom: 2px solid #e0e0e0; /* 하단 구분선 */
-    display: flex;              /* 내부 요소를 가로 정렬 */
-    align-items: center;        /* 세로 방향 중앙 정렬 */
-    gap: 0.75rem;               /* 이모지와 텍스트 사이 간격 */
+    font-family: 'Segoe UI', 'Pretendard', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: #1a237e;
+    padding: 1.5rem 2rem 1rem 2rem;
+    border-bottom: 2px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
 }
-
-/* 🔹 제목 내 이모지 스타일 */
-.page-title .emoji {
-    font-size: 2rem; /* 이모지 크기 설정 */
-}
-
-/* 🔹 강조 텍스트(파란색) */
-.page-title .highlight {
-    color: #1976d2; /* 강조 색상: 파란색 */
-}
-
-/* 📱 반응형 스타일 (768px 이하 화면에서 크기 조정) */
+.page-title .emoji { font-size: 2rem; }
+.page-title .highlight { color: #1976d2; }
 @media (max-width: 768px) {
     .page-title {
-        font-size: 1.25rem;   /* 모바일에서 글꼴 크기 축소 */
-        padding: 1rem;        /* 패딩 축소 */
+        font-size: 1.25rem;
+        padding: 1rem;
     }
 }
 
-/* 📊 분석 그래프 출력 영역 전체 스타일 */
-#chartArea {
-    background-color: #f9f9f9; /* 배경 색상: 연한 회색 */
-    padding: 1rem;          /* 내부 여백 */
-    border: 1px solid #ddd; /* 테두리 색상 설정 */
+/* 💬 사이드바 스타일 */
+.sidebar {
+    width: 280px;
+    background-color: #f9fafb;
+    border-right: 1px solid #ddd;
+    overflow-y: auto;
 }
 
+/* 🧠 중앙 채팅 UI */
+.chat-main {
+    background-color: #f4f6f8;
+    overflow-y: auto;
+}
+.chat-box {
+    max-width: 900px;
+    height: 400px;
+    overflow-y: auto;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    padding: 1rem;
+}
+.chat-form {
+    max-width: 900px;
+}
+#chartArea {
+    max-width: 900px;
+    background-color: #f9f9f9;
+    padding: 1rem;
+    border: 1px solid #ddd;
+}
+.report-box {
+    max-width: 900px;
+}
 
-/*AI 근태관리 대화목록 삭제버튼*/
+/* 🟥 삭제 버튼 hover 개선 */
 #threadList .btn-outline-danger:hover {
     background-color: #dc3545;
     color: white;
     border-color: #dc3545;
 }
+
+/* 🟨 반응형 대응 */
+@media (max-width: 768px) {
+    .chat-form {
+        flex-direction: column;
+    }
+    #promptText {
+        width: 100% !important;
+    }
+}
+/* 전송 버튼 */
+#analysisForm button[type="submit"] {
+    background: linear-gradient(to right, #1976d2, #64b5f6);
+    border: none;
+    color: white;
+}
+#analysisForm button[type="submit"]:hover {
+    background: #1565c0;
+}
+/* 리포트 생성 버튼 */
+.btn.btn-sm.btn-outline-success {
+    background: linear-gradient(to right, #4caf50, #81c784);
+    color: white;
+    border: none;
+}
+.btn.btn-sm.btn-outline-success:hover {
+    background: #388e3c;
+}
+/* PDF 저장 버튼 */
+.btn.btn-sm.btn-outline-danger {
+    background: linear-gradient(to right, #e53935, #ef5350);
+    color: white;
+    border: none;
+}
+.btn.btn-sm.btn-outline-danger:hover {
+    background: #b71c1c;
+}
+
+/* HTML: <div class="loader"></div> */
+.loader {
+    width: 50px;
+    aspect-ratio: 1;
+    --_c:no-repeat radial-gradient(farthest-side,#25b09b 92%,#0000);
+    background:
+            var(--_c) top,
+            var(--_c) left,
+            var(--_c) right,
+            var(--_c) bottom;
+    background-size: 12px 12px;
+    animation: l7 1s infinite;
+}
+@keyframes l7 {to{transform: rotate(.5turn)}}
+
+
+

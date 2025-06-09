@@ -8,12 +8,36 @@
     <title>Title</title>
     <link rel="stylesheet" href="/css/layout.css">
     <link rel="stylesheet" href="/css/chat.css">
+    <link rel="stylesheet" href="/css/notification.css">
 </head>
 <body>
 <div class="container" layout:fragment="content">
     <div class="card">
-        <div class = "card-title-row">
-            <h1 class="card-title" id="chat-room-title">알림목록</h1>
+        <div class="card-title-row">
+            <h1 class="card-title">알림 목록</h1>
+            <div class="date-filter-group" style="margin-left: auto;">
+                <select id="year-filter">
+                    <option value="">년</option>
+                </select>
+                <select id="month-filter">
+                    <option value="">월</option>
+                    <option value="1">1월</option>
+                    <option value="2">2월</option>
+                    <option value="3">3월</option>
+                    <option value="4">4월</option>
+                    <option value="5">5월</option>
+                    <option value="6">6월</option>
+                    <option value="7">7월</option>
+                    <option value="8">8월</option>
+                    <option value="9">9월</option>
+                    <option value="10">10월</option>
+                    <option value="11">11월</option>
+                    <option value="12">12월</option>
+                </select>
+                <select id="day-filter">
+                    <option value="">일</option>
+                </select>
+            </div>
         </div>
         <div class="chat-box" id="chat-box-simple"></div>
     </div>
