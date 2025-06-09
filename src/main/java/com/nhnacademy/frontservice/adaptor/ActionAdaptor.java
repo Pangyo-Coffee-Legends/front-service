@@ -16,7 +16,7 @@ import java.util.List;
  */
 @FeignClient(
         name = "action-service",
-        url = "${rule-service.url}",
+        url = "http://localhost:10263",
         path = "/api/v1/actions"
 )
 public interface ActionAdaptor {

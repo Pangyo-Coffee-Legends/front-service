@@ -19,14 +19,18 @@
 
             <div class="info-container">
                 <div class="calendar">
-                    <h2 id="selectedRoom">회의실 예약</h2>
+<!--                    <h2 id="selectedRoom">회의실 예약</h2>-->
                     <div id="calendarContent">
                         <div id='calendar'></div>
                     </div>
                 </div>
 
+
                 <div class="time-container">
-                    <div class="section-title">오전</div>
+                    <div id="selectedTimeInfo" style="margin-top: 10px; font-weight: bold; color: #333;">
+                        시작 시간: <span id="startTimeDisplay">-</span> / 종료 시간: <span id="endTimeDisplay">-</span>
+                    </div>
+                    <div class="section-title"></div>
                     <div class="time-grid">
                         <button class="time-slot" onclick="selectTime(this)">09:00</button>
 <!--                        <button class="time-slot" onclick="selectTime(this)">09:30</button>-->
@@ -34,22 +38,34 @@
 <!--                        <button class="time-slot" onclick="selectTime(this)">10:30</button>-->
                         <button class="time-slot" onclick="selectTime(this)">11:00</button>
 <!--                        <button class="time-slot" onclick="selectTime(this)">11:30</button>-->
+                        <button class="time-slot" onclick="selectTime(this)">12:00</button>
+                        <!--                        <button class="time-slot" onclick="selectTime(this)">12:30</button>-->
+                        <button class="time-slot" onclick="selectTime(this)">13:00</button>
+                        <!--                        <button class="time-slot" onclick="selectTime(this)">01:30</button>-->
+                        <button class="time-slot" onclick="selectTime(this)">14:00</button>
+                        <!--                        <button class="time-slot" onclick="selectTime(this)">02:30</button>-->
+                        <button class="time-slot" onclick="selectTime(this)">15:00</button>
+                        <!--                        <button class="time-slot" onclick="selectTime(this)">03:30</button>-->
+                        <button class="time-slot" onclick="selectTime(this)">16:00</button>
+                        <!--                        <button class="time-slot" onclick="selectTime(this)">04:30</button>-->
+                        <button class="time-slot" onclick="selectTime(this)">17:00</button>
+
                     </div>
 
-                    <div class="section-title">오후</div>
-                    <div class="time-grid">
-                        <button class="time-slot" onclick="selectTime(this)">12:00</button>
-<!--                        <button class="time-slot" onclick="selectTime(this)">12:30</button>-->
-                        <button class="time-slot" onclick="selectTime(this)">01:00</button>
-<!--                        <button class="time-slot" onclick="selectTime(this)">01:30</button>-->
-                        <button class="time-slot" onclick="selectTime(this)">02:00</button>
-<!--                        <button class="time-slot" onclick="selectTime(this)">02:30</button>-->
-                        <button class="time-slot" onclick="selectTime(this)">03:00</button>
-<!--                        <button class="time-slot" onclick="selectTime(this)">03:30</button>-->
-                        <button class="time-slot" onclick="selectTime(this)">04:00</button>
-<!--                        <button class="time-slot" onclick="selectTime(this)">04:30</button>-->
-                        <button class="time-slot" onclick="selectTime(this)">05:00</button>
-                    </div>
+<!--                    <div class="section-title">오후</div>-->
+<!--                    <div class="time-grid">-->
+<!--                        <button class="time-slot" onclick="selectTime(this)">12:00</button>-->
+<!--&lt;!&ndash;                        <button class="time-slot" onclick="selectTime(this)">12:30</button>&ndash;&gt;-->
+<!--                        <button class="time-slot" onclick="selectTime(this)">01:00</button>-->
+<!--&lt;!&ndash;                        <button class="time-slot" onclick="selectTime(this)">01:30</button>&ndash;&gt;-->
+<!--                        <button class="time-slot" onclick="selectTime(this)">02:00</button>-->
+<!--&lt;!&ndash;                        <button class="time-slot" onclick="selectTime(this)">02:30</button>&ndash;&gt;-->
+<!--                        <button class="time-slot" onclick="selectTime(this)">03:00</button>-->
+<!--&lt;!&ndash;                        <button class="time-slot" onclick="selectTime(this)">03:30</button>&ndash;&gt;-->
+<!--                        <button class="time-slot" onclick="selectTime(this)">04:00</button>-->
+<!--&lt;!&ndash;                        <button class="time-slot" onclick="selectTime(this)">04:30</button>&ndash;&gt;-->
+<!--                        <button class="time-slot" onclick="selectTime(this)">05:00</button>-->
+<!--                    </div>-->
                 </div>
                 <div class="reservation-form">
                     <label for="attendees">예약 인원</label>
