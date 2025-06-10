@@ -9,6 +9,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const attendanceTableContainer = document.getElementById('attendance-table-container');
     const statusGroup = document.getElementById('status-checkbox-group');
 
+    const today = new Date();
+    yearInput.value = today.getFullYear();
+    monthSelector.value = today.getMonth() + 1;
+
     const statusMap = {
         1: "출근", 2: "지각", 3: "결근", 4: "외근",
         5: "연차", 6: "병가", 7: "반차", 8: "경조사휴가"
