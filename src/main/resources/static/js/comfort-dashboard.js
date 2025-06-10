@@ -69,7 +69,7 @@ document.getElementById('place-select-dropdown').addEventListener('change', func
 
     if (!floorNo) {
         placeNameInput.value = '';
-        floorImage.src = "/images/academy.png";
+        floorImage.src = "/images/academy.png"; // 기존 저장 이미지
         return;
     }
 
@@ -81,16 +81,18 @@ document.getElementById('place-select-dropdown').addEventListener('change', func
         .then(data => {
             document.getElementById('place-name-input').value = data.floorName || '';
 
+            // API에서 반환하는 이미지 경로가 이미 "/images/place/xxx.png"라면 그대로 사용
             const imgSrc = data.imagePath.startsWith('http')
                 ? data.imagePath
                 : `${BASE_API}${data.imagePath}`;
 
+            // 기본 이미지는 기존처럼 "/images/academy.png"로 둠
             document.getElementById('floor-image').src = imgSrc || "/images/academy.png";
         })
         .catch(err => {
             console.error('조회 에러:', err);
             placeNameInput.value = '';
-            floorImage.src = "/images/academy.png";
+            floorImage.src = "/images/academy.png"; // 기존 저장 이미지
         });
 });
 
