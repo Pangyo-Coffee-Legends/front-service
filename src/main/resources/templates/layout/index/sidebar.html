@@ -6,6 +6,7 @@
         </h4>
     </a>
     <ul class="nav flex-column">
+        <!--        근태 관리 사이드바 추가-->
         <li class="nav-item" sec:authorize="hasRole('ADMIN')">
             <a
                     class="nav-link dropdown-toggle text-white"
@@ -25,7 +26,25 @@
             </ul>
         </li>
 
-<!--        근태 관리 사이드바 추가-->
+        <!--        오피스 관리 사이드바 추가-->
+        <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+            <a
+                    class="nav-link dropdown-toggle text-white"
+                    href="#"
+                    id="sidebarDropdown3"
+                    role="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#sidebarDropdownMenu3"
+                    aria-expanded="false"
+            >
+                오피스 환경
+            </a>
+            <ul class="collapse list-unstyled ps-3" id="sidebarDropdownMenu3">
+                <li><a href="/comfort-dashboard" class="nav-link text-white">환경 제어</a></li>
+                <li><a href="/rule-group" class="nav-link text-white">IOT 서비스</a></li>
+                <li><a href="/sensor" class="nav-link text-white">기기 관리</a> </li>
+            </ul>
+        </li>
 
         <!--   회의실 메뉴   -->
         <li class="nav-item">
@@ -69,27 +88,6 @@
                 </li>
             </ul>
         </li>
-        <!--        근태 관리 사이드바 추가-->
-
-        <li class="nav-item" sec:authorize="hasRole('ADMIN')">
-            <a
-                    class="nav-link dropdown-toggle text-white"
-                    href="#"
-                    id="sidebarDropdown3"
-                    role="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#sidebarDropdownMenu3"
-                    aria-expanded="false"
-            >
-                오피스 환경
-            </a>
-            <ul class="collapse list-unstyled ps-3" id="sidebarDropdownMenu3">
-                <li><a href="/comfort-dashboard" class="nav-link text-white">환경 제어</a></li>
-                <li><a href="/rule-group" class="nav-link text-white">IOT 서비스</a></li>
-                <li><a href="/sensor" class="nav-link text-white">기기 관리</a> </li>
-            </ul>
-        </li>
-        <!--        오피스 관리 사이드바 추가-->
         <li class="nav-item">
             <a class="nav-link dropdown-toggle text-white"
                href="#"
