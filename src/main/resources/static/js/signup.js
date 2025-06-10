@@ -10,14 +10,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const confirmPassword = document.getElementById("signupPasswordConfirm").value;
         const phone = document.getElementById("signupPhone").value.trim();
 
-        console.log(email);
-        console.log(name);
-        console.log(password);
-        console.log(confirmPassword);
-        console.log(phone);
-
         if (password !== confirmPassword) {
-            console.log("비밀번호가 일치하지 않습니다.");
+            alert("비밀번호가 일치하지 않습니다.");
         } else {
             const data = {
                 roleName: "ROLE_USER",
@@ -36,10 +30,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 body: JSON.stringify(data)
             }
 
-            const json = await fetch("https://aiot2.live/api/v1/members", options)
-                .then(response => response.json()).catch(e => console.log(e));
+            const response = await fetch("http://localhost:10251/api/v1/members", options);
 
-            console.log(json);
+            if (!response.ok) {
+                const error = await response.json();
+                alert(`회원가입 실패!\n${error.message}`)
+                throw new Error(error.message || '회원가입에 실패했습니다.');
+            }
 
             alert("회원가입 완료! 로그인 해주세요.");
 
