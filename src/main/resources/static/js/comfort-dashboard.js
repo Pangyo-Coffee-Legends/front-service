@@ -83,7 +83,7 @@ document.getElementById('place-select-dropdown').addEventListener('change', func
 
             const imgSrc = data.imagePath.startsWith('http')
                 ? data.imagePath
-                : `${BASE_API}${data.imagePath}`;
+                : `https://s2.java21.net${data.imagePath}`;
 
             document.getElementById('floor-image').src = imgSrc || "/images/academy.png";
         })
