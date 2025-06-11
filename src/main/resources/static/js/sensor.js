@@ -1,11 +1,11 @@
 const SENSOR_API = "https://aiot2.live/api/v1/sensors";
 // const SENSOR_API = "http://localhost:10251/api/v1/sensors";
-const USER_HEADER = { "X-USER": "test-user@aiot.com" };
+// const USER_HEADER = { "X-USER": "test-user@aiot.com" };
 
 const FETCH_CONFIG = {
     headers: {
         "Content-Type": "application/json",
-        ...USER_HEADER
+        // ...USER_HEADER
     },
     credentials: "include"
 };
@@ -34,7 +34,7 @@ function fillLocationSelects(locations) {
 
 document.addEventListener("DOMContentLoaded", () => {
     fetch("https://aiot2.live/api/v1/sensors/places", FETCH_CONFIG)
-        // fetch("http://localhost:10251/api/v1/sensors/places", FETCH_CONFIG)
+    // fetch("http://localhost:10251/api/v1/sensors/places", FETCH_CONFIG)
         .then(res => res.ok ? res.json() : Promise.reject("장소 목록 불러오기 실패"))
         .then(locations => {
             fillLocationSelects(locations);
@@ -49,9 +49,10 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
     document.getElementById("addDeviceBtn").addEventListener("click", () => {
-        // 타이틀을 '새 기기 추가'로, 폼 초기화
         document.getElementById("modalTitle").textContent = "새 기기 추가";
         document.getElementById("deviceForm").reset();
+        document.getElementById("sensorNoHidden").value = "";
+        document.getElementById("submitButton").textContent = "등록";
         document.getElementById("addDeviceModal").style.display = "block";
     });
 
@@ -59,36 +60,56 @@ document.addEventListener("DOMContentLoaded", () => {
         event.preventDefault();
         const formData = new FormData(event.target);
 
+        const sensorNo = formData.get("sensorNo");
         const sensorType = formData.get("sensorType");
         if (!sensorType) {
             alert("센서 타입을 선택해주세요.");
             return;
         }
 
-        const newSensor = {
-            sensorName: formData.get("sensorName"),
-            sensorType: sensorType,
-            location: formData.get("location"),
-            sensorStatus: false
-        };
+        let url = SENSOR_API;
+        let method = "POST";
+        let successMsg = "기기 등록 완료";
+        let payload;
 
-        fetch(SENSOR_API, {
+        if (!sensorNo) {
+            // 등록(POST) body
+            payload = {
+                sensorName: formData.get("sensorName"),
+                sensorType: sensorType,
+                location: formData.get("location"),
+                sensorStatus: false
+            };
+        } else {
+            // 수정(PUT) body (필요한 필드만)
+            url = `${SENSOR_API}/${sensorNo}`;
+            method = "PUT";
+            successMsg = "기기 수정 완료";
+            payload = {
+                sensorName: formData.get("sensorName"),
+                sensorType: sensorType
+            };
+        }
+
+        fetch(url, {
             ...FETCH_CONFIG,
-            method: "POST",
-            body: JSON.stringify(newSensor)
+            method,
+            body: JSON.stringify(payload)
         })
-            .then(res => res.ok ? res.json() : res.text().then(text => { throw new Error(text); }))
+            .then(res => res.ok ? console.log(res.json()) : res.text().then(text => { throw new Error(text); }))
             .then(() => {
-                alert("기기 등록 완료");
+                alert(successMsg);
                 closeAddDeviceModal();
-
                 const dropdown = document.getElementById("filterLocationSelect");
-                dropdown.value = newSensor.location;
+                // // 등록이면 선택한 장소로 이동, 수정이면 새로고침만
+                // if (method === "POST") {
+                //     dropdown.value = payload.location;
+                // }
                 dropdown.dispatchEvent(new Event("change"));
             })
             .catch(err => {
-                console.error("기기 등록 실패:", err);
-                alert("기기 등록 실패: " + err.message);
+                console.error(successMsg.replace('완료', '실패') + ":", err);
+                alert(successMsg.replace('완료', '실패') + ": " + err.message);
             });
     });
 
@@ -103,6 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function closeAddDeviceModal() {
     document.getElementById("addDeviceModal").style.display = "none";
     document.getElementById("deviceForm").reset();
+    document.getElementById("sensorNoHidden").value = "";
 }
 
 function loadSensorsByLocation(location) {
@@ -192,13 +214,12 @@ function editSensor(sensorNo) {
     })
         .then(res => res.ok ? res.json() : Promise.reject("수정할 센서 조회 실패"))
         .then(sensor => {
-            // 타이틀을 '기기 수정'으로 변경
             document.getElementById("modalTitle").textContent = "기기 수정";
-            // 기존 값 채우기
+            document.getElementById("submitButton").textContent = "수정";
+            document.getElementById("sensorNoHidden").value = sensor.sensorNo;
             document.querySelector('input[name="sensorName"]').value = sensor.sensorName;
             document.querySelector('select[name="sensorType"]').value = sensor.sensorType;
             document.querySelector('select[name="location"]').value = sensor.location;
-            // 모달 열기
             document.getElementById("addDeviceModal").style.display = "block";
         })
         .catch(err => {

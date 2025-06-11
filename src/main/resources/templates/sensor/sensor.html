@@ -190,12 +190,12 @@
 
   <!-- ✅ 기기 등록 모달 (여기만 바꿔주면 됨) -->
   <div id="addDeviceModal">
-    <h3 id="modalTitle">새 기기 추가</h3> <!-- id="modalTitle" 추가 -->
+    <h3 id="modalTitle">새 기기 추가</h3>
     <form id="deviceForm">
+      <input type="hidden" name="sensorNo" id="sensorNoHidden" />
       <label>센서 이름:
         <input type="text" name="sensorName" required>
       </label><br><br>
-
       <label>센서 타입:
         <select name="sensorType" required>
           <option value="">센서 타입 선택</option>
@@ -206,12 +206,10 @@
           <option value="ventilator">환풍기</option>
         </select>
       </label><br><br>
-
       <label>장소:
         <select name="location" id="modalLocationSelect" required></select>
       </label><br><br>
-
-      <button type="submit">등록</button>
+      <button type="submit" id="submitButton">등록</button>
       <button type="button" onclick="closeAddDeviceModal()">취소</button>
     </form>
   </div>
