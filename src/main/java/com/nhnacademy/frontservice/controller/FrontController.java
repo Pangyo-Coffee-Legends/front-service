@@ -25,7 +25,7 @@ public class FrontController {
         //    throw new Exception();
         // }
 
-        return "index/index";
+        return "index/comfort-dashboard";
     }
 
     @GetMapping("/login")
