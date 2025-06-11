@@ -7,30 +7,37 @@ const api = apiStore();
 const format = formatStore();
 const paginationEl = document.getElementById('pagination');
 
+let controls;
+
 document.addEventListener('DOMContentLoaded', async () => {
     const params = new URLSearchParams(window.location.search);
     const page = parseInt(params.get('page')) || 1;
-    const controls = {
+
+    ['sortField','sortDirection','pageSize'].forEach(key => {
+        const el = document.getElementById(key === 'pageSize' ? 'pageSizeSelect' : key);
+        if (params.has(key) && el) el.value = params.get(key);
+    });
+
+    controls = {
         sortField: document.getElementById("sortField"),
         sortDirection: document.getElementById("sortDirection"),
         pageSize: document.getElementById("pageSizeSelect"),
     };
 
-    Object.values(controls).forEach(el =>
-        el.addEventListener("change", () => loadBookings(1, controls))
-    );
+    Object.values(controls).forEach(el => el.addEventListener('change', () => loadBookings(1)));
 
-    await loadBookings(page, controls);
+    await loadBookings(page);
 });
 
-async function loadBookings(page = 1, controls) {
-    const sortField = controls.sortField.value;
-    const sortDirection = controls.sortDirection.value;
-    const pageSize = controls.pageSize.value;
+async function loadBookings(page = 1) {
+    const sf = controls.sortField.value;
+    const sd = controls.sortDirection.value;
+    const ps = controls.pageSize.value;
 
-    const response = await api.getAllBookings(sortField, sortDirection, pageSize, page);
-    // console.log(response);
+    const params = new URLSearchParams({ page, sortField: sf, sortDirection: sd, pageSize: ps });
+    window.history.replaceState({}, '', `?${params.toString()}`);
 
+    const response = await api.getAllBookings(sf, sd, ps, page);
     getBookings(response.content, response.totalElements, page, response.size);
     renderPagination(paginationEl, response.totalPages, response.number, loadBookings);
 }
@@ -50,7 +57,6 @@ const getBookings = function (bookings, totalElements, currentPage, size) {
                 <td class="booking-no">${index}</td>
                 <td class="booking-member">${data.member.name}</td>
                 <td class="booking-email">${data.member.email}</td>
-<!--                <td class="booking-phone">${data.phoneNumber}</td>-->
                 <td class="booking-room">${data.room.name}</td>
                 <td class="booking-room">${data.attendeeCount}</td>
                 <td class="booking-code">${data.changeName === '취소' ? '-' : data.code}</td>
@@ -59,13 +65,14 @@ const getBookings = function (bookings, totalElements, currentPage, size) {
                 <td class="booking-change">${data.changeName == null ? '-' : data.changeName}</td>
                 <td>
                   ${data.changeName === '취소' || data.changeName === '종료' || !isFuture ? '' :
-                    `<button class="cancel-btn" data-value="${data.no}">취소</button>`
+            `<button class="cancel-btn" data-value="${data.no}">취소</button>`
         }
                 </td>
                 <td class="booking-date">${format.ampm(data.createdAt)}</td>
             </tr>
         `;
     });
+
     container.addEventListener('click', (e) => {
         if (e.target.classList.contains('cancel-btn')) {
             cancelAlert(e.target);
