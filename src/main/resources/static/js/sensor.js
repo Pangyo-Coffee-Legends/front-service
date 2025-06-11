@@ -1,6 +1,6 @@
 const SENSOR_API = "https://aiot2.live/api/v1/sensors";
 // const SENSOR_API = "http://localhost:10251/api/v1/sensors";
-const USER_HEADER = { "X-USER": "test-user@aiot.com" }; // ✅ 추가
+const USER_HEADER = { "X-USER": "test-user@aiot.com" };
 
 const FETCH_CONFIG = {
     headers: {
@@ -34,13 +34,10 @@ function fillLocationSelects(locations) {
 
 document.addEventListener("DOMContentLoaded", () => {
     fetch("https://aiot2.live/api/v1/sensors/places", FETCH_CONFIG)
-    // fetch("http://localhost:10251/api/v1/sensors/places", FETCH_CONFIG)
+        // fetch("http://localhost:10251/api/v1/sensors/places", FETCH_CONFIG)
         .then(res => res.ok ? res.json() : Promise.reject("장소 목록 불러오기 실패"))
         .then(locations => {
-            // ✅ 드롭다운에 데이터 채우기
             fillLocationSelects(locations);
-
-            // ✅ 첫 번째 장소로 센서 목록 로딩
             if (locations.length > 0) {
                 loadSensorsByLocation(locations[0]);
                 document.getElementById("filterLocationSelect").value = locations[0];
@@ -52,6 +49,9 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
     document.getElementById("addDeviceBtn").addEventListener("click", () => {
+        // 타이틀을 '새 기기 추가'로, 폼 초기화
+        document.getElementById("modalTitle").textContent = "새 기기 추가";
+        document.getElementById("deviceForm").reset();
         document.getElementById("addDeviceModal").style.display = "block";
     });
 
@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const newSensor = {
             sensorName: formData.get("sensorName"),
-            sensorType: sensorType, // 그대로 전송
+            sensorType: sensorType,
             location: formData.get("location"),
             sensorStatus: false
         };
@@ -82,7 +82,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 alert("기기 등록 완료");
                 closeAddDeviceModal();
 
-                // 드롭다운 선택 반영 + 로딩
                 const dropdown = document.getElementById("filterLocationSelect");
                 dropdown.value = newSensor.location;
                 dropdown.dispatchEvent(new Event("change"));
@@ -148,13 +147,13 @@ function renderSensorTable(sensorList) {
         responsive: true
     });
 
-    // 수정 버튼 클릭 시 처리
+    // 수정 버튼
     $('.edit-btn').click(function () {
         const sensorId = $(this).data('id');
         editSensor(sensorId);
     });
 
-    // 삭제 버튼 클릭 시 처리
+    // 삭제 버튼
     $('.delete-btn').click(function () {
         const sensorId = $(this).data('id');
         deleteSensor(sensorId);
@@ -188,18 +187,18 @@ function normalizeType(type) {
 }
 
 function editSensor(sensorNo) {
-    // 수정할 센서 정보를 로딩하고 모달에 채우기
     fetch(`${SENSOR_API}/${sensorNo}`, {
         ...FETCH_CONFIG
     })
         .then(res => res.ok ? res.json() : Promise.reject("수정할 센서 조회 실패"))
         .then(sensor => {
-            // 예: 센서 정보를 모달에 채운 후 보여주기
+            // 타이틀을 '기기 수정'으로 변경
+            document.getElementById("modalTitle").textContent = "기기 수정";
+            // 기존 값 채우기
             document.querySelector('input[name="sensorName"]').value = sensor.sensorName;
             document.querySelector('select[name="sensorType"]').value = sensor.sensorType;
             document.querySelector('select[name="location"]').value = sensor.location;
-
-            // 수정 후 모달 보여주기
+            // 모달 열기
             document.getElementById("addDeviceModal").style.display = "block";
         })
         .catch(err => {
@@ -216,7 +215,6 @@ function deleteSensor(sensorNo) {
         })
             .then(res => {
                 if (res.ok) {
-                    // 204 No Content는 body가 없음 → 그냥 성공 처리
                     return;
                 } else {
                     return res.text().then(text => { throw new Error(text || "삭제 실패"); });

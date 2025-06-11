@@ -188,9 +188,9 @@
     <button id="addDeviceBtn">➕ 새로운 기기 추가</button>
   </div>
 
-  <!-- ✅ 기기 등록 모달 -->
+  <!-- ✅ 기기 등록 모달 (여기만 바꿔주면 됨) -->
   <div id="addDeviceModal">
-    <h3>새 기기 추가</h3>
+    <h3 id="modalTitle">새 기기 추가</h3> <!-- id="modalTitle" 추가 -->
     <form id="deviceForm">
       <label>센서 이름:
         <input type="text" name="sensorName" required>
@@ -215,6 +215,7 @@
       <button type="button" onclick="closeAddDeviceModal()">취소</button>
     </form>
   </div>
+
 
   <!-- ✅ 외부 JS 및 DataTables 의존성 -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
