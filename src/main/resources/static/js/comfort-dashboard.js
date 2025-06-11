@@ -115,12 +115,12 @@ document.getElementById('btn-register-place').addEventListener('click', function
             return res.json();
         })
         .then(data => {
-            console.log(data); // 서버 응답 데이터 확인
+            // console.log(data); // 서버 응답 데이터 확인
             alert('등록 성공');
             location.reload();
         })
         .catch(err => {
-            console.error(err); // 에러 발생 시 확인
+            // console.error(err); // 에러 발생 시 확인
             alert('등록 실패: ' + err.message);
         });
 });

@@ -145,9 +145,9 @@ document.addEventListener('DOMContentLoaded', function () {
         const m = parseInt(monthSelector.value);
         const w = parseInt(weekSelector.value);
 
-        console.log('[조회 버튼 클릭됨]');
-        console.log('currentMemberNo:', currentMemberNo);
-        console.log('year:', y, 'month:', m, 'week:', w);
+        // console.log('[조회 버튼 클릭됨]');
+        // console.log('currentMemberNo:', currentMemberNo);
+        // console.log('year:', y, 'month:', m, 'week:', w);
 
         if (!currentMemberNo) {
             alert('먼저 회원을 선택해주세요.');

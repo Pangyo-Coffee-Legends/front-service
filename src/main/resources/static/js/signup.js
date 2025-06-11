@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 body: JSON.stringify(data)
             }
 
-            const response = await fetch("http://localhost:10251/api/v1/members", options);
+            const response = await fetch("https://aiot2.live/api/v1/members", options);
 
             if (!response.ok) {
                 const error = await response.json();

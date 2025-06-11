@@ -29,7 +29,7 @@ async function loadBookings(page = 1, controls) {
     const pageSize = controls.pageSize.value;
 
     const response = await api.getAllBookings(sortField, sortDirection, pageSize, page);
-    console.log(response);
+    // console.log(response);
 
     getBookings(response.content, response.totalElements, page, response.size);
     renderPagination(paginationEl, response.totalPages, response.number, loadBookings);

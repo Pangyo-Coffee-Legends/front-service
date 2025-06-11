@@ -1,7 +1,7 @@
 import { fetchMeetingRooms, renderMeetingRooms, MEETING_ROOM_API } from "./common/meeting-room-list-utility.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
-    console.log("회의실 조회 페이지");
+    // console.log("회의실 조회 페이지");
 
     const tbody = document.querySelector("tbody");
 

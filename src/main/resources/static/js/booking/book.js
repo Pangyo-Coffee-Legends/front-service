@@ -13,7 +13,7 @@ let selectedRoom = null;
 
 document.addEventListener('DOMContentLoaded', async () => {
 
-    console.log(window.location.pathname);
+    // console.log(window.location.pathname);
 
     if(id[0] === "?roomNo"){
         selectedRoom = id[1];
@@ -95,7 +95,7 @@ function resetUI(){
 const getCalendar = function (){
     const calendarEl = document.getElementById('calendar');
 
-    console.log('a', selectedRoom);
+    // console.log('a', selectedRoom);
     let calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
         locale: 'ko',
@@ -230,7 +230,7 @@ function highlightTimeRange() {
         slot.classList.remove('selected-time', 'in-range');
     })
 
-    console.log(selectedStartTime);
+    // console.log(selectedStartTime);
 
     if (selectedStartTime) {
         let tempEndTime = selectedEndTime;
@@ -272,7 +272,7 @@ function highlightTimeRange() {
 // 예약 버튼 이벤트
 function getAlert(){
     const reserveBtn = document.getElementById("reserveBtn");
-    console.log('selectedRoom', selectedRoom);
+    // console.log('selectedRoom', selectedRoom);
     reserveBtn.addEventListener('click', () => {
         let attendees = document.getElementById("attendees").value;
         if(selectedDate && selectedStartTime && attendees && selectedRoom){
