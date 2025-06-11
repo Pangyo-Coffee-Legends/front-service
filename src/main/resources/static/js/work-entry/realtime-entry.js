@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // 초기 실행
-    fetchAndUpdate().catch(console.error);
+    // fetchAndUpdate().catch(console.error);
 
     // 반복 실행 (60초마다 실행)
     setInterval(fetchAndUpdate,60 * 1000);
