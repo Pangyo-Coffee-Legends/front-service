@@ -244,12 +244,13 @@ async function fetchComfortData(roomName) {
         const res = await fetch(COMFORT_API, FETCH_CONFIG);
         const text = await res.text();
         const ruleResults = text ? JSON.parse(text) : [];
-
         const comfortData = extractComfortInfo(ruleResults, location);
-        if (!comfortData) return;
 
-        updateGradeDisplay(roomName, comfortData.comfortIndex);
+        // 편의상 더미도 자동 생성
+        const data = comfortData || generateRandomData(roomName);
+        updateGradeDisplay(roomName, data.comfortIndex); // grade(공)와 색상까지 모두 업데이트
     } catch (err) {
+        updateGradeDisplay(roomName, "-");
         console.error(`[${roomName}] comfort 로딩 실패`, err);
     }
 }
@@ -270,9 +271,10 @@ function extractComfortInfo(results, location) {
                     co2Comment: comfortInfo.co2_comment,
                     deviceCommands: {
                         aircon: deviceCommands?.aircon ?? false,
+                        heater: deviceCommands?.heater ?? false,
                         ventilator: deviceCommands?.ventilator ?? false,
-                        dehumidifier: deviceCommands?.dehumidifier ?? false,
-                        heater: deviceCommands?.heater ?? false
+                        dehumidifier: deviceCommands?.dehumidifier ?? false
+
                     }
                 };
             }
@@ -491,19 +493,42 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 function generateRandomData(roomName) {
-    const comfort = randomComfort();
+    // 실제 환경 비슷하게 수치 랜덤 생성
+    const temperature = Math.floor(Math.random() * 10) + 18; // 18~27℃
+    const humidity = Math.floor(Math.random() * 41) + 30;   // 30~70%
+    const co2 = Math.floor(Math.random() * 601) + 400;      // 400~1000ppm
+
+    // 쾌적지수 산정
+    let comfortIndex = "최적 쾌적";
+    if (temperature >= 27 && humidity >= 60) {
+        comfortIndex = "덥고 습함";
+    } else if (temperature <= 20 && humidity <= 35) {
+        comfortIndex = "춥고 건조";
+    } else if (temperature >= 27) {
+        comfortIndex = "덥고 건조";
+    } else if (temperature <= 20) {
+        comfortIndex = "춥고 습함";
+    }
+
+    // CO2 코멘트
+    let co2Comment = "CO2 양호";
+    if (co2 >= 900) co2Comment = "CO2 주의";
+
+    // 기기 명령 로직
+    const deviceCommands = {
+        aircon: temperature >= 27, // 27도 이상이면 에어컨 ON
+        heater: temperature <= 20, // 20도 이하이면 히터 ON
+        dehumidifier: humidity >= 65, // 65% 이상이면 제습기 ON
+        ventilator: co2 >= 900 // 900ppm 이상이면 환풍기 ON
+    };
+
     return {
-        temperature: Math.floor(Math.random() * 6) + 22,  // 22~27
-        humidity: Math.floor(Math.random() * 21) + 40,    // 40~60
-        co2: Math.floor(Math.random() * 400) + 400,       // 400~800
-        comfortIndex: comfort,
-        co2Comment: status(),
-        deviceCommands: {
-            aircon: Math.random() > 0.5,
-            ventilator: Math.random() > 0.5,
-            dehumidifier: Math.random() > 0.5,
-            heater: Math.random() > 0.5
-        }
+        temperature,
+        humidity,
+        co2,
+        comfortIndex,
+        co2Comment,
+        deviceCommands
     };
 }
 
@@ -526,3 +551,4 @@ function status() {
         return "CO2 주의";
     }
 }
+
