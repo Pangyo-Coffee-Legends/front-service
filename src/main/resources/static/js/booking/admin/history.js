@@ -74,8 +74,8 @@ const getBookings = function (bookings, totalElements, currentPage, size) {
                 <td class="booking-room">${data.room.name}</td>
                 <td class="booking-room">${data.attendeeCount}</td>
                 <td class="booking-code">${data.changeName === '취소' ? '-' : data.code}</td>
-                <td class="booking-date">${format.ampm(data.startsAt)}</td>
-                <td class="booking-finished">${!data.finishesAt ? '-' : format.ampm(data.finishesAt)}</td>
+                <td class="booking-date">${format.dateTime(data.startsAt)}</td>
+                <td class="booking-finished">${!data.finishesAt ? '-' : format.dateTime(data.finishesAt)}</td>
                 <td class="booking-change">${data.changeName == null ? '-' : data.changeName}</td>
                 <td>
                   ${data.changeName === '취소' || data.changeName === '종료' || !isFuture ? '' :
