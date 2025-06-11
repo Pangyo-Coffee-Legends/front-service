@@ -491,12 +491,13 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 function generateRandomData(roomName) {
+    const comfort = randomComfort();
     return {
         temperature: Math.floor(Math.random() * 6) + 22,  // 22~27
         humidity: Math.floor(Math.random() * 21) + 40,    // 40~60
         co2: Math.floor(Math.random() * 400) + 400,       // 400~800
-        comfortIndex: "더미",
-        co2Comment: "임시 더미 데이터",
+        comfortIndex: comfort,
+        co2Comment: updateGradeDisplay(comfort),
         deviceCommands: {
             aircon: Math.random() > 0.5,
             ventilator: Math.random() > 0.5,
@@ -504,4 +505,15 @@ function generateRandomData(roomName) {
             heater: Math.random() > 0.5
         }
     };
+}
+
+function randomComfort() {
+    let i = Math.floor(Math.random() * 3) + 1;
+    if(i == 1){
+        return "덥고 습함";
+    }else if(i == 2){
+        return "춥고 건조";
+    }else{
+        return "최적 쾌적";
+    }
 }
