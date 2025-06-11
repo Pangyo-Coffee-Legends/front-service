@@ -17,9 +17,9 @@ const FETCH_CONFIG = {
 
 const roomToLocationMap = {
     deptA: '보드',
-    deptB: '보드',
-    meetingA: '보드',
-    meetingB: '보드'
+    deptB: '사무실B',
+    meetingA: '회의실A',
+    meetingB: '회의실B'
 };
 
 const roomLabelMap = {
