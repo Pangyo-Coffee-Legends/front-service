@@ -1,4 +1,5 @@
 const SENSOR_API = "https://aiot2.live/api/v1/sensors";
+// const SENSOR_API = "http://localhost:10251/api/v1/sensors";
 const USER_HEADER = { "X-USER": "test-user@aiot.com" }; // ✅ 추가
 
 const FETCH_CONFIG = {
@@ -32,7 +33,8 @@ function fillLocationSelects(locations) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    fetch("https://aiot2.live/api/v1/sensors/places", FETCH_CONFIG)
+    // fetch("https://aiot2.live/api/v1/sensors/places", FETCH_CONFIG)
+    fetch("http://localhost:10251/api/v1/sensors/places", FETCH_CONFIG)
         .then(res => res.ok ? res.json() : Promise.reject("장소 목록 불러오기 실패"))
         .then(locations => {
             // ✅ 드롭다운에 데이터 채우기
@@ -135,9 +137,27 @@ function renderSensorTable(sensorList) {
             { data: 'sensorType', title: '센서 타입' },
             { data: 'status', title: '센서 상태' },
             { data: 'location', title: '센서 장소' },
+            { data: 'actions', title: '센서 수정', render: function (data, type, row) {
+                    return `
+                    <button class="edit-btn" data-id="${row.sensorNo}">수정</button>
+                    <button class="delete-btn" data-id="${row.sensorNo}">삭제</button>
+                `;
+                }}
         ],
         destroy: true,
         responsive: true
+    });
+
+    // 수정 버튼 클릭 시 처리
+    $('.edit-btn').click(function () {
+        const sensorId = $(this).data('id');
+        editSensor(sensorId);
+    });
+
+    // 삭제 버튼 클릭 시 처리
+    $('.delete-btn').click(function () {
+        const sensorId = $(this).data('id');
+        deleteSensor(sensorId);
     });
 }
 
@@ -164,5 +184,51 @@ function normalizeType(type) {
         case "dehumidifier": return "Dehumidifier";
         case "ventilator": return "Ventilator";
         default: return type.charAt(0).toUpperCase() + type.slice(1).toLowerCase();
+    }
+}
+
+function editSensor(sensorNo) {
+    // 수정할 센서 정보를 로딩하고 모달에 채우기
+    fetch(`${SENSOR_API}/${sensorNo}`, {
+        ...FETCH_CONFIG
+    })
+        .then(res => res.ok ? res.json() : Promise.reject("수정할 센서 조회 실패"))
+        .then(sensor => {
+            // 예: 센서 정보를 모달에 채운 후 보여주기
+            document.querySelector('input[name="sensorName"]').value = sensor.sensorName;
+            document.querySelector('select[name="sensorType"]').value = sensor.sensorType;
+            document.querySelector('select[name="location"]').value = sensor.location;
+
+            // 수정 후 모달 보여주기
+            document.getElementById("addDeviceModal").style.display = "block";
+        })
+        .catch(err => {
+            console.error("센서 조회 실패:", err);
+            alert("센서 정보를 불러오는 데 실패했습니다.");
+        });
+}
+
+function deleteSensor(sensorNo) {
+    if (confirm("정말로 이 센서를 삭제하시겠습니까?")) {
+        fetch(`${SENSOR_API}/${sensorNo}`, {
+            ...FETCH_CONFIG,
+            method: "DELETE"
+        })
+            .then(res => {
+                if (res.ok) {
+                    // 204 No Content는 body가 없음 → 그냥 성공 처리
+                    return;
+                } else {
+                    return res.text().then(text => { throw new Error(text || "삭제 실패"); });
+                }
+            })
+            .then(() => {
+                alert("센서가 삭제되었습니다.");
+                loadSensorsByLocation(document.getElementById("filterLocationSelect").value);
+            })
+            .catch(err => {
+                console.error("삭제 실패:", err);
+                alert("센서 삭제에 실패했습니다.");
+            });
     }
 }

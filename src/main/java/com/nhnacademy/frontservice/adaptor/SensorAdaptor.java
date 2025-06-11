@@ -31,7 +31,7 @@ public interface SensorAdaptor {
 
     @PutMapping("/{sensorNo}")
     ResponseEntity<SensorResponse> updateSensor(@PathVariable("sensorNo") Long sensorNo,
-                                                       @RequestBody SensorUpdateRequest request);
+                                                @RequestBody SensorUpdateRequest request);
 
     @DeleteMapping("/{sensorNo}")
     ResponseEntity<SensorResponse> deleteSensor(@PathVariable("sensorNo") Long sensorNo);
