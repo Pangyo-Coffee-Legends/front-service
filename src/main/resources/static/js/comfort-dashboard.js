@@ -489,3 +489,19 @@ window.addEventListener("DOMContentLoaded", () => {
     // 나머지 쾌적도 데이터도 병렬로 로드
     ["deptA", "deptB", "meetingA", "meetingB"].forEach(fetchComfortData);
 });
+
+function generateRandomData(roomName) {
+    return {
+        temperature: Math.floor(Math.random() * 6) + 22,  // 22~27
+        humidity: Math.floor(Math.random() * 21) + 40,    // 40~60
+        co2: Math.floor(Math.random() * 400) + 400,       // 400~800
+        comfortIndex: "더미",
+        co2Comment: "임시 더미 데이터",
+        deviceCommands: {
+            aircon: Math.random() > 0.5,
+            ventilator: Math.random() > 0.5,
+            dehumidifier: Math.random() > 0.5,
+            heater: Math.random() > 0.5
+        }
+    };
+}
