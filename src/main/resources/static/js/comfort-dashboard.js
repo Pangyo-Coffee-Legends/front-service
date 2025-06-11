@@ -205,37 +205,36 @@ window.showPopup = async function (roomName) {
 
     document.getElementById("popup-title").innerText = label;
 
-    if (roomName === "deptA") {
-        try {
-            const res = await fetch(COMFORT_API, FETCH_CONFIG);
-            const text = await res.text();
-            const ruleResults = text ? JSON.parse(text) : [];
+    try {
+        const res = await fetch(COMFORT_API, FETCH_CONFIG);
+        const text = await res.text();
+        const ruleResults = text ? JSON.parse(text) : [];
 
-            const comfortData = extractComfortInfo(ruleResults, location);
-            if (!comfortData) throw new Error("comfortInfo 없음");
+        const comfortData = extractComfortInfo(ruleResults, location);
 
+        if (comfortData) {
             updateGradeDisplay(roomName, comfortData.comfortIndex);
             renderComfortTable(comfortData);
             renderSensorStatus(comfortData.deviceCommands);
-        } catch (err) {
-            console.error(err);
-            ["env-temp", "env-humi", "env-co2", "env-index", "env-comment"].forEach(id => {
-                document.getElementById(id).innerText = "-";
-            });
-            document.getElementById("device-status").innerHTML = `
-                <h5>작동 상태</h5>
-                <p>❌ 상태 불러오기 실패</p>
-            `;
+        } else {
+            // 실데이터 없으면 더미 데이터 출력
+            const dummy = generateRandomData(roomName);
+            updateGradeDisplay(roomName, dummy.comfortIndex);
+            renderComfortTable(dummy);
+            renderSensorStatus(dummy.deviceCommands);
         }
-    } else {
-        // 랜덤 더미 데이터
-        const comfortData = generateRandomData(roomName);
-
-        updateGradeDisplay(roomName, comfortData.comfortIndex);
-        renderComfortTable(comfortData);
-        renderSensorStatus(comfortData.deviceCommands);
+    } catch (err) {
+        // API 자체 실패 시 전체 초기화
+        ["env-temp", "env-humi", "env-co2", "env-index", "env-comment"].forEach(id => {
+            document.getElementById(id).innerText = "-";
+        });
+        document.getElementById("device-status").innerHTML = `
+            <h5>작동 상태</h5>
+            <p>❌ 상태 불러오기 실패</p>
+        `;
     }
-}
+};
+
 
 async function fetchComfortData(roomName) {
     const location = roomToLocationMap[roomName];
