@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="~{layout/index/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="UTF-8">
+    <title>회의실 목록</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="module" src="/js/meeting/list.js"></script>
+
+</head>
+<body>
+<div layout:fragment="content">
+    <h1>회의실 목록</h1>
+    <table id="roomTable" border="1">
+        <thead>
+        <tr>
+            <th>번호</th>
+            <th>회의실 이름</th>
+            <th>위치</th>
+            <th>수용 인원</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- 동적으로 회의실 목록 삽입 -->
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
