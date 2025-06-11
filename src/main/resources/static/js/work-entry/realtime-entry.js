@@ -81,6 +81,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         return; // 같은 시간은 무시
                     }
                     lastProcessedTime = data.time;
+                    console.log("📡 fetch() called at", new Date());
 
                     const kstDate = new Date(data.time);
                     const timeLabel = kstDate.getFullYear() + '-' +
@@ -118,6 +119,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // 초기 실행
     fetchAndUpdate().catch(console.error);
 
-    // 반복 실행 (데이터: 10초)
+    // 반복 실행 (60초마다 실행)
     setInterval(fetchAndUpdate,60 * 1000);
 });
