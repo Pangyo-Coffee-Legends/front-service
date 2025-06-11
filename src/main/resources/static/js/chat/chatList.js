@@ -51,7 +51,6 @@ function onError(error) {
  * 구독한 토픽에서 초대 관련 알림 수신 시 콜백 함수
  */
 function onInvitationNotificationReceived(payload) {
-    console.log("초대 관련 알림 수신:", payload);
     try {
         const notification = JSON.parse(payload.body);
 
@@ -60,7 +59,6 @@ function onInvitationNotificationReceived(payload) {
             notification.action === 'reloadChatList' &&
             notification.invitedUser === userEmail) { // 백엔드가 보낸 이메일과 현재 사용자 이메일 비교
 
-            console.log("나에게 온 초대 알림 확인. 채팅 목록 새로고침 실행.");
             loadChatRoomList(); // <<< 목록 새로고침 함수 호출
         } else {
             // console.log("나에게 온 알림이 아님."); // 디버깅용 로그
@@ -72,7 +70,6 @@ function onInvitationNotificationReceived(payload) {
 
 function onChatListUpdateReceived(payload) {
     const roomList = JSON.parse(payload.body);
-    console.log("채팅 목록 수신:", roomList);
 
     const tbody = document.getElementById('chat-room-list-body');
 
@@ -188,7 +185,6 @@ async function handleEnterChatRoom(event) {
     const roomId = button.dataset.roomId;
     const roomName = button.dataset.roomName;
 
-    console.log(`선택된 채팅방 정보: ID=${roomId}, Name=${roomName}`);
 
     try {
         const url = `${JOIN_CHAT_ROOM_API_URL}/${encodeURIComponent(roomId)}/join`;
@@ -230,7 +226,6 @@ async function handleExitChatRoom(event) {
     const roomId = button.dataset.roomId;
     const roomName = button.dataset.roomName;
 
-    console.log(`선택된 채팅방 정보: ID=${roomId}, Name=${roomName}`);
 
     try {
         const url = `${EXIT_CHAT_ROOM_API_URL}/${encodeURIComponent(roomId)}/leave`;

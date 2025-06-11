@@ -1,4 +1,6 @@
 const COMFORT_API = "https://aiot2.live/api/v1/comfort/scheduled-result";
+
+const BASE_API="https://aiot2.live";
 const WEATHER_API = "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst";
 const SERVICE_KEY = "%2Be2VrgCSeuZBQLw%2Fh7%2BHTNOR6VRLMm3UNzeh%2Fp2YITaCzXl11XX5sYxUMIN4JNpl5pVtB5hhDR%2BpM%2FrDAEKkqA%3D%3D";
 const KAKAO_REST_KEY = "bda024433062fa6d4ddf9046e523d4c0";
@@ -7,11 +9,9 @@ let currentRoom = null;
 let currentCoords = null;
 let currentAddress = null;
 
-const USER_HEADER = { "X-USER": "admin@aiot.com" };
 const FETCH_CONFIG = {
     headers: {
-        "Content-Type": "application/json",
-        ...USER_HEADER
+        "Content-Type": "application/json"
     },
     credentials: "include"
 };
@@ -30,42 +30,215 @@ const roomLabelMap = {
     meetingB: '회의실B'
 };
 
+
+const placeToggleTitle = document.querySelector(".title-toggle");
+const placeBody = document.getElementById("place-manage-body");
+const icon = document.getElementById("place-manage-icon");
+
+placeToggleTitle.addEventListener("click", () => {
+    const isOpen = placeBody.style.display !== "none";
+    placeBody.style.display = isOpen ? "none" : "block";
+    icon.className = isOpen ? "triangle triangle-down" : "triangle triangle-up";
+});
+
+// ✅ 처음부터 감춰진 상태로 시작
+placeBody.style.display = "none";
+icon.className = "triangle triangle-down";
+
+document.addEventListener('DOMContentLoaded', function() {
+    // 장소 목록 불러오기
+    fetch(BASE_API + '/api/v1/floors')
+        .then(res => res.json())
+        .then(data => {
+            const select = document.getElementById('place-select-dropdown');
+            select.innerHTML = '<option value="">장소 선택</option>';
+            data.forEach(floor => {
+                const option = document.createElement('option');
+                option.value = floor.floorNo;
+                option.textContent = floor.floorName;
+                select.appendChild(option);
+            });
+        });
+});
+
+document.getElementById('place-select-dropdown').addEventListener('change', function() {
+    const floorNo = this.value;
+
+    const placeNameInput = document.getElementById('place-name-input');
+    const floorImage = document.getElementById('floor-image');
+
+    if (!floorNo) {
+        placeNameInput.value = '';
+        floorImage.src = "/images/academy.png"; // 기존 저장 이미지
+        return;
+    }
+
+    fetch(`${BASE_API}/api/v1/floors/${floorNo}`)
+        .then(res => {
+            if (!res.ok) throw new Error('조회 실패: ' + res.status);
+            return res.json();
+        })
+        .then(data => {
+            document.getElementById('place-name-input').value = data.floorName || '';
+
+            // API에서 반환하는 이미지 경로가 이미 "/images/place/xxx.png"라면 그대로 사용
+            const imgSrc = data.imagePath.startsWith('http')
+                ? data.imagePath
+                : `${BASE_API}${data.imagePath}`;
+
+            // 기본 이미지는 기존처럼 "/images/academy.png"로 둠
+            document.getElementById('floor-image').src = imgSrc || "/images/academy.png";
+        })
+        .catch(err => {
+            console.error('조회 에러:', err);
+            placeNameInput.value = '';
+            floorImage.src = "/images/academy.png"; // 기존 저장 이미지
+        });
+});
+
+// 등록
+document.getElementById('btn-register-place').addEventListener('click', function() {
+    const formData = new FormData();
+    formData.append('place', JSON.stringify({
+        floorName: document.getElementById('place-name-input').value
+    }));
+    const fileInput = document.getElementById('place-image-input');
+    if (fileInput.files[0]) formData.append('file', fileInput.files[0]);
+
+    fetch(BASE_API + '/api/v1/floors', {
+        method: 'POST',
+        body: formData
+    })
+        .then(res => {
+            console.log(res); // 응답 상태 확인
+            if (!res.ok) throw new Error('서버 응답 오류');
+            return res.json();
+        })
+        .then(data => {
+            // console.log(data); // 서버 응답 데이터 확인
+            alert('등록 성공');
+            location.reload();
+        })
+        .catch(err => {
+            // console.error(err); // 에러 발생 시 확인
+            alert('등록 실패: ' + err.message);
+        });
+});
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("btn-update-place")?.addEventListener("click", async () => {
+        const floorNo = document.getElementById("place-select-dropdown").value;
+        const placeName = document.getElementById("place-name-input").value.trim();
+        const fileInput = document.getElementById("place-image-input");
+
+        if (!floorNo || !placeName) {
+            alert("장소명과 장소를 모두 선택해야 합니다.");
+            return;
+        }
+
+        const jsonPayload = {
+            floorName: placeName,
+            imagePath: ""
+        };
+
+        const formData = new FormData();
+        formData.append(
+            "place",
+            new Blob([JSON.stringify(jsonPayload)], { type: "application/json" })
+        );
+
+        if (fileInput.files.length > 0) {
+            formData.append("file", fileInput.files[0]);
+        }
+
+        try {
+            const res = await fetch(BASE_API + `/api/v1/floors/${floorNo}`, {
+                method: "PUT",
+                body: formData
+            });
+
+            if (!res.ok) throw new Error(`수정 실패: ${res.status}`);
+            const data = await res.json();
+
+            alert("수정 성공");
+            location.reload();
+        } catch (err) {
+            console.error("수정 에러:", err);
+            alert("수정 실패: " + err.message);
+        }
+    });
+});
+
+document.getElementById('btn-delete-place').addEventListener('click', function() {
+    const floorNo = document.getElementById('place-select-dropdown').value;
+    if (!floorNo) {
+        alert('장소를 선택하세요.');
+        return;
+    }
+    if (!confirm('정말 삭제하시겠습니까?')) return;
+
+    fetch(`${BASE_API}/api/v1/floors/${floorNo}`, {
+        method: 'DELETE'
+    })
+        .then(res => {
+            if (!res.ok) throw new Error('삭제 실패: ' + res.status);
+
+            // 🔽 본문이 있으면 파싱하고, 없으면 그냥 빈 객체 반환
+            return res.text().then(text => text ? JSON.parse(text) : {});
+        })
+        .then(() => {
+            alert('삭제 성공');
+            location.reload(); // 목록 갱신
+        })
+        .catch(err => {
+            console.error('삭제 에러:', err);
+            alert('삭제 실패: ' + err.message);
+        });
+});
 window.showPopup = async function (roomName) {
     currentRoom = roomName;
     const location = roomToLocationMap[roomName];
     const label = roomLabelMap[roomName];
     if (!location) return;
 
-    // info-box 선택 테두리 처리
     document.querySelectorAll('.info-box').forEach(box => box.classList.remove('selected'));
     const selectedBox = document.querySelector(`[onclick*="${roomName}"]`);
     if (selectedBox) selectedBox.classList.add('selected');
 
     document.getElementById("popup-title").innerText = label;
 
-    try {
-        const res = await fetch(COMFORT_API, FETCH_CONFIG);
-        const text = await res.text();
-        const ruleResults = text ? JSON.parse(text) : [];
+    if (roomName === "deptA") {
+        try {
+            const res = await fetch(COMFORT_API, FETCH_CONFIG);
+            const text = await res.text();
+            const ruleResults = text ? JSON.parse(text) : [];
 
-        const comfortData = extractComfortInfo(ruleResults, location);
-        if (!comfortData) throw new Error("comfortInfo 없음");
+            const comfortData = extractComfortInfo(ruleResults, location);
+            if (!comfortData) throw new Error("comfortInfo 없음");
+
+            updateGradeDisplay(roomName, comfortData.comfortIndex);
+            renderComfortTable(comfortData);
+            renderSensorStatus(comfortData.deviceCommands);
+        } catch (err) {
+            console.error(err);
+            ["env-temp", "env-humi", "env-co2", "env-index", "env-comment"].forEach(id => {
+                document.getElementById(id).innerText = "-";
+            });
+            document.getElementById("device-status").innerHTML = `
+                <h5>작동 상태</h5>
+                <p>❌ 상태 불러오기 실패</p>
+            `;
+        }
+    } else {
+        // 랜덤 더미 데이터
+        const comfortData = generateRandomData(roomName);
 
         updateGradeDisplay(roomName, comfortData.comfortIndex);
         renderComfortTable(comfortData);
         renderSensorStatus(comfortData.deviceCommands);
-    } catch (err) {
-        console.error(err);
-        ["env-temp", "env-humi", "env-co2", "env-index", "env-comment"].forEach(id => {
-            document.getElementById(id).innerText = "-";
-        });
-        document.getElementById("device-status").innerHTML = `
-            <h5>작동 상태</h5>
-            <p>❌ 상태 불러오기 실패</p>
-        `;
     }
 }
-
 
 async function fetchComfortData(roomName) {
     const location = roomToLocationMap[roomName];
@@ -122,6 +295,12 @@ function updateGradeDisplay(roomName, comfortIndex) {
     gradeEl.className = 'grade';
     boxEl.classList.remove("green", "red", "blue", "gray");
     popupPanel.classList.remove("green", "red", "blue", "gray");
+
+    if (comfortIndex === "더미") {
+        gradeEl.innerText = "⚪";
+        boxEl.classList.add("gray");
+        return;
+    }
 
     if (comfortIndex.includes("최적")) {
         gradeEl.innerText = "🟢";
@@ -289,7 +468,8 @@ window.addEventListener("DOMContentLoaded", () => {
             });
             const json = await res.json();
             const doc = json.documents[0];
-            currentAddress = doc?.address?.address_name || "현재 위치";
+            currentAddress = doc
+                ?.address?.address_name || "현재 위치";
         } catch {
             currentAddress = "현재 위치";
         }

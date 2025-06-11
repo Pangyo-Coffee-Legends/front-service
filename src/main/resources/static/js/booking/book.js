@@ -3,7 +3,8 @@
 const api = apiStore();
 const format = formatStore();
 
-const id = window.location.search.split("=")[1];
+
+const id = window.location.search.split("=");
 let selectedDate = new Date().toISOString().split('T')[0];
 let selectedStartTime = null;
 let selectedEndTime = null;
@@ -11,8 +12,15 @@ let selectedRange = [];
 let selectedRoom = null;
 
 document.addEventListener('DOMContentLoaded', async () => {
-    await getRooms();
-    if(id) {
+
+    // console.log(window.location.pathname);
+
+    if(id[0] === "?roomNo"){
+        selectedRoom = id[1];
+
+    }
+    if(id[0] === "?id") {
+        await getRooms();
         await update();
     }
     getCalendar();
@@ -21,7 +29,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
 const update = async function () {
-    const data = await api.getBooking(id);
+    const data = await api.getBooking(id[1]);
 
     selectedRoom = data.room.no;
     selectedDate = data.startsAt.split('T')[0];
@@ -87,6 +95,7 @@ function resetUI(){
 const getCalendar = function (){
     const calendarEl = document.getElementById('calendar');
 
+    // console.log('a', selectedRoom);
     let calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
         locale: 'ko',
@@ -221,7 +230,7 @@ function highlightTimeRange() {
         slot.classList.remove('selected-time', 'in-range');
     })
 
-    console.log(selectedStartTime);
+    // console.log(selectedStartTime);
 
     if (selectedStartTime) {
         let tempEndTime = selectedEndTime;
@@ -263,10 +272,9 @@ function highlightTimeRange() {
 // 예약 버튼 이벤트
 function getAlert(){
     const reserveBtn = document.getElementById("reserveBtn");
-
+    // console.log('selectedRoom', selectedRoom);
     reserveBtn.addEventListener('click', () => {
         let attendees = document.getElementById("attendees").value;
-
         if(selectedDate && selectedStartTime && attendees && selectedRoom){
             Swal.fire({
                 title: "예약 사용 설명",
@@ -298,8 +306,8 @@ function getAlert(){
 
                     try{
                         let response;
-                        if(id) {
-                            response = await api.updateBooking(id, data);
+                        if(id[0] === "?id") {
+                            response = await api.updateBooking(id[1], data);
                         } else {
                             response = await api.registerBooking(data);
                         }

@@ -9,6 +9,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const attendanceTableContainer = document.getElementById('attendance-table-container');
     const statusGroup = document.getElementById('status-checkbox-group');
 
+    const today = new Date();
+    yearInput.value = today.getFullYear();
+    monthSelector.value = today.getMonth() + 1;
+
     const statusMap = {
         1: "출근", 2: "지각", 3: "결근", 4: "외근",
         5: "연차", 6: "병가", 7: "반차", 8: "경조사휴가"
@@ -141,9 +145,9 @@ document.addEventListener('DOMContentLoaded', function () {
         const m = parseInt(monthSelector.value);
         const w = parseInt(weekSelector.value);
 
-        console.log('[조회 버튼 클릭됨]');
-        console.log('currentMemberNo:', currentMemberNo);
-        console.log('year:', y, 'month:', m, 'week:', w);
+        // console.log('[조회 버튼 클릭됨]');
+        // console.log('currentMemberNo:', currentMemberNo);
+        // console.log('year:', y, 'month:', m, 'week:', w);
 
         if (!currentMemberNo) {
             alert('먼저 회원을 선택해주세요.');

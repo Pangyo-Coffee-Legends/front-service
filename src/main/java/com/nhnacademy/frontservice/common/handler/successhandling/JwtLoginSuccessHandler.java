@@ -64,7 +64,7 @@ public class JwtLoginSuccessHandler implements AuthenticationSuccessHandler {
         ResponseCookie cookie = ResponseCookie.from(tokenName, token)
                 .httpOnly(true)
                 .secure(true)
-                .sameSite("None")            
+                .sameSite("None")
                 .domain("aiot2.live")
                 .path("/")
                 .maxAge(Duration.ofSeconds(36000))
