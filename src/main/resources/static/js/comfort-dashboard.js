@@ -497,7 +497,7 @@ function generateRandomData(roomName) {
         humidity: Math.floor(Math.random() * 21) + 40,    // 40~60
         co2: Math.floor(Math.random() * 400) + 400,       // 400~800
         comfortIndex: comfort,
-        co2Comment: updateGradeDisplay(comfort),
+        co2Comment: status(),
         deviceCommands: {
             aircon: Math.random() > 0.5,
             ventilator: Math.random() > 0.5,
@@ -515,5 +515,14 @@ function randomComfort() {
         return "춥고 건조";
     }else{
         return "최적 쾌적";
+    }
+}
+
+function status() {
+    let i = Math.floor(Math.random() * 2) + 1;
+    if(i == 1){
+        return "CO2 양호";
+    }else{
+        return "CO2 주의";
     }
 }
