@@ -30,6 +30,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 async function loadBookings(page = 1) {
+    showLoadingCard();
+
     const sf = controls.sortField.value;
     const sd = controls.sortDirection.value;
     const ps = controls.pageSize.value;
@@ -40,6 +42,18 @@ async function loadBookings(page = 1) {
     const response = await api.getAllBookings(sf, sd, ps, page);
     getBookings(response.content, response.totalElements, page, response.size);
     renderPagination(paginationEl, response.totalPages, response.number, loadBookings);
+
+    hideLoadingCard();
+}
+
+function showLoadingCard() {
+    const card = document.getElementById("loadingCard");
+    if (card) card.style.display = "flex";
+}
+
+function hideLoadingCard() {
+    const card = document.getElementById("loadingCard");
+    if (card) card.style.display = "none";
 }
 
 const getBookings = function (bookings, totalElements, currentPage, size) {

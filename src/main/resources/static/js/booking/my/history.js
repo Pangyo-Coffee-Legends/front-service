@@ -35,11 +35,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 async function loadBookings(page = 1) {
+    showLoadingCard();
+
     const sortField = controls.sortField.value;
     const sortDirection = controls.sortDirection.value;
     const pageSize = controls.pageSize.value;
 
-    // 현재 옵션을 URL에 반영
     const params = new URLSearchParams({
         page,
         sortField,
@@ -52,8 +53,18 @@ async function loadBookings(page = 1) {
 
     getBookings(response.content, response.totalElements, page, response.size);
 
-    // 콜백에서 현재 controls를 사용하게 유지
     renderPagination(paginationEl, response.totalPages, response.number, loadBookings);
+    hideLoadingCard();
+}
+
+function showLoadingCard() {
+    const card = document.getElementById("loadingCard");
+    if (card) card.style.display = "flex";
+}
+
+function hideLoadingCard() {
+    const card = document.getElementById("loadingCard");
+    if (card) card.style.display = "none";
 }
 
 const getBookings = function (bookings, totalElements, currentPage, size) {
