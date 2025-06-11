@@ -169,14 +169,11 @@ function renderSensorTable(sensorList) {
         responsive: true
     });
 
-    // 수정 버튼
-    $('.edit-btn').click(function () {
+    $('#sensorResultTable').off('click', '.edit-btn').on('click', '.edit-btn', function () {
         const sensorId = $(this).data('id');
         editSensor(sensorId);
     });
-
-    // 삭제 버튼
-    $('.delete-btn').click(function () {
+    $('#sensorResultTable').off('click', '.delete-btn').on('click', '.delete-btn', function () {
         const sensorId = $(this).data('id');
         deleteSensor(sensorId);
     });
