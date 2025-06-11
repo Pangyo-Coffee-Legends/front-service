@@ -6,6 +6,7 @@
   <title>Simple Landing Page</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="/css/landing.css"> <!-- 따로 분리한 CSS -->
+  <link  rel="icon" href="https://notion-emojis.s3-us-west-2.amazonaws.com/prod/svg-twitter/2615.svg">
 </head>
 <body>
 
@@ -15,10 +16,10 @@
   <div class="content text-center text-white">
     <h1>Aiot2기 team2 판교 스타벅스에서 봅시다</h1>
     <p class="lead">랜딩 페이지입니다. 로그인시 관리자 대시보드화면으로 이동합니다</p>
-    <div class="btn-group mt-4">
-      <a href="/login" class="btn btn-primary mr-2">로그인</a>
+    <div class="btn-user mt-4">
+      <a href="/login" class="btn btn-outline-light mr-4">로그인</a>
       <a href="/signup" class="btn btn-outline-light">회원가입</a>
-      <a href="/index" class="btn btn-outline-light">대시보드</a>
+<!--      <a href="/index" class="btn btn-outline-light">대시보드</a>-->
     </div>
   </div>
 </section>
@@ -141,7 +142,7 @@
             <div class="team-contribution">
               <h6>구현 사항</h6>
               <ul>
-                <li>일반 로그인(jwt) 기능 구현</li>
+                <li>일반 로그인 구현 (JWT)</li>
                 <li>채팅방 생성 및 참여 기능 구현</li>
                 <li>채팅 메시지 전송 및 저장 기능 구현</li>
                 <li>실시간 메시지 읽음 처리 및 안 읽은 수 출력 기능 구현</li>
@@ -278,7 +279,7 @@
             <div class="team-contribution">
               <h6>구현 사항</h6>
               <ul>
-                <li>일반 로그인 구현 (auth)</li>
+                <li>로그인 구현 (OAuth)</li>
                 <li>회의실 현황 및 예약 구현</li>
                 <li>예약 완료 후 사용 설명 기능 구현</li>
                 <li>예약 알림 구현</li>
@@ -305,9 +306,9 @@
             <div class="team-contribution">
               <h6>구현 사항</h6>
               <ul>
+                <li>회의실 통합 관리</li>
                 <li>회의실 현황 및 예약 구현</li>
                 <li>예약 완료 후 사용 설명 기능 구현</li>
-                <li>예약 알림 구현</li>
                 <li>회의실 예외처리(미사용/취소/변경) 기능 구현</li>
                 <li>예약코드를 이용한 회의실 입실 구현</li>
                 <li>회의 연장/종료 기능 구현</li>

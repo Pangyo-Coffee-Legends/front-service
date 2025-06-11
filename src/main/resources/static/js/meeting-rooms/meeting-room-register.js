@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     document.getElementById("register-btn").addEventListener("click", async (e) => {
-        console.log("submit 이벤트 감지");
+        // console.log("submit 이벤트 감지");
         e.preventDefault();
 
         const meetingRoomName = document.getElementById("meeting-room-name").value.trim();

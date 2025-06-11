@@ -1,4 +1,3 @@
-
 export function renderPagination(paginationEl, totalPages, currentPage, onPageChange) {
     paginationEl.innerHTML = '';
 
@@ -7,7 +6,11 @@ export function renderPagination(paginationEl, totalPages, currentPage, onPageCh
         btn.textContent = text;
         btn.disabled = disabled;
         btn.className = `page-btn ${active ? 'active' : ''}`;
-        btn.addEventListener('click', () => window.location.search=`page=${page + 1}`);
+        btn.addEventListener('click', () => {
+            const params = new URLSearchParams(window.location.search);
+            params.set('page', page + 1); // 1-based page
+            window.location.search = params.toString();
+        });
         return btn;
     };
 

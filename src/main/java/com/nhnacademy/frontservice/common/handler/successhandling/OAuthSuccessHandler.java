@@ -12,12 +12,19 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Component
@@ -41,7 +48,7 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
         if(memberResponse == null){
             memberService.register(registerRequest);
         }
-        JwtIssueRequest jwtIssueRequest = new JwtIssueRequest(email, "ROLE_USER");
+        JwtIssueRequest jwtIssueRequest = new JwtIssueRequest(email, memberResponse.getRoleName());
 
         // Feign으로 Auth 서버에 JWT 발급 요청
         ResponseEntity<JwtResponse> tokenResponse = gatewayAdaptor.issueToken(jwtIssueRequest);
@@ -61,6 +68,12 @@ public class OAuthSuccessHandler implements AuthenticationSuccessHandler {
 //                                                .build();
 //
 //        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+
+        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(memberResponse.getRoleName()));
+        OAuth2User newUser = new DefaultOAuth2User(authorities, oidcUser.getAttributes(), "email");
+        Authentication newAuth = new UsernamePasswordAuthenticationToken(newUser, null, authorities);
+        SecurityContextHolder.getContext().setAuthentication(newAuth);
+
         response.sendRedirect("/index");
     }
 

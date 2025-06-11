@@ -8,7 +8,7 @@ const pathSegments = window.location.pathname.split("/");
 const meetingRoomNo = pathSegments[2];
 
 document.addEventListener("DOMContentLoaded", async () => {
-    console.log("예약페이지 로딩 완료.");
+    // console.log("예약페이지 로딩 완료.");
 
     // Java의 LocalDateTime 형식에 맞는 현재 날짜, 시간 정보 string
     const dateTimeString = getLocalDateTimeString();
@@ -94,7 +94,7 @@ async function verifyBookingCode(meetingRoomNo, selectedBookingNo, inputCode, en
 
     const result = await response.json();
 
-    console.log("result: ", result);
+    // console.log("result: ", result);
 
     if (result.statusCode === 200) {
         showMessage("success", result.message);
@@ -112,7 +112,7 @@ async function verifyBookingCode(meetingRoomNo, selectedBookingNo, inputCode, en
         }
     }
 
-    console.log(result);
+    // console.log(result);
 }
 
 // format: yyyy-MM-dd`T`HH:mm:ss (Java의 LocalDateTime 형식을 맞추기 위함)
@@ -226,10 +226,10 @@ async function getBookings(meetingRoomNo, entryDate, entryTime) {
 
             th.append(tr);
 
-            console.log("booking", booking);
+            // console.log("booking", booking);
         }
     } catch (error) {
-        console.log("예약정보 불러오기 실패: ", error);
+        // console.log("예약정보 불러오기 실패: ", error);
     }
 }
 

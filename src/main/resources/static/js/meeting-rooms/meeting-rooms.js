@@ -2,7 +2,7 @@ const GATEWAY_BASE_URL = "https://aiot2.live";
 const MEETING_ROOM_API_URL = `${GATEWAY_BASE_URL}/api/v1/meeting-rooms`;
 
 document.addEventListener("DOMContentLoaded", async () => {
-    console.log("회의실 페이지가 로딩되었습니다.");
+    // console.log("회의실 페이지가 로딩되었습니다.");
     await getMeetingRooms();
 });
 
@@ -26,7 +26,7 @@ async function getMeetingRooms() {
         roomGrid.innerHTML = "";
 
         rooms.forEach(room => {
-            console.log(room);
+            // console.log(room);
             const card = document.createElement("div");
             card.className = "room-card";
 
