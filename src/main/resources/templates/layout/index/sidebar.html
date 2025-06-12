@@ -6,6 +6,7 @@
         </h4>
     </a>
     <ul class="nav flex-column">
+        <!--        근태 관리 사이드바 추가-->
         <li class="nav-item" sec:authorize="hasRole('ADMIN')">
             <a
                     class="nav-link dropdown-toggle text-white"
@@ -24,8 +25,8 @@
                 <li><a href="/analysis" class="nav-link text-white">AI 기반 근태 관리</a></li>
             </ul>
         </li>
-        <!--        근태 관리 사이드바 추가-->
 
+        <!--        오피스 관리 사이드바 추가-->
         <li class="nav-item" sec:authorize="hasRole('ADMIN')">
             <a
                     class="nav-link dropdown-toggle text-white"
@@ -44,29 +45,46 @@
                 <li><a href="/sensor" class="nav-link text-white">기기 관리</a> </li>
             </ul>
         </li>
-        <!--        오피스 관리 사이드바 추가-->
 
         <!--   회의실 메뉴   -->
         <li class="nav-item">
             <a
-                    class="nav-link dropdown-toggle text-white"
-                    href="#"
-                    id="meetingRoom"
-                    role="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#meetingRoomMenu"
-                    aria-expanded="false"
+                class="nav-link dropdown-toggle text-white"
+                href="#"
+                id="meetingRoom"
+                role="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#meetingRoomMenu"
+                aria-expanded="false"
             >
                 회의실
             </a>
             <ul class="collapse list-unstyled ps-3" id="meetingRoomMenu">
-                <li><a href="/meeting-rooms" class="nav-link text-white">입실하기</a></li>
-                <li><a href="/booking" class="nav-link text-white">예약하기</a></li>
+                <li><a href="/meeting-rooms" class="nav-link text-white">예약 • 입실</a></li>
                 <li><a href="/booking/history" class="nav-link text-white">예약 내역</a></li>
                 <li><a href="/booking/statistics" class="nav-link text-white">전체 통계</a></li>
                 <!--                관리자-->
                 <li sec:authorize="hasRole('ADMIN')">
-                    <a href="/admin/booking" class="nav-link text-white">예약 현황</a>
+                    <a href="/admin/booking" class="nav-link text-white">전체 예약 현황</a>
+                </li>
+                <!-- 회의실 관리 하위 메뉴 -->
+                <li sec:authorize="hasRole('ADMIN')">
+                    <a
+                            class="nav-link dropdown-toggle text-white"
+                            href="#"
+                            id="meetingRoomManage"
+                            role="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#meetingRoomManageMenu"
+                            aria-expanded="false"
+                    >
+                       회의실 관리
+                    </a>
+                    <ul class="collapse list-unstyled ps-3" id="meetingRoomManageMenu">
+                        <li><a href="/admin/meeting-room/list" class="nav-link text-white">조회</a></li>
+                        <li><a href="/admin/meeting-room/register" class="nav-link text-white">등록</a></li>
+                        <li><a href="/admin/meeting-room/manage" class="nav-link text-white">변경 • 삭제</a></li>
+                    </ul>
                 </li>
             </ul>
         </li>
@@ -78,7 +96,7 @@
                data-bs-toggle="collapse"
                data-bs-target="#chatMenu"
                aria-expanded="false">
-                Chat
+                채팅
                 <!--                {/* 안 읽은 메시지 수를 표시할 배지 (초기에는 숨김) */}-->
                 <span class="badge bg-danger ms-1 unread-badge" style="display: none;"></span>
             </a>
@@ -87,9 +105,9 @@
                 <li><a href="/users" class="nav-link text-white">회원 목록</a></li>
             </ul>
         </li>
-        <li class="nav-item" sec:authorize="hasRole('ADMIN')" id="notification-menu" style="display: none;">
+        <li class="nav-item" id="notification-menu" style="display: none;">
             <a href="/notification" class="nav-link text-white">
-                notification
+                알림
                 <span class="badge bg-danger ms-1 notification-unread-badge" style="display: none;"></span>
             </a>
         </li>

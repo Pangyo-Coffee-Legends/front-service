@@ -16,9 +16,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     code.innerText = data.code;
 
     const date = document.querySelector(".date");
-    date.innerText = format.ampm(data.startsAt);
+    date.innerText = format.dateTime(data.startsAt);
     const finished = document.querySelector(".finished-at");
-    finished.innerText = format.ampm(data.finishesAt);
+    finished.innerText = format.dateTime(data.finishesAt);
     const room = document.querySelector(".room");
     room.innerText = data.room.name;
     const attendees = document.querySelector(".attendees");

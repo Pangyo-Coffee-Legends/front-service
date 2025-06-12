@@ -1,4 +1,5 @@
 const API_BASE = "https://aiot2.live/api/v1";
+// const API_BASE = "http://localhost:10251/api/v1";
 
 let globalGroupMap = {};
 let globalRules = [];

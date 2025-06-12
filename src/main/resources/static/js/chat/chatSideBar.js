@@ -70,7 +70,6 @@ function handleUnreadCountUpdate(message) {
 
 // ---  STOMP 메시지 수신 시 콜백 함수 ---
 function handleUnreadNotificationCountUpdate(message) {
-    console.log("사이드 바 안 읽은 메시지 테스트 :", message);
     try {
         const payload  = message.body;
 
@@ -181,7 +180,6 @@ async function fetchInitialUnreadCount() {
 async function checkRoleAndRenderMenu() {
     try {
         const roleData = await fetchInitialFindRole();
-        console.log('Role data:', roleData); // 객체 전체 확인
         if (roleData && roleData.roleName === 'ROLE_ADMIN') { // roleName으로 접근
             document.getElementById('notification-menu').style.display = 'block';
         } else {

@@ -1,4 +1,5 @@
 const COMFORT_API = "https://aiot2.live/api/v1/comfort/scheduled-result";
+const BASE_API = "https://aiot2.live";
 const WEATHER_API = "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst";
 const SERVICE_KEY = "%2Be2VrgCSeuZBQLw%2Fh7%2BHTNOR6VRLMm3UNzeh%2Fp2YITaCzXl11XX5sYxUMIN4JNpl5pVtB5hhDR%2BpM%2FrDAEKkqA%3D%3D";
 const KAKAO_REST_KEY = "bda024433062fa6d4ddf9046e523d4c0";
@@ -7,20 +8,18 @@ let currentRoom = null;
 let currentCoords = null;
 let currentAddress = null;
 
-const USER_HEADER = { "X-USER": "admin@aiot.com" };
 const FETCH_CONFIG = {
     headers: {
-        "Content-Type": "application/json",
-        ...USER_HEADER
+        "Content-Type": "application/json"
     },
     credentials: "include"
 };
 
 const roomToLocationMap = {
     deptA: '보드',
-    deptB: '보드',
-    meetingA: '보드',
-    meetingB: '보드'
+    deptB: '사무실B',
+    meetingA: '회의실A',
+    meetingB: '회의실B'
 };
 
 const roomLabelMap = {
@@ -30,13 +29,176 @@ const roomLabelMap = {
     meetingB: '회의실B'
 };
 
+
+const placeToggleTitle = document.querySelector(".title-toggle");
+const placeBody = document.getElementById("place-manage-body");
+const icon = document.getElementById("place-manage-icon");
+
+placeToggleTitle.addEventListener("click", () => {
+    const isOpen = placeBody.style.display !== "none";
+    placeBody.style.display = isOpen ? "none" : "block";
+    icon.className = isOpen ? "triangle triangle-down" : "triangle triangle-up";
+});
+
+// ✅ 처음부터 감춰진 상태로 시작
+placeBody.style.display = "none";
+icon.className = "triangle triangle-down";
+
+document.addEventListener('DOMContentLoaded', function() {
+    // 장소 목록 불러오기
+    fetch(BASE_API + '/api/v1/floors')
+        .then(res => res.json())
+        .then(data => {
+            const select = document.getElementById('place-select-dropdown');
+            select.innerHTML = '<option value="">장소 선택</option>';
+            data.forEach(floor => {
+                const option = document.createElement('option');
+                option.value = floor.floorNo;
+                option.textContent = floor.floorName;
+                select.appendChild(option);
+            });
+        });
+});
+
+document.getElementById('place-select-dropdown').addEventListener('change', function() {
+    const floorNo = this.value;
+
+    const placeNameInput = document.getElementById('place-name-input');
+    const floorImage = document.getElementById('floor-image');
+
+    if (!floorNo) {
+        placeNameInput.value = '';
+        floorImage.src = "/images/academy.png";
+        return;
+    }
+
+    fetch(`${BASE_API}/api/v1/floors/${floorNo}`)
+        .then(res => {
+            if (!res.ok) throw new Error('조회 실패: ' + res.status);
+            return res.json();
+        })
+        .then(data => {
+            document.getElementById('place-name-input').value = data.floorName || '';
+
+            const imgSrc = data.imagePath.startsWith('http')
+                ? data.imagePath
+                : `${BASE_API}${data.imagePath}`;
+
+            document.getElementById('floor-image').src = imgSrc || "/images/academy.png";
+        })
+        .catch(err => {
+            console.error('조회 에러:', err);
+            placeNameInput.value = '';
+            floorImage.src = "/images/academy.png";
+        });
+});
+
+// 등록
+document.getElementById('btn-register-place').addEventListener('click', function() {
+    const formData = new FormData();
+    formData.append('place', JSON.stringify({
+        floorName: document.getElementById('place-name-input').value
+    }));
+    const fileInput = document.getElementById('place-image-input');
+    if (fileInput.files[0]) formData.append('file', fileInput.files[0]);
+
+    fetch(BASE_API + '/api/v1/floors', {
+        method: 'POST',
+        body: formData
+    })
+        .then(res => {
+            console.log(res); // 응답 상태 확인
+            if (!res.ok) throw new Error('서버 응답 오류');
+            return res.json();
+        })
+        .then(data => {
+            console.log(data); // 서버 응답 데이터 확인
+            alert('등록 성공');
+            location.reload();
+        })
+        .catch(err => {
+            console.error(err); // 에러 발생 시 확인
+            alert('등록 실패: ' + err.message);
+        });
+});
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("btn-update-place")?.addEventListener("click", async () => {
+        const floorNo = document.getElementById("place-select-dropdown").value;
+        const placeName = document.getElementById("place-name-input").value.trim();
+        const fileInput = document.getElementById("place-image-input");
+
+        if (!floorNo || !placeName) {
+            alert("장소명과 장소를 모두 선택해야 합니다.");
+            return;
+        }
+
+        const jsonPayload = {
+            floorName: placeName,
+            imagePath: ""
+        };
+
+        const formData = new FormData();
+        formData.append(
+            "place",
+            new Blob([JSON.stringify(jsonPayload)], { type: "application/json" })
+        );
+
+        if (fileInput.files.length > 0) {
+            formData.append("file", fileInput.files[0]);
+        }
+
+        try {
+            const res = await fetch(BASE_API + `/api/v1/floors/${floorNo}`, {
+                method: "PUT",
+                body: formData
+            });
+
+            if (!res.ok) throw new Error(`수정 실패: ${res.status}`);
+            const data = await res.json();
+
+            alert("수정 성공");
+            location.reload();
+        } catch (err) {
+            console.error("수정 에러:", err);
+            alert("수정 실패: " + err.message);
+        }
+    });
+});
+
+document.getElementById('btn-delete-place').addEventListener('click', function() {
+    const floorNo = document.getElementById('place-select-dropdown').value;
+    if (!floorNo) {
+        alert('장소를 선택하세요.');
+        return;
+    }
+    if (!confirm('정말 삭제하시겠습니까?')) return;
+
+    fetch(`${BASE_API}/api/v1/floors/${floorNo}`, {
+        method: 'DELETE'
+    })
+        .then(res => {
+            if (!res.ok) throw new Error('삭제 실패: ' + res.status);
+
+            // 🔽 본문이 있으면 파싱하고, 없으면 그냥 빈 객체 반환
+            return res.text().then(text => text ? JSON.parse(text) : {});
+        })
+        .then(() => {
+            alert('삭제 성공');
+            location.reload(); // 목록 갱신
+        })
+        .catch(err => {
+            console.error('삭제 에러:', err);
+            alert('삭제 실패: ' + err.message);
+        });
+});
 window.showPopup = async function (roomName) {
     currentRoom = roomName;
     const location = roomToLocationMap[roomName];
     const label = roomLabelMap[roomName];
     if (!location) return;
 
-    // info-box 선택 테두리 처리
     document.querySelectorAll('.info-box').forEach(box => box.classList.remove('selected'));
     const selectedBox = document.querySelector(`[onclick*="${roomName}"]`);
     if (selectedBox) selectedBox.classList.add('selected');
@@ -49,13 +211,20 @@ window.showPopup = async function (roomName) {
         const ruleResults = text ? JSON.parse(text) : [];
 
         const comfortData = extractComfortInfo(ruleResults, location);
-        if (!comfortData) throw new Error("comfortInfo 없음");
 
-        updateGradeDisplay(roomName, comfortData.comfortIndex);
-        renderComfortTable(comfortData);
-        renderSensorStatus(comfortData.deviceCommands);
+        if (comfortData) {
+            updateGradeDisplay(roomName, comfortData.comfortIndex);
+            renderComfortTable(comfortData);
+            renderSensorStatus(comfortData.deviceCommands);
+        } else {
+            // 실데이터 없으면 더미 데이터 출력
+            const dummy = generateRandomData(roomName);
+            updateGradeDisplay(roomName, dummy.comfortIndex);
+            renderComfortTable(dummy);
+            renderSensorStatus(dummy.deviceCommands);
+        }
     } catch (err) {
-        console.error(err);
+        // API 자체 실패 시 전체 초기화
         ["env-temp", "env-humi", "env-co2", "env-index", "env-comment"].forEach(id => {
             document.getElementById(id).innerText = "-";
         });
@@ -64,7 +233,7 @@ window.showPopup = async function (roomName) {
             <p>❌ 상태 불러오기 실패</p>
         `;
     }
-}
+};
 
 
 async function fetchComfortData(roomName) {
@@ -75,12 +244,13 @@ async function fetchComfortData(roomName) {
         const res = await fetch(COMFORT_API, FETCH_CONFIG);
         const text = await res.text();
         const ruleResults = text ? JSON.parse(text) : [];
-
         const comfortData = extractComfortInfo(ruleResults, location);
-        if (!comfortData) return;
 
-        updateGradeDisplay(roomName, comfortData.comfortIndex);
+        // 편의상 더미도 자동 생성
+        const data = comfortData || generateRandomData(roomName);
+        updateGradeDisplay(roomName, data.comfortIndex); // grade(공)와 색상까지 모두 업데이트
     } catch (err) {
+        updateGradeDisplay(roomName, "-");
         console.error(`[${roomName}] comfort 로딩 실패`, err);
     }
 }
@@ -101,9 +271,10 @@ function extractComfortInfo(results, location) {
                     co2Comment: comfortInfo.co2_comment,
                     deviceCommands: {
                         aircon: deviceCommands?.aircon ?? false,
+                        heater: deviceCommands?.heater ?? false,
                         ventilator: deviceCommands?.ventilator ?? false,
-                        dehumidifier: deviceCommands?.dehumidifier ?? false,
-                        heater: deviceCommands?.heater ?? false
+                        dehumidifier: deviceCommands?.dehumidifier ?? false
+
                     }
                 };
             }
@@ -122,6 +293,12 @@ function updateGradeDisplay(roomName, comfortIndex) {
     gradeEl.className = 'grade';
     boxEl.classList.remove("green", "red", "blue", "gray");
     popupPanel.classList.remove("green", "red", "blue", "gray");
+
+    if (comfortIndex === "더미") {
+        gradeEl.innerText = "⚪";
+        boxEl.classList.add("gray");
+        return;
+    }
 
     if (comfortIndex.includes("최적")) {
         gradeEl.innerText = "🟢";
@@ -289,7 +466,8 @@ window.addEventListener("DOMContentLoaded", () => {
             });
             const json = await res.json();
             const doc = json.documents[0];
-            currentAddress = doc?.address?.address_name || "현재 위치";
+            currentAddress = doc
+                ?.address?.address_name || "현재 위치";
         } catch {
             currentAddress = "현재 위치";
         }
@@ -313,3 +491,64 @@ window.addEventListener("DOMContentLoaded", () => {
     // 나머지 쾌적도 데이터도 병렬로 로드
     ["deptA", "deptB", "meetingA", "meetingB"].forEach(fetchComfortData);
 });
+
+function generateRandomData(roomName) {
+    // 실제 환경 비슷하게 수치 랜덤 생성
+    const temperature = Math.floor(Math.random() * 10) + 18; // 18~27℃
+    const humidity = Math.floor(Math.random() * 41) + 30;   // 30~70%
+    const co2 = Math.floor(Math.random() * 601) + 400;      // 400~1000ppm
+
+    // 쾌적지수 산정
+    let comfortIndex = "최적 쾌적";
+    if (temperature >= 27 && humidity >= 60) {
+        comfortIndex = "덥고 습함";
+    } else if (temperature <= 20 && humidity <= 35) {
+        comfortIndex = "춥고 건조";
+    } else if (temperature >= 27) {
+        comfortIndex = "덥고 건조";
+    } else if (temperature <= 20) {
+        comfortIndex = "춥고 습함";
+    }
+
+    // CO2 코멘트
+    let co2Comment = "CO2 양호";
+    if (co2 >= 900) co2Comment = "CO2 주의";
+
+    // 기기 명령 로직
+    const deviceCommands = {
+        aircon: temperature >= 27, // 27도 이상이면 에어컨 ON
+        heater: temperature <= 20, // 20도 이하이면 히터 ON
+        dehumidifier: humidity >= 65, // 65% 이상이면 제습기 ON
+        ventilator: co2 >= 900 // 900ppm 이상이면 환풍기 ON
+    };
+
+    return {
+        temperature,
+        humidity,
+        co2,
+        comfortIndex,
+        co2Comment,
+        deviceCommands
+    };
+}
+
+function randomComfort() {
+    let i = Math.floor(Math.random() * 3) + 1;
+    if(i == 1){
+        return "덥고 습함";
+    }else if(i == 2){
+        return "춥고 건조";
+    }else{
+        return "최적 쾌적";
+    }
+}
+
+function status() {
+    let i = Math.floor(Math.random() * 2) + 1;
+    if(i == 1){
+        return "CO2 양호";
+    }else{
+        return "CO2 주의";
+    }
+}
+

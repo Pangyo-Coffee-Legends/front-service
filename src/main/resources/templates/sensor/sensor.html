@@ -9,7 +9,6 @@
       background-color: #2b2c32;
       color: white;
       font-family: 'Segoe UI', sans-serif;
-      /*padding: 2rem;*/
     }
 
     table.dataTable {
@@ -30,7 +29,7 @@
 
     #addDeviceBtn {
       padding: 0.6rem 1.2rem;
-      background-color: #4CAF50;
+      background-color: rgba(97, 124, 192, 0.45);
       color: white;
       border: none;
       border-radius: 6px;
@@ -39,7 +38,7 @@
     }
 
     #addDeviceBtn:hover {
-      background-color: #45a049;
+      background-color: rgba(97, 124, 192, 0.45);
     }
 
     #addDeviceModal {
@@ -86,12 +85,12 @@
     }
 
     #addDeviceModal button[type="submit"] {
-      background-color: #4CAF50;
+      background-color: rgba(97, 124, 192, 0.7);
       color: white;
     }
 
     #addDeviceModal button[type="button"] {
-      background-color: #777;
+      background-color: #f44336;
       color: white;
     }
 
@@ -103,7 +102,64 @@
       border: 1px solid #666;
       border-radius: 6px;
     }
+
+    /* 수정 버튼 */
+    .edit-btn {
+      background-color: #33659a;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      border: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .edit-btn:hover {
+      background-color: #33659a;
+    }
+
+    /* 삭제 버튼 */
+    .delete-btn {
+      background-color: #f44336; /* 빨간색 */
+      color: white;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      border: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .delete-btn:hover {
+      background-color: #e53935;
+    }
+
+    /* 테이블 내 버튼을 왼쪽 정렬 */
+    table.dataTable td {
+      text-align: left;  /* 수정된 부분: left로 변경 */
+    }
+
+    /* 아이콘 크기 조정 */
+    .edit-btn i, .delete-btn i {
+      margin-right: 8px; /* 아이콘과 텍스트 사이 간격 */
+      font-size: 16px;
+    }
+
+    /* 반응형 디자인 */
+    @media (max-width: 768px) {
+      table.dataTable td, .edit-btn, .delete-btn {
+        font-size: 12px;
+        padding: 6px;
+      }
+
+      #filterLocationSelect {
+        margin-bottom: 1rem;
+        font-size: 14px;
+      }
+    }
   </style>
+
 </head>
 <body>
 <div layout:fragment="content">
@@ -121,6 +177,7 @@
       <th>센서 타입</th>
       <th>센서 상태</th>
       <th>센서 장소</th>
+      <th>센서 수정</th>
     </tr>
     </thead>
     <tbody></tbody>
@@ -131,14 +188,14 @@
     <button id="addDeviceBtn">➕ 새로운 기기 추가</button>
   </div>
 
-  <!-- ✅ 기기 등록 모달 -->
+  <!-- ✅ 기기 등록 모달 (여기만 바꿔주면 됨) -->
   <div id="addDeviceModal">
-    <h3>새 기기 추가</h3>
+    <h3 id="modalTitle">새 기기 추가</h3>
     <form id="deviceForm">
+      <input type="hidden" name="sensorNo" id="sensorNoHidden" />
       <label>센서 이름:
         <input type="text" name="sensorName" required>
       </label><br><br>
-
       <label>센서 타입:
         <select name="sensorType" required>
           <option value="">센서 타입 선택</option>
@@ -149,15 +206,14 @@
           <option value="ventilator">환풍기</option>
         </select>
       </label><br><br>
-
       <label>장소:
         <select name="location" id="modalLocationSelect" required></select>
       </label><br><br>
-
-      <button type="submit">등록</button>
+      <button type="submit" id="submitButton">등록</button>
       <button type="button" onclick="closeAddDeviceModal()">취소</button>
     </form>
   </div>
+
 
   <!-- ✅ 외부 JS 및 DataTables 의존성 -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>

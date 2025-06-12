@@ -1,21 +1,168 @@
-/* 알림 팝업 스타일 */
-#custom-toast {
-    position: fixed;
-    top: -60px; /* 처음엔 화면 밖 */
-    left: 50%;
-    transform: translateX(-50%);
-    background: #222;
-    color: #fff;
-    padding: 16px 32px;
-    border-radius: 24px;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.2);
-    font-size: 16px;
-    z-index: 9999;
-    opacity: 0;
-    transition: top 0.4s cubic-bezier(.4,2.3,.3,1), opacity 0.4s;
-    pointer-events: none;
+/* 전역 폰트 설정 - 모든 요소에 동일한 기본 폰트 적용 */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: #191f28;
 }
-#custom-toast.show {
-    top: 30px; /* 내려오는 위치 */
-    opacity: 1;
+
+/* 카드 타이틀 행 - 완전 중앙 정렬 */
+.card-title-row {
+    font-family: inherit;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 32px;
+    position: relative;
+    width: 100%;
+    min-height: 60px;
+}
+
+/* 타이틀을 완전 중앙에 배치 */
+.card-title {
+    font-family: inherit;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #191f28;
+    margin: 0;
+    letter-spacing: -0.5px;
+    text-align: center;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+}
+
+.date-filter-group {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-left: auto;
+}
+
+.date-filter-group select {
+    font-family: inherit;
+    padding: 10px 14px;
+    border: 1px solid #e1e5e9;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    background-color: #f8fafc;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    outline: none;
+    appearance: none;
+    letter-spacing: -0.2px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* 토스 스타일 화살표 - 더 연한 색상 */
+.date-filter-group select {
+    background-image: url("data:image/svg+xml,%3csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23a1a1aa' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3e%3c/svg%3e");
+    background-position: right 10px center;
+    background-repeat: no-repeat;
+    padding-right: 32px;
+}
+
+/* 호버 효과 - 부드러운 블루 */
+.date-filter-group select:hover {
+    border-color: #3b82f6;
+    background-color: #f1f5f9;
+    color: #475569;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+}
+
+/* 포커스 효과 - 토스 스타일 */
+.date-filter-group select:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    background-color: #ffffff;
+    color: #334155;
+}
+
+/* 개별 드롭다운 스타일링 */
+#year-filter {
+    min-width: 75px;
+    background-color: #dbeafe;
+    border-color: #60a5fa;
+    color: #1e40af;
+}
+
+#year-filter:hover {
+    background-color: #dbeafe;
+    border-color: #3b82f6;
+    color: #1d4ed8;
+}
+
+#month-filter {
+    min-width: 75px;
+    background-color: #dbeafe;
+    border-color: #60a5fa;
+    color: #1e40af;
+}
+
+#month-filter:hover {
+    background-color: #dbeafe;
+    border-color: #3b82f6;
+    color: #1d4ed8;
+}
+
+#day-filter {
+    min-width: 75px;
+    background-color: #dbeafe;
+    border-color: #60a5fa;
+    color: #1e40af;
+}
+
+#day-filter:hover {
+    background-color: #dbeafe;
+    border-color: #3b82f6;
+    color: #1d4ed8;
+}
+
+/* 선택된 상태 스타일 - 더 부드러운 색상 */
+.date-filter-group select:not([value=""]) {
+    background-color: #f1f5f9;
+    border-color: #cbd5e1;
+    color: #475569;
+    font-weight: 600;
+}
+
+/* 반응형 - 모바일 */
+@media (max-width: 768px) {
+    .date-filter-group {
+        gap: 6px;
+    }
+
+    .date-filter-group select {
+        padding: 8px 12px;
+        font-size: 13px;
+        min-width: unset;
+        padding-right: 28px;
+    }
+
+    #year-filter { width: 75px; }
+    #month-filter { width: 65px; }
+    #day-filter { width: 55px; }
+}
+
+/* 다크모드 대응 */
+@media (prefers-color-scheme: dark) {
+    .date-filter-group select {
+        background-color: #334155;
+        border-color: #475569;
+        color: #e2e8f0;
+    }
+
+    .date-filter-group select:hover {
+        background-color: #475569;
+        border-color: #60a5fa;
+        color: #f1f5f9;
+    }
+
+    .date-filter-group select:not([value=""]) {
+        background-color: #475569;
+        border-color: #64748b;
+        color: #f8fafc;
+    }
 }

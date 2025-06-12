@@ -1,6 +1,8 @@
 package com.nhnacademy.frontservice.adaptor;
 
+import com.nhnacademy.frontservice.dto.meetingroom.MeetingRoomRegisterRequest;
 import com.nhnacademy.frontservice.dto.meetingroom.MeetingRoomResponse;
+import com.nhnacademy.frontservice.dto.meetingroom.MeetingRoomUpdateRequest;
 import com.nhnacademy.frontservice.dto.member.*;
 import com.nhnacademy.frontservice.dto.token.JwtIssueRequest;
 import com.nhnacademy.frontservice.dto.token.JwtResponse;

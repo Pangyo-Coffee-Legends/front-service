@@ -13,15 +13,20 @@
 
 <div layout:fragment="content">
 
+    <div class="loading-card" id="loadingCard">
+        <img src="/images/coffephoto.png" alt="coffee cup" />
+        <div class="loader"></div>
+    </div>
+
     <h1>회의실 예약 내역</h1>
 
     <div class="booking-controls">
         <div class="form-group">
             <label for="sortField" class="form-label">정렬 기준</label>
             <select id="sortField" class="form-select">
+                <option value="createdAt">생성일</option>
                 <option value="bookingDate">시작 시간</option>
                 <option value="roomNo">회의실</option>
-                <option value="createdAt">생성일</option>
             </select>
         </div>
 

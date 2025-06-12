@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const bookingInfo = await response.json();
 
-    console.log(bookingInfo);
+    // console.log(bookingInfo);
 
     document.getElementById("booking-no").textContent = bookingInfo.no;
     document.getElementById("booking-member").textContent = bookingInfo.member.name;
@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 credentials: "include"
             });
 
-        console.log(response);
+        // console.log(response);
 
         const extendedBooking = await response.json();
 

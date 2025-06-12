@@ -24,7 +24,15 @@ document.addEventListener('DOMContentLoaded', function () {
             reportYear.appendChild(option);
         }
     }
-
+    if (reportMonth) {
+        const currentMonth = new Date().getMonth() + 1;
+        const options = reportMonth.querySelectorAll('option');
+        options.forEach(option => {
+            if (parseInt(option.value) === currentMonth) {
+                option.selected = true;
+            }
+        });
+    }
     if (reportBtn) {
         reportBtn.addEventListener('click', () => {
             const mbNo = memberInput.value.trim();
@@ -40,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // ✅ 로딩 표시
             if (overlay) overlay.style.display = 'flex';
-
+            alert("🔍 리포트 분석 중입니다...");
             const keywordMap = {
                 "출근": 1, "지각": 2, "결근": 3, "외근": 4,
                 "연차": 5, "병가": 6, "반차": 7, "경조사휴가": 8
