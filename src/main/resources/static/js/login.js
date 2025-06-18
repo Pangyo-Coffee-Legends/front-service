@@ -6,9 +6,9 @@ document.addEventListener("DOMContentLoaded", () => {
         window.location.href="/oauth2/authorization/google";
     });
 
-    document.querySelector(".github").addEventListener("click", () => {
-        window.location.href="/oauth2/authorization/github";
-    });
+    // document.querySelector(".github").addEventListener("click", () => {
+    //     window.location.href="/oauth2/authorization/github";
+    // });
 
 });
 

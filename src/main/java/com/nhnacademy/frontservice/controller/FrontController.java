@@ -1,16 +1,13 @@
 package com.nhnacademy.frontservice.controller;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import com.nhnacademy.frontservice.adaptor.GatewayAdaptor;
 import com.nhnacademy.frontservice.dto.meetingroom.MeetingRoomResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
@@ -70,12 +67,12 @@ public class FrontController {
         return "index/booking/my/history";
     }
 
-    @GetMapping("/booking/statistics")
-    public String bookingStatistics() {
-        return "index/booking/my/statistics";
-    }
+//    @GetMapping("/booking/statistics")
+//    public String bookingStatistics() {
+//        return "index/booking/my/statistics";
+//    }
 
-    @GetMapping("/admin/booking/statistics")
+    @GetMapping("/booking/statistics")
     public String adminBookingStatistics() {
         return "index/booking/admin/statistics";
     }
@@ -85,7 +82,7 @@ public class FrontController {
         return "index/booking/admin/history";
     }
 
-    @GetMapping( "/charts")
+    @GetMapping("/charts")
     public String charts() { return "index/charts";}
 
     @GetMapping("/users")
@@ -110,9 +107,9 @@ public class FrontController {
         return "index/chat/notification";
     }
 
-    @GetMapping("/weekly-entry-charts") //월간 출입 차트 조회
-    public String monthlyEntryCharts(){
-        return "index/work-entry/weekly-entry-chart";
+    @GetMapping("/entry-charts") //주간 출입 차트 조회
+    public String entryCharts(){
+        return "index/work-entry/entry-chart";
     }
 
     @GetMapping("/working-hours-statistics")// 근무시간통계
@@ -160,12 +157,51 @@ public class FrontController {
     @GetMapping(value = "/meeting-room/{room-no}/{booking-no}/in-meeting")
     public String inMeeting(@PathVariable("room-no") Long roomNo, @PathVariable("booking-no") Long bookingNo, Model model) {
 
-        model.addAttribute("roomNo", roomNo);
-        model.addAttribute("bookingNo", bookingNo);
-
         return "index/meeting-room/in-meeting";
+    }
+
+    @GetMapping(value = "/admin/meeting-room/list")
+    public String meetingRoomList() {
+        return "index/meeting-room/meeting-room-list";
+    }
+
+    @GetMapping(value = "/admin/meeting-room/register")
+    public String registerMeetingRoom() {
+        return "index/meeting-room/meeting-room-register";
+    }
+
+    @GetMapping(value = "/admin/meeting-room/manage")
+    public String manageMeetingRoom() {
+        return "index/meeting-room/meeting-room-manage";
+    }
+
+    @GetMapping(value = "/admin/meeting-room/edit")
+    public String editMeetingRoom(@RequestParam("roomNo") Long roomNo) {
+        return "index/meeting-room/meeting-room-edit";
     }
 
     @GetMapping("/analysis")//근태 gemini 사용
     public String analysis(){return "index/work-entry/analysis";}
+
+    @GetMapping("/comfort-dashboard")
+    public String comfortDashboard() {return "index/comfort-dashboard";}
+
+    @GetMapping("/rule-group")
+    public String ruleGroup() {return "rule-group/rule-group";}
+
+    @GetMapping("/rule")
+    public String rule() {return "rule/rule";}
+
+    @GetMapping("/action-condition")
+    public String actionCondition() {return "action-condition/action-condition";}
+
+    @GetMapping("/sensor")
+    public String sensor() {return "sensor/sensor";}
+
+    @GetMapping("/my-info")
+    public String myInfo() {return "my-info/my-info";}
+
+    @GetMapping("/my-info-change")
+    public String myInfoChange() {return "my-info/my-info-change";}
+
 }

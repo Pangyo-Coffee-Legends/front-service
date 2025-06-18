@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="~{layout/index/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title>오피스 제어 대시보드</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            background-color: #2b2c32;
+            color: #ffffff;
+            font-family: 'Pretendard', 'Segoe UI', sans-serif;
+        }
+
+        .dashboard-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px 20px;
+            gap: 40px;
+        }
+
+        .popup-panel {
+            width: 360px;
+            background: rgba(43, 44, 50, 0.75);
+            border: 1px solid #444;
+            border-radius: 16px;
+            padding: 16px;
+            backdrop-filter: blur(4px);
+            flex-shrink: 0;
+        }
+
+        .card-box {
+            background-color: #2f3139;
+            border: 1px solid #444;
+            border-radius: 10px;
+            padding: 12px 14px;
+            margin-top: 16px;
+            box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+        }
+
+        .card-box:first-of-type {
+            margin-top: 0;
+        }
+
+        .title-toggle {
+            padding: 6px 10px;
+            font-size: 16px;
+        }
+
+        h5.title-toggle {
+            margin: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .triangle {
+            width: 0;
+            height: 0;
+            margin-left: 6px;
+            transition: transform 0.2s ease;
+        }
+
+        .triangle-down {
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 7px solid white;
+        }
+
+        .triangle-up {
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-bottom: 7px solid white;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 10px;
+        }
+
+        .form-group label {
+            margin-bottom: 4px;
+            font-size: 13px;
+            color: #ccc;
+        }
+
+        .form-group input[type="text"],
+        .form-group select,
+        .form-group input[type="file"] {
+            padding: 6px 8px;
+            border-radius: 5px;
+            border: 1px solid #666;
+            background-color: #3a3b41;
+            color: white;
+            font-size: 13px;
+        }
+
+        .form-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .place-btn {
+            flex: 1;
+            padding: 8px 0;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 13px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .place-btn.green { background-color: #4caf50; color: white; }
+        .place-btn.blue { background-color: #2196f3; color: white; }
+        .place-btn.red { background-color: #f44336; color: white; }
+
+        .data-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            font-size: 13px;
+        }
+
+        .data-row span:last-child {
+            font-weight: bold;
+        }
+
+        .on, .off {
+            padding: 3px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .on { background-color: rgba(152, 255, 111, 0.79); }
+        .off { background-color: rgba(252, 60, 60, 0.85); }
+
+        #floor-wrapper {
+            position: relative;
+            max-width: 1200px;
+        }
+
+        #floor-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            border: 1px solid #444;
+            border-radius: 10px;
+            pointer-events: none;
+            user-drag: none;
+        }
+
+        .info-box {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(145deg, #31333b, #26272d);
+            color: white;
+            border-radius: 10px;
+            padding: 0.8em 0.6em;
+            font-size: clamp(11px, 1vw, 14px);
+            width: 130px;
+            text-align: center;
+            border: 1px solid #3c3c3c;
+            transition: transform 0.2s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .info-box:hover {
+            transform: translate(-50%, -50%) scale(1.05);
+            box-shadow: 0 0 12px rgba(108, 108, 108, 0.25);
+        }
+
+        .info-box.selected {
+            transform: translate(-50%, -50%) scale(1.15);
+            background: #505050;
+            z-index: 2;
+        }
+
+        .info-box .label {
+            font-weight: bold;
+        }
+
+        .info-box .grade {
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body oncontextmenu="return false">
+<div layout:fragment="content">
+    <h2 style="text-align: center; margin-top: 24px; font-size: 22px;">오피스 제어 대시보드</h2>
+    <div class="dashboard-container">
+        <div id="popup-panel" class="popup-panel">
+            <div class="card-box place-manage">
+                <h5 class="title-toggle" style="cursor: pointer;">
+                    장소 관리
+                    <div id="place-manage-icon" class="triangle triangle-down"></div>
+                </h5>
+
+                <div id="place-manage-body">
+                    <div class="form-group">
+                        <label for="place-select-dropdown">장소 선택</label>
+                        <select id="place-select-dropdown"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="place-name-input">장소명</label>
+                        <input type="text" id="place-name-input" placeholder="예: 회의실 A">
+                    </div>
+                    <div class="form-group">
+                        <label for="place-image-input">도면 이미지</label>
+                        <input type="file" id="place-image-input" accept="image/*">
+                    </div>
+                    <div class="form-buttons">
+                        <button id="btn-register-place" class="place-btn green">등록</button>
+                        <button id="btn-update-place" class="place-btn blue">수정</button>
+                        <button id="btn-delete-place" class="place-btn red">삭제</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="env-info-card" class="card-box">
+                <h5 id="popup-title">공간명</h5>
+                <div class="data-row"><span>내부 온도</span><span id="env-temp">-</span></div>
+                <div class="data-row"><span>내부 습도</span><span id="env-humi">-</span></div>
+                <div class="data-row"><span>CO₂</span><span id="env-co2">-</span></div>
+                <div class="data-row"><span>쾌적도</span><span id="env-index">-</span></div>
+                <div class="data-row"><span>상태</span><span id="env-comment">-</span></div>
+            </div>
+
+            <div class="card-box">
+                <h5>외부 날씨</h5>
+                <div class="data-row"><span>현재 위치</span><span id="weather-location-label">-</span></div>
+                <div class="data-row"><span>외부 기온</span><span id="weather-temp">-</span></div>
+                <div class="data-row"><span>외부 습도</span><span id="weather-humi">-</span></div>
+                <div class="data-row"><span>풍속</span><span id="weather-wind">-</span></div>
+                <div class="data-row"><span>상태</span><span id="weather-desc">-</span></div>
+            </div>
+
+            <div id="device-status" class="card-box">
+                <h5>작동 상태</h5>
+            </div>
+        </div>
+
+        <div id="floor-wrapper">
+            <img id="floor-image" src="/images/academy.png" alt="오피스 도면" draggable="false">
+            <div class="info-box" style="top: 55%; left: 17%;" onclick="showPopup('deptA', this)">
+                <div class="label">사무실 A</div><hr><div class="grade" id="grade-deptA">-</div>
+            </div>
+            <div class="info-box" style="top: 18%; left: 17%;" onclick="showPopup('deptB', this)">
+                <div class="label">사무실 B</div><hr><div class="grade" id="grade-deptB">-</div>
+            </div>
+            <div class="info-box" style="top: 18%; left: 80%;" onclick="showPopup('meetingA', this)">
+                <div class="label">회의실 A</div><hr><div class="grade" id="grade-meetingA">-</div>
+            </div>
+            <div class="info-box" style="top: 55%; left: 57%;" onclick="showPopup('meetingB', this)">
+                <div class="label">회의실 B</div><hr><div class="grade" id="grade-meetingB">-</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/comfort-dashboard.js" defer></script>
+</div>
+</body>
+</html>

@@ -1,7 +1,5 @@
 package com.nhnacademy.frontservice.common.advice;
 
-import com.nhnacademy.frontservice.common.auth.EmailThreadLocal;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
  * @author 작성자명 (신현섭)
  * @since 1.0
  */
-@Slf4j
 @ControllerAdvice
 public class GlobalModelAttributeAdvice {
 
@@ -40,10 +37,12 @@ public class GlobalModelAttributeAdvice {
      */
     @ModelAttribute
     public void addUserEmailToModel(Model model) {
-        String userEmail = EmailThreadLocal.getEmail();
-        if (userEmail == null) {
-            log.info("로그인 정보가 없습니다.");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getPrincipal())) {
+            String userEmail = auth.getName();
+            String role = auth.getAuthorities().iterator().next().getAuthority();
+            model.addAttribute("userEmail", userEmail);
+            model.addAttribute("role", role);
         }
-        model.addAttribute("userEmail", userEmail);
     }
 }

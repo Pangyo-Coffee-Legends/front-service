@@ -9,13 +9,36 @@
 <body>
 <div layout:fragment="content">
     <div class="container text-center py-5">
-        <h1 class="mb-4">⏱ 회의 시간</h1>
-        <div id="time-display">--:--</div>
 
-        <div class="button-group mt-4">
-            <button class="btn-primary">회의 연장</button>
-            <button class="btn-danger">회의 종료</button>
+        <div id="toast" class="toast hidden"></div>
+        <div class="meeting-card-container">
+            <div class="meeting-card">
+                <h1>회의 시간</h1>
+
+                <div id="time-display">--:--</div>
+
+                <div class="booking-info">
+                    <div class="booking-row">
+                        <div class="booking-label">예약번호</div>
+                        <div class="ticket-value" id="booking-no">4</div>
+                    </div>
+                    <div class="booking-row">
+                        <div class="booking-label">예약자</div>
+                        <div class="booking-value" id="booking-member">test</div>
+                    </div>
+                    <div class="booking-row">
+                        <div class="booking-label">참석인원</div>
+                        <div class="booking-value" id="attendees-count">5</div>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button class="extend-btn">회의 연장</button>
+                    <button class="end-btn">회의 종료</button>
+                </div>
+            </div>
         </div>
+
     </div>
 </div>
 </body>

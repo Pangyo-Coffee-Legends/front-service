@@ -7,6 +7,8 @@
     margin-right: 6px;
     vertical-align: middle;
     border: 1px solid #ccc;
+    overflow-x: auto;
+    white-space: nowrap;
 }
 
 /* ✅ 테이블 행 색상 (출석 제외) */
@@ -31,6 +33,18 @@ body.light-theme .status-orange td {
 }
 body.light-theme .status-pink td {
     background-color: #fce4ec !important;
+}
+
+/*회원 목록 선택 시 색 변경 적용*/
+.selected-member td {
+    background-color: #e5e4b7 !important;
+    color: #000000 !important;
+}
+#member-table-container table {
+    font-size: 0.9rem;
+}
+#attendance-table-container table {
+    font-size: 0.9rem;
 }
 
 /* ✅ 범례 색상 적용 (.legend-box 자체에 색 입힘) */

@@ -6,6 +6,7 @@
   <title>Simple Landing Page</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="/css/landing.css"> <!-- 따로 분리한 CSS -->
+  <link  rel="icon" href="https://notion-emojis.s3-us-west-2.amazonaws.com/prod/svg-twitter/2615.svg">
 </head>
 <body>
 
@@ -15,10 +16,10 @@
   <div class="content text-center text-white">
     <h1>Aiot2기 team2 판교 스타벅스에서 봅시다</h1>
     <p class="lead">랜딩 페이지입니다. 로그인시 관리자 대시보드화면으로 이동합니다</p>
-    <div class="btn-group mt-4">
-      <a href="/login" class="btn btn-primary mr-2">로그인</a>
+    <div class="btn-user mt-4">
+      <a href="/login" class="btn btn-outline-light mr-4">로그인</a>
       <a href="/signup" class="btn btn-outline-light">회원가입</a>
-      <a href="/index" class="btn btn-outline-light">대시보드</a>
+<!--      <a href="/index" class="btn btn-outline-light">대시보드</a>-->
     </div>
   </div>
 </section>
@@ -27,35 +28,69 @@
 <section class="project-section">
   <div class="container text-center">
     <h2>프로젝트 소개</h2>
-    <p class="lead">이 프로젝트는 AI와 IoT 기술을 활용하여 혁신적인 서비스를 제공합니다.</p>
+    <p class="lead">이 프로젝트는 AI와 IoT 기술을 활용하여 스마트 출입, 에너지, 환경, 예약, 보안, 사용자 경험을 혁신합니다.</p>
+
     <div class="row mt-4">
-      <!-- 첫 번째 카드 -->
-      <div class="col-md-4">
-        <div class="card">
+      <!-- 1. 센서 & 데이터 저장 -->
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
           <div class="card-body">
-            <h5 class="card-title">AI</h5>
-            <p class="card-text">테스트 1 text</p>
+            <h5 class="card-title">센서 데이터 수집 & 저장</h5>
+            <p class="card-text">MQTT/Modbus로 실시간 센서 데이터를 수집하고 InfluxDB에 저장하여 환경 상태를 관리합니다.</p>
           </div>
         </div>
       </div>
-      <!-- 두 번째 카드 -->
-      <div class="col-md-4">
-        <div class="card">
+
+      <!-- 2. AI 분석 & 예측 -->
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
           <div class="card-body">
-            <h5 class="card-title">IoT 플랫폼</h5>
-            <p class="card-text">IoT 디바이스를 연결하여 실시간 데이터를 수집하고 관리합니다.</p>
+            <h5 class="card-title">AI 기반 쾌적도 분석</h5>
+            <p class="card-text">수집 데이터를 기반으로 AI 모델을 학습하고, 쾌적도 예측 및 이상 상황을 판단합니다.</p>
           </div>
         </div>
       </div>
-      <!-- 세 번째 카드 -->
-      <div class="col-md-4">
-        <div class="card">
+
+      <!-- 3. 출입 통제 & 근태 관리 -->
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
           <div class="card-body">
-            <h5 class="card-title">테스트 3</h5>
-            <p class="card-text">테스트 3 text</p>
+            <h5 class="card-title">출입 통제 & 근태 분석</h5>
+            <p class="card-text">출입 로그 기반 근무 시간 계산, 이상 출입 탐지, Gemini 분석 리포트를 제공합니다.</p>
           </div>
         </div>
       </div>
+
+      <!-- 4. 대시보드 & 로그 시스템 -->
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">로그 수집 & 시각화</h5>
+            <p class="card-text">Elastic 기반 로그 파이프라인과 Kibana 대시보드로 시스템 상태를 모니터링합니다.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. 회의실 예약 시스템 -->
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">회의실 예약 관리</h5>
+            <p class="card-text">예약, 입장 확인, 연장, 노쇼 처리 등 회의실 관련 기능을 통합 제공합니다.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. 채팅 & 실시간 알림 -->
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">채팅 시스템 & 알림</h5>
+            <p class="card-text">WebSocket 기반 실시간 채팅과 시스템 알림을 통해 사용자 간 원활한 소통을 지원합니다.</p>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -66,115 +101,246 @@
     <h2>팀원 소개</h2>
     <p class="lead">1년 후 판교 스타벅스에서 모이게 될 멤버들을 소개합니다</p>
     <div class="row">
-      <!-- 첫 번째 행 -->
-      <div class="col-md-6">
-        <div class="team-card d-flex align-items-center">
-          <img src="/images/woo.png" alt="강승우" class="team-img">
-          <div class="team-info">
-            <h5 class="team-name">강승우</h5>
-            <p class="team-role">DNS 서버설정</p>
-            <p class="team-email">📧kay5990@naver.com</p>
-            <a href="https://github.com/oculusK" class="team-link">GitHub 프로필</a>
-            <p class="team-message">싸우지 말고 모두 함께 나갑시다❣️</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="team-card d-flex align-items-center">
-          <img src="/images/keong.png" alt="김경영" class="team-img">
-          <div class="team-info">
-            <h5 class="team-name">김경영</h5>
-            <p class="team-role">DNS 서버설정</p>
-            <p class="team-email">📧kim5472678@gmail.com</p>
-            <a href="https://github.com/rudduddl" class="team-link">GitHub 프로필</a>
-            <p class="team-message">적극적으로 참여하겠습니다😚🍔</p>
-          </div>
-        </div>
-      </div>
-      <!-- 두 번째 행 -->
-      <div class="col-md-6">
-        <div class="team-card d-flex align-items-center">
-          <img src="/images/seop.png" alt="신현섭" class="team-img">
-          <div class="team-info">
-            <h5 class="team-name">신현섭</h5>
-            <p class="team-role">JWT 로그인, AI/IoT</p>
-            <p class="team-email">📧didakd22@naver.com</p>
-            <a href="https://github.com/HyunSubb" class="team-link">GitHub 프로필</a>
-            <p class="team-message">반가워요~</p>
-          </div>
-        </div>
-      </div>
+      <!-- 최인호 -->
       <div class="col-md-6">
         <div class="team-card d-flex align-items-center">
           <img src="/images/inho.png" alt="최인호" class="team-img">
           <div class="team-info">
             <h5 class="team-name">최인호</h5>
-            <p class="team-role">Front</p>
+            <p class="team-role">쾌적도 예측 AI 개발 · 공통 로그 모듈 · ELK 로그 통합 인프라 · CI/CD 자동화 설계</p>
             <p class="team-email">📧dusen3846@gmail.com</p>
             <a href="https://github.com/dusen0528" class="team-link">GitHub 프로필</a>
             <p class="team-message">다들 판교가서 스벅에서 커피 한잔 합시다☕️</p>
+            <div class="team-contribution">
+              <h6>구현 사항</h6>
+              <ul>
+                <li>센서 데이터 수집 기능 구현 (MQTT/Modbus)</li>
+                <li>InfluxDB 원격 배포 및 센서 데이터 저장 기능</li>
+                <li>쾌적도 예측 모델 학습 및 개선</li>
+                <li>AI 모델 REST API 배포 및 테스트</li>
+                <li>중앙 로그 서버 구축 및 파이프라인 구성</li>
+                <li>공통 로그 추적 모듈 개발 및 시각화 대시보드</li>
+                <li>Spring Cloud Config 서버 구축 및 연동</li>
+                <li>서비스 CI/CD 자동 배포 환경 구성</li>
+                <li>전체 시스템 통합 아키텍처 구현</li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
-      <!-- 세 번째 행 -->
+
+      <!-- 신현섭 -->
       <div class="col-md-6">
         <div class="team-card d-flex align-items-center">
-          <img src="/images/img.png" alt="박형호" class="team-img">
+          <img src="/images/seop.png" alt="신현섭" class="team-img">
           <div class="team-info">
-            <h5 class="team-name">박형호</h5>
-            <p class="team-role">Front</p>
-            <p class="team-email">📧0miyucat0@gmail.com</p>
-            <a href="https://github.com/phh624" class="team-link">GitHub 프로필</a>
-            <p class="team-message">네카라쿠배🌎</p>
+            <h5 class="team-name">신현섭</h5>
+            <p class="team-role">실시간 채팅 시스템 개발</p>
+            <p class="team-email">📧didakd22@naver.com</p>
+            <a href="https://github.com/HyunSubb" class="team-link">GitHub 프로필</a>
+            <p class="team-message">반가워요~</p>
+            <div class="team-contribution">
+              <h6>구현 사항</h6>
+              <ul>
+                <li>일반 로그인 구현 (JWT)</li>
+                <li>채팅방 생성 및 참여 기능 구현</li>
+                <li>채팅 메시지 전송 및 저장 기능 구현</li>
+                <li>실시간 메시지 읽음 처리 및 안 읽은 수 출력 기능 구현</li>
+                <li>채팅방 목록 조회 및 실시간 갱신 기능 구현</li>
+                <li>메시지 히스토리 조회 기능 구현</li>
+                <li>유저 목록에서 1대1 채팅 기능 구현</li>
+                <li>채팅방 참여자 여부 및 실시간 접속 상태 검증 기능 구현</li>
+                <li>알림 메시지 수신시 팝업 메시지 기능 구현</li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
+
+      <!-- 김경영 -->
+      <div class="col-md-6">
+        <div class="team-card d-flex align-items-center">
+          <img src="/images/keong.png" alt="김경영" class="team-img">
+          <div class="team-info">
+            <h5 class="team-name">김경영</h5>
+            <p class="team-role">보안 시스템 및 근태 관리</p>
+            <p class="team-email">📧kim5472678@gmail.com</p>
+            <a href="https://github.com/rudduddl" class="team-link">GitHub 프로필</a>
+            <p class="team-message">적극적으로 참여하겠습니다😚🍔</p>
+            <div class="team-contribution">
+              <h6>구현 사항</h6>
+              <ul>
+                <li>실시간 출입 데이터 대시보드 표시 구현</li>
+                <li>근무 시간 계산 기능 구현</li>
+                <li>이상 출입 감지 기능 구현</li>
+                <li>이상 출입 감지 알림 구현</li>
+                <li>주간 출입 현황 차트 구현</li>
+                <li>이상 출입 알림 목록 구현</li>
+                <li>근태 데이터 자동 생성 봇 구현</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 김미성 -->
       <div class="col-md-6">
         <div class="team-card d-flex align-items-center">
           <img src="/images/migong.png" alt="김미성" class="team-img">
           <div class="team-info">
             <h5 class="team-name">김미성</h5>
-            <p class="team-role">JWT 로그인</p>
+            <p class="team-role">보안 시스템 및 근태 관리</p>
             <p class="team-email">📧kimms000311@gmail.com</p>
             <a href="https://github.com/Migong0311" class="team-link">GitHub 프로필</a>
             <p class="team-message">최소 1인분 이상하면서 민폐 끼치지 않는 팀원이 되겠습니다.</p>
+            <div class="team-contribution">
+              <h6>구현 사항</h6>
+              <ul>
+                <li>실시간 출입 데이터 대시보드 표시 구현</li>
+                <li>주간 출입 현황 차트 구현</li>
+                <li>근무시간 통계 구현</li>
+                <li>이상 출입 알림 목록 구현</li>
+                <li>Gemini 기반 근태 분석 구현</li>
+                <li>PDF 리포트 기능 구현</li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
-      <!-- 네 번째 행 -->
+
+      <!-- 강승우 -->
+      <div class="col-md-6">
+        <div class="team-card d-flex align-items-center">
+          <img src="/images/woo.png" alt="강승우" class="team-img">
+          <div class="team-info">
+            <h5 class="team-name">강승우</h5>
+            <p class="team-role">환경 모니터링 시스템</p>
+            <p class="team-email">📧kay5990@naver.com</p>
+            <a href="https://github.com/oculusK" class="team-link">GitHub 프로필</a>
+            <p class="team-message">싸우지 말고 모두 함께 나갑시다❣️</p>
+            <div class="team-contribution">
+              <h6>구현 사항</h6>
+              <ul>
+                <li>Rule-Engine 구현</li>
+                <li>IoT 서비스 구현</li>
+                <li>프론트 데이터 테이블 구현(HTML+CSS)</li>
+                <li>프론트 JS 구현</li>
+                <li>관리자 알림 수신</li>
+                <li>이상 탐지 로직 개발</li>
+                <li>발송 이력 기록 및 조회</li>
+                <li>장애 발생 시 로깅 및 알림</li>
+                <li>프론트 연동 및 테스트</li>
+                <li>통합 아키텍처</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 박형호 -->
+      <div class="col-md-6">
+        <div class="team-card d-flex align-items-center">
+          <img src="/images/img.png" alt="박형호" class="team-img">
+          <div class="team-info">
+            <h5 class="team-name">박형호</h5>
+            <p class="team-role">환경 모니터링 시스템</p>
+            <p class="team-email">📧0miyucat0@gmail.com</p>
+            <a href="https://github.com/phh624" class="team-link">GitHub 프로필</a>
+            <p class="team-message">네카라쿠배🌎</p>
+            <div class="team-contribution">
+              <h6>구현 사항</h6>
+              <ul>
+                <li>Rule-Engine 구현</li>
+                <li>IoT 서비스 구현</li>
+                <li>프론트 데이터 테이블 구현(HTML+CSS)</li>
+                <li>프론트 JS 구현</li>
+                <li>관리자 알림 수신</li>
+                <li>이상 탐지 로직 개발</li>
+                <li>발송 이력 기록 및 조회</li>
+                <li>장애 발생 시 로깅 및 알림</li>
+                <li>프론트 연동 및 테스트</li>
+                <li>통합 아키텍처</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 전유림 -->
       <div class="col-md-6">
         <div class="team-card d-flex align-items-center">
           <img src="/images/yurim.png" alt="전유림" class="team-img">
           <div class="team-info">
             <h5 class="team-name">전유림</h5>
-            <p class="team-role">Front</p>
+            <p class="team-role">회의실 예약 및 사용자 편의 기능</p>
             <p class="team-email">📧jur1m@naver.com</p>
             <a href="https://github.com/Jyurim" class="team-link">GitHub 프로필</a>
             <p class="team-message">🔥 열정 가득!</p>
+            <div class="team-contribution">
+              <h6>구현 사항</h6>
+              <ul>
+                <li>로그인 구현 (OAuth)</li>
+                <li>회의실 현황 및 예약 구현</li>
+                <li>예약 완료 후 사용 설명 기능 구현</li>
+                <li>예약 알림 구현</li>
+                <li>예외 처리(노쇼/취소/변경) 기능 구현</li>
+                <li>회의 연장/종료 기능 구현</li>
+                <li>사용 시간 기록 및 통계 기능 구현</li>
+                <li>대시보드 출력 (Front)</li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
+
+      <!-- 김지윤 -->
       <div class="col-md-6">
         <div class="team-card d-flex align-items-center">
           <img src="/images/noah.png" alt="김지윤" class="team-img">
           <div class="team-info">
             <h5 class="team-name">김지윤</h5>
-            <p class="team-role">JWT 로그인</p>
+            <p class="team-role">회의실 예약 및 사용자 편의 기능</p>
             <p class="team-email">📧noah.jiyun.kim@gmail.com</p>
             <a href="https://github.com/LEMON4DE" class="team-link">GitHub 프로필</a>
             <p class="team-message">🦄 협력해서 최선을 다해 봅시다!</p>
+            <div class="team-contribution">
+              <h6>구현 사항</h6>
+              <ul>
+                <li>회의실 통합 관리</li>
+                <li>회의실 현황 및 예약 구현</li>
+                <li>예약 완료 후 사용 설명 기능 구현</li>
+                <li>회의실 예외처리(미사용/취소/변경) 기능 구현</li>
+                <li>예약코드를 이용한 회의실 입실 구현</li>
+                <li>회의 연장/종료 기능 구현</li>
+                <li>대시보드 출력 (Front)</li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
+
     </div>
   </div>
 </section>
+
+
+
+
+
+
+
+
+
 <section class="wiki-section">
   <div class="container text-center">
-    <h2>Team Notion</h2>
-    <p class="lead">우리 프로젝트의 상세한 문서를 확인하세요!</p>
-    <iframe src="https://v2-embednotion.com/1ce536e0b61d805baf57c05d38ce167d" style="width: 100%; height: 1200px; border: 2px solid #ccc; border-radius: 10px; padding: none;"></iframe>
+    <h2>Team GitHub</h2>
+    <p class="lead">우리 프로젝트의 전체 코드와 문서를 GitHub에서 확인하세요!</p>
+    <a href="https://github.com/Pangyo-Coffee-Legends" class="btn btn-dark btn-lg mt-3" target="_blank">
+      👉 GitHub Repository 바로가기
+    </a>
   </div>
 </section>
+
+
 </body>
 </html>

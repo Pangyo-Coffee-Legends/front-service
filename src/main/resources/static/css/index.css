@@ -163,7 +163,30 @@ body.dark-theme .card:hover {
   margin-right: 8px;
   text-align: center;
 }
+/* 드롭다운 메뉴 스타일 */
+.legend-box.sidebar-dropdown-menu {
+  list-style: none;
+  padding-left: 20px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
 
+.legend-box.sidebar-dropdown-menu.legend-box.show {
+  max-height: 500px; /* 드롭다운이 열릴 때 최대 높이 */
+}
+
+.nav-item .dropdown-indicator::after {
+  content: '\f105'; /* Font Awesome 아이콘 */
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  float: right;
+  transition: transform 0.3s;
+}
+
+.nav-item.expanded .dropdown-indicator::after {
+  transform: rotate(90deg);
+}
 /* 사용자 드롭다운 스타일 */
 .nav-link.dropdown-toggle {
   color: #ffffff;
@@ -183,6 +206,10 @@ body.dark-theme .card:hover {
   font-size: 14px;
 }
 
+.dropdown-item:hover {
+  background-color: #f8f9fa;
+}
+
 /* 사이드바 드롭다운 스타일 */
 .collapse {
   transition: max-height 0.3s ease-in-out;
@@ -190,6 +217,44 @@ body.dark-theme .card:hover {
 
 .list-unstyled {
   padding-left: 20px;
+}
+
+.loading-card {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #ffffff; /* 밝은 배경 */
+  padding: 2rem;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.1); /* 연한 그림자 */
+  z-index: 9999;
+}
+
+.loading-card img {
+  width: 100px;
+  margin-bottom: 1rem;
+}
+
+.loader {
+  width: fit-content;
+  font-weight: bold;
+  font-family: monospace;
+  font-size: 22px;
+  clip-path: inset(0 100% 0 0);
+  animation: l5 2s steps(35) infinite;
+  color: #333333; /* 어두운 텍스트 */
+}
+
+.loader:before {
+  content: "System.out.println(\"Loading...\");";
+}
+
+@keyframes l5 {
+  to { clip-path: inset(0 -1ch 0 0); }
 }
 
 /* === 공통 테이블 스타일 === */

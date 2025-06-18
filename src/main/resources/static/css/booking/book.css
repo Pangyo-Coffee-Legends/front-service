@@ -1,4 +1,3 @@
-/* 공통 초기화 */
 * {
     box-sizing: border-box;
 }
@@ -7,19 +6,25 @@
     display: flex;
 }
 
-.info-container {
-    width: 100%;
+.info-container{
+    /*width: 100%;*/
+    width: 800px;
 }
 
-.time-container,
+.time-container {
+    font-family: Arial, sans-serif;
+    padding: 10px;
+}
+
 .reservation-form {
     font-family: Arial, sans-serif;
-    padding: 20px;
+    padding: 10px;
 }
 
 /* 회의실 목록 */
 .rooms {
-    width: 30%;
+    width: 15%;
+    /*background-color: #f4f4f4;*/
     padding: 20px;
     border-right: 1px solid #ccc;
 }
@@ -34,6 +39,8 @@ body.dark-theme .rooms {
     width: 100%;
     padding: 15px;
     margin-bottom: 10px;
+    background-color: #b6d2f9;
+    color: white;
     border: none;
     border-radius: 6px;
     cursor: pointer;
@@ -66,7 +73,7 @@ body.dark-theme .room-button:hover {
 /* 캘린더 */
 .calendar {
     flex: 1;
-    padding: 20px;
+    padding: 10px;
 }
 
 .calendar h2 {
@@ -83,6 +90,19 @@ body.light-theme .selected-day {
     background-color: #e6f0ff !important;
 }
 
+/*!* 전체 폰트 크기 축소 *!*/
+/*.fc {*/
+/*    font-size: 0.85rem;*/
+/*}*/
+
+/*!* 셀 내부 여백 축소 *!*/
+/*.fc-daygrid-day-frame {*/
+/*    padding: 2px;*/
+/*}*/
+
+.fc-col-header-cell-cushion, .fc-daygrid-day-number {
+    text-decoration: none;
+}
 /* 다크 테마 클릭 효과 */
 body.dark-theme .selected-day {
     background-color: #3d4857 !important;
@@ -108,6 +128,7 @@ body.dark-theme .fc-daygrid-day-number {
 .fc-day-sun a {
     color: red;
 }
+
 .fc-day-sat .fc-col-header-cell-cushion,
 .fc-day-sat a {
     color: blue;
@@ -210,6 +231,8 @@ body.dark-theme .selected-time-slot {
     width: 80%;
     max-width: 250px;
     padding: 0.75rem 1rem;
+    background-color: #4a90e2;
+    color: white;
     font-size: 1.1rem;
     border: none;
     border-radius: 6px;
@@ -251,4 +274,14 @@ body.light-theme .reservation-action p {
 }
 body.dark-theme .reservation-action p {
     color: #bbb;
+}
+
+.selected-time {
+    background-color: #e6f0ff;
+    color: black;
+    font-weight: bold;
+}
+
+.in-range {
+    background-color: #e6f0ff;
 }

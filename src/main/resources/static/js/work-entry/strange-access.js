@@ -1,9 +1,12 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const socket = new WebSocket("ws://localhost:10256/ws/stranger");
+
+    const socket = new WebSocket("wss://aiot2.live/ws/stranger");
 
     socket.onmessage = function (event) {
+        if (event.data === "ping") return; // ping은 무시
+
         const message = event.data;
-        console.log("📩 WebSocket 수신 메시지:", message);
+        // console.log("📩 WebSocket 수신 메시지:", message);
 
         // 메시지 내용이 '이상 출입자 발생'일 경우, 무조건 경고창 띄움
         if (message.includes("이상 출입자 발생")) {

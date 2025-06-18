@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="~{layout/index/layout.html}" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>회의실 변경/삭제</title>
+    <link rel="stylesheet" th:href="@{/css/meeting-rooms/meeting-room-manage.css}">
+    <script type="module" th:src="@{/js/meeting-rooms/meeting-room-manage.js}" defer></script>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container my-5">
+        <h2 class="text-center mb-4">회의실 변경 • 삭제</h2>
+
+        <table class="table table-bordered text-center align-middle">
+            <thead class="table-dark">
+            <tr>
+                <th>번호</th>
+                <th>이름</th>
+                <th>수용인원</th>
+                <th>디스플레이</th>
+                <th>디지털화이트보드</th>
+                <th>화상회의 시스템</th>
+                <th>관리</th> <!-- 여기 추가 -->
+            </tr>
+            </thead>
+            <tbody>
+            <!-- JavaScript로 등록된 회의실 데이터 및 변경/삭제 버튼 삽입 -->
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

@@ -10,7 +10,7 @@ body, html {
 .intro-section {
     position: relative;
     height: 100vh;
-    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/images/user.JPG'); /* 그라디언트와 이미지 결합 */
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/images/landing.png'); /* 그라디언트와 이미지 결합 */
     background-size: cover;
     background-position: center;
     display: flex;
@@ -47,19 +47,19 @@ body, html {
 }
 
 /* 버튼 스타일 */
-.btn-group a {
+.btn-user a {
     padding: 15px 30px; /* 버튼 크기 확대 */
     font-size: 1.2rem; /* 버튼 텍스트 크기 */
     border-radius: 5px; /* 둥근 모서리 */
-    background-color: black; /* 기본 배경색: 검은색 */
-    color: white; /* 기본 텍스트 색상: 흰색 */
-    border: 2px solid black; /* 테두리 색상 */
+    /*background-color: black; !* 기본 배경색: 검은색 *!*/
+    /*color: white; !* 기본 텍스트 색상: 흰색 *!*/
+    /*border: 2px solid black; !* 테두리 색상 *!*/
     transition: all 0.3s ease-in-out; /* 부드러운 전환 효과 */
 }
 
-.btn-group a:hover {
-    background-color: white; /* 호버 시 배경색: 흰색 */
-    color: black; /* 호버 시 텍스트 색상: 검은색 */
+.btn-user a:hover {
+    /*background-color: white; !* 호버 시 배경색: 흰색 *!*/
+    /*color: black; !* 호버 시 텍스트 색상: 검은색 *!*/
     transform: scale(1.1); /* 살짝 확대 효과 */
 }
 
@@ -75,13 +75,15 @@ body, html {
         margin-bottom: 20px;
     }
 
-    .btn-group a {
+    .btn-user a {
         width: 100%; /* 버튼 너비를 화면에 맞게 조정 */
         margin-bottom: 10px; /* 버튼 간격 추가 */
         text-align: center;
         padding-left: 0;
         padding-right: 0;
-        padding-top :12px;padding-bottom :12px;}
+        padding-top :12px;
+        padding-bottom :12px;
+    }
 }
 /* 프로젝트 섹션 스타일 */
 .project-section {
@@ -148,13 +150,28 @@ body, html {
 /* 팀원 카드 스타일 */
 /* 팀원 카드 스타일 */
 .team-card {
+    height: 100%;
     display: flex;
-    align-items: center; /* 세로 가운데 정렬 */
+    align-items: center;
     padding: 20px;
-    margin-bottom: 20px;
-    background-color: #ffffff; /* 카드 배경색 */
-    border-radius: 10px; /* 둥근 모서리 */
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 */
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+}
+/* 팀원 카드 그리드 균등 높이 적용 */
+.team-section .row > .col-md-6 {
+    display: flex;
+    margin-bottom: 30px;
+}
+
+.team-card {
+    flex: 1;              /* 카드가 컬럼의 전체 높이 채우게 함 */
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 24px;
+    border: 1px solid #ddd;
 }
 
 /* 팀원 이미지 스타일 */
